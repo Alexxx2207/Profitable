@@ -40,4 +40,8 @@
     <ProjectReference Include="..\Profitable.Models\Profitable.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repository\" />
+  </ItemGroup>
+
 </Project>
