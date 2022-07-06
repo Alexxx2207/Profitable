@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Models", "Profit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Services", "Profitable.Services\Profitable.Services.csproj", "{520FD359-0B83-46BC-9EEF-DC4AC400DFF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profitable.Web", "Profitable.Web\Profitable.Web.csproj", "{B6CB0FAA-3B65-4078-B82D-E517C9EB0752}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Web", "Profitable.Web\Profitable.Web.csproj", "{B6CB0FAA-3B65-4078-B82D-E517C9EB0752}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61632A9A-782B-4182-9B50-C2D641C44848}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
