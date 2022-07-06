@@ -13,10 +13,23 @@ namespace Profitable.Data
         }
 
         public DbSet<Trader> Traders { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.Post)
+                .WithMany(p => p.Comments)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            builder.Entity<Like>()
+                .HasOne(c => c.Post)
+                .WithMany(p => p.Likes)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
