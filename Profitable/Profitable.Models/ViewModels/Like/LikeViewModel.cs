@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Profitable.Models.Contracts
+namespace Profitable.Models.ViewModels.Like
 {
-    public class EntityBase
+    public class LikeViewModel
     {
-        [Key]
         public string GUID { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public Trader Trader { get; set; }
     }
 }

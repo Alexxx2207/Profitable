@@ -18,9 +18,6 @@ namespace Profitable.Models
             Likes = new HashSet<Like>();
         }
 
-        [Key]
-        public string GUID { get; set; }
-
         [Required]
         [ForeignKey("Author")]
         public string AuthorId { get; set; }
@@ -31,6 +28,9 @@ namespace Profitable.Models
 
         [Required]
         public string Content { get; set; }
+
+        [Required]
+        public DateTime PostedOn { get; set; }
 
 
         public ICollection<Comment> Comments { get; set; }

@@ -1,20 +1,37 @@
+using AutoMapper;
+
 using Profitable.Data.Repository.Contract;
 using Profitable.Data.Repository;
+using Profitable.Automapper;
+using Profitable.Services.Posts.Contracts;
+using Profitable.Services.Posts;
+using Profitable.Services.Comments.Contracts;
+using Profitable.Services.Comments;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new PostsMapper());
+    mc.AddProfile(new CommentsMapper());
+});
 
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+builder.Services.AddTransient<IPostService, PostService>();
+builder.Services.AddTransient<ICommentService, CommentService>();
 
 builder.Services.AddControllersWithViews();
 
+
+
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
