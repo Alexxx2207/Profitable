@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Profitable.Data.Repository.Contract;
+using Profitable.Models.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace Profitable.Data.Repository
 {
     public class Repository<T> : IRepository<T>
-        where T : class
+        where T : EntityBase
     {
         private readonly ApplicationDbContext dbContext;
 
@@ -52,10 +53,27 @@ namespace Profitable.Data.Repository
             return await table.Where(expression).ToListAsync();
         }
 
+        public async Task<IEnumerable<T>> FindAllWhere(Expression<Func<T, bool>> expression, int skip, int take)
+        {
+            return await table
+                .Where(expression)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await table.ToListAsync();
 
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync(int skip, int take)
+        {
+            return await table
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
         }
 
         public async Task<T> GetAsync(string id)
@@ -68,14 +86,28 @@ namespace Profitable.Data.Repository
             dbContext.SaveChanges();
         }
 
-        public void Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            table.Update(entity);
+            T exist = await GetAsync(entity.GUID);
+            dbContext.Entry(exist).CurrentValues.SetValues(entity);
+
+            Save();
         }
 
-        public void UpdateRange(IEnumerable<T> entity)
+        public async Task UpdateRangeAsync(IEnumerable<T> entities)
         {
-            table.UpdateRange(entity);
+            var GUIDs = entities.Select(entity => entity.GUID);
+
+            IEnumerable<T> exists =
+                await FindAllWhere(exist => GUIDs.Contains(exist.GUID));
+
+            foreach (var entity in entities)
+            {
+                T exist = exists.First(exist => exist.GUID == entity.GUID);
+                dbContext.Entry(exist).CurrentValues.SetValues(entity);
+            }
+
+            Save();
         }
     }
 }

@@ -17,13 +17,13 @@ namespace Profitable.Models
             GUID = Guid.NewGuid().ToString();
         }
 
-        [Key]
-        public string GUID { get; set; }
-
         [ForeignKey("Author")]
         public string AuthorId { get; set; }
         public Trader Author { get; set; }
 
+
+        [Required]
+        public DateTime PostedOn { get; set; }
 
         [Required]
         public string Content { get; set; }

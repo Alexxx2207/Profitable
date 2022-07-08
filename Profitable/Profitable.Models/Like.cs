@@ -16,12 +16,9 @@ namespace Profitable.Models
             GUID = Guid.NewGuid().ToString();
         }
 
-        [Key]
-        public string GUID { get; set; }
-
-        [ForeignKey("Author")]
-        public string AuthorId { get; set; }
-        public Trader Author { get; set; }
+        [ForeignKey("Trader")]
+        public string TraderId { get; set; }
+        public Trader Trader { get; set; }
         
 
         [ForeignKey("Post")]
