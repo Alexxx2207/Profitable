@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Profitable.Models.Contracts;
 
-namespace Profitable.Models
+namespace Profitable.Models.EntityModels
 {
     public class Post : EntityBase
     {

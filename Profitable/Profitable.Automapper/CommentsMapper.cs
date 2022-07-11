@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Profitable.Models;
+using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Comments;
 using Profitable.Models.ViewModels.Comments;
 using System;

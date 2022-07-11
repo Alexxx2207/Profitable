@@ -8,7 +8,7 @@ namespace Profitable.Data.Configuration
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using Profitable.Models;
+    using Profitable.Models.EntityModels;
 
     public class TraderConfiguration : IEntityTypeConfiguration<Trader>
     {
