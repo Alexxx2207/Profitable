@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Profitable.Models;
+using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Posts;
 using Profitable.Models.ViewModels.Posts;
 using System;

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Profitable.Data;
 
@@ -11,9 +12,10 @@ using Profitable.Data;
 namespace Profitable.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220711063815_AddListsMarketSymbolsMarketTypesTables")]
+    partial class AddListsMarketSymbolsMarketTypesTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,52 +204,6 @@ namespace Profitable.Data.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Profitable.Models.EntityModels.Exchange", b =>
-                {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GUID");
-
-                    b.ToTable("Exchanges");
-                });
-
-            modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>
-                {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ExchangeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MarketTypeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TicketSymbol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GUID");
-
-                    b.HasIndex("ExchangeId");
-
-                    b.HasIndex("MarketTypeId");
-
-                    b.ToTable("FinancialInstruments");
-                });
-
             modelBuilder.Entity("Profitable.Models.EntityModels.Like", b =>
                 {
                     b.Property<string>("GUID")
@@ -278,9 +234,6 @@ namespace Profitable.Data.Migrations
                     b.Property<string>("GUID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -296,38 +249,36 @@ namespace Profitable.Data.Migrations
                     b.ToTable("Lists");
                 });
 
-            modelBuilder.Entity("Profitable.Models.EntityModels.ListsFinancialInstruments", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.ListsTicketSymbols", b =>
                 {
                     b.Property<string>("GUID")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FinancialInstrumentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("ListId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("GUID");
+                    b.Property<string>("TicketId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("FinancialInstrumentId");
+                    b.Property<string>("TicketSymbolGUID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("GUID");
 
                     b.HasIndex("ListId");
 
-                    b.ToTable("ListsFinancialInstruments");
+                    b.HasIndex("TicketSymbolGUID");
+
+                    b.ToTable("ListsTicketSymbols");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.MarketType", b =>
                 {
                     b.Property<string>("GUID")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -366,6 +317,34 @@ namespace Profitable.Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.TicketSymbol", b =>
+                {
+                    b.Property<string>("GUID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Exchange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketTypeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GUID");
+
+                    b.HasIndex("MarketTypeId");
+
+                    b.ToTable("TicketSymbols");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Trader", b =>
@@ -529,25 +508,6 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>
-                {
-                    b.HasOne("Profitable.Models.EntityModels.Exchange", "Exchange")
-                        .WithMany()
-                        .HasForeignKey("ExchangeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Profitable.Models.EntityModels.MarketType", "MarketType")
-                        .WithMany()
-                        .HasForeignKey("MarketTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exchange");
-
-                    b.Navigation("MarketType");
-                });
-
             modelBuilder.Entity("Profitable.Models.EntityModels.Like", b =>
                 {
                     b.HasOne("Profitable.Models.EntityModels.Post", "Post")
@@ -578,23 +538,23 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Trader");
                 });
 
-            modelBuilder.Entity("Profitable.Models.EntityModels.ListsFinancialInstruments", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.ListsTicketSymbols", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.FinancialInstrument", "FinancialInstrument")
-                        .WithMany("ListsContainingIt")
-                        .HasForeignKey("FinancialInstrumentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Profitable.Models.EntityModels.List", "List")
-                        .WithMany("FinancialInstruments")
+                        .WithMany("TicketSymbols")
                         .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("FinancialInstrument");
+                    b.HasOne("Profitable.Models.EntityModels.TicketSymbol", "TicketSymbol")
+                        .WithMany("ListsContainingIt")
+                        .HasForeignKey("TicketSymbolGUID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("List");
+
+                    b.Navigation("TicketSymbol");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
@@ -608,14 +568,20 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.TicketSymbol", b =>
                 {
-                    b.Navigation("ListsContainingIt");
+                    b.HasOne("Profitable.Models.EntityModels.MarketType", "MarketType")
+                        .WithMany()
+                        .HasForeignKey("MarketTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MarketType");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.List", b =>
                 {
-                    b.Navigation("FinancialInstruments");
+                    b.Navigation("TicketSymbols");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
@@ -623,6 +589,11 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.TicketSymbol", b =>
+                {
+                    b.Navigation("ListsContainingIt");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Trader", b =>

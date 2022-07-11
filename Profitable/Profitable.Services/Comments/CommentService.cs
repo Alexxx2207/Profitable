@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Profitable.Data.Repository.Contract;
-using Profitable.Models;
+using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Comments;
 using Profitable.Models.ViewModels.Comments;
 using Profitable.Services.Comments.Contracts;

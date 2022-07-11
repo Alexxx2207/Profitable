@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Profitable.Models.Contracts;
 
-namespace Profitable.Models
+namespace Profitable.Models.EntityModels
 {
     public class Like : EntityBase
     {
@@ -19,7 +19,7 @@ namespace Profitable.Models
         [ForeignKey("Trader")]
         public string TraderId { get; set; }
         public Trader Trader { get; set; }
-        
+
 
         [ForeignKey("Post")]
         public string PostId { get; set; }

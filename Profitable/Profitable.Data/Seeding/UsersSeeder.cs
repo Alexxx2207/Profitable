@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Profitable.Models;
+using Profitable.Models.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

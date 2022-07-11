@@ -1,4 +1,4 @@
-﻿namespace Profitable.Models
+﻿namespace Profitable.Models.EntityModels
 {
     using System;
     using System.Collections.Generic;
@@ -13,6 +13,8 @@
             Roles = new HashSet<IdentityUserRole<string>>();
             Claims = new HashSet<IdentityUserClaim<string>>();
             Logins = new HashSet<IdentityUserLogin<string>>();
+
+            Lists = new HashSet<List>();
 
             Posts = new HashSet<Post>();
             Comments = new HashSet<Comment>();
@@ -29,6 +31,8 @@
         public string LastName { get; set; }
 
         public string? ProfilePicture { get; set; }
+
+        public virtual ICollection<List> Lists { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
 

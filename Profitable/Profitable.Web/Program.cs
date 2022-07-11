@@ -25,9 +25,6 @@ builder.Services.AddTransient<ICommentService, CommentService>();
 
 builder.Services.AddControllersWithViews();
 
-
-
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
