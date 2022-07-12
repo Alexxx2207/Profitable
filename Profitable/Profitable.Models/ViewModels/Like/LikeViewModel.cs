@@ -1,5 +1,4 @@
-﻿using Profitable.Models.EntityModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +8,6 @@ namespace Profitable.Models.ViewModels.Like
 {
     public class LikeViewModel
     {
-        public string GUID { get; set; }
-
-        public Trader Trader { get; set; }
+        public string Trader { get; set; }
     }
 }

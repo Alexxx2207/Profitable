@@ -1,5 +1,4 @@
-﻿using Profitable.Models.EntityModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +10,8 @@ namespace Profitable.Models.ViewModels.Comments
     {
         public string GUID { get; set; }
 
-        public Trader Author { get; set; }
+        public string Content { get; set; }
 
-        public int PostedOn { get; set; }
-
-        public int Content { get; set; }
+        public string Author { get; set; }
     }
 }
