@@ -2,6 +2,7 @@
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Posts;
+using Profitable.Models.ViewModels.Like;
 using Profitable.Models.ViewModels.Posts;
 using Profitable.Services.Posts.Contracts;
 using System;

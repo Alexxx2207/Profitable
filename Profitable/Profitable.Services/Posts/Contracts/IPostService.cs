@@ -1,4 +1,5 @@
 ﻿using Profitable.Models.InputModels.Posts;
+using Profitable.Models.ViewModels.Like;
 using Profitable.Models.ViewModels.Posts;
 using System;
 using System.Collections.Generic;
