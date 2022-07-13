@@ -1,4 +1,5 @@
-﻿using Profitable.Models.InputModels.Posts;
+﻿using Profitable.Common;
+using Profitable.Models.InputModels.Posts;
 using Profitable.Models.ViewModels.Like;
 using Profitable.Models.ViewModels.Posts;
 using System;
@@ -19,10 +20,12 @@ namespace Profitable.Services.Posts.Contracts
 
         Task<List<LikeViewModel>> GetPostLikes(string guid);
 
-        Task AddPost(AddPostInputModel newPost);
+        Task<Result> AddPost(AddPostInputModel newPost);
 
-        Task DeletePost(string guid);
+        Task<Result> DeletePost(string guid);
 
-        Task UpdatePost(UpdatePostInputModel newPost);
+        Task<Result> DeleteLike(string postGuid, string traderGuid);
+
+        Task<Result> UpdatePost(UpdatePostInputModel newPost);
     }
 }

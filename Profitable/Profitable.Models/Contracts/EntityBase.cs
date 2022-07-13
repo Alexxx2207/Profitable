@@ -13,5 +13,7 @@ namespace Profitable.Models.Contracts
         public string GUID { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Profitable.Models.InputModels.Comments;
+﻿using Profitable.Common;
+using Profitable.Models.InputModels.Comments;
 using Profitable.Models.ViewModels.Comments;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,10 @@ namespace Profitable.Services.Comments.Contracts
 
         Task<List<CommentViewModel>> GetCommentsByPost(string postGUID);
 
-        Task AddComment(AddCommentInputModel newComment);
+        Task<Result> AddComment(AddCommentInputModel newComment);
 
-        Task DeleteComment(string guid);
+        Task<Result> DeleteComment(string guid);
 
-        Task UpdateComment(UpdateCommentInputModel newComment);
+        Task<Result> UpdateComment(UpdateCommentInputModel newComment);
     }
 }

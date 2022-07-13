@@ -26,11 +26,11 @@ namespace Profitable.Data.Seeding
                     var exchange = new Exchange();
                     exchange.Name = instrument;
 
-                    exchangeRepository.Add(exchange);
+                    await exchangeRepository.AddAsync(exchange);
                 }
             }
 
-            exchangeRepository.Save();
+            await exchangeRepository.SaveChangesAsync();
         }
     }
 }

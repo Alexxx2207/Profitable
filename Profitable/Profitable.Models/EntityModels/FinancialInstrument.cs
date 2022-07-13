@@ -17,11 +17,8 @@ namespace Profitable.Models.EntityModels
 
         }
 
-        [Key]
-        public string GUID { get; set; }
-
         [Required]
-        public string TicketSymbol { get; set; }
+        public string TickerSymbol { get; set; }
 
         [Required]
         public string ExchangeId { get; set; }

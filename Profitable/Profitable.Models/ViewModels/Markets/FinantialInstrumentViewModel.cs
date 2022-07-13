@@ -10,7 +10,7 @@ namespace Profitable.Models.ViewModels.Markets
     {
         public string GUID { get; set; }
 
-        public string Symbol { get; set; }
+        public string TickerSymbol { get; set; }
 
         public string ExchangeName { get; set; }
 

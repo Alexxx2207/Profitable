@@ -39,6 +39,8 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\components\Communication\Chat\" />
+    <Folder Include="ClientApp\src\components\Communication\Posts\" />
+    <Folder Include="ClientApp\src\components\Markets\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

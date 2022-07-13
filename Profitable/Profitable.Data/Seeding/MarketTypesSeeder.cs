@@ -26,11 +26,11 @@ namespace Profitable.Data.Seeding
                     var marketType = new MarketType();
                     marketType.Name = instrument;
 
-                    marketTypeRepository.Add(marketType);
+                    await marketTypeRepository.AddAsync(marketType);
                 }
             }
 
-            marketTypeRepository.Save();
+            await marketTypeRepository.SaveChangesAsync();
         }
     }
 }

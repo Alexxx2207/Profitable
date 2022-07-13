@@ -237,7 +237,7 @@ namespace Profitable.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("TicketSymbol")
+                    b.Property<string>("TickerSymbol")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
