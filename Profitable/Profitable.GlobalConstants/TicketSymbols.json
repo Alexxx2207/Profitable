@@ -150,6 +150,11 @@
     "exchange": "GLOBALPRIME"
   },
   {
+    "symbol": "UK100",
+    "type": "index",
+    "exchange": "CAPITALCOM"
+  },
+  {
     "symbol": "RTSI",
     "type": "index",
     "exchange": "MOEX"

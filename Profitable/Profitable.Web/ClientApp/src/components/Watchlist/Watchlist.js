@@ -42,12 +42,6 @@ export function WatchList(props) {
                             "s": "NASDAQ:AMZN"
                         },
                         {
-                            "s": "NASDAQ:NVDA"
-                        },
-                        {
-                            "s": "NASDAQ:AMD"
-                        },
-                        {
                             "s": "NASDAQ:META"
                         },
                         {
@@ -61,15 +55,6 @@ export function WatchList(props) {
                         },
                         {
                             "s": "NASDAQ:GOOG"
-                        },
-                        {
-                            "s": "NASDAQ:QQQ"
-                        },
-                        {
-                            "s": "NYSE:BABA"
-                        },
-                        {
-                            "s": "NYSE:AMC"
                         }
                     ]
                 },
@@ -134,6 +119,9 @@ export function WatchList(props) {
                         },
                         {
                             "s": "GLOBALPRIME:GER30"
+                        },
+                        {
+                            "s": "CAPITALCOM:UK100"
                         },
                         {
                             "s": "MOEX:RTSI"
