@@ -15,8 +15,9 @@ namespace Profitable.Web.Controllers
             this.marketsService = marketsService;
         }
 
+        [Route("{symbol}")]
         [HttpGet]
-        public async Task<IActionResult> GetInstrument([FromQuery] string symbol)
+        public async Task<IActionResult> GetInstrument([FromRoute] string symbol)
         {
             var instrument = await this.marketsService.GetFinantialInstrumentBySymbol(symbol);
 

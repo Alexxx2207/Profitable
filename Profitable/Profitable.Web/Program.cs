@@ -23,15 +23,29 @@ var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new PostsMapper());
     mc.AddProfile(new CommentsMapper());
+    mc.AddProfile(new MarketsMapper());
 });
 
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
+
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<ApplicationDbContext>();
 
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<IMarketsService, MarketsService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "policy",
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost:44415")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                      });
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -41,6 +55,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
+
+app.UseCors("policy");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

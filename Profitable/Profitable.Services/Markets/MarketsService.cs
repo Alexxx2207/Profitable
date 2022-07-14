@@ -38,7 +38,9 @@ namespace Profitable.Services.Markets
         {
             var instrument = await repository
                 .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.TickerSymbol == symbol);
+                .Include(i => i.Exchange)
+                .Include(i => i.MarketType)
+                .FirstAsync(entity => entity.TickerSymbol == symbol.ToUpper());
 
             return mapper.Map<FinantialInstrumentViewModel>(instrument);
         }

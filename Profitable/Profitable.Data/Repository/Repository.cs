@@ -17,10 +17,10 @@ namespace Profitable.Data.Repository
 
         private readonly DbSet<TEntity> table;
 
-        public Repository(ApplicationDbContext dbContext, DbSet<TEntity> table)
+        public Repository(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.table = table;
+            this.table = dbContext.Set<TEntity>();
         }
 
         public IQueryable<TEntity> GetAll()

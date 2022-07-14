@@ -13,7 +13,7 @@ namespace Profitable.Data.Seeding
     {
         public async Task SeedAsync(ApplicationDbContext dbContext)
         {
-            var instrumentRepository = new Repository<FinancialInstrument>(dbContext, dbContext.FinancialInstruments);
+            var instrumentRepository = new Repository<FinancialInstrument>(dbContext);
 
             var json = JsonConvert.DeserializeObject<List<Instrument>>(await new StreamReader("TicketSymbols.json").ReadToEndAsync());
 
@@ -27,7 +27,7 @@ namespace Profitable.Data.Seeding
                     var marketType = dbContext.MarketTypes.First(e => e.Name == instrument.Type);
 
                     var finInstrument = new FinancialInstrument();
-                    finInstrument.TickerSymbol = instrument.Symbol;
+                    finInstrument.TickerSymbol = instrument.Symbol.ToUpper();
                     finInstrument.Exchange = exchange;
                     finInstrument.MarketType = marketType;
 

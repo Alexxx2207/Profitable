@@ -1,11 +1,10 @@
-﻿import { WatchList } from '../Watchlist/Watchlist';
-import { MarketWidget } from '../Markets/MarketWidget';
+﻿import { MarketWidget } from '../Markets/MarketWidget';
 import { useEffect, useState } from 'react';
 
 export const Home = () => {
     const requiredInstrument = {
-        exchange: 'CAPITALCOM',
-        ticker: 'UK100'
+        exchangeName: 'CAPITALCOM',
+        tickerSymbol: 'UK100'
     };
 
     const [instrument, setInstrument] = useState({ ...requiredInstrument });
@@ -13,22 +12,22 @@ export const Home = () => {
     const marketWidgetStyle = {
         height: "700px"
     };
-    const watchListStyle = {
-        height: "800px"
-    };
+
 
     useEffect(() => {
-        fetch('')
+        fetch('https://localhost:7048/api/markets/bgnusd')
         .then(res => res.json())
-        .then(responseInstrument => setInstrument(responseInstrument))
+        .then(responseInstrument => {
+            setTimeout(() => {
+                setInstrument(responseInstrument);
+            }, 4000)
+        })
     }, []);
 
     return <div>
         <main style={marketWidgetStyle}>
             <MarketWidget style={marketWidgetStyle} instrument={{ ...instrument }} />
         </main>
-        <aside style={watchListStyle}>
-            <WatchList style={watchListStyle} />
-        </aside>
+        
     </div>;
 }
