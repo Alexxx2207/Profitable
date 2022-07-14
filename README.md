@@ -4,4 +4,4 @@ This platform helps traders to make decisions, observe the financial markets and
 
 ## Using Seeder Console App
 
-### Upon adding new ticker symbol(s), you should build/compile the **GlobalConstants** project or the whole solution in order to save the new changes and to establish then in the database.
+#### Upon adding new ticker symbol(s), you should build/compile the **GlobalConstants** project or the whole solution in order to save the new changes and to establish then in the database.
