@@ -6,7 +6,7 @@ export function MarketWidget(props) {
         <AdvancedChart widgetProps={{
             "width": "100%",
             "height": "100%",
-            "symbol": `${props.exchange}:${props.ticker}`,
+            "symbol": `${props.instrument.exchange}:${props.instrument.ticker}`,
             "timezone": "Atlantic/Reykjavik",
             "theme": "dark",
             "locale": "en",

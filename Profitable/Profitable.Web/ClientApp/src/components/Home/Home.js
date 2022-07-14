@@ -4,14 +4,16 @@ import { useEffect, useState } from 'react';
 
 export const Home = () => {
     const requiredInstrument = {
+        exchange: 'CAPITALCOM',
+        ticker: 'UK100'
     };
 
-    const [instrument, setInstrument] = useState(requiredInstrument);
+    const [instrument, setInstrument] = useState({ ...requiredInstrument });
 
-    const marketWidgetStyle = { 
+    const marketWidgetStyle = {
         height: "700px"
     };
-    const watchListStyle = { 
+    const watchListStyle = {
         height: "800px"
     };
 
@@ -23,10 +25,10 @@ export const Home = () => {
 
     return <div>
         <main style={marketWidgetStyle}>
-            <MarketWidget style={marketWidgetStyle} />
+            <MarketWidget style={marketWidgetStyle} instrument={{ ...instrument }} />
         </main>
         <aside style={watchListStyle}>
-            <WatchList style={watchListStyle} {...instrument}/>
+            <WatchList style={watchListStyle} />
         </aside>
     </div>;
 }

@@ -7,8 +7,17 @@ using Profitable.Services.Posts.Contracts;
 using Profitable.Services.Posts;
 using Profitable.Services.Comments.Contracts;
 using Profitable.Services.Comments;
+using Profitable.Models.EntityModels;
+using Profitable.Services.Markets.Contract;
+using Profitable.Services.Markets;
+using Profitable.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalConnection")));
 
 var mapperConfig = new MapperConfiguration(mc =>
 {
@@ -22,6 +31,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
+builder.Services.AddTransient<IMarketsService, MarketsService>();
 
 builder.Services.AddControllersWithViews();
 
