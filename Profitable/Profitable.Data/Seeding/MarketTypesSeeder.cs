@@ -13,7 +13,7 @@ namespace Profitable.Data.Seeding
     {
         public async Task SeedAsync(ApplicationDbContext dbContext)
         {
-            var marketTypeRepository = new Repository<MarketType>(dbContext, dbContext.MarketTypes);
+            var marketTypeRepository = new Repository<MarketType>(dbContext);
 
             var types = JsonConvert.DeserializeObject<List<string>>(await new StreamReader("MarketTypes.json").ReadToEndAsync());
 
@@ -26,11 +26,11 @@ namespace Profitable.Data.Seeding
                     var marketType = new MarketType();
                     marketType.Name = instrument;
 
-                    marketTypeRepository.Add(marketType);
+                    await marketTypeRepository.AddAsync(marketType);
                 }
             }
 
-            marketTypeRepository.Save();
+            await marketTypeRepository.SaveChangesAsync();
         }
     }
 }

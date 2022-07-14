@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
 using Profitable.Models.ViewModels.Markets;
@@ -24,14 +25,24 @@ namespace Profitable.Services.Markets
 
         public async Task<List<FinantialInstrumentViewModel>> GetAllFinantialInstruments()
         {
-            var instrument = (await repository.GetAllAsync()).ToList();
+            var instrument = await repository
+                .GetAllAsNoTracking()
+                .ToListAsync();
 
-            return instrument.Select(instrument => mapper.Map<FinantialInstrumentViewModel>(instrument)).ToList();
+            return instrument
+                .Select(instrument => mapper.Map<FinantialInstrumentViewModel>(instrument))
+                .ToList();
         }
 
-        public Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbol(string symbol)
+        public async Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbol(string symbol)
         {
-            var instrument = (await repository.FindAllWhere()).ToList();
+            var instrument = await repository
+                .GetAllAsNoTracking()
+                .Include(i => i.Exchange)
+                .Include(i => i.MarketType)
+                .FirstAsync(entity => entity.TickerSymbol == symbol.ToUpper());
+
+            return mapper.Map<FinantialInstrumentViewModel>(instrument);
         }
     }
 }

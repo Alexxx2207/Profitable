@@ -31,7 +31,7 @@ namespace Profitable.Data.Migrations
                 columns: table => new
                 {
                     GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TicketSymbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TickerSymbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExchangeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     URL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MarketTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false)

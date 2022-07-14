@@ -8,28 +8,21 @@ using System.Threading.Tasks;
 
 namespace Profitable.Data.Repository.Contract
 {
-    public interface IRepository<T>
-        where T : EntityBase
+    public interface IRepository<TEntity>
+        where TEntity : class
     {
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> GetAllAsync(int skip, int take);
+        IQueryable<TEntity> GetAll();
 
-        Task<T> GetAsync(string id);
+        IQueryable<TEntity> GetAllAsNoTracking();
 
-        Task<T> Find(Expression<Func<T, bool>> expression);
+        Task AddAsync(TEntity entity);
 
-        Task<IEnumerable<T>> FindAllWhere(Expression<Func<T, bool>> expression);
-        Task<IEnumerable<T>> FindAllWhere(Expression<Func<T, bool>> expression, int skip, int take);
+        void Update(TEntity entity);
 
-        void Add(T entity);
-        void AddRange(IEnumerable<T> entities);
+        void Delete(TEntity entity);
 
-        Task UpdateAsync(T entity);
-        Task UpdateRangeAsync(IEnumerable<T> entities);
+        void HardDelete(TEntity entity);
 
-        void Delete(T entity);
-        void DeleteRange(IEnumerable<T> entities);
-
-        void Save();
+        Task<int> SaveChangesAsync();
     }
 }

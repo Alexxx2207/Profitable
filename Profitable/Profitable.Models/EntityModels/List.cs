@@ -16,9 +16,6 @@ namespace Profitable.Models.EntityModels
             FinancialInstruments = new HashSet<ListsFinancialInstruments>();
         }
 
-        [Key]
-        public string GUID { get; set; }
-
         [Required]
         public string Name { get; set; }
 

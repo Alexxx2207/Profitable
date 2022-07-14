@@ -15,9 +15,6 @@ namespace Profitable.Models.EntityModels
             GUID = Guid.NewGuid().ToString();
         }
 
-        [Key]
-        public string GUID { get; set; }
-
         [Required]
         public string Name { get; set; }
     }

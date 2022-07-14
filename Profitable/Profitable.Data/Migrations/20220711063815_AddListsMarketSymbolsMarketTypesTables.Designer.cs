@@ -319,7 +319,7 @@ namespace Profitable.Data.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("Profitable.Models.EntityModels.TicketSymbol", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.TickerSymbol", b =>
                 {
                     b.Property<string>("GUID")
                         .HasColumnType("nvarchar(450)");
@@ -546,7 +546,7 @@ namespace Profitable.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Profitable.Models.EntityModels.TicketSymbol", "TicketSymbol")
+                    b.HasOne("Profitable.Models.EntityModels.TickerSymbol", "TickerSymbol")
                         .WithMany("ListsContainingIt")
                         .HasForeignKey("TicketSymbolGUID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -554,7 +554,7 @@ namespace Profitable.Data.Migrations
 
                     b.Navigation("List");
 
-                    b.Navigation("TicketSymbol");
+                    b.Navigation("TickerSymbol");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
@@ -568,7 +568,7 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Profitable.Models.EntityModels.TicketSymbol", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.TickerSymbol", b =>
                 {
                     b.HasOne("Profitable.Models.EntityModels.MarketType", "MarketType")
                         .WithMany()
@@ -591,7 +591,7 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Likes");
                 });
 
-            modelBuilder.Entity("Profitable.Models.EntityModels.TicketSymbol", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.TickerSymbol", b =>
                 {
                     b.Navigation("ListsContainingIt");
                 });

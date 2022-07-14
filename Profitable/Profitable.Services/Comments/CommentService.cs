@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Profitable.Common;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Comments;
@@ -23,41 +25,69 @@ namespace Profitable.Services.Comments
             this.mapper = mapper;
         }
 
-        public async Task AddComment(AddCommentInputModel newComment)
+        public async Task<Result> AddComment(AddCommentInputModel newComment)
         {
             var comment = mapper.Map<Comment>(newComment);
 
-            repository.Add(comment);
+            await repository.AddAsync(comment);
+
+            await repository.SaveChangesAsync();
+
+            return true;
         }
 
-        public async Task DeleteComment(string guid)
+        public async Task<Result> DeleteComment(string guid)
         {
-            var comment = await repository.GetAsync(guid);
+            var comment = await repository
+                .GetAllAsNoTracking()
+                .FirstAsync(entity => entity.GUID == guid);
 
             repository.Delete(comment);
-        }
 
+            await repository.SaveChangesAsync();
+
+            return true;
+        }
+        
         public async Task<CommentViewModel> GetComment(string guid)
         {
-            var comment = await repository.GetAsync(guid);
+            var comment = await repository
+                .GetAllAsNoTracking()
+                .FirstAsync(entity => entity.GUID == guid);
 
             return mapper.Map<CommentViewModel>(comment);
         }
 
         public async Task<List<CommentViewModel>> GetCommentsByPost(string postGUID)
         {
-            var comments = await repository.FindAllWhere(comment => comment.PostId == postGUID);
+            var comments = await repository
+                .GetAllAsNoTracking()
+                .Where(comment => comment.PostId == postGUID)
+                .ToListAsync();
 
             return comments
                 .Select(comment => mapper.Map<CommentViewModel>(comment))
                 .ToList();
         }
 
-        public async Task UpdateComment(UpdateCommentInputModel newComment)
+        public async Task<Result> UpdateComment(UpdateCommentInputModel newComment)
         {
             var comment = mapper.Map<Comment>(newComment);
 
-            await repository.UpdateAsync(comment);
+            var existingComment = await repository
+                .GetAll().
+                FirstAsync(entity => entity.GUID == newComment.Guid);
+
+            if(existingComment == null)
+            {
+                return GlobalConstants.GlobalServicesConstants.EntityDoesNotExist;
+            }
+
+            existingComment.Content = newComment.Content;
+
+            await repository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

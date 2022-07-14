@@ -13,7 +13,7 @@ namespace Profitable.Data.Seeding
     {
         public async Task SeedAsync(ApplicationDbContext dbContext)
         {
-            var instrumentRepository = new Repository<FinancialInstrument>(dbContext, dbContext.FinancialInstruments);
+            var instrumentRepository = new Repository<FinancialInstrument>(dbContext);
 
             var json = JsonConvert.DeserializeObject<List<Instrument>>(await new StreamReader("TicketSymbols.json").ReadToEndAsync());
 
@@ -21,21 +21,21 @@ namespace Profitable.Data.Seeding
 
             foreach (var instrument in json)
             {
-                if(!currentEntries.Any(e => e.TicketSymbol == instrument.Symbol))
+                if(!currentEntries.Any(e => e.TickerSymbol == instrument.Symbol))
                 {
                     var exchange = dbContext.Exchanges.First(e => e.Name == instrument.Exchange);
                     var marketType = dbContext.MarketTypes.First(e => e.Name == instrument.Type);
 
                     var finInstrument = new FinancialInstrument();
-                    finInstrument.TicketSymbol = instrument.Symbol;
+                    finInstrument.TickerSymbol = instrument.Symbol.ToUpper();
                     finInstrument.Exchange = exchange;
                     finInstrument.MarketType = marketType;
 
-                    instrumentRepository.Add(finInstrument);
+                    await instrumentRepository.AddAsync(finInstrument);
                 }
             }
 
-            instrumentRepository.Save();
+            await instrumentRepository.SaveChangesAsync();
         }
 
         private class Instrument

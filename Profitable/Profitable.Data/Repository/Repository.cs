@@ -10,104 +10,60 @@ using System.Threading.Tasks;
 
 namespace Profitable.Data.Repository
 {
-    public class Repository<T> : IRepository<T>
-        where T : EntityBase
+    public class Repository<TEntity> : IRepository<TEntity>
+        where TEntity : EntityBase
     {
         private readonly ApplicationDbContext dbContext;
 
-        private readonly DbSet<T> table;
+        private readonly DbSet<TEntity> table;
 
-        public Repository(ApplicationDbContext dbContext, DbSet<T> table)
+        public Repository(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.table = table;
+            this.table = dbContext.Set<TEntity>();
         }
 
-        public void Add(T entity)
+        public IQueryable<TEntity> GetAll()
         {
-            table.Add(entity);
+            return this.table;
         }
 
-        public void AddRange(IEnumerable<T> entities)
+        public IQueryable<TEntity> GetAllAsNoTracking()
         {
-            table.AddRange(entities);
+            return this.table.AsNoTracking();
         }
 
-        public void Delete(T entity)
+        public async Task AddAsync(TEntity entity)
         {
-            table.Remove(entity);
+            await this.table.AddAsync(entity).AsTask();
         }
 
-        public void DeleteRange(IEnumerable<T> entities)
+        public void Update(TEntity entity)
         {
-            table.RemoveRange(entities);
-        }
-
-        public async Task<T> Find(Expression<Func<T, bool>> expression)
-        {
-            return await table.FirstOrDefaultAsync(expression);
-        }
-
-        public async Task<IEnumerable<T>> FindAllWhere(Expression<Func<T, bool>> expression)
-        {
-            return await table.Where(expression).ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> FindAllWhere(Expression<Func<T, bool>> expression, int skip, int take)
-        {
-            return await table
-                .Where(expression)
-                .Skip(skip)
-                .Take(take)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await table.ToListAsync();
-
-        }
-
-        public async Task<IEnumerable<T>> GetAllAsync(int skip, int take)
-        {
-            return await table
-                .Skip(skip)
-                .Take(take)
-                .ToListAsync();
-        }
-
-        public async Task<T> GetAsync(string id)
-        {
-            return await table.FindAsync(id);
-        }
-
-        public void Save()
-        {
-            dbContext.SaveChanges();
-        }
-
-        public async Task UpdateAsync(T entity)
-        {
-            T exist = await GetAsync(entity.GUID);
-            dbContext.Entry(exist).CurrentValues.SetValues(entity);
-
-            Save();
-        }
-
-        public async Task UpdateRangeAsync(IEnumerable<T> entities)
-        {
-            var GUIDs = entities.Select(entity => entity.GUID);
-
-            IEnumerable<T> exists =
-                await FindAllWhere(exist => GUIDs.Contains(exist.GUID));
-
-            foreach (var entity in entities)
+            var entry = this.dbContext.Entry(entity);
+            if (entry.State == EntityState.Detached)
             {
-                T exist = exists.First(exist => exist.GUID == entity.GUID);
-                dbContext.Entry(exist).CurrentValues.SetValues(entity);
+                this.table.Attach(entity);
             }
 
-            Save();
+            entry.State = EntityState.Modified;
+        }
+
+        public void HardDelete(TEntity entity)
+        {
+            this.table.Remove(entity);
+        }
+        
+        public void Delete(TEntity entity)
+        {
+            entity.IsDeleted = true;
+            entity.DeletedOn = DateTime.UtcNow;
+            this.Update(entity);
+        }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return this.dbContext.SaveChangesAsync();
         }
     }
 }

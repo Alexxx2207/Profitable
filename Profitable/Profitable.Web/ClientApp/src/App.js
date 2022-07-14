@@ -1,22 +1,17 @@
-import React, { Component } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import AppRoutes from './AppRoutes';
-import { Layout } from './components/Layout';
-import './custom.css';
+import { Home } from './components/Home/Home';
+import { WatchList } from './components/Watchlist/Watchlist';
 
-export default class App extends Component {
-  static displayName = App.name;
+export function App() {
+    let watchListStyle = {
+        height: "800px"
+    };
 
-  render() {
     return (
-      <Layout>
-        <Routes>
-          {AppRoutes.map((route, index) => {
-            const { element, ...rest } = route;
-            return <Route key={index} {...rest} element={element} />;
-          })}
-        </Routes>
-      </Layout>
+        <div>
+            <aside style={watchListStyle}>
+                <WatchList style={watchListStyle} />
+            </aside>
+            <Home />
+        </div>
     );
-  }
 }

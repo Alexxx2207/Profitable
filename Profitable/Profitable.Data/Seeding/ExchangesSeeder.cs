@@ -13,7 +13,7 @@ namespace Profitable.Data.Seeding
     {
         public async Task SeedAsync(ApplicationDbContext dbContext)
         {
-            var exchangeRepository = new Repository<Exchange>(dbContext, dbContext.Exchanges);
+            var exchangeRepository = new Repository<Exchange>(dbContext);
 
             var types = JsonConvert.DeserializeObject<List<string>>(await new StreamReader("Exchanges.json").ReadToEndAsync());
 
@@ -26,11 +26,11 @@ namespace Profitable.Data.Seeding
                     var exchange = new Exchange();
                     exchange.Name = instrument;
 
-                    exchangeRepository.Add(exchange);
+                    await exchangeRepository.AddAsync(exchange);
                 }
             }
 
-            exchangeRepository.Save();
+            await exchangeRepository.SaveChangesAsync();
         }
     }
 }

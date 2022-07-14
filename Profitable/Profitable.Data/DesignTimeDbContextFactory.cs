@@ -17,7 +17,7 @@
                 .Build();
 
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            var connectionString = new SqlConnectionStringBuilder(configuration.GetConnectionString("DefaultConnection"));
+            var connectionString = new SqlConnectionStringBuilder(configuration.GetConnectionString("LocalConnection"));
 
             builder.UseSqlServer(connectionString.ConnectionString);
 

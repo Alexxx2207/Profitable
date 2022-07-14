@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Profitable.Common;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Posts;
@@ -26,24 +28,52 @@ namespace Profitable.Services.Posts
             this.mapper = mapper;
         }
 
-        public async Task AddPost(AddPostInputModel newPost)
+        public async Task<Result> AddPost(AddPostInputModel newPost)
         {
-            postsRepository.Add(mapper.Map<Post>(newPost));
+            await postsRepository.AddAsync(mapper.Map<Post>(newPost));
+
+            await postsRepository.SaveChangesAsync();
+
+            return true;
         }
 
-        public async Task DeletePost(string guid)
+        public async Task<Result> DeletePost(string guid)
         {
-            postsRepository.Delete(await postsRepository.GetAsync(guid));
+            var entity = await postsRepository.GetAllAsNoTracking().FirstAsync(entity => entity.GUID == guid);
+
+            postsRepository.Delete(entity);
+
+            await postsRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<Result> DeleteLike(string postGuid, string traderId)
+        {
+            var like = await likesRepository
+                .GetAllAsNoTracking()
+                .FirstAsync(entity => entity.PostId == postGuid && entity.TraderId == traderId);
+
+            likesRepository.Delete(like);
+
+            await likesRepository.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<PostViewModel> GetPost(string guid)
         {
-            return mapper.Map<PostViewModel>(await postsRepository.GetAsync(guid));
+            return mapper.Map<PostViewModel>(await postsRepository
+                .GetAllAsNoTracking()
+                .FirstAsync(entity => entity.GUID == guid));
         }
 
         public async Task<List<LikeViewModel>> GetPostLikes(string guid)
         {
-            var likes = await likesRepository.FindAllWhere(like => like.PostId ==  guid);
+            var likes = await likesRepository
+                .GetAllAsNoTracking()
+                .Where(like => like.PostId == guid)
+                .ToListAsync();
 
             return likes
                 .Select(like => mapper.Map<LikeViewModel>(like))
@@ -52,14 +82,21 @@ namespace Profitable.Services.Posts
 
         public async Task<List<PostViewModel>> GetPosts(int skip, int take)
         {
-            var posts = await postsRepository.GetAllAsync(skip, take);
+            var posts = await postsRepository
+                .GetAllAsNoTracking()
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
 
             return posts.Select(post => mapper.Map<PostViewModel>(post)).ToList();
         }
 
         public async Task<List<PostViewModel>> GetPostsByTrader(string traderId)
         {
-            var posts = await postsRepository.FindAllWhere(post => post.AuthorId == traderId);
+            var posts = await postsRepository
+                .GetAllAsNoTracking()
+                .Where(post => post.AuthorId == traderId)
+                .ToListAsync();
 
             return posts
                 .Select(post => mapper.Map<PostViewModel>(post))
@@ -68,7 +105,9 @@ namespace Profitable.Services.Posts
 
         public async Task<List<PostViewModel>> GetRecentPosts(int postsCount)
         {
-            var posts = await postsRepository.GetAllAsync();
+            var posts = await postsRepository
+                .GetAllAsNoTracking()
+                .ToListAsync();
 
             return posts
                 .Select(post => mapper.Map<PostViewModel>(post))
@@ -76,11 +115,25 @@ namespace Profitable.Services.Posts
                 .ToList();
         }
 
-        public async Task UpdatePost(UpdatePostInputModel newPost)
+        public async Task<Result> UpdatePost(UpdatePostInputModel newPost)
         {
-            var post = await postsRepository.GetAsync(newPost.GUID);
+            var post = await postsRepository.GetAll().FirstAsync(entity => entity.GUID == newPost.GUID);
 
-            await postsRepository.UpdateAsync(post);
+            var existingPost = await postsRepository
+               .GetAll()
+               .FirstAsync(entity => entity.GUID == newPost.GUID);
+
+            if (existingPost == null)
+            {
+                return GlobalConstants.GlobalServicesConstants.EntityDoesNotExist;
+            }
+
+            existingPost.Title = newPost.Title;
+            existingPost.Content = newPost.Content;
+
+            await postsRepository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

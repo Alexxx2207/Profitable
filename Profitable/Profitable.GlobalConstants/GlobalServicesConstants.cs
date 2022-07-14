@@ -9,5 +9,7 @@ namespace Profitable.GlobalConstants
     public class GlobalServicesConstants
     {
         public static readonly int RecentPostsCount = 10;
+
+        public static readonly string EntityDoesNotExist = "Entity does not exist!";
     }
 }
