@@ -1,5 +1,5 @@
 .navbarContainer {
-    border-bottom: #7160e8 solid 2px;
+    border-bottom: white solid 3px;
     background-color: #1e222d;
     display: flex;
     padding: 0.5rem 3rem;
@@ -12,9 +12,11 @@
 .navbarLogo {
     letter-spacing: 0.4rem;
     padding: 0.5rem 0.8rem;
+    transition: 0.5s;
 }
+
 .navbarLogo:hover {
-    color: #7160e8;
+    letter-spacing: 0.6rem;
     transition: 0.5s;
 }
 
@@ -39,12 +41,13 @@
 }
 
 .navbarListItems:hover {
-    color: #7160e8;
+    color: #1e222d;
     border: 3px solid white;
     border-radius: 0.5rem;
-    transition: 0.5s;
+    background-color: white;
+    transition: 0.7s;
 }
 
 .activeLink {
-    color: #7160e8;
+    color: white;
 }
