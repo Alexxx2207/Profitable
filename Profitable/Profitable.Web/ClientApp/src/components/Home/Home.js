@@ -1,4 +1,4 @@
-﻿import { MarketWidget } from '../Markets/MarketWidget';
+﻿import { Watchlist } from '../Watchlist/Watchlist';
 import { useEffect, useState } from 'react';
 
 export const Home = () => {
@@ -9,13 +9,8 @@ export const Home = () => {
 
     const [instrument, setInstrument] = useState({ ...requiredInstrument });
 
-    const marketWidgetStyle = {
-        height: "700px"
-    };
-
-
     useEffect(() => {
-        fetch('https://localhost:7048/api/markets/bgnusd')
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/markets/bgnusd`)
         .then(res => res.json())
         .then(responseInstrument => {
             setTimeout(() => {
@@ -24,9 +19,13 @@ export const Home = () => {
         })
     }, []);
 
+    const marketWidgetStyle = {
+        height: "800px"
+    }
+
     return <div>
         <main style={marketWidgetStyle}>
-            <MarketWidget style={marketWidgetStyle} instrument={{ ...instrument }} />
+            <Watchlist style={marketWidgetStyle} instrument={{ ...instrument }} />
         </main>
         
     </div>;

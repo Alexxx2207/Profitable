@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { MarketOverview } from "react-tradingview-embed";
 
-export function WatchList(props) {
+export function Watchlist(props) {
 
     useEffect (() => {
         document.querySelector('.StockMarketContainer').children[0].style.height = "100%";
