@@ -5,11 +5,12 @@ import {
 } from "react-router-dom";
 
 
-import { NavBar } from "./components/NavBar/NavBar";
-import { Home } from './components/Home/Home';
-import { About } from './components/About/About';
-import { MarketsList } from './components/Markets/MarketsList';
-import { PostsList } from './components/PostsList/PostsList';
+import { NavBar } from "../NavBar/NavBar";
+import { Home } from '../Home/Home';
+import { About } from '../About/About';
+import { MarketsList } from '../Markets/MarketsList';
+import { PostsList } from '../PostsList/PostsList';
+import styles from './App.module.css'
 
 export function App() {
     return (

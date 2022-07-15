@@ -1,5 +1,5 @@
-﻿import { Watchlist } from '../Watchlist/Watchlist';
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
+import { Watchlist } from '../Watchlist/Watchlist';
 
 export const Home = () => {
     const requiredInstrument = {
