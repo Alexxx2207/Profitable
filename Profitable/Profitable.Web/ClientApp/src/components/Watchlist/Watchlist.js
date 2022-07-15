@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { MarketOverview } from "react-tradingview-embed";
 
-export function WatchList(props) {
+export function Watchlist(props) {
 
     useEffect (() => {
+        document.querySelector('.StockMarketContainer').children[0].style.width = "100%";
         document.querySelector('.StockMarketContainer').children[0].style.height = "100%";
     });
 
@@ -16,17 +17,17 @@ export function WatchList(props) {
             "width": "100%",
             "height": "100%",
             "largeChartUrl": "",
-            "isTransparent": false,
+            "isTransparent": true,
             "showSymbolLogo": true,
             "showFloatingTooltip": false,
-            "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
-            "plotLineColorFalling": "rgba(41, 98, 255, 1)",
+            "plotLineColorGrowing": "rgba(255, 255, 255, 1)",
+            "plotLineColorFalling": "rgba(255, 255, 255, 1)",
             "gridLineColor": "rgba(0, 0, 0, 0)",
             "scaleFontColor": "rgba(120, 123, 134, 1)",
-            "belowLineFillColorGrowing": "rgba(0, 0, 0, 0.12)",
-            "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
-            "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
-            "belowLineFillColorFallingBottom": "rgba(41, 98, 255, 0)",
+            "belowLineFillColorGrowing": "rgba(255, 255, 255, 0.2)",
+            "belowLineFillColorFalling": "rgba(255, 255, 255, 0.2)",
+            "belowLineFillColorGrowingBottom": "rgba(255, 255, 255, 0)",
+            "belowLineFillColorFallingBottom": "rgba(255, 255, 255, 0)",
             "symbolActiveColor": "rgba(101, 101, 101, 0.12)",
             "tabs": [
                 {
@@ -36,25 +37,16 @@ export function WatchList(props) {
                             "s": "NASDAQ:AAPL"
                         },
                         {
-                            "s": "NASDAQ:TSLA"
-                        },
-                        {
-                            "s": "NASDAQ:AMZN"
-                        },
-                        {
                             "s": "NASDAQ:META"
+                        },
+                        {
+                            "s": "NASDAQ:GOOG"
                         },
                         {
                             "s": "NASDAQ:MSFT"
                         },
                         {
                             "s": "NASDAQ:NFLX"
-                        },
-                        {
-                            "s": "NYSE:TWTR"
-                        },
-                        {
-                            "s": "NASDAQ:GOOG"
                         }
                     ]
                 },
@@ -71,16 +63,7 @@ export function WatchList(props) {
                             "s": "TVC:SILVER"
                         },
                         {
-                            "s": "CAPITALCOM:COPPER"
-                        },
-                        {
                             "s": "CAPITALCOM:NATURALGAS"
-                        },
-                        {
-                            "s": "PEPPERSTONE:SUGAR"
-                        },
-                        {
-                            "s": "GLOBALPRIME:CORN"
                         },
                         {
                             "s": "PEPPERSTONE:WHEAT"
@@ -95,9 +78,6 @@ export function WatchList(props) {
                         },
                         {
                             "s": "FX_IDC:CHFUSD"
-                        },
-                        {
-                            "s": "FX_IDC:CADUSD"
                         },
                         {
                             "s": "FX_IDC:BGNUSD"
@@ -118,6 +98,9 @@ export function WatchList(props) {
                             "s": "BLACKBULL:SPX500"
                         },
                         {
+                            "s": "FOREXCOM:DJI"
+                        },
+                        {
                             "s": "GLOBALPRIME:GER30"
                         },
                         {
@@ -125,18 +108,6 @@ export function WatchList(props) {
                         },
                         {
                             "s": "MOEX:RTSI"
-                        },
-                        {
-                            "s": "SSE:000001"
-                        },
-                        {
-                            "s": "FOREXCOM:DJI"
-                        },
-                        {
-                            "s": "CAPITALCOM:DXY"
-                        },
-                        {
-                            "s": "SKILLING:NASDAQ"
                         }
                     ],
                     "originalTitle": "Indices"
@@ -159,9 +130,6 @@ export function WatchList(props) {
                         {
                             "s": "BINANCE:DOTUSD"
                         },
-                        {
-                            "s": "BINANCE:LINKUSD"
-                        }
                     ]
                 },
                 {
@@ -182,13 +150,10 @@ export function WatchList(props) {
                         {
                             "s": "NYSE:EXP"
                         },
-                        {
-                            "s": "NYSE:STN"
-                        }
                     ]
                 }
             ]
         }}
-        />;
+        />
     </div>
 }
