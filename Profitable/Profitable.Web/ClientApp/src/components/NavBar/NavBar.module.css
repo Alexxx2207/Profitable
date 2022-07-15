@@ -9,6 +9,10 @@
     text-decoration: none;
 }
 
+.logoWrapper {
+    width: 30%;
+}
+
 .navbarLogo {
     letter-spacing: 0.4rem;
     padding: 0.5rem 0.8rem;

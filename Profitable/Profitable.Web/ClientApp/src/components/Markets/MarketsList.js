@@ -17,8 +17,11 @@ export const MarketsList = () => {
         })
     }, []);
 
+    const widgetStyle = {
+        height: '700px'
+    }
     
     return (
-       <MarketWidget instrument={{...instrument}}/>
+       <MarketWidget style={widgetStyle} instrument={{...instrument}}/>
     );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { AdvancedChart } from "react-tradingview-embed";
 
 export function MarketWidget(props) {
-    return <div style={props.style}>
+    return <div style={{height: '700px'}}>
         <AdvancedChart widgetProps={{
             "width": "100%",
             "height": "100%",
@@ -17,6 +17,6 @@ export function MarketWidget(props) {
             "details": true,
             "container_id": "tradingview"
         }}
-        />;
+        />
     </div>
 }

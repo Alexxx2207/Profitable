@@ -39,7 +39,7 @@ namespace Profitable.Services.Posts
 
         public async Task<Result> DeletePost(string guid)
         {
-            var entity = await postsRepository.GetAllAsNoTracking().FirstAsync(entity => entity.GUID == guid);
+            var entity = await postsRepository.GetAllAsNoTracking().FirstAsync(entity => entity.GUID.ToString() == guid);
 
             postsRepository.Delete(entity);
 
@@ -65,7 +65,7 @@ namespace Profitable.Services.Posts
         {
             return mapper.Map<PostViewModel>(await postsRepository
                 .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.GUID == guid));
+                .FirstAsync(entity => entity.GUID.ToString() == guid));
         }
 
         public async Task<List<LikeViewModel>> GetPostLikes(string guid)
@@ -117,11 +117,11 @@ namespace Profitable.Services.Posts
 
         public async Task<Result> UpdatePost(UpdatePostInputModel newPost)
         {
-            var post = await postsRepository.GetAll().FirstAsync(entity => entity.GUID == newPost.GUID);
+            var post = await postsRepository.GetAll().FirstAsync(entity => entity.GUID.ToString() == newPost.GUID);
 
             var existingPost = await postsRepository
                .GetAll()
-               .FirstAsync(entity => entity.GUID == newPost.GUID);
+               .FirstAsync(entity => entity.GUID.ToString() == newPost.GUID);
 
             if (existingPost == null)
             {

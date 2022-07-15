@@ -12,11 +12,6 @@ namespace Profitable.Models.EntityModels
 {
     public class Comment : EntityBase
     {
-        public Comment()
-        {
-            GUID = Guid.NewGuid().ToString();
-        }
-
         [ForeignKey("Author")]
         public string AuthorId { get; set; }
         public Trader Author { get; set; }

@@ -6,9 +6,12 @@ export const NavBar = () => {
     return (
         <nav className={styles.navbarContainer}>
 
-            <NavLink to="/" className={styles.navLink}>
-                <h1 className={styles.navbarLogo}>PROFITABLE</h1>
-            </NavLink>
+            <div className={styles.logoWrapper}>
+                <NavLink to="/" className={styles.navLink}>
+                    <h1 className={styles.navbarLogo}>PROFITABLE</h1>
+                </NavLink>
+            </div>
+
             <ul className={styles.navbarList}>
                 <li>
                     <NavLink to="/" className={classNames(styles.navbarListItems, styles.navLink)}>HOME</NavLink>

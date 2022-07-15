@@ -10,11 +10,6 @@ namespace Profitable.Models.EntityModels
 {
     public class Exchange : EntityBase
     {
-        public Exchange()
-        {
-            GUID = Guid.NewGuid().ToString();
-        }
-
         [Required]
         public string Name { get; set; }
     }

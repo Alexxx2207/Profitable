@@ -10,11 +10,6 @@ namespace Profitable.Models.EntityModels
 {
     public class ListsFinancialInstruments : EntityBase
     {
-        public ListsFinancialInstruments()
-        {
-            GUID = Guid.NewGuid().ToString();
-        }
-
         [Required]
         public string ListId { get; set; }
         public List List { get; set; }

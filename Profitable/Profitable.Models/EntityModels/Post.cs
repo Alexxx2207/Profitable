@@ -13,7 +13,6 @@ namespace Profitable.Models.EntityModels
     {
         public Post()
         {
-            GUID = Guid.NewGuid().ToString();
             Comments = new HashSet<Comment>();
             Likes = new HashSet<Like>();
         }
@@ -36,5 +35,7 @@ namespace Profitable.Models.EntityModels
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<Like> Likes { get; set; }
+
+        public ICollection<PostTag> Tags { get; set; }
     }
 }

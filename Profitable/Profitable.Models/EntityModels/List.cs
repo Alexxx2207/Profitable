@@ -12,7 +12,6 @@ namespace Profitable.Models.EntityModels
     {
         public List()
         {
-            GUID = Guid.NewGuid().ToString();
             FinancialInstruments = new HashSet<ListsFinancialInstruments>();
         }
 
