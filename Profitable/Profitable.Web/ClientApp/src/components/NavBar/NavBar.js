@@ -11,16 +11,16 @@ export const NavBar = () => {
             </NavLink>
             <ul className={styles.navbarList}>
                 <li>
-                    <NavLink to="/" activeClassName={styles.activeLink} className={classNames(styles.navbarListItems, styles.navLink)}>HOME</NavLink>
+                    <NavLink to="/" className={classNames(styles.navbarListItems, styles.navLink)}>HOME</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/markets" activeClassName={styles.activeLink} className={classNames(styles.navbarListItems, styles.navLink)}>MARKETS</NavLink>
+                    <NavLink to="/markets" className={classNames(styles.navbarListItems, styles.navLink)}>MARKETS</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/posts" activeClassName={styles.activeLink} className={classNames(styles.navbarListItems, styles.navLink)}>POSTS</NavLink>
+                    <NavLink to="/posts" className={classNames(styles.navbarListItems, styles.navLink)}>POSTS</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/about" activeClassName={styles.activeLink} className={classNames(styles.navbarListItems, styles.navLink)}>ABOUT</NavLink>
+                    <NavLink to="/about" className={classNames(styles.navbarListItems, styles.navLink)}>ABOUT</NavLink>
                 </li>
             </ul>
         </nav>);

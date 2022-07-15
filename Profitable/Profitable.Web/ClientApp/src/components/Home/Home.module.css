@@ -1,0 +1,39 @@
+.main {
+    padding: 3rem;
+}
+
+.overviewSection {
+    display: flex;
+    height: 600px;
+    width: 100%;
+    padding: 0rem 2rem;
+    justify-content: space-evenly;
+    box-shadow: 0px 0px 20px 3px rgba(255, 255, 255, 1);
+}
+
+.overviewText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.overviewText * {
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding-left: 2rem;
+    margin: 0px;
+}
+
+.overviewText h1 {
+    font-size: 8.7vw;
+}
+
+.overviewText h2 {
+    font-size: 7vw;
+}
+
+.overviewText h3 {
+    font-size: 3vw;
+    margin-top: 1.5rem;
+}

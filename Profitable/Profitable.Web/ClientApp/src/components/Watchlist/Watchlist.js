@@ -4,6 +4,7 @@ import { MarketOverview } from "react-tradingview-embed";
 export function Watchlist(props) {
 
     useEffect (() => {
+        document.querySelector('.StockMarketContainer').children[0].style.width = "100%";
         document.querySelector('.StockMarketContainer').children[0].style.height = "100%";
     });
 
@@ -36,25 +37,16 @@ export function Watchlist(props) {
                             "s": "NASDAQ:AAPL"
                         },
                         {
-                            "s": "NASDAQ:TSLA"
-                        },
-                        {
-                            "s": "NASDAQ:AMZN"
-                        },
-                        {
                             "s": "NASDAQ:META"
+                        },
+                        {
+                            "s": "NASDAQ:GOOG"
                         },
                         {
                             "s": "NASDAQ:MSFT"
                         },
                         {
                             "s": "NASDAQ:NFLX"
-                        },
-                        {
-                            "s": "NYSE:TWTR"
-                        },
-                        {
-                            "s": "NASDAQ:GOOG"
                         }
                     ]
                 },
@@ -71,16 +63,7 @@ export function Watchlist(props) {
                             "s": "TVC:SILVER"
                         },
                         {
-                            "s": "CAPITALCOM:COPPER"
-                        },
-                        {
                             "s": "CAPITALCOM:NATURALGAS"
-                        },
-                        {
-                            "s": "PEPPERSTONE:SUGAR"
-                        },
-                        {
-                            "s": "GLOBALPRIME:CORN"
                         },
                         {
                             "s": "PEPPERSTONE:WHEAT"
@@ -95,9 +78,6 @@ export function Watchlist(props) {
                         },
                         {
                             "s": "FX_IDC:CHFUSD"
-                        },
-                        {
-                            "s": "FX_IDC:CADUSD"
                         },
                         {
                             "s": "FX_IDC:BGNUSD"
@@ -118,6 +98,9 @@ export function Watchlist(props) {
                             "s": "BLACKBULL:SPX500"
                         },
                         {
+                            "s": "FOREXCOM:DJI"
+                        },
+                        {
                             "s": "GLOBALPRIME:GER30"
                         },
                         {
@@ -125,18 +108,6 @@ export function Watchlist(props) {
                         },
                         {
                             "s": "MOEX:RTSI"
-                        },
-                        {
-                            "s": "SSE:000001"
-                        },
-                        {
-                            "s": "FOREXCOM:DJI"
-                        },
-                        {
-                            "s": "CAPITALCOM:DXY"
-                        },
-                        {
-                            "s": "SKILLING:NASDAQ"
                         }
                     ],
                     "originalTitle": "Indices"
@@ -159,9 +130,6 @@ export function Watchlist(props) {
                         {
                             "s": "BINANCE:DOTUSD"
                         },
-                        {
-                            "s": "BINANCE:LINKUSD"
-                        }
                     ]
                 },
                 {
@@ -182,13 +150,10 @@ export function Watchlist(props) {
                         {
                             "s": "NYSE:EXP"
                         },
-                        {
-                            "s": "NYSE:STN"
-                        }
                     ]
                 }
             ]
         }}
-        />;
+        />
     </div>
 }
