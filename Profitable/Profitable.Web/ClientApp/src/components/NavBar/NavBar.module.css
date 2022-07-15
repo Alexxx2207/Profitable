@@ -5,12 +5,17 @@
     padding: 0.5rem 3rem;
 }
 
-.navbarContainer  *:hover {
-    color: #7160e8;
+.navLink {
+    text-decoration: none;
 }
 
 .navbarLogo {
     letter-spacing: 0.4rem;
+    padding: 0.5rem 0.8rem;
+}
+.navbarLogo:hover {
+    color: #7160e8;
+    transition: 0.5s;
 }
 
 .navbarList {
@@ -19,13 +24,27 @@
     align-items: center;
     margin: 0px;
     justify-content: space-evenly;
-    width: 40%;
+    width: 60%;
 }
 
-.navbarItems {
-    text-decoration: none;
+.navbarListItems {
     font-size: 18px;
     font-weight: 600;
     letter-spacing: 2px;
     display: inline-block;
+    border: 3px solid #4a4b4e;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    transition: ease-out 1s;
+}
+
+.navbarListItems:hover {
+    color: #7160e8;
+    border: 3px solid white;
+    border-radius: 0.5rem;
+    transition: 0.5s;
+}
+
+.activeLink {
+    color: #7160e8;
 }
