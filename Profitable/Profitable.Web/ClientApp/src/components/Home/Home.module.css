@@ -15,6 +15,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
 }
 
 .overviewText * {
@@ -23,17 +24,45 @@
     font-weight: bold;
     padding-left: 2rem;
     margin: 0px;
+    width: 0%;
+    white-space: nowrap;
+    overflow: hidden;
+    animation: showOverviewText 1s linear;
+    animation-iteration-count: 1s;
+    animation-fill-mode: forwards;
 }
 
-.overviewText h1 {
+.observeDiv {
+    animation-delay: 1s;
+}
+
+.planDiv {
+    animation-delay: 2.2s;
+}
+
+.executeDiv {
+    animation-delay: 3.5s;
+
+}
+
+@keyframes showOverviewText {
+    from{
+        width: 0%;
+    }
+    to{
+        width: 100%;
+    }
+}
+
+.overviewText .observeDiv {
     font-size: 8.7vw;
 }
 
-.overviewText h2 {
+.overviewText .planDiv {
     font-size: 7vw;
 }
 
-.overviewText h3 {
+.overviewText .executeDiv {
     font-size: 3vw;
     margin-top: 1.5rem;
 }
