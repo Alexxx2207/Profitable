@@ -12,7 +12,7 @@ namespace Profitable.Services.Posts.Contracts
 {
     public interface IPostService
     {
-        Task<List<PostViewModel>> GetRecentPosts(int postsCount);
+        Task<List<PostViewModel>> GetRecentPosts();
 
         Task<PostViewModel> GetPost(string guid);
 

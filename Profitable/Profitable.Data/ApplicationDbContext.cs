@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Design;
 using Microsoft.Extensions.Configuration;
 using Profitable.Models.EntityModels;
 
 namespace Profitable.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<Trader, IdentityRole, string>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         public ApplicationDbContext()
         {
@@ -18,7 +19,7 @@ namespace Profitable.Data
         {
         }
 
-        public DbSet<Trader> Traders { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
 
         public DbSet<Post> Posts { get; set; }
 
@@ -64,6 +65,11 @@ namespace Profitable.Data
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Likes)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<FinancialInstrument>()
+                .HasKey(e => e.TickerSymbol)
+                .IsClustered(false)
+                .HasName("IX_TickerSymbol");
         }
     }
 }

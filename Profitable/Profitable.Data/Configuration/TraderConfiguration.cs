@@ -10,9 +10,9 @@ namespace Profitable.Data.Configuration
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Profitable.Models.EntityModels;
 
-    public class TraderConfiguration : IEntityTypeConfiguration<Trader>
+    public class TraderConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
-        public void Configure(EntityTypeBuilder<Trader> appUser)
+        public void Configure(EntityTypeBuilder<ApplicationUser> appUser)
         {
             appUser
                 .HasMany(e => e.Claims)

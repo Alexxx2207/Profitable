@@ -5,9 +5,9 @@
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Identity;
 
-    public class Trader : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
-        public Trader()
+        public ApplicationUser()
         {
             Id = Guid.NewGuid().ToString();
             Roles = new HashSet<IdentityUserRole<string>>();

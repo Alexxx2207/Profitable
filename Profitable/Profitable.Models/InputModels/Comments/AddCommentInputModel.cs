@@ -13,7 +13,7 @@ namespace Profitable.Models.InputModels.Comments
 
         public string Content { get; set; }
 
-        public Trader Author { get; set; }
+        public ApplicationUser Author { get; set; }
 
         public DateTime PostedOn { get; set; }
     }

@@ -13,7 +13,7 @@ namespace Profitable.Models.EntityModels
     {
         [ForeignKey("Trader")]
         public string TraderId { get; set; }
-        public Trader Trader { get; set; }
+        public ApplicationUser Trader { get; set; }
 
 
         [ForeignKey("Post")]

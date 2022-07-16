@@ -1,5 +1,4 @@
 using AutoMapper;
-
 using Profitable.Data.Repository.Contract;
 using Profitable.Data.Repository;
 using Profitable.Automapper;
@@ -12,12 +11,17 @@ using Profitable.Services.Markets.Contract;
 using Profitable.Services.Markets;
 using Profitable.Data;
 using Microsoft.EntityFrameworkCore;
+using Profitable.Data.Seeding;
+using Microsoft.AspNetCore.Identity;
+using Profitable.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LocalConnection")));
+
+builder.Services.AddIdentity();
 
 var mapperConfig = new MapperConfiguration(mc =>
 {
@@ -50,6 +54,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    dbContext.Database.Migrate();
+    new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+}
 
 if (!app.Environment.IsDevelopment())
 {
