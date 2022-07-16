@@ -7,9 +7,15 @@ export const Home = () => {
             <section className={styles.overviewSection}>
                 <Watchlist className={styles.watchlist} />
                 <div className={styles.overviewText}>
-                    <h1>Observe</h1>
-                    <h2>Plan</h2>
-                    <h3>Execute</h3>
+                    <div className={styles.observeDiv}>
+                        Observe
+                    </div>
+                    <div className={styles.planDiv}>
+                        Plan
+                    </div>
+                    <div className={styles.executeDiv}>
+                        Execute
+                    </div>
                 </div>
             </section>
         </main>

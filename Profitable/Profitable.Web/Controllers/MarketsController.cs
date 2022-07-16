@@ -23,5 +23,13 @@ namespace Profitable.Web.Controllers
 
             return Ok(instrument);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetInstruments()
+        {
+            var instrument = await this.marketsService.GetAllFinantialInstruments();
+
+            return Ok(instrument);
+        }
     }
 }
