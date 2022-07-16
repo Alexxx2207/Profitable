@@ -1,21 +1,18 @@
 ﻿using Newtonsoft.Json;
 using Profitable.Data.Repository;
+using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.Models.EntityModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Profitable.Data.Seeding
+
+namespace Profitable.Data.Seeding.Seeders
 {
-    public class MarketTypesSeeder
+    public class MarketTypesSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext)
+        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider = null)
         {
             var marketTypeRepository = new Repository<MarketType>(dbContext);
 
-            var types = JsonConvert.DeserializeObject<List<string>>(await new StreamReader("MarketTypes.json").ReadToEndAsync());
+            var types = JsonConvert.DeserializeObject<List<string>>(await new StreamReader("DataToSeed/MarketTypes.json").ReadToEndAsync());
 
             var currentEntries = dbContext.MarketTypes;
 

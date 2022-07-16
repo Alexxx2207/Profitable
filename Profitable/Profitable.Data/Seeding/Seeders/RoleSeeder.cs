@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Profitable.Data.Seeding.Seeders.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Profitable.Data.Seeding
+namespace Profitable.Data.Seeding.Seeders
 {
     public class RoleSeeder : ISeeder
     {

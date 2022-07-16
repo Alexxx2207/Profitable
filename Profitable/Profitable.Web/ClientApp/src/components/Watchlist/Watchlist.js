@@ -6,6 +6,8 @@ export function Watchlist(props) {
     useEffect (() => {
         document.querySelector('.StockMarketContainer').children[0].style.width = "100%";
         document.querySelector('.StockMarketContainer').children[0].style.height = "100%";
+        document.querySelector('.StockMarketContainer').style.width = "100%";
+        document.querySelector('.StockMarketContainer').style.height = "100%";
     });
 
     return <div className='StockMarketContainer' style={props.style}>

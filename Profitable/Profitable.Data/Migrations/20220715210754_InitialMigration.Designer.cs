@@ -12,8 +12,8 @@ using Profitable.Data;
 namespace Profitable.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220707193945_changeAuthorToTraderInLike")]
-    partial class changeAuthorToTraderInLike
+    [Migration("20220715210754_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -172,7 +172,7 @@ namespace Profitable.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Profitable.Models.Comment", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.Comment", b =>
                 {
                     b.Property<string>("GUID")
                         .HasColumnType("nvarchar(450)");
@@ -185,12 +185,18 @@ namespace Profitable.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("PostId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("PostedOn")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("GUID");
 
@@ -201,10 +207,65 @@ namespace Profitable.Data.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Profitable.Models.Like", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.Exchange", b =>
                 {
                     b.Property<string>("GUID")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GUID");
+
+                    b.ToTable("Exchanges");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>
+                {
+                    b.Property<string>("GUID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ExchangeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MarketTypeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TickerSymbol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GUID");
+
+                    b.HasIndex("ExchangeId");
+
+                    b.HasIndex("MarketTypeId");
+
+                    b.ToTable("FinancialInstruments");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.Like", b =>
+                {
+                    b.Property<string>("GUID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -226,7 +287,81 @@ namespace Profitable.Data.Migrations
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("Profitable.Models.Post", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.List", b =>
+                {
+                    b.Property<string>("GUID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TraderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("GUID");
+
+                    b.HasIndex("TraderId");
+
+                    b.ToTable("Lists");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.ListsFinancialInstruments", b =>
+                {
+                    b.Property<string>("GUID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FinancialInstrumentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ListId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("GUID");
+
+                    b.HasIndex("FinancialInstrumentId");
+
+                    b.HasIndex("ListId");
+
+                    b.ToTable("ListsFinancialInstruments");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.MarketType", b =>
+                {
+                    b.Property<string>("GUID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GUID");
+
+                    b.ToTable("MarketTypes");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
                 {
                     b.Property<string>("GUID")
                         .HasColumnType("nvarchar(450)");
@@ -239,8 +374,14 @@ namespace Profitable.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("PostedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -253,7 +394,55 @@ namespace Profitable.Data.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("Profitable.Models.Trader", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.PostTag", b =>
+                {
+                    b.Property<string>("GUID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TagId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("GUID");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("PostTag");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.Tag", b =>
+                {
+                    b.Property<string>("GUID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GUID");
+
+                    b.ToTable("Tag");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.Trader", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -343,11 +532,11 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Profitable.Models.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
                         .WithMany("Claims")
                         .HasForeignKey("TraderId");
 
-                    b.HasOne("Profitable.Models.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -356,11 +545,11 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Profitable.Models.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
                         .WithMany("Logins")
                         .HasForeignKey("TraderId");
 
-                    b.HasOne("Profitable.Models.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -375,11 +564,11 @@ namespace Profitable.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Profitable.Models.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
                         .WithMany("Roles")
                         .HasForeignKey("TraderId");
 
-                    b.HasOne("Profitable.Models.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -388,22 +577,22 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Profitable.Models.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Profitable.Models.Comment", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.Comment", b =>
                 {
-                    b.HasOne("Profitable.Models.Trader", "Author")
+                    b.HasOne("Profitable.Models.EntityModels.Trader", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Profitable.Models.Post", "Post")
+                    b.HasOne("Profitable.Models.EntityModels.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -414,15 +603,34 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("Profitable.Models.Like", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>
                 {
-                    b.HasOne("Profitable.Models.Post", "Post")
+                    b.HasOne("Profitable.Models.EntityModels.Exchange", "Exchange")
+                        .WithMany()
+                        .HasForeignKey("ExchangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Profitable.Models.EntityModels.MarketType", "MarketType")
+                        .WithMany()
+                        .HasForeignKey("MarketTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exchange");
+
+                    b.Navigation("MarketType");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.Like", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.Post", "Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Profitable.Models.Trader", "Trader")
+                    b.HasOne("Profitable.Models.EntityModels.Trader", "Trader")
                         .WithMany("Likes")
                         .HasForeignKey("TraderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -433,9 +641,39 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Trader");
                 });
 
-            modelBuilder.Entity("Profitable.Models.Post", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.List", b =>
                 {
-                    b.HasOne("Profitable.Models.Trader", "Author")
+                    b.HasOne("Profitable.Models.EntityModels.Trader", "Trader")
+                        .WithMany("Lists")
+                        .HasForeignKey("TraderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trader");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.ListsFinancialInstruments", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.FinancialInstrument", "FinancialInstrument")
+                        .WithMany("ListsContainingIt")
+                        .HasForeignKey("FinancialInstrumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Profitable.Models.EntityModels.List", "List")
+                        .WithMany("FinancialInstruments")
+                        .HasForeignKey("ListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FinancialInstrument");
+
+                    b.Navigation("List");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.Trader", "Author")
                         .WithMany("Posts")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -444,20 +682,58 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Profitable.Models.Post", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.PostTag", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.Post", "Post")
+                        .WithMany("Tags")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Profitable.Models.EntityModels.Tag", "Tag")
+                        .WithMany("OnPosts")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>
+                {
+                    b.Navigation("ListsContainingIt");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.List", b =>
+                {
+                    b.Navigation("FinancialInstruments");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
                 {
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("Tags");
                 });
 
-            modelBuilder.Entity("Profitable.Models.Trader", b =>
+            modelBuilder.Entity("Profitable.Models.EntityModels.Tag", b =>
+                {
+                    b.Navigation("OnPosts");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.Trader", b =>
                 {
                     b.Navigation("Claims");
 
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("Lists");
 
                     b.Navigation("Logins");
 

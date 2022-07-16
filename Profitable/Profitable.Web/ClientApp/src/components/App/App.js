@@ -15,8 +15,7 @@ export function App() {
     return (
         <div>
             <NavBar />
-            <div>
-                <Routes>
+            <Routes>
                     <Route path="/" element={
                         <Home />
                     }>
@@ -36,7 +35,6 @@ export function App() {
                     }>
                     </Route>
                 </Routes>
-            </div>
         </div>
 
     );

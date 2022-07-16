@@ -21,7 +21,7 @@ export const MarketsList = () => {
     useEffect(() => {
         fetchInstrumentData('AAPL');
     }, []);
-
+  
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/markets/`)
         .then(res => res.json())

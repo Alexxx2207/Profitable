@@ -13,8 +13,6 @@ namespace Profitable.Models.InputModels.Posts
 
         public string Content { get; set; }
 
-        public Trader Author { get; set; }
-
-        public DateTime PostedOn { get; set; }
+        public ApplicationUser Author { get; set; }
     }
 }

@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Profitable.Services.Markets.Contract;
+using Profitable.Web.Controllers.Contracts;
 
 namespace Profitable.Web.Controllers
 {
-
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MarketsController : ControllerBase
+    public class MarketsController : BaseApiController
     {
         private readonly IMarketsService marketsService;
 

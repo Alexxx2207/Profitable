@@ -40,7 +40,7 @@ namespace Profitable.Services.Comments
         {
             var comment = await repository
                 .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.GUID == guid);
+                .FirstAsync(entity => entity.GUID.ToString() == guid);
 
             repository.Delete(comment);
 
@@ -53,7 +53,7 @@ namespace Profitable.Services.Comments
         {
             var comment = await repository
                 .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.GUID == guid);
+                .FirstAsync(entity => entity.GUID.ToString() == guid);
 
             return mapper.Map<CommentViewModel>(comment);
         }
@@ -76,7 +76,7 @@ namespace Profitable.Services.Comments
 
             var existingComment = await repository
                 .GetAll().
-                FirstAsync(entity => entity.GUID == newComment.Guid);
+                FirstAsync(entity => entity.GUID.ToString() == newComment.Guid);
 
             if(existingComment == null)
             {

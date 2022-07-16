@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Profitable.Data.Seeding.Seeders;
+using Profitable.Data.Seeding.Seeders.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +26,10 @@ namespace Profitable.Data.Seeding
                           {
                               new RoleSeeder(),
                               new UsersSeeder(),
+                              new MarketTypesSeeder(),
+                              new ExchangesSeeder(),
+                              new FinantialInstrumentsSeeder(),
+                              new PostsSeeder()
                           };
 
             foreach (var seeder in seeders)

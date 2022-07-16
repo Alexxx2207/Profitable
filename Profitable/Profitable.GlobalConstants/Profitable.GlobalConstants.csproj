@@ -11,15 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Exchanges.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="MarketTypes.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="TicketSymbols.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\Profitable.Models\Profitable.Models.csproj" />
   </ItemGroup>
 
 </Project>

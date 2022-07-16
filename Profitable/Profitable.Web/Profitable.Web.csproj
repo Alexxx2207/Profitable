@@ -32,15 +32,38 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="DataToSeed\Exchanges.json" />
+    <Content Remove="DataToSeed\MarketTypes.json" />
+    <Content Remove="DataToSeed\TestPosts.json" />
+    <Content Remove="DataToSeed\TicketSymbols.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Profitable.Automapper\Profitable.Automapper.csproj" />
     <ProjectReference Include="..\Profitable.Data\Profitable.Data.csproj" />
     <ProjectReference Include="..\Profitable.Services\Profitable.Services.csproj" />
+    <ProjectReference Include="..\Profitable.Web.Infrasturcture\Profitable.Web.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ClientApp\src\components\Communication\Chat\" />
     <Folder Include="ClientApp\src\components\Communication\Posts\" />
     <Folder Include="ClientApp\src\components\Markets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="DataToSeed\Exchanges.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataToSeed\MarketTypes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataToSeed\TestPosts.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataToSeed\TicketSymbols.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

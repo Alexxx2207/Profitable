@@ -11,14 +11,9 @@ namespace Profitable.Models.EntityModels
 {
     public class Like : EntityBase
     {
-        public Like()
-        {
-            GUID = Guid.NewGuid().ToString();
-        }
-
         [ForeignKey("Trader")]
         public string TraderId { get; set; }
-        public Trader Trader { get; set; }
+        public ApplicationUser Trader { get; set; }
 
 
         [ForeignKey("Post")]
