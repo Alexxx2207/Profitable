@@ -4,7 +4,7 @@
 
 .overviewSection {
     display: flex;
-    height: 700px;
+    height: 600px;
     width: 100%;
     padding: 0rem 2rem;
     justify-content: space-evenly;
@@ -32,17 +32,21 @@
     animation-fill-mode: forwards;
 }
 
-.observeDiv {
+.overviewText .observeDiv {
+    font-size: 8.7vw;
     animation-delay: 1s;
 }
 
-.planDiv {
+.overviewText .planDiv {
+    font-size: 7vw;
     animation-delay: 2.2s;
 }
 
-.executeDiv {
-    animation-delay: 3.5s;
-
+.overviewText .executeDiv {
+    font-size: 3vw;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    animation-delay: 3.3s;
 }
 
 @keyframes showOverviewText {
@@ -54,15 +58,3 @@
     }
 }
 
-.overviewText .observeDiv {
-    font-size: 8.7vw;
-}
-
-.overviewText .planDiv {
-    font-size: 7vw;
-}
-
-.overviewText .executeDiv {
-    font-size: 3vw;
-    margin-top: 1.5rem;
-}
