@@ -4,7 +4,7 @@
 
 .overviewSection {
     display: flex;
-    height: 700px;
+    height: 600px;
     width: 100%;
     padding: 0rem 2rem;
     justify-content: space-evenly;
@@ -27,22 +27,26 @@
     width: 0%;
     white-space: nowrap;
     overflow: hidden;
-    animation: showOverviewText 1s linear;
+    animation: showOverviewText 0.7s linear;
     animation-iteration-count: 1s;
     animation-fill-mode: forwards;
 }
 
-.observeDiv {
+.overviewText .observeDiv {
+    font-size: 8.7vw;
     animation-delay: 1s;
 }
 
-.planDiv {
-    animation-delay: 2.2s;
+.overviewText .planDiv {
+    font-size: 7vw;
+    animation-delay: 1.9s;
 }
 
-.executeDiv {
-    animation-delay: 3.5s;
-
+.overviewText .executeDiv {
+    font-size: 3vw;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    animation-delay: 2.8s;
 }
 
 @keyframes showOverviewText {
@@ -54,15 +58,3 @@
     }
 }
 
-.overviewText .observeDiv {
-    font-size: 8.7vw;
-}
-
-.overviewText .planDiv {
-    font-size: 7vw;
-}
-
-.overviewText .executeDiv {
-    font-size: 3vw;
-    margin-top: 1.5rem;
-}

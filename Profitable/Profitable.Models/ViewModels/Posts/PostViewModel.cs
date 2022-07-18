@@ -1,4 +1,5 @@
-﻿using Profitable.Models.ViewModels.Comments;
+﻿using Profitable.Models.EntityModels;
+using Profitable.Models.ViewModels.Comments;
 using Profitable.Models.ViewModels.Like;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace Profitable.Models.ViewModels.Posts
         public string Title { get; set; }
 
         public string Content { get; set; }
+
+        public string PostedOn { get; set; }
 
         public string Author { get; set; }
 

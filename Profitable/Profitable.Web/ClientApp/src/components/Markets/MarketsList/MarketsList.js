@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { MarketWidget } from './MarketWidget';
+import { MarketWidget } from '../MarketWidget/MarketWidget';
 
 export const MarketsList = () => {
     const requiredInstrument = {
-        exchangeName: 'CAPITALCOM',
-        tickerSymbol: 'UK100'
+        exchangeName: 'NASDAQ',
+        tickerSymbol: 'AAPL'
     };
 
     const [instrument, setInstrument] = useState({ ...requiredInstrument });
@@ -12,7 +12,7 @@ export const MarketsList = () => {
 
     const fetchInstrumentData = (instrument) => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/markets/${instrument}`)
-        .then(res => res.json())
+        .then(response => response.json())
         .then(responseInstrument => {
             setInstrument(responseInstrument);
         })

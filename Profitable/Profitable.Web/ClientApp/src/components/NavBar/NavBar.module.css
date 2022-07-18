@@ -10,7 +10,7 @@
 }
 
 .logoWrapper {
-    width: 30%;
+    width: 27%;
 }
 
 .navbarLogo {
@@ -28,8 +28,8 @@
     display: flex;
     align-items: center;
     margin: 0px;
-    justify-content: space-evenly;
-    width: 60%;
+    justify-content: space-between;
+    width: 45%;
 }
 
 .navbarListItems {
