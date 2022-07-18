@@ -20,10 +20,7 @@ export const PostsList = () => {
         const scrollHeight = e.target.documentElement.scrollHeight;
         const currentHeight = e.target.documentElement.scrollTop + window.innerHeight;
 
-        console.log(currentHeight);
-        console.log(scrollHeight);
         if (currentHeight >= scrollHeight - 1  || currentHeight == scrollHeight) {
-        console.log('innnnnnnnnnnnnnnnnn');
             loadPosts();
             window.addEventListener('scroll', handleScroll);
         }
