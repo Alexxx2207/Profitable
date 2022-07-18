@@ -2,3 +2,20 @@ html, html *{
     background-color: #1e222d;
     color: white;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e222d;
+}
+
+::-webkit-scrollbar-thumb {
+    background: darkgrey;
+    border-radius: 25px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: white;
+}

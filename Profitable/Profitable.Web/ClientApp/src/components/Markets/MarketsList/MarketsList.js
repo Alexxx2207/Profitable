@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { MarketWidget } from './MarketWidget';
+import { MarketWidget } from '../MarketWidget/MarketWidget';
 
 export const MarketsList = () => {
     const requiredInstrument = {
-        exchangeName: 'CAPITALCOM',
-        tickerSymbol: 'UK100'
+        exchangeName: 'NASDAQ',
+        tickerSymbol: 'AAPL'
     };
 
     const [instrument, setInstrument] = useState({ ...requiredInstrument });

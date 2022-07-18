@@ -27,7 +27,7 @@
     width: 0%;
     white-space: nowrap;
     overflow: hidden;
-    animation: showOverviewText 1s linear;
+    animation: showOverviewText 0.7s linear;
     animation-iteration-count: 1s;
     animation-fill-mode: forwards;
 }
@@ -39,14 +39,14 @@
 
 .overviewText .planDiv {
     font-size: 7vw;
-    animation-delay: 2.2s;
+    animation-delay: 1.9s;
 }
 
 .overviewText .executeDiv {
     font-size: 3vw;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
-    animation-delay: 3.3s;
+    animation-delay: 2.8s;
 }
 
 @keyframes showOverviewText {
