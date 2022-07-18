@@ -16,6 +16,8 @@ namespace Profitable.Services.Posts.Contracts
 
         Task<PostViewModel> GetPost(string guid);
 
+        public Task<List<PostViewModel>> GetPosts(int page);
+
         Task<List<PostViewModel>> GetPostsByTrader(string traderId);
 
         Task<List<LikeViewModel>> GetPostLikes(string guid);

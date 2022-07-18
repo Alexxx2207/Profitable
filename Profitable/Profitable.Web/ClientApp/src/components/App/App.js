@@ -8,7 +8,7 @@ import { NavBar } from "../NavBar/NavBar";
 import { Home } from '../Home/Home';
 import { About } from '../About/About';
 import { MarketsList } from '../Markets/MarketsList/MarketsList';
-import { PostsList } from '../PostsList/PostsList';
+import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
 import styles from './App.module.css'
 
 export function App() {

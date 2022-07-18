@@ -81,13 +81,17 @@ namespace Profitable.Services.Posts
                 .ToList();
         }
 
-        public async Task<List<PostViewModel>> GetPosts(int skip, int take)
+        public async Task<List<PostViewModel>> GetPosts(int page)
         {
             var posts = await postsRepository
                 .GetAllAsNoTracking()
-                .Skip(skip)
-                .Take(take)
+                .OrderByDescending(p => p.PostedOn)
+                .Skip(page * GlobalServicesConstants.PostsCountInPage)
+                .Take(GlobalServicesConstants.PostsCountInPage)
                 .Include(p => p.Tags)
+                .Include(p => p.Author)
+                .Include(p => p.Likes)
+                .Include(p => p.Comments)
                 .ToListAsync();
 
             return posts.Select(post => mapper.Map<PostViewModel>(post)).ToList();
@@ -110,8 +114,12 @@ namespace Profitable.Services.Posts
         {
             var posts = await postsRepository
                 .GetAllAsNoTracking()
+                .OrderByDescending(p => p.PostedOn)
                 .Take(GlobalServicesConstants.RecentPostsCount)
                 .Include(p => p.Tags)
+                .Include(p => p.Author)
+                .Include(p => p.Likes)
+                .Include(p => p.Comments)
                 .ToListAsync();
 
             return posts
@@ -131,7 +139,7 @@ namespace Profitable.Services.Posts
 
             if (existingPost == null)
             {
-                return GlobalConstants.GlobalServicesConstants.EntityDoesNotExist;
+                return GlobalServicesConstants.EntityDoesNotExist;
             }
 
             existingPost.Title = newPost.Title;

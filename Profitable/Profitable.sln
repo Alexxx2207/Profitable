@@ -28,9 +28,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common", "Profitable.Common\Profitable.Common.csproj", "{9318892A-CE3A-40CB-B598-98CEA3D66743}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profitable.Web.Infrastructure", "Profitable.Web.Infrasturcture\Profitable.Web.Infrastructure.csproj", "{A0AAF0B2-0AED-48C1-AC1C-E7DAD90A39D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Web.Infrastructure", "Profitable.Web.Infrasturcture\Profitable.Web.Infrastructure.csproj", "{A0AAF0B2-0AED-48C1-AC1C-E7DAD90A39D6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Profitable.Web", "Profitable.Web", "{98C26F8D-291F-42DC-AE53-35DDD9EC371B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{98C26F8D-291F-42DC-AE53-35DDD9EC371B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,7 +12,7 @@ export const MarketsList = () => {
 
     const fetchInstrumentData = (instrument) => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/markets/${instrument}`)
-        .then(res => res.json())
+        .then(response => response.json())
         .then(responseInstrument => {
             setInstrument(responseInstrument);
         })

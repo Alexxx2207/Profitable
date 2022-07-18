@@ -16,7 +16,11 @@ namespace Profitable.Automapper
         {
             CreateMap<AddPostInputModel, Post>();
             CreateMap<UpdatePostInputModel, Post>();
-            CreateMap<Post, PostViewModel>();
+            CreateMap<Post, PostViewModel>()
+                .ForMember(dest => dest.Author, opt => 
+                opt.MapFrom(source => $"{source.Author.FirstName} {source.Author.LastName}"))
+                .ForMember(dest => dest.PostedOn, opt =>
+                opt.MapFrom(source => source.PostedOn.ToString("f")));
         }
     }
 }
