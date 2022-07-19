@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Profitable.Data.Repository;
 using Profitable.Data.Seeding.Seeders.Contracts;
+using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Profitable.Data.Seeding.Seeders
             var currentEntries = dbContext.Posts;
 
             var user = dbContext.Users
-                .First(u => u.UserName == GlobalConstants.GlobalDatabaseConstants.DefaultUsersToSeed[0].UserName);
+                .First(u => u.UserName == GlobalDatabaseConstants.DefaultUsersToSeed[0].UserName);
 
             foreach (var newPost in json)
             {

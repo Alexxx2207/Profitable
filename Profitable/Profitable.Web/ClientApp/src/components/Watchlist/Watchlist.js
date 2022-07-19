@@ -1,16 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 import { MarketOverview } from "react-tradingview-embed";
 
-export function Watchlist(props) {
+export function Watchlist() {
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
-    useEffect (() => {
+    useEffect(() => {
         document.querySelector('.StockMarketContainer').children[0].style.width = "100%";
         document.querySelector('.StockMarketContainer').children[0].style.height = "100%";
         document.querySelector('.StockMarketContainer').style.width = "100%";
         document.querySelector('.StockMarketContainer').style.height = "100%";
-    });
+        window.addEventListener('resize', forceUpdate);
+    }, []);
 
-    return <div className='StockMarketContainer' style={props.style}>
+    return <div className='StockMarketContainer'>
         <MarketOverview widgetProps={{
             "colorTheme": "dark",
             "dateRange": "1D",
@@ -46,9 +48,6 @@ export function Watchlist(props) {
                         },
                         {
                             "s": "NASDAQ:MSFT"
-                        },
-                        {
-                            "s": "NASDAQ:NFLX"
                         }
                     ]
                 },
@@ -60,9 +59,6 @@ export function Watchlist(props) {
                         },
                         {
                             "s": "TVC:GOLD"
-                        },
-                        {
-                            "s": "TVC:SILVER"
                         },
                         {
                             "s": "CAPITALCOM:NATURALGAS"
@@ -86,9 +82,6 @@ export function Watchlist(props) {
                         },
                         {
                             "s": "FX_IDC:CNYUSD"
-                        },
-                        {
-                            "s": "FX_IDC:RUBUSD"
                         }
                     ],
                     "originalTitle": "Forex"
@@ -107,9 +100,6 @@ export function Watchlist(props) {
                         },
                         {
                             "s": "CAPITALCOM:UK100"
-                        },
-                        {
-                            "s": "MOEX:RTSI"
                         }
                     ],
                     "originalTitle": "Indices"
@@ -128,10 +118,7 @@ export function Watchlist(props) {
                         },
                         {
                             "s": "BINANCE:EGLDUSD"
-                        },
-                        {
-                            "s": "BINANCE:DOTUSD"
-                        },
+                        }
                     ]
                 },
                 {
@@ -145,9 +132,6 @@ export function Watchlist(props) {
                         },
                         {
                             "s": "NYSE:MLM"
-                        },
-                        {
-                            "s": "NYSE:URI"
                         },
                         {
                             "s": "NYSE:EXP"

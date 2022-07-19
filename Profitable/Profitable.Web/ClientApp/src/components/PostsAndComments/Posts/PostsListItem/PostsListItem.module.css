@@ -1,0 +1,24 @@
+.post {
+    width: 45%;
+    padding: 2rem;
+    border: 2px solid #4a4b4e;
+    display: flex;
+    flex-direction: column;
+}
+
+.post:hover {
+    border: 2px solid white;
+    box-shadow: 0px 0px 2rem white;
+    cursor: pointer;
+}
+
+.content {
+    flex-grow: 2;
+}
+
+.information {
+    display: flex;
+    justify-content: space-between;  
+    border-top: 2px solid white;
+    margin-top: 5rem;
+}

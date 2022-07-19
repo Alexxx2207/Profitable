@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Post } from '../Post/Post';
+import { useState, useEffect, useCallback } from 'react';
+import { PostsListItem } from '../PostsListItem/PostsListItem';
+import styles from './PostsList.module.css';
 
 export const PostsList = () => {
     const [posts, setPosts] = useState([]);
     let page = 0;
 
-    const loadPosts = () => {
+    const loadPosts = useCallback(() => {
         fetch(`${process.env.REACT_APP_API_BASE_URL}/api/posts/${page}`)
             .then(response => response.json())
             .then(result => {
@@ -14,27 +15,28 @@ export const PostsList = () => {
                 }
             });
         page++;
-    }
+    }, [page]);
 
-    const handleScroll = (e) => {
+    const handleScroll = useCallback((e) => {
         const scrollHeight = e.target.documentElement.scrollHeight;
         const currentHeight = e.target.documentElement.scrollTop + window.innerHeight;
 
-        if (currentHeight >= scrollHeight - 1  || currentHeight == scrollHeight) {
+        if (currentHeight >= scrollHeight - 1 || currentHeight === scrollHeight) {
             loadPosts();
-            window.addEventListener('scroll', handleScroll);
         }
-    }
+    }, [loadPosts]);
 
     useEffect(() => {
         loadPosts();
         window.addEventListener("scroll", handleScroll);
-    }, []);
+    }, [handleScroll, loadPosts]);
 
     return (
-        <div>
-            <h1>Discover</h1>
-            {posts.map(post => <Post key={post.guid} {...post} />)}
+        <div className={styles.wrapper}>
+            <h1 className={styles.discoverHeading}>Discover</h1>
+            <div className={styles.postsList}>
+                {posts.map(post => <PostsListItem key={post.guid} {...post} />)}
+            </div>
         </div>
     );
 }

@@ -4,7 +4,7 @@
 
 .overviewSection {
     display: flex;
-    height: 600px;
+    height: 80vh;
     width: 100%;
     padding: 0rem 2rem;
     justify-content: space-evenly;
@@ -33,12 +33,12 @@
 }
 
 .overviewText .observeDiv {
-    font-size: 8.7vw;
+    font-size: 7vw;
     animation-delay: 1s;
 }
 
 .overviewText .planDiv {
-    font-size: 7vw;
+    font-size: 5.5vw;
     animation-delay: 1.9s;
 }
 

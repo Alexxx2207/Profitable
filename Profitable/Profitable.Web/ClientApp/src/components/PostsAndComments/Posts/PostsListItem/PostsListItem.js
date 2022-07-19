@@ -1,10 +1,9 @@
-import styles from './Post.module.css';
+import styles from './PostsListItem.module.css';
 
-export const Post = (props) => {
+export const PostsListItem = (props) => {
     return (<div className={styles.post}>
         <div className={styles.content}>
-            <h1>{props.title}</h1>
-            <p>{props.content}</p>
+            <h2>{props.title}</h2>
         </div>
         <div className={styles.information}>
             <div className={styles.author}>
