@@ -18,6 +18,6 @@ namespace Profitable.Models.InputModels.Seedeing
 
         public string Password { get; set; }
 
-        public string ProfilePicture { get; set; }
+        public string ProfilePictureURL { get; set; }
     }
 }

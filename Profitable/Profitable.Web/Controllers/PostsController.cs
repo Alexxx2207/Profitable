@@ -14,15 +14,6 @@ namespace Profitable.Web.Controllers
             this.postService = postService;
         }
 
-        [Route("recent")]
-        [HttpGet]
-        public async Task<IActionResult> GetRecentPosts()
-        {
-            var posts = await postService.GetRecentPosts();
-
-            return Ok(posts);
-        }
-
         [Route("{page}")]
         [HttpGet]
         public async Task<IActionResult> GetPostsByPage([FromRoute] int page)

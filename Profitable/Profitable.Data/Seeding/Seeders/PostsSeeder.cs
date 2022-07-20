@@ -34,6 +34,8 @@ namespace Profitable.Data.Seeding.Seeders
                     postToAdd.Content = newPost.Content;
                     postToAdd.PostedOn = DateTime.UtcNow;
                     postToAdd.AuthorId = user.Id;
+                    postToAdd.ImageType = (ImageTypes) newPost.ImageType;
+                    postToAdd.ImageURL = newPost.ImageURL;
 
                     await postsRepository.AddAsync(postToAdd);
                 }
@@ -45,6 +47,10 @@ namespace Profitable.Data.Seeding.Seeders
             public string Title { get; set; }
 
             public string Content { get; set; }
+
+            public int ImageType { get; set; }
+
+            public string ImageURL { get; set; }
         }
     }
 }

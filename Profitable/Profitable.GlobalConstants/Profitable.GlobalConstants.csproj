@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Profitable.Models\Profitable.Models.csproj" />
+    <ProjectReference Include="..\Profitable.Common.Models\Profitable.Common.Models.csproj" />
   </ItemGroup>
 
 </Project>

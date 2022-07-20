@@ -12,8 +12,6 @@ namespace Profitable.Services.Posts.Contracts
 {
     public interface IPostService
     {
-        Task<List<PostViewModel>> GetRecentPosts();
-
         Task<PostViewModel> GetPost(string guid);
 
         public Task<List<PostViewModel>> GetPosts(int page);
