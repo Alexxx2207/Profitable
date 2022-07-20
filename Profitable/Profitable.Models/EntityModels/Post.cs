@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Profitable.Models.Contracts;
+using Profitable.GlobalConstants;
 
 namespace Profitable.Models.EntityModels
 {
@@ -31,6 +32,9 @@ namespace Profitable.Models.EntityModels
         [Required]
         public DateTime PostedOn { get; set; }
 
+        public string? ImageURL { get; set; }
+
+        public ImageTypes? ImageType { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
 

@@ -10,6 +10,12 @@ namespace Profitable.Data.Seeding
 {
     public class ApplicationDbContextSeeder : ISeeder
     {
+        private readonly bool isProduction;
+        public ApplicationDbContextSeeder(bool isProduction)
+        {
+            this.isProduction = isProduction;
+        }
+
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
             if (dbContext == null)
@@ -22,15 +28,20 @@ namespace Profitable.Data.Seeding
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            var seeders = new List<ISeeder>
-                          {
-                              new RoleSeeder(),
-                              new UsersSeeder(),
-                              new MarketTypesSeeder(),
-                              new ExchangesSeeder(),
-                              new FinantialInstrumentsSeeder(),
-                              new PostsSeeder()
-                          };
+            var seeders = new List<ISeeder>()
+            {
+                new RoleSeeder(),
+                new UsersSeeder(),
+                new MarketTypesSeeder(),
+                new ExchangesSeeder(),
+                new FinantialInstrumentsSeeder(),
+            };
+
+            if (!isProduction)
+            {
+                seeders.Add(new PostsSeeder());
+            }
+
 
             foreach (var seeder in seeders)
             {

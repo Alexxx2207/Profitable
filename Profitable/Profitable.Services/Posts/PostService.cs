@@ -94,7 +94,9 @@ namespace Profitable.Services.Posts
                 .Include(p => p.Comments)
                 .ToListAsync();
 
-            return posts.Select(post => mapper.Map<PostViewModel>(post)).ToList();
+            var result = posts.Select(post => mapper.Map<PostViewModel>(post)).ToList();
+
+            return result;
         }
 
         public async Task<List<PostViewModel>> GetPostsByTrader(string traderId)
@@ -103,23 +105,6 @@ namespace Profitable.Services.Posts
                 .GetAllAsNoTracking()
                 .Where(post => post.AuthorId == traderId)
                 .Include(p => p.Tags)
-                .ToListAsync();
-
-            return posts
-                .Select(post => mapper.Map<PostViewModel>(post))
-                .ToList();
-        }
-
-        public async Task<List<PostViewModel>> GetRecentPosts()
-        {
-            var posts = await postsRepository
-                .GetAllAsNoTracking()
-                .OrderByDescending(p => p.PostedOn)
-                .Take(GlobalServicesConstants.RecentPostsCount)
-                .Include(p => p.Tags)
-                .Include(p => p.Author)
-                .Include(p => p.Likes)
-                .Include(p => p.Comments)
                 .ToListAsync();
 
             return posts

@@ -12,8 +12,8 @@ using Profitable.Data;
 namespace Profitable.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220716101911_CreateNonclusteredIndexOnTickerSymbol")]
-    partial class CreateNonclusteredIndexOnTickerSymbol
+    [Migration("20220720021902_initialUpdate")]
+    partial class initialUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,14 +84,14 @@ namespace Profitable.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TraderId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -99,7 +99,7 @@ namespace Profitable.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TraderId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
@@ -114,11 +114,11 @@ namespace Profitable.Data.Migrations
                     b.Property<string>("ProviderKey")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TraderId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -126,7 +126,7 @@ namespace Profitable.Data.Migrations
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("TraderId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
@@ -141,14 +141,14 @@ namespace Profitable.Data.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("TraderId")
+                    b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("TraderId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
@@ -170,6 +170,85 @@ namespace Profitable.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProfilePictureURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Comment", b =>
@@ -379,6 +458,12 @@ namespace Profitable.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ImageType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -444,85 +529,6 @@ namespace Profitable.Data.Migrations
                     b.ToTable("Tag");
                 });
 
-            modelBuilder.Entity("Profitable.Models.EntityModels.Trader", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProfilePicture")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -534,11 +540,11 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
                         .WithMany("Claims")
-                        .HasForeignKey("TraderId");
+                        .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -547,11 +553,11 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
                         .WithMany("Logins")
-                        .HasForeignKey("TraderId");
+                        .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -560,17 +566,17 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("TraderId");
-
-                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -579,7 +585,7 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.Trader", null)
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -588,7 +594,7 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Comment", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.Trader", "Author")
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -632,7 +638,7 @@ namespace Profitable.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Profitable.Models.EntityModels.Trader", "Trader")
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Trader")
                         .WithMany("Likes")
                         .HasForeignKey("TraderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -645,7 +651,7 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.List", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.Trader", "Trader")
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Trader")
                         .WithMany("Lists")
                         .HasForeignKey("TraderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -675,7 +681,7 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.Trader", "Author")
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Author")
                         .WithMany("Posts")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -703,6 +709,23 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Tag");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.ApplicationUser", b =>
+                {
+                    b.Navigation("Claims");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Likes");
+
+                    b.Navigation("Lists");
+
+                    b.Navigation("Logins");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Roles");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>
                 {
                     b.Navigation("ListsContainingIt");
@@ -725,23 +748,6 @@ namespace Profitable.Data.Migrations
             modelBuilder.Entity("Profitable.Models.EntityModels.Tag", b =>
                 {
                     b.Navigation("OnPosts");
-                });
-
-            modelBuilder.Entity("Profitable.Models.EntityModels.Trader", b =>
-                {
-                    b.Navigation("Claims");
-
-                    b.Navigation("Comments");
-
-                    b.Navigation("Likes");
-
-                    b.Navigation("Lists");
-
-                    b.Navigation("Logins");
-
-                    b.Navigation("Posts");
-
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

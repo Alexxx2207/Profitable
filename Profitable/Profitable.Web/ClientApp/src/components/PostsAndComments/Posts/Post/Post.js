@@ -14,6 +14,5 @@ export const Post = (props) => {
                 {props.postedOn}
             </div>
         </div>
-        <hr style={{border: "1px solid white"}}/>
     </div>);
 }

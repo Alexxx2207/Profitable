@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Profitable.Models.EntityModels;
-using Profitable.Models.InputModels.Seedeing;
+﻿using Profitable.Models.InputModels.Seedeing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +20,7 @@ namespace Profitable.GlobalConstants
                 FirstName = "Alexander",
                 LastName = "Ivanov",
                 Password = "123456",
-                ProfilePicture = null
+                ProfilePictureURL = null
             }
         };
     }

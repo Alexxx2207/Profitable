@@ -31,7 +31,7 @@ namespace Profitable.Data.Seeding.Seeders
                     Email = trader.Email,
                     FirstName = trader.FirstName,
                     LastName = trader.LastName,
-                    ProfilePicture = trader.ProfilePicture,
+                    ProfilePictureURL = trader.ProfilePictureURL,
                     UserName = trader.UserName,
                 };
 

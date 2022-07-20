@@ -30,7 +30,7 @@
         [Required]
         public string LastName { get; set; }
 
-        public string? ProfilePicture { get; set; }
+        public string? ProfilePictureURL { get; set; }
 
         public virtual ICollection<List> Lists { get; set; }
 

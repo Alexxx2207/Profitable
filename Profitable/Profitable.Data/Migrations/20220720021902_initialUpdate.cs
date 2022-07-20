@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Profitable.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class initialUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,7 +31,7 @@ namespace Profitable.Data.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePictureURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -124,14 +124,14 @@ namespace Profitable.Data.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TraderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_TraderId",
-                        column: x => x.TraderId,
+                        name: "FK_AspNetUserClaims_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -150,14 +150,14 @@ namespace Profitable.Data.Migrations
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TraderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_TraderId",
-                        column: x => x.TraderId,
+                        name: "FK_AspNetUserLogins_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -174,7 +174,7 @@ namespace Profitable.Data.Migrations
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TraderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -186,8 +186,8 @@ namespace Profitable.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_TraderId",
-                        column: x => x.TraderId,
+                        name: "FK_AspNetUserRoles_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -248,6 +248,8 @@ namespace Profitable.Data.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageType = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -266,16 +268,17 @@ namespace Profitable.Data.Migrations
                 name: "FinancialInstruments",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TickerSymbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TickerSymbol = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ExchangeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MarketTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GUID = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FinancialInstruments", x => x.GUID);
+                    table.PrimaryKey("IX_TickerSymbol", x => x.TickerSymbol)
+                        .Annotation("SqlServer:Clustered", false);
                     table.ForeignKey(
                         name: "FK_FinancialInstruments_Exchanges_ExchangeId",
                         column: x => x.ExchangeId,
@@ -390,7 +393,7 @@ namespace Profitable.Data.Migrations
                         name: "FK_ListsFinancialInstruments_FinancialInstruments_FinancialInstrumentId",
                         column: x => x.FinancialInstrumentId,
                         principalTable: "FinancialInstruments",
-                        principalColumn: "GUID",
+                        principalColumn: "TickerSymbol",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ListsFinancialInstruments_Lists_ListId",
@@ -413,9 +416,9 @@ namespace Profitable.Data.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_TraderId",
+                name: "IX_AspNetUserClaims_ApplicationUserId",
                 table: "AspNetUserClaims",
-                column: "TraderId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -423,9 +426,9 @@ namespace Profitable.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_TraderId",
+                name: "IX_AspNetUserLogins_ApplicationUserId",
                 table: "AspNetUserLogins",
-                column: "TraderId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserLogins_UserId",
@@ -433,14 +436,14 @@ namespace Profitable.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_ApplicationUserId",
+                table: "AspNetUserRoles",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_TraderId",
-                table: "AspNetUserRoles",
-                column: "TraderId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",

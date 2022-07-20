@@ -30,14 +30,10 @@ export const MarketsList = () => {
         })
     }, []);
     
-    const widgetStyle = {
-        height: '81vh'
-    }
-    
     return (
-        <div style={widgetStyle}>
+        <div style={{height: '81vh'}}>
             <section className="search">
-                <select onChange={(e) => fetchInstrumentData(e.target.value)}>
+                <select onChange={(e) => fetchInstrumentData(e.target.value)} value={instrument.tickerSymbol}>
                     {allInstruments.map(instr => <option key={instr.guid} value={instr.tickerSymbol}>{instr.tickerSymbol}</option>)}
                 </select>
             </section>
