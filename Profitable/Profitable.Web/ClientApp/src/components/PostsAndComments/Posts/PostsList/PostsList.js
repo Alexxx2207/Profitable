@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { PostsListItem } from '../PostsListItem/PostsListItem';
+import { PostsListItem } from './PostsListItem/PostsListItem';
 import styles from './PostsList.module.css';
 
 export const PostsList = () => {

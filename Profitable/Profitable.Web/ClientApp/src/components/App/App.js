@@ -8,7 +8,8 @@ import { NavBar } from "../NavBar/NavBar";
 import { Home } from '../Home/Home';
 import { About } from '../About/About';
 import { MarketsList } from '../Markets/MarketsList/MarketsList';
-import { PostsList } from '../PostsAndComments/Posts/PostsListWidget/PostsList';
+import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
+import { Post } from '../PostsAndComments/Posts/Post/Post';
 import styles from './App.module.css'
 
 export function App() {
@@ -31,6 +32,11 @@ export function App() {
                 </Route>
                 <Route path="/posts" element={
                     <PostsList />
+                }>
+                </Route>
+                
+                <Route path="/posts/:postId" element={
+                    <Post />
                 }>
                 </Route>
             </Routes>

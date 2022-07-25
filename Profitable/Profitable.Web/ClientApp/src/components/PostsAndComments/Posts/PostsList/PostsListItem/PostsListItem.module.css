@@ -1,24 +1,34 @@
 .post {
+    position: relative;
     width: 47%;
     padding: 2rem;
-    border: 2px solid #4a4b4e;
+    border: 2px solid #282829;
     display: flex;
     flex-direction: column;
+    transition: 0.3s;
 }
 
 .post:hover {
     border: 2px solid white;
-    box-shadow: 0px 0px 2rem white;
+    box-shadow: 0px 0px 1rem white;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .titleContent {
     flex-grow: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
-.content {
-    margin: 5rem 0rem;
+.mainContent {
+    flex-grow: 2;
+    margin: 2rem 0rem;
     overflow: hidden;
+    text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
