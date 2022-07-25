@@ -18,7 +18,7 @@ namespace Profitable.Automapper.TypeConverters
         }
         public byte[] Convert(string sourceMember, ResolutionContext context)
         {
-            var filePath = GlobalServicesConstants.UploadsFolderPath + imageFor.ToString() + sourceMember;
+            var filePath = $"{GlobalServicesConstants.UploadsFolderPath}\\{imageFor}\\{sourceMember}";
             var fileBytes = File.ReadAllBytes(filePath);
 
             return fileBytes;

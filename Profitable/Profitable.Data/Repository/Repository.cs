@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Profitable.Data.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity>
-        where TEntity : EntityBase
+        where TEntity : class, IDeletebleEntity
     {
         private readonly ApplicationDbContext dbContext;
 

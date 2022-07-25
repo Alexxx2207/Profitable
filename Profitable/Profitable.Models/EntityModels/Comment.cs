@@ -12,6 +12,7 @@ namespace Profitable.Models.EntityModels
 {
     public class Comment : EntityBase
     {
+
         [ForeignKey("Author")]
         public string AuthorId { get; set; }
         public ApplicationUser Author { get; set; }
