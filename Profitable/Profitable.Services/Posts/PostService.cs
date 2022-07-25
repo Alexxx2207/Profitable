@@ -66,7 +66,7 @@ namespace Profitable.Services.Posts
             return mapper.Map<PostViewModel>(await postsRepository
                 .GetAllAsNoTracking()
                 .Include(p => p.Tags)
-                .FirstAsync(entity => entity.GUID.ToString() == guid));
+                .FirstAsync(entity => entity.GUID == guid));
         }
 
         public async Task<List<LikeViewModel>> GetPostLikes(string guid)

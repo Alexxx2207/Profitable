@@ -9,7 +9,7 @@ export const PostsListItem = (props) => {
     const navigate = useNavigate();
 
     const postClickHandler = () => {
-        navigate('/posts/:postId', { replace: false });
+        navigate(`/posts/${props.guid}`, { replace: false });
     }
 
     return (

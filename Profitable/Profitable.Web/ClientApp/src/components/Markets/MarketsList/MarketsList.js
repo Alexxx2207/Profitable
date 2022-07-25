@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MarketWidget } from '../MarketWidget/MarketWidget';
+import { WEB_API_BASE_URL } from '../../../common/config';
 
 export const MarketsList = () => {
     const requiredInstrument = {
@@ -11,7 +12,7 @@ export const MarketsList = () => {
     const [allInstruments, setAllInstruments] = useState([]);
 
     const fetchInstrumentData = (instrument) => {
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/markets/${instrument}`)
+        fetch(`${WEB_API_BASE_URL}/markets/${instrument}`)
         .then(response => response.json())
         .then(responseInstrument => {
             setInstrument(responseInstrument);
@@ -23,7 +24,7 @@ export const MarketsList = () => {
     }, []);
   
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_BASE_URL}/api/markets/`)
+        fetch(`${process.env.WEB_API_BASE_URL}/markets/`)
         .then(res => res.json())
         .then(responseInstrument => {
             setAllInstruments(responseInstrument);
