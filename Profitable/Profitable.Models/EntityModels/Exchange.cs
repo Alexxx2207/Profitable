@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Profitable.Models.EntityModels
 {
+
     public class Exchange : EntityBase
     {
         [Required]

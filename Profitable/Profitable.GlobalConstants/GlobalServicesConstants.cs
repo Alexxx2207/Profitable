@@ -17,6 +17,6 @@ namespace Profitable.GlobalConstants
 
         public static readonly string UploadsFolderPath =
             Path.GetDirectoryName(Directory.GetCurrentDirectory())
-            + $"\\{UploadsFolderInProject}\\Uploads\\";
+            + $"\\{UploadsFolderInProject}\\Uploads";
     }
 }

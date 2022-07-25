@@ -4,9 +4,11 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Identity;
+    using Profitable.GlobalConstants;
+    using Profitable.Models.Contracts;
 
-    public class ApplicationUser : IdentityUser
-    {
+    public class ApplicationUser : IdentityUser, IDeletebleEntity
+    { 
         public ApplicationUser()
         {
             Id = Guid.NewGuid().ToString();
@@ -22,15 +24,20 @@
 
         }
 
-        public bool IsDeleted { get; set; }
-
         [Required]
         public string FirstName { get; set; }
 
         [Required]
         public string LastName { get; set; }
 
+        public ImageTypes? ImageType { get; set; }
+
         public string? ProfilePictureURL { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
+
 
         public virtual ICollection<List> Lists { get; set; }
 
@@ -45,5 +52,6 @@
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+
     }
 }

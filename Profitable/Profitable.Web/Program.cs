@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Profitable.Data.Seeding;
 using Microsoft.AspNetCore.Identity;
 using Profitable.Web.Infrastructure;
+using Profitable.Services.Users.Contracts;
+using Profitable.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,7 @@ var mapperConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new PostsMapper());
     mc.AddProfile(new CommentsMapper());
     mc.AddProfile(new MarketsMapper());
+    mc.AddProfile(new UsersMapper());
 });
 
 IMapper mapper = mapperConfig.CreateMapper();
@@ -39,6 +42,7 @@ builder.Services.AddScoped<ApplicationDbContext>();
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<IMarketsService, MarketsService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddCors(options =>
 {
