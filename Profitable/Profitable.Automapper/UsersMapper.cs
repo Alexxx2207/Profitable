@@ -22,7 +22,7 @@ namespace Profitable.Automapper
                 )
                 .ForMember(
                     dest => dest.ImageType,
-                    opt => opt.MapFrom(src => Enum.GetName(typeof(ImageTypes), src))
+                    opt => opt.MapFrom(src => src.ToString())
                 )
                 .ForMember(
                 dest => dest.ProfileImage,

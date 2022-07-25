@@ -30,6 +30,7 @@ var mapperConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new PostsMapper());
     mc.AddProfile(new CommentsMapper());
     mc.AddProfile(new MarketsMapper());
+    mc.AddProfile(new UsersMapper());
 });
 
 IMapper mapper = mapperConfig.CreateMapper();

@@ -18,6 +18,11 @@ namespace Profitable.Automapper.TypeConverters
         }
         public byte[] Convert(string sourceMember, ResolutionContext context)
         {
+            if(string.IsNullOrEmpty(sourceMember))
+            {
+                return Array.Empty<byte>();
+            }
+
             var filePath = $"{GlobalServicesConstants.UploadsFolderPath}\\{imageFor}\\{sourceMember}";
             var fileBytes = File.ReadAllBytes(filePath);
 
