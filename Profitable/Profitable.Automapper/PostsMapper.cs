@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Profitable.Automapper.TypeConverters;
+using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Posts;
 using Profitable.Models.ViewModels.Posts;
@@ -25,7 +26,7 @@ namespace Profitable.Automapper
                 .ForMember(dest => dest.ImageType, opt =>
                     opt.MapFrom(source => (int) source.ImageType))
             .ForMember(dest => dest.Image, opt =>
-                    opt.ConvertUsing(new ImageByteArrayConverter(), src => src.ImageURL));
+                    opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Posts), src => src.ImageURL));
         }
     }
 }

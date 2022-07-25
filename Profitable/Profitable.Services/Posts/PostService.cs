@@ -94,9 +94,9 @@ namespace Profitable.Services.Posts
                 .Include(p => p.Comments)
                 .ToListAsync();
 
-            var result = posts.Select(post => mapper.Map<PostViewModel>(post)).ToList();
-
-            return result;
+            return posts
+                .Select(post => mapper.Map<PostViewModel>(post))
+                .ToList();
         }
 
         public async Task<List<PostViewModel>> GetPostsByTrader(string traderId)

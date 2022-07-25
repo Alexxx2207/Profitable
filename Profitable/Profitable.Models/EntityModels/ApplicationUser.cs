@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Identity;
+    using Profitable.GlobalConstants;
 
     public class ApplicationUser : IdentityUser
     {
@@ -29,6 +30,8 @@
 
         [Required]
         public string LastName { get; set; }
+
+        public ImageTypes? ImageType { get; set; }
 
         public string? ProfilePictureURL { get; set; }
 
