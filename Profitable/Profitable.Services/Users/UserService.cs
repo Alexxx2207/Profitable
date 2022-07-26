@@ -18,7 +18,7 @@ namespace Profitable.Services.Users
             this.mapper = mapper;
         }
 
-        public async Task<UserDetailsViewModel> GetUserDetails(string username)
+        public async Task<UserDetailsViewModel> GetUserDetailsAsync(string username)
         {
             var user = await repository
                 .GetAllAsNoTracking()

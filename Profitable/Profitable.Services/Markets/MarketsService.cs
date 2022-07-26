@@ -18,7 +18,7 @@ namespace Profitable.Services.Markets
             this.mapper = mapper;
         }
 
-        public async Task<List<FinantialInstrumentViewModel>> GetAllFinantialInstruments()
+        public async Task<List<FinantialInstrumentViewModel>> GetAllFinantialInstrumentsAsync()
         {
             var instrument = await repository
                 .GetAllAsNoTracking()
@@ -29,7 +29,7 @@ namespace Profitable.Services.Markets
                 .ToList();
         }
 
-        public async Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbol(string symbol)
+        public async Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbolAsync(string symbol)
         {
             var instrument = await repository
                 .GetAllAsNoTracking()

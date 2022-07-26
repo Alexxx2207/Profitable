@@ -24,7 +24,7 @@ namespace Profitable.Services.Posts
             this.mapper = mapper;
         }
 
-        public async Task<Result> AddPost(AddPostInputModel newPost)
+        public async Task<Result> AddPostAsync(AddPostInputModel newPost)
         {
             var postToAdd = mapper.Map<Post>(newPost);
 
@@ -37,7 +37,7 @@ namespace Profitable.Services.Posts
             return true;
         }
 
-        public async Task<Result> DeletePost(string guid)
+        public async Task<Result> DeletePostAsync(string guid)
         {
             var entity = await postsRepository.GetAllAsNoTracking().FirstAsync(entity => entity.GUID.ToString() == guid);
 
@@ -48,7 +48,7 @@ namespace Profitable.Services.Posts
             return true;
         }
 
-        public async Task<Result> DeleteLike(string postGuid, string traderId)
+        public async Task<Result> DeleteLikeAsync(string postGuid, string traderId)
         {
             var like = await likesRepository
                 .GetAllAsNoTracking()
@@ -61,7 +61,7 @@ namespace Profitable.Services.Posts
             return true;
         }
 
-        public async Task<PostViewModel> GetPost(string guid)
+        public async Task<PostViewModel> GetPostAsync(string guid)
         {
             return mapper.Map<PostViewModel>(await postsRepository
                 .GetAllAsNoTracking()
@@ -69,7 +69,7 @@ namespace Profitable.Services.Posts
                 .FirstAsync(entity => entity.GUID == guid));
         }
 
-        public async Task<List<LikeViewModel>> GetPostLikes(string guid)
+        public async Task<List<LikeViewModel>> GetPostLikesAsync(string guid)
         {
             var likes = await likesRepository
                 .GetAllAsNoTracking()
@@ -81,7 +81,7 @@ namespace Profitable.Services.Posts
                 .ToList();
         }
 
-        public async Task<List<PostViewModel>> GetPosts(int page)
+        public async Task<List<PostViewModel>> GetPostsAsync(int page)
         {
             var posts = await postsRepository
                 .GetAllAsNoTracking()
@@ -99,7 +99,7 @@ namespace Profitable.Services.Posts
                 .ToList();
         }
 
-        public async Task<List<PostViewModel>> GetPostsByTrader(string traderId)
+        public async Task<List<PostViewModel>> GetPostsByTraderAsync(string traderId)
         {
             var posts = await postsRepository
                 .GetAllAsNoTracking()
@@ -112,7 +112,7 @@ namespace Profitable.Services.Posts
                 .ToList();
         }
 
-        public async Task<Result> UpdatePost(UpdatePostInputModel newPost)
+        public async Task<Result> UpdatePostAsync(UpdatePostInputModel newPost)
         {
             var post = await postsRepository
                 .GetAll()
