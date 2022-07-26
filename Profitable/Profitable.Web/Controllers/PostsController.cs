@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Profitable.GlobalConstants;
 using Profitable.Services.Posts.Contracts;
 using Profitable.Web.Controllers.Contracts;
 
@@ -21,7 +20,7 @@ namespace Profitable.Web.Controllers
             var posts = await postService.GetPosts(page);
 
             return Ok(posts);
-        } 
+        }
 
         [Route("{postId}")]
         [HttpGet]
@@ -30,6 +29,6 @@ namespace Profitable.Web.Controllers
             var post = await postService.GetPost(postId);
 
             return Ok(post);
-        } 
+        }
     }
 }

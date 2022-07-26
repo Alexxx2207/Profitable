@@ -1,14 +1,14 @@
 ﻿namespace Profitable.Models.EntityModels
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Identity;
     using Profitable.GlobalConstants;
     using Profitable.Models.Contracts;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class ApplicationUser : IdentityUser, IDeletebleEntity
-    { 
+    {
         public ApplicationUser()
         {
             Id = Guid.NewGuid().ToString();

@@ -1,11 +1,4 @@
-﻿using Profitable.Models.EntityModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Profitable.Models.InputModels.Posts
+﻿namespace Profitable.Models.InputModels.Posts
 {
     public class UpdatePostInputModel
     {

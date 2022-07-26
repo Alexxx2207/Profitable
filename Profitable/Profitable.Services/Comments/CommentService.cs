@@ -6,11 +6,6 @@ using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Comments;
 using Profitable.Models.ViewModels.Comments;
 using Profitable.Services.Comments.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Profitable.Services.Comments
 {
@@ -48,7 +43,7 @@ namespace Profitable.Services.Comments
 
             return true;
         }
-        
+
         public async Task<CommentViewModel> GetComment(string guid)
         {
             var comment = await repository
@@ -78,7 +73,7 @@ namespace Profitable.Services.Comments
                 .GetAll().
                 FirstAsync(entity => entity.GUID.ToString() == newComment.Guid);
 
-            if(existingComment == null)
+            if (existingComment == null)
             {
                 return GlobalConstants.GlobalServicesConstants.EntityDoesNotExist;
             }

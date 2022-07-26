@@ -3,7 +3,6 @@ using Profitable.Data.Repository;
 using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.Models.EntityModels;
 
-
 namespace Profitable.Data.Seeding.Seeders
 {
     public class MarketTypesSeeder : ISeeder

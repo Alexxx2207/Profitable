@@ -4,7 +4,6 @@ using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Seedeing;
 
-
 namespace Profitable.Data.Seeding.Seeders
 {
     public class UsersSeeder : ISeeder

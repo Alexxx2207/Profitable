@@ -1,21 +1,19 @@
 using AutoMapper;
-using Profitable.Data.Repository.Contract;
-using Profitable.Data.Repository;
-using Profitable.Automapper;
-using Profitable.Services.Posts.Contracts;
-using Profitable.Services.Posts;
-using Profitable.Services.Comments.Contracts;
-using Profitable.Services.Comments;
-using Profitable.Models.EntityModels;
-using Profitable.Services.Markets.Contract;
-using Profitable.Services.Markets;
-using Profitable.Data;
 using Microsoft.EntityFrameworkCore;
+using Profitable.Automapper;
+using Profitable.Data;
+using Profitable.Data.Repository;
+using Profitable.Data.Repository.Contract;
 using Profitable.Data.Seeding;
-using Microsoft.AspNetCore.Identity;
-using Profitable.Web.Infrastructure;
-using Profitable.Services.Users.Contracts;
+using Profitable.Services.Comments;
+using Profitable.Services.Comments.Contracts;
+using Profitable.Services.Markets;
+using Profitable.Services.Markets.Contract;
+using Profitable.Services.Posts;
+using Profitable.Services.Posts.Contracts;
 using Profitable.Services.Users;
+using Profitable.Services.Users.Contracts;
+using Profitable.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

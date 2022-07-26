@@ -1,11 +1,5 @@
-﻿using Profitable.Models.EntityModels;
-using Profitable.Models.ViewModels.Comments;
+﻿using Profitable.Models.ViewModels.Comments;
 using Profitable.Models.ViewModels.Like;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Profitable.Models.ViewModels.Posts
 {

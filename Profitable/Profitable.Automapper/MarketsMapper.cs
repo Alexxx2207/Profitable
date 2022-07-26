@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using Profitable.Models.EntityModels;
 using Profitable.Models.ViewModels.Markets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Profitable.Automapper
 {
@@ -18,7 +13,7 @@ namespace Profitable.Automapper
                 {
                     options.MapFrom(source => source.Exchange.Name);
                 })
-                .ForMember(destination => destination.MarketType, options => 
+                .ForMember(destination => destination.MarketType, options =>
                 {
                     options.MapFrom(source => source.MarketType.Name);
                 });

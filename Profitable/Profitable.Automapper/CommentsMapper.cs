@@ -2,11 +2,6 @@
 using Profitable.Models.EntityModels;
 using Profitable.Models.InputModels.Comments;
 using Profitable.Models.ViewModels.Comments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Profitable.Automapper
 {

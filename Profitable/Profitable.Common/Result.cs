@@ -6,16 +6,16 @@
 
         public string Error { get; private set; }
 
-        public static implicit operator Result(bool succeded) => new Result 
+        public static implicit operator Result(bool succeded) => new Result
         {
             Succeeded = succeded
         };
 
         public static implicit operator Result(string error) => new Result
-            {
-                Succeeded = false,
-                Error = error,
-            };
+        {
+            Succeeded = false,
+            Error = error,
+        };
 
     }
 }

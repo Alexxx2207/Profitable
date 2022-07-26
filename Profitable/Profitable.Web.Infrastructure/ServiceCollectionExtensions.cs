@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
-using Profitable.Models.EntityModels;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Profitable.Data;
+using Profitable.Models.EntityModels;
 
 namespace Profitable.Web.Infrastructure
 {

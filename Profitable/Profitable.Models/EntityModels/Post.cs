@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Profitable.GlobalConstants;
+using Profitable.Models.Contracts;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Profitable.Models.Contracts;
-using Profitable.GlobalConstants;
 
 namespace Profitable.Models.EntityModels
 {

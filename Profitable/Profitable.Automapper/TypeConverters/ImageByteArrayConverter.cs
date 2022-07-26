@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using Profitable.GlobalConstants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Profitable.Automapper.TypeConverters
 {
@@ -18,7 +13,7 @@ namespace Profitable.Automapper.TypeConverters
         }
         public byte[] Convert(string sourceMember, ResolutionContext context)
         {
-            if(string.IsNullOrEmpty(sourceMember))
+            if (string.IsNullOrEmpty(sourceMember))
             {
                 return Array.Empty<byte>();
             }

@@ -3,11 +3,6 @@ using Profitable.Data.Repository;
 using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Profitable.Data.Seeding.Seeders
 {
@@ -34,7 +29,7 @@ namespace Profitable.Data.Seeding.Seeders
                     postToAdd.Content = newPost.Content;
                     postToAdd.PostedOn = DateTime.UtcNow;
                     postToAdd.AuthorId = user.Id;
-                    postToAdd.ImageType = (ImageTypes) newPost.ImageType;
+                    postToAdd.ImageType = (ImageTypes)newPost.ImageType;
                     postToAdd.ImageURL = newPost.ImageURL;
 
                     await postsRepository.AddAsync(postToAdd);
