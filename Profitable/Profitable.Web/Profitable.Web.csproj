@@ -42,7 +42,7 @@
     <ProjectReference Include="..\Profitable.Automapper\Profitable.Automapper.csproj" />
     <ProjectReference Include="..\Profitable.Data\Profitable.Data.csproj" />
     <ProjectReference Include="..\Profitable.Services\Profitable.Services.csproj" />
-    <ProjectReference Include="..\Profitable.Web.Infrasturcture\Profitable.Web.Infrastructure.csproj" />
+    <ProjectReference Include="..\Profitable.Web.Infrastructure\Profitable.Web.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

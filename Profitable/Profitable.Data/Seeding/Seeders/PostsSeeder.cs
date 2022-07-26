@@ -22,7 +22,7 @@ namespace Profitable.Data.Seeding.Seeders
             var currentEntries = dbContext.Posts;
 
             var user = dbContext.Users
-                .First(u => u.UserName == GlobalDatabaseConstants.DefaultUsersToSeed[0].UserName);
+                .First(u => u.Email == GlobalDatabaseConstants.DefaultUsersToSeed[0].Email);
 
             foreach (var newPost in json)
             {

@@ -22,17 +22,17 @@ namespace Profitable.Data.Seeding.Seeders
 
         private static async Task SeedUserAsync(UserManager<ApplicationUser> userManager, SeededTrader trader, string role = null)
         {
-            var userExists = await userManager.FindByNameAsync(trader.UserName);
+            var userExists = await userManager.FindByNameAsync(trader.Email);
             if (userExists == null)
             {
                 var user = new ApplicationUser()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Email = trader.Email,
+                    UserName = trader.Email,
                     FirstName = trader.FirstName,
                     LastName = trader.LastName,
                     ProfilePictureURL = trader.ProfilePictureURL,
-                    UserName = trader.UserName,
                 };
 
                 var result = await userManager.CreateAsync(user, trader.Password);

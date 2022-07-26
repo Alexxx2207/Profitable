@@ -16,7 +16,6 @@ namespace Profitable.GlobalConstants
             new SeededTrader()
             {
                 Email = "as@as.as",
-                UserName = "as@as.as",
                 FirstName = "Alexander",
                 LastName = "Ivanov",
                 Password = "123456",
