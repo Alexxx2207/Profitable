@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComments } from '@fortawesome/free-solid-svg-icons';
 import styles from './PostsListItem.module.css';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const PostsListItem = (props) => {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { PostsListItem } from './PostsListItem/PostsListItem';
-import { WEB_API_BASE_URL } from '../../../../common/config';
+import { loadPostsPage } from '../../../../services/posts/postsService';
 import styles from './PostsList.module.css';
 
 export const PostsList = () => {
@@ -8,8 +8,7 @@ export const PostsList = () => {
     let page = 0;
 
     const loadPosts = useCallback(() => {
-        fetch(`${WEB_API_BASE_URL}/posts/pages/${page}`)
-            .then(response => response.json())
+        loadPostsPage(page)
             .then(result => {
                 if (result.length > 0) {
                     setPosts(posts => [...posts, ...result])

@@ -1,8 +1,7 @@
 import styles from './Post.module.css';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { WEB_API_BASE_URL } from '../../../../common/config';
-
+import { createImgURL, loadParticularPost } from '../../../../services/posts/postsService';
 
 export const Post = () => {
 
@@ -18,20 +17,14 @@ export const Post = () => {
         comments: [],
     });
 
-    const createImgURL = () => {
-        const imageUrl = `data:image/${post.imageType};base64,${post.image}`;
-        return imageUrl;
-    }
-
     useEffect(() => {
-        fetch(`${WEB_API_BASE_URL}/posts/${postId}`)
-        .then(response => response.json())
-        .then(result => setPost(result))
+        loadParticularPost(postId)
+            .then(result => setPost(result))
     }, [postId])
 
     return (
     <div className={styles.post}>
-        <img src={createImgURL()} alt="" />
+        <img src={createImgURL(post)} alt="" />
         <div className={styles.text}>
             <h1>{post.title}</h1>
             <p>{post.content}</p>
