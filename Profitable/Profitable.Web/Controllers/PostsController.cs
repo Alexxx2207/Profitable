@@ -14,13 +14,22 @@ namespace Profitable.Web.Controllers
             this.postService = postService;
         }
 
-        [Route("{page}")]
+        [Route("pages/{page}")]
         [HttpGet]
         public async Task<IActionResult> GetPostsByPage([FromRoute] int page)
         {
             var posts = await postService.GetPosts(page);
 
             return Ok(posts);
+        } 
+
+        [Route("{postId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetPostById([FromRoute] string postId)
+        {
+            var post = await postService.GetPost(postId);
+
+            return Ok(post);
         } 
     }
 }

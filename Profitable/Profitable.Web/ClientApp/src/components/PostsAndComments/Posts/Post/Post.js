@@ -1,26 +1,40 @@
 import styles from './Post.module.css';
-import { useParams } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { createImgURL, loadParticularPost } from '../../../../services/posts/postsService';
 
-export const Post = (props) => {
+export const Post = () => {
 
     const { postId } = useParams();
+    const [ post, setPost ] = useState({
+        title: '',
+        content: '',
+        author: '',
+        postedOn: '',
+        imageType: '',
+        image: '',
+        likes: [],
+        comments: [],
+    });
 
-    const createImgURL = () => {
-        const imageUrl = `data:image/${props.imageType};base64,${props.image}`;
-        return imageUrl;
-    }
+    useEffect(() => {
+        loadParticularPost(postId)
+            .then(result => setPost(result))
+    }, [postId])
 
-    return (<div className={styles.post}>
-        <div className={styles.content}>
-            <h1>{props.title}</h1>
-            <p>{props.content}</p>
+    return (
+    <div className={styles.post}>
+        <img src={createImgURL(post)} alt="" />
+        <div className={styles.text}>
+            <h1>{post.title}</h1>
+            <p>{post.content}</p>
         </div>
         <div className={styles.information}>
             <div className={styles.author}>
-                {props.author}
+                {post.author}
             </div>
             <div className={styles.postedOn}>
-                {props.postedOn}
+                {post.postedOn}
             </div>
         </div>
     </div>);
