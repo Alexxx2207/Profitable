@@ -22,3 +22,8 @@ export const loadPostsPage = (page) => {
     return fetch(`${WEB_API_BASE_URL}/posts/pages/${page}`)
         .then(response => response.json());
 }
+
+export const likePost = (postId) => {
+    // AJAX for Like (USER SHOULD BE AUTHENTICATED)
+    console.log('works');
+}

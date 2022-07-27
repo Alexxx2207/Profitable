@@ -1,0 +1,19 @@
+.likesContainer {
+    display: flex;
+    align-items: baseline;
+    margin: 0vw 0.5vw;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border: 3px solid #282829;
+    border-radius: 1vw;
+}
+
+.likesContainer:hover {
+    cursor: pointer;
+    border: 3px solid white;
+}
+
+.iconLikes {
+    margin-left: 1rem;    
+}
