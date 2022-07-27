@@ -15,18 +15,18 @@ namespace Profitable.Web.Controllers
 
         [Route("pages/{page}")]
         [HttpGet]
-        public async Task<IActionResult> GetPostsByPage([FromRoute] int page)
+        public async Task<IActionResult> GetPostsByPageAsync([FromRoute] int page)
         {
-            var posts = await postService.GetPosts(page);
+            var posts = await postService.GetPostsByPageAsync(page);
 
             return Ok(posts);
         }
 
         [Route("{postId}")]
         [HttpGet]
-        public async Task<IActionResult> GetPostById([FromRoute] string postId)
+        public async Task<IActionResult> GetPostByIdAsync([FromRoute] string postId)
         {
-            var post = await postService.GetPost(postId);
+            var post = await postService.GetPostAsync(postId);
 
             return Ok(post);
         }

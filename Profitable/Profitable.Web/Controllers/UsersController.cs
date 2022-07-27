@@ -15,9 +15,9 @@ namespace Profitable.Web.Controllers
 
         [Route("{username}")]
         [HttpGet]
-        public async Task<IActionResult> GetUser([FromRoute] string username)
+        public async Task<IActionResult> GetUserAsync([FromRoute] string username)
         {
-            var user = await userService.GetUserDetails(username);
+            var user = await userService.GetUserDetailsAsync(username);
 
             return Ok(user);
         }

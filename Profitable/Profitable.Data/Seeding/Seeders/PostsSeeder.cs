@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using Profitable.Data.Repository;
+﻿using Profitable.Data.Repository;
 using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
+using System.Text.Json;
 
 namespace Profitable.Data.Seeding.Seeders
 {
@@ -12,27 +12,37 @@ namespace Profitable.Data.Seeding.Seeders
         {
             var postsRepository = new Repository<Post>(dbContext);
 
-            var json = JsonConvert.DeserializeObject<List<JsonPost>>(await new StreamReader("DataToSeed/TestPosts.json").ReadToEndAsync());
+            IAsyncEnumerable<JsonPost> postsInput = null;
 
-            var currentEntries = dbContext.Posts;
-
-            var user = dbContext.Users
-                .First(u => u.Email == GlobalDatabaseConstants.DefaultUsersToSeed[0].Email);
-
-            foreach (var newPost in json)
+            using (var stream = new FileStream("DataToSeed/TestPosts.json", FileMode.Open, FileAccess.Read))
             {
-                if (!currentEntries.Any(p => p.Title == newPost.Title && p.Content == newPost.Content))
+                postsInput = JsonSerializer.DeserializeAsyncEnumerable<JsonPost>
+                    (stream, new JsonSerializerOptions()
+                    {
+                        AllowTrailingCommas = true,
+                        PropertyNameCaseInsensitive = true,
+                    });
+
+                var currentEntries = dbContext.Posts;
+
+                var user = dbContext.Users
+                    .First(u => u.Email == GlobalDatabaseConstants.DefaultUsersToSeed[0].Email);
+
+                await foreach (var newPost in postsInput)
                 {
-                    var postToAdd = new Post();
+                    if (!currentEntries.Any(p => p.Title == newPost.Title && p.Content == newPost.Content))
+                    {
+                        var postToAdd = new Post();
 
-                    postToAdd.Title = newPost.Title;
-                    postToAdd.Content = newPost.Content;
-                    postToAdd.PostedOn = DateTime.UtcNow;
-                    postToAdd.AuthorId = user.Id;
-                    postToAdd.ImageType = (ImageTypes)newPost.ImageType;
-                    postToAdd.ImageURL = newPost.ImageURL;
+                        postToAdd.Title = newPost.Title;
+                        postToAdd.Content = newPost.Content;
+                        postToAdd.PostedOn = DateTime.UtcNow;
+                        postToAdd.AuthorId = user.Id;
+                        postToAdd.ImageType = (ImageTypes)newPost.ImageType;
+                        postToAdd.ImageURL = newPost.ImageURL;
 
-                    await postsRepository.AddAsync(postToAdd);
+                        await postsRepository.AddAsync(postToAdd);
+                    }
                 }
             }
         }

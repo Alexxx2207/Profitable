@@ -20,7 +20,7 @@ namespace Profitable.Services.Comments
             this.mapper = mapper;
         }
 
-        public async Task<Result> AddComment(AddCommentInputModel newComment)
+        public async Task<Result> AddCommentAsync(AddCommentInputModel newComment)
         {
             var comment = mapper.Map<Comment>(newComment);
 
@@ -31,7 +31,7 @@ namespace Profitable.Services.Comments
             return true;
         }
 
-        public async Task<Result> DeleteComment(string guid)
+        public async Task<Result> DeleteCommentAsync(string guid)
         {
             var comment = await repository
                 .GetAllAsNoTracking()
@@ -44,7 +44,7 @@ namespace Profitable.Services.Comments
             return true;
         }
 
-        public async Task<CommentViewModel> GetComment(string guid)
+        public async Task<CommentViewModel> GetCommentAsync(string guid)
         {
             var comment = await repository
                 .GetAllAsNoTracking()
@@ -53,19 +53,18 @@ namespace Profitable.Services.Comments
             return mapper.Map<CommentViewModel>(comment);
         }
 
-        public async Task<List<CommentViewModel>> GetCommentsByPost(string postGUID)
+        public async Task<List<CommentViewModel>> GetCommentsByPostAsync(string postGUID)
         {
             var comments = await repository
                 .GetAllAsNoTracking()
                 .Where(comment => comment.PostId == postGUID)
+                .Select(comment => mapper.Map<CommentViewModel>(comment))
                 .ToListAsync();
 
-            return comments
-                .Select(comment => mapper.Map<CommentViewModel>(comment))
-                .ToList();
+            return comments;
         }
 
-        public async Task<Result> UpdateComment(UpdateCommentInputModel newComment)
+        public async Task<Result> UpdateCommentAsync(UpdateCommentInputModel newComment)
         {
             var comment = mapper.Map<Comment>(newComment);
 

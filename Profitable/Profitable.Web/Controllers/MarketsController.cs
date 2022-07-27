@@ -15,17 +15,17 @@ namespace Profitable.Web.Controllers
 
         [Route("{symbol}")]
         [HttpGet]
-        public async Task<IActionResult> GetInstrument([FromRoute] string symbol)
+        public async Task<IActionResult> GetInstrumentAsync([FromRoute] string symbol)
         {
-            var instrument = await this.marketsService.GetFinantialInstrumentBySymbol(symbol);
+            var instrument = await this.marketsService.GetFinantialInstrumentBySymbolAsync(symbol);
 
             return Ok(instrument);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetInstruments()
+        public async Task<IActionResult> GetInstrumentsAsync()
         {
-            var instrument = await this.marketsService.GetAllFinantialInstruments();
+            var instrument = await this.marketsService.GetAllFinantialInstrumentsAsync();
 
             return Ok(instrument);
         }

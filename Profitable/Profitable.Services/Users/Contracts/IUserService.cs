@@ -4,6 +4,6 @@ namespace Profitable.Services.Users.Contracts
 {
     public interface IUserService
     {
-        Task<UserDetailsViewModel> GetUserDetails(string email);
+        Task<UserDetailsViewModel> GetUserDetailsAsync(string email);
     }
 }

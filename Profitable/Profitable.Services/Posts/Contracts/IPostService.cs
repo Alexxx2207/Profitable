@@ -7,20 +7,20 @@ namespace Profitable.Services.Posts.Contracts
 {
     public interface IPostService
     {
-        Task<PostViewModel> GetPost(string guid);
+        Task<PostViewModel> GetPostAsync(string guid);
 
-        public Task<List<PostViewModel>> GetPosts(int page);
+        Task<List<PostViewModel>> GetPostsByPageAsync(int page);
 
-        Task<List<PostViewModel>> GetPostsByTrader(string traderId);
+        Task<List<PostViewModel>> GetPostsByTraderAsync(string traderId);
 
-        Task<List<LikeViewModel>> GetPostLikes(string guid);
+        Task<List<LikeViewModel>> GetPostLikesAsync(string guid);
 
-        Task<Result> AddPost(AddPostInputModel newPost);
+        Task<Result> AddPostAsync(AddPostInputModel newPost);
 
-        Task<Result> DeletePost(string guid);
+        Task<Result> DeletePostAsync(string guid);
 
-        Task<Result> DeleteLike(string postGuid, string traderGuid);
+        Task<Result> DeleteLikeAsync(string postGuid, string traderGuid);
 
-        Task<Result> UpdatePost(UpdatePostInputModel newPost);
+        Task<Result> UpdatePostAsync(UpdatePostInputModel newPost);
     }
 }

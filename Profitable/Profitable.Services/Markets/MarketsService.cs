@@ -18,23 +18,21 @@ namespace Profitable.Services.Markets
             this.mapper = mapper;
         }
 
-        public async Task<List<FinantialInstrumentViewModel>> GetAllFinantialInstruments()
+        public async Task<List<FinantialInstrumentViewModel>> GetAllFinantialInstrumentsAsync()
         {
             var instrument = await repository
                 .GetAllAsNoTracking()
+                .Select(instrument => mapper.Map<FinantialInstrumentViewModel>(instrument))
                 .ToListAsync();
 
-            return instrument
-                .Select(instrument => mapper.Map<FinantialInstrumentViewModel>(instrument))
-                .ToList();
+            return instrument;
         }
 
-        public async Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbol(string symbol)
+        public async Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbolAsync(string symbol)
         {
             var instrument = await repository
                 .GetAllAsNoTracking()
                 .Include(i => i.Exchange)
-                .Include(i => i.MarketType)
                 .FirstAsync(entity => entity.TickerSymbol == symbol.ToUpper());
 
             return mapper.Map<FinantialInstrumentViewModel>(instrument);

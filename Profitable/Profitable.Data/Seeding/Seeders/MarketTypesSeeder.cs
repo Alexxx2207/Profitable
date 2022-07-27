@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using Profitable.Data.Repository;
+﻿using Profitable.Data.Repository;
 using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.Models.EntityModels;
+using System.Text.Json;
 
 namespace Profitable.Data.Seeding.Seeders
 {
@@ -11,22 +11,30 @@ namespace Profitable.Data.Seeding.Seeders
         {
             var marketTypeRepository = new Repository<MarketType>(dbContext);
 
-            var types = JsonConvert.DeserializeObject<List<string>>(await new StreamReader("DataToSeed/MarketTypes.json").ReadToEndAsync());
+            IAsyncEnumerable<string> typesInput = null;
 
-            var currentEntries = dbContext.MarketTypes;
-
-            foreach (var instrument in types.DistinctBy(type => type))
+            using (var stream = new FileStream("DataToSeed/MarketTypes.json", FileMode.Open, FileAccess.Read))
             {
-                if (!currentEntries.Any(e => e.Name == instrument))
-                {
-                    var marketType = new MarketType();
-                    marketType.Name = instrument;
+                typesInput = JsonSerializer.DeserializeAsyncEnumerable<string>
+                    (stream, new JsonSerializerOptions()
+                    {
+                        AllowTrailingCommas = true,
+                        PropertyNameCaseInsensitive = true,
+                    });
 
-                    await marketTypeRepository.AddAsync(marketType);
+                var currentEntries = dbContext.MarketTypes;
+
+                await foreach (var type in typesInput.Distinct())
+                {
+                    if (!currentEntries.Any(e => e.Name == type))
+                    {
+                        var marketType = new MarketType();
+                        marketType.Name = type;
+
+                        await marketTypeRepository.AddAsync(marketType);
+                    }
                 }
             }
-
-            await marketTypeRepository.SaveChangesAsync();
         }
     }
 }
