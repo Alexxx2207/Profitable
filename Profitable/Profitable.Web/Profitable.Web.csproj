@@ -49,7 +49,6 @@
     <Folder Include="ClientApp\src\components\Communication\Chat\" />
     <Folder Include="ClientApp\src\components\Communication\Posts\" />
     <Folder Include="ClientApp\src\components\Markets\" />
-    <Folder Include="Uploads\Users\" />
     <Folder Include="Uploads\Posts\" />
   </ItemGroup>
 

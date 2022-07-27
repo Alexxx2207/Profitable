@@ -21,11 +21,17 @@ namespace Profitable.Automapper
                     dest => dest.PostedOn,
                     opt => opt.MapFrom(source => source.PostedOn.ToString("f")))
                 .ForMember(
-                    dest => dest.ImageType,
+                    dest => dest.PostImageType,
                     opt => opt.MapFrom(source => source.ImageType.ToString()))
                 .ForMember(
-                    dest => dest.Image,
-                    opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Posts), src => src.ImageURL));
+                    dest => dest.PostImage,
+                    opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Posts), src => src.ImageURL))
+                .ForMember(
+                    dest => dest.AuthorImage,
+                    opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.ProfilePic), src => src.Author.ProfilePictureURL))
+                .ForMember(
+                    dest => dest.AuthorImageType,
+                    opt => opt.MapFrom(source => source.Author.ImageType.ToString()));
         }
     }
 }

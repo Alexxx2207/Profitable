@@ -15,9 +15,13 @@ namespace Profitable.Models.ViewModels.Posts
 
         public string Author { get; set; }
 
-        public byte[] Image { get; set; }
+        public byte[] AuthorImage { get; set; }
 
-        public string ImageType { get; set; }
+        public string AuthorImageType { get; set; }
+
+        public byte[] PostImage { get; set; }
+
+        public string PostImageType { get; set; }
 
         public IEnumerable<LikeViewModel> Likes { get; set; }
 
