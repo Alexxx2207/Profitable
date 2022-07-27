@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Web.Infrastructu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{98C26F8D-291F-42DC-AE53-35DDD9EC371B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profitable.Common.Models", "Profitable.Common.Models\Profitable.Common.Models.csproj", "{3B523891-B067-4E78-8EE9-8BC467FE29A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.Models", "Profitable.Common.Models\Profitable.Common.Models.csproj", "{3B523891-B067-4E78-8EE9-8BC467FE29A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

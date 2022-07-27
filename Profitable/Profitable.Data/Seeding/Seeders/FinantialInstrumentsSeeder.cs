@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using Profitable.Data.Repository;
+﻿using Profitable.Data.Repository;
 using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.Models.EntityModels;
+using System.Text.Json;
 
 namespace Profitable.Data.Seeding.Seeders
 {
@@ -11,30 +11,38 @@ namespace Profitable.Data.Seeding.Seeders
         {
             var instrumentRepository = new Repository<FinancialInstrument>(dbContext);
 
-            var json = JsonConvert.DeserializeObject<List<Instrument>>(await new StreamReader("DataToSeed/TicketSymbols.json").ReadToEndAsync());
+            IAsyncEnumerable<JsonInstrument> instrumentsInput = null;
 
-            var currentEntries = dbContext.FinancialInstruments;
-
-            foreach (var instrument in json)
+            using (var stream = new FileStream("DataToSeed/TicketSymbols.json", FileMode.Open, FileAccess.Read))
             {
-                if (!currentEntries.Any(e => e.TickerSymbol == instrument.Symbol))
+                instrumentsInput = JsonSerializer.DeserializeAsyncEnumerable<JsonInstrument>
+                    (stream, new JsonSerializerOptions()
+                    {
+                        AllowTrailingCommas = true,
+                        PropertyNameCaseInsensitive = true,
+                    });
+
+                var currentEntries = dbContext.FinancialInstruments;
+
+                await foreach (var instrument in instrumentsInput)
                 {
-                    var exchange = dbContext.Exchanges.First(e => e.Name == instrument.Exchange);
-                    var marketType = dbContext.MarketTypes.First(e => e.Name == instrument.Type);
+                    if (!currentEntries.Any(e => e.TickerSymbol == instrument.Symbol))
+                    {
+                        var exchange = dbContext.Exchanges.FirstOrDefault(e => e.Name == instrument.Exchange);
+                        var marketType = dbContext.MarketTypes.FirstOrDefault(e => e.Name == instrument.Type);
 
-                    var finInstrument = new FinancialInstrument();
-                    finInstrument.TickerSymbol = instrument.Symbol.ToUpper();
-                    finInstrument.Exchange = exchange;
-                    finInstrument.MarketType = marketType;
+                        var finInstrument = new FinancialInstrument();
+                        finInstrument.TickerSymbol = instrument.Symbol.ToUpper();
+                        finInstrument.Exchange = exchange;
+                        finInstrument.MarketType = marketType;
 
-                    await instrumentRepository.AddAsync(finInstrument);
+                        await instrumentRepository.AddAsync(finInstrument);
+                    }
                 }
             }
-
-            await instrumentRepository.SaveChangesAsync();
         }
 
-        private class Instrument
+        private class JsonInstrument
         {
             public string Symbol { get; set; }
 

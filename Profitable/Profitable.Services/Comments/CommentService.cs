@@ -58,11 +58,10 @@ namespace Profitable.Services.Comments
             var comments = await repository
                 .GetAllAsNoTracking()
                 .Where(comment => comment.PostId == postGUID)
+                .Select(comment => mapper.Map<CommentViewModel>(comment))
                 .ToListAsync();
 
-            return comments
-                .Select(comment => mapper.Map<CommentViewModel>(comment))
-                .ToList();
+            return comments;
         }
 
         public async Task<Result> UpdateCommentAsync(UpdateCommentInputModel newComment)

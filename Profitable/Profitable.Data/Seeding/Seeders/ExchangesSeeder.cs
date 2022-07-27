@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using Profitable.Data.Repository;
+﻿using Profitable.Data.Repository;
 using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.Models.EntityModels;
+using System.Text.Json;
 
 namespace Profitable.Data.Seeding.Seeders
 {
@@ -11,22 +11,30 @@ namespace Profitable.Data.Seeding.Seeders
         {
             var exchangeRepository = new Repository<Exchange>(dbContext);
 
-            var types = JsonConvert.DeserializeObject<List<string>>(await new StreamReader("DataToSeed/Exchanges.json").ReadToEndAsync());
+            IAsyncEnumerable<string> exchangesInput = null;
 
-            var currentEntries = dbContext.Exchanges;
-
-            foreach (var instrument in types.DistinctBy(type => type))
+            using (var stream = new FileStream("DataToSeed/Exchanges.json", FileMode.Open, FileAccess.Read))
             {
-                if (!currentEntries.Any(e => e.Name == instrument))
-                {
-                    var exchange = new Exchange();
-                    exchange.Name = instrument;
+                exchangesInput = JsonSerializer.DeserializeAsyncEnumerable<string>
+                    (stream, new JsonSerializerOptions()
+                    {
+                        AllowTrailingCommas = true,
+                        PropertyNameCaseInsensitive = true,
+                    });
 
-                    await exchangeRepository.AddAsync(exchange);
+                var currentEntries = dbContext.Exchanges;
+
+                await foreach (var exchange in exchangesInput.Distinct())
+                {
+                    if (!currentEntries.Any(e => e.Name == exchange))
+                    {
+                        var exchangeEntity = new Exchange();
+                        exchangeEntity.Name = exchange;
+
+                        await exchangeRepository.AddAsync(exchangeEntity);
+                    }
                 }
             }
-
-            await exchangeRepository.SaveChangesAsync();
         }
     }
 }

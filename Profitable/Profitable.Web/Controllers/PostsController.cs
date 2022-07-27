@@ -17,7 +17,7 @@ namespace Profitable.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPostsByPageAsync([FromRoute] int page)
         {
-            var posts = await postService.GetPostsAsync(page);
+            var posts = await postService.GetPostsByPageAsync(page);
 
             return Ok(posts);
         }

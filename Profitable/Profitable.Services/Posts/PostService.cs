@@ -74,14 +74,13 @@ namespace Profitable.Services.Posts
             var likes = await likesRepository
                 .GetAllAsNoTracking()
                 .Where(like => like.PostId == guid)
+                .Select(like => mapper.Map<LikeViewModel>(like))
                 .ToListAsync();
 
-            return likes
-                .Select(like => mapper.Map<LikeViewModel>(like))
-                .ToList();
+            return likes;
         }
 
-        public async Task<List<PostViewModel>> GetPostsAsync(int page)
+        public async Task<List<PostViewModel>> GetPostsByPageAsync(int page)
         {
             var posts = await postsRepository
                 .GetAllAsNoTracking()
@@ -92,11 +91,10 @@ namespace Profitable.Services.Posts
                 .Include(p => p.Author)
                 .Include(p => p.Likes)
                 .Include(p => p.Comments)
+                .Select(post => mapper.Map<PostViewModel>(post))
                 .ToListAsync();
 
-            return posts
-                .Select(post => mapper.Map<PostViewModel>(post))
-                .ToList();
+            return posts;
         }
 
         public async Task<List<PostViewModel>> GetPostsByTraderAsync(string traderId)
@@ -105,11 +103,10 @@ namespace Profitable.Services.Posts
                 .GetAllAsNoTracking()
                 .Where(post => post.AuthorId == traderId)
                 .Include(p => p.Tags)
+                .Select(post => mapper.Map<PostViewModel>(post))
                 .ToListAsync();
 
-            return posts
-                .Select(post => mapper.Map<PostViewModel>(post))
-                .ToList();
+            return posts;
         }
 
         public async Task<Result> UpdatePostAsync(UpdatePostInputModel newPost)

@@ -22,11 +22,10 @@ namespace Profitable.Services.Markets
         {
             var instrument = await repository
                 .GetAllAsNoTracking()
+                .Select(instrument => mapper.Map<FinantialInstrumentViewModel>(instrument))
                 .ToListAsync();
 
-            return instrument
-                .Select(instrument => mapper.Map<FinantialInstrumentViewModel>(instrument))
-                .ToList();
+            return instrument;
         }
 
         public async Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbolAsync(string symbol)
@@ -34,7 +33,6 @@ namespace Profitable.Services.Markets
             var instrument = await repository
                 .GetAllAsNoTracking()
                 .Include(i => i.Exchange)
-                .Include(i => i.MarketType)
                 .FirstAsync(entity => entity.TickerSymbol == symbol.ToUpper());
 
             return mapper.Map<FinantialInstrumentViewModel>(instrument);

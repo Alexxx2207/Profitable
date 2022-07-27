@@ -9,7 +9,7 @@ namespace Profitable.Services.Posts.Contracts
     {
         Task<PostViewModel> GetPostAsync(string guid);
 
-        Task<List<PostViewModel>> GetPostsAsync(int page);
+        Task<List<PostViewModel>> GetPostsByPageAsync(int page);
 
         Task<List<PostViewModel>> GetPostsByTraderAsync(string traderId);
 
@@ -21,6 +21,6 @@ namespace Profitable.Services.Posts.Contracts
 
         Task<Result> DeleteLikeAsync(string postGuid, string traderGuid);
 
-        Task<Result> UpdatePost(UpdatePostInputModel newPost);
+        Task<Result> UpdatePostAsync(UpdatePostInputModel newPost);
     }
 }
