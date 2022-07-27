@@ -1,0 +1,61 @@
+.post {
+    margin: 4vw;
+    padding: 2rem;
+    box-shadow: 0px 0px 2.7rem 0.2rem white;
+    border-radius: 1rem;
+    text-align: center;
+}
+
+.postImage {
+    width: 70%;
+    border: 2px solid white;
+    border-radius: 1rem;
+}
+
+.postContent {
+    margin: 2rem;
+}
+
+.title {
+    letter-spacing: 1px;
+    margin-bottom: 4rem;
+    font-size: 6vh;
+    text-transform: capitalize;
+}
+
+.content {
+    font-size: 3.6vh;
+    letter-spacing: 1px;
+    line-height: 7vh;
+}
+
+.postsLikeWidgetContainer {
+    display: flex;
+    justify-content: center;
+    margin: 10vh 0vw;
+}
+
+.postsLikeWidget {
+    width: 15vw;
+    justify-content: center;
+    font-size: 3vw;
+}
+
+.information {
+    border-top : 2px solid white;
+    margin-top: 2rem;
+    padding-top: 2rem;
+}
+
+.author {
+    font-size: 5vh;
+}
+
+.authorImage {
+    width: 6%;
+    margin-right: 0.5rem;
+}
+
+.postedOn {
+    font-size: 2.2vh;
+}

@@ -61,11 +61,12 @@ namespace Profitable.Services.Posts
             return true;
         }
 
-        public async Task<PostViewModel> GetPostAsync(string guid)
+        public async Task<PostViewModel> GetPostByGuidAsync(string guid)
         {
             return mapper.Map<PostViewModel>(await postsRepository
                 .GetAllAsNoTracking()
                 .Include(p => p.Tags)
+                .Include(p => p.Author)
                 .FirstAsync(entity => entity.GUID == guid));
         }
 

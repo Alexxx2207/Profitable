@@ -26,7 +26,7 @@ namespace Profitable.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPostByIdAsync([FromRoute] string postId)
         {
-            var post = await postService.GetPostAsync(postId);
+            var post = await postService.GetPostByGuidAsync(postId);
 
             return Ok(post);
         }

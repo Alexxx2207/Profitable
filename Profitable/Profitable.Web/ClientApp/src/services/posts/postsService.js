@@ -1,8 +1,16 @@
 import { WEB_API_BASE_URL } from '../../common/config';
 
-export const createImgURL = (post) => {
-    const imageUrl = `data:image/${post.imageType};base64,${post.image}`;
+export const createImgURL = (imageType, image) => {
+    const imageUrl = `data:image/${imageType};base64,${image}`;
     return imageUrl;
+}
+
+export const createAuthorImgURL = (imageType, image) => {
+    if(image != '') {
+        return createImgURL(imageType, image);
+    } else {
+        return `${process.env.PUBLIC_URL}images/defaultProfilePicture.png`;
+    }
 }
 
 export const loadParticularPost = (postId) => {
@@ -13,4 +21,9 @@ export const loadParticularPost = (postId) => {
 export const loadPostsPage = (page) => {
     return fetch(`${WEB_API_BASE_URL}/posts/pages/${page}`)
         .then(response => response.json());
+}
+
+export const likePost = (postId) => {
+    // AJAX for Like (USER SHOULD BE AUTHENTICATED)
+    console.log('works');
 }

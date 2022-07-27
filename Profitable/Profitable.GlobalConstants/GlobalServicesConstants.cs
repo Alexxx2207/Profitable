@@ -9,8 +9,10 @@
 
         public static readonly string UploadsFolderInProject = "Profitable.Web";
 
+        public static readonly char DirectorySeparatorChar = Path.DirectorySeparatorChar;
+
         public static readonly string UploadsFolderPath =
             Path.GetDirectoryName(Directory.GetCurrentDirectory())
-            + $"\\{UploadsFolderInProject}\\Uploads";
+            + $"{DirectorySeparatorChar}{UploadsFolderInProject}{DirectorySeparatorChar}Uploads";
     }
 }

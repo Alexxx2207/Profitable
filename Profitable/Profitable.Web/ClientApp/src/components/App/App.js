@@ -9,7 +9,7 @@ import { Home } from '../Home/Home';
 import { About } from '../About/About';
 import { MarketsList } from '../Markets/MarketsList/MarketsList';
 import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
-import { Post } from '../PostsAndComments/Posts/Post/Post';
+import { PostDetails } from '../PostsAndComments/Posts/PostDetails/PostDetails';
 import styles from './App.module.css'
 
 export function App() {
@@ -36,7 +36,7 @@ export function App() {
                 </Route>
                 
                 <Route path="/posts/:postId" element={
-                    <Post />
+                    <PostDetails />
                 }>
                 </Route>
             </Routes>
