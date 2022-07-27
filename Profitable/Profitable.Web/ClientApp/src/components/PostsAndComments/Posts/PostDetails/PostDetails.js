@@ -1,9 +1,9 @@
-import styles from './Post.module.css';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { createImgURL, loadParticularPost } from '../../../../services/posts/postsService';
+import styles from './PostDetails.module.css';
 
-export const Post = () => {
+export const PostDetails = () => {
 
     const { postId } = useParams();
     const [ post, setPost ] = useState({
