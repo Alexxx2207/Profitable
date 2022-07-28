@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Profitable.Data\Profitable.Data.csproj" />
     <ProjectReference Include="..\Profitable.Models\Profitable.Models.csproj" />
+    <ProjectReference Include="..\Profitable.Services\Profitable.Services.csproj" />
   </ItemGroup>
 
 </Project>

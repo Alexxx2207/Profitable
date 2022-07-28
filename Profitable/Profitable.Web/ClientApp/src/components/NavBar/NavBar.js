@@ -20,7 +20,7 @@ export const NavBar = () => {
                     <NavLink to="/posts" className={classNames(styles.navbarListItems, styles.navLink)}>POSTS</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/about" className={classNames(styles.navbarListItems, styles.navLink)}>ABOUT</NavLink>
+                    <NavLink to="/about" className={classNames(styles.navbarListItems, styles.navLink)}>ABOUT US</NavLink>
                 </li>
             </ul>
         </nav>);

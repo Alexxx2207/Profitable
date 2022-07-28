@@ -1,4 +1,4 @@
-﻿using Profitable.Models.Contracts;
+﻿using Profitable.Models.EntityModels.EntityBaseClass;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Profitable.Models.EntityModels

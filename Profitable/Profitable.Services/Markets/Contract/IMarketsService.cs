@@ -1,13 +1,16 @@
-﻿using Profitable.Models.ViewModels.Markets;
+﻿using Profitable.Models.ResponseModels.Markets;
 
 namespace Profitable.Services.Markets.Contract
 {
     public interface IMarketsService
     {
-        Task<List<FinantialInstrumentViewModel>> GetAllFinantialInstrumentsAsync();
+        Task<List<FinantialInstrumentShortResponseModel>> GetAllFinantialInstrumentsAsync();
 
-        Task<List<FinantialInstrumentViewModel>> GetFinantialInstrumentsByType(string type);
+        Task<List<MarketTypeResponseModel>> GetAllMarketTypesAsync();
 
-        Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbolAsync(string symbol);
+        Task<List<FinantialInstrumentShortResponseModel>> GetFinantialInstrumentsByTypeAsync(string type);
+
+        Task<FinantialInstrumentExtendedResponseModel> GetFinantialInstrumentBySymbolAsync(string symbol);
+
     }
 }

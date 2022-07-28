@@ -1,6 +1,6 @@
-﻿namespace Profitable.Models.ViewModels.Comments
+﻿namespace Profitable.Models.ResponseModels.Comments
 {
-    public class CommentViewModel
+    public class CommentResponseModel
     {
         public string GUID { get; set; }
 

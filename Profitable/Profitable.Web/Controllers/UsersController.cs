@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Profitable.Services.Users.Contracts;
-using Profitable.Web.Controllers.Contracts;
+using Profitable.Web.Controllers.BaseApiControllers;
 
 namespace Profitable.Web.Controllers
 {
@@ -15,7 +15,7 @@ namespace Profitable.Web.Controllers
 
         [Route("{username}")]
         [HttpGet]
-        public async Task<IActionResult> GetUserAsync([FromRoute] string username)
+        public async Task<IActionResult> GetAsync([FromRoute] string username)
         {
             var user = await userService.GetUserDetailsAsync(username);
 

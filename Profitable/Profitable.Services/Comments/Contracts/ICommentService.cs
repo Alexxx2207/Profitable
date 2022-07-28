@@ -1,19 +1,19 @@
 ﻿using Profitable.Common;
-using Profitable.Models.InputModels.Comments;
-using Profitable.Models.ViewModels.Comments;
+using Profitable.Models.RequestModels.Comments;
+using Profitable.Models.ResponseModels.Comments;
 
 namespace Profitable.Services.Comments.Contracts
 {
     public interface ICommentService
     {
-        Task<CommentViewModel> GetCommentAsync(string guid);
+        Task<CommentResponseModel> GetCommentAsync(string guid);
 
-        Task<List<CommentViewModel>> GetCommentsByPostAsync(string postGUID);
+        Task<List<CommentResponseModel>> GetCommentsByPostAsync(string postGUID);
 
-        Task<Result> AddCommentAsync(AddCommentInputModel newComment);
+        Task<Result> AddCommentAsync(AddCommentRequestModel newComment);
 
         Task<Result> DeleteCommentAsync(string guid);
 
-        Task<Result> UpdateCommentAsync(UpdateCommentInputModel newComment);
+        Task<Result> UpdateCommentAsync(UpdateCommentRequestModel newComment);
     }
 }

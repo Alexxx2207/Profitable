@@ -1,9 +1,9 @@
-﻿using Profitable.Models.ViewModels.Comments;
-using Profitable.Models.ViewModels.Like;
+﻿using Profitable.Models.ResponseModels.Comments;
+using Profitable.Models.ResponseModels.Like;
 
-namespace Profitable.Models.ViewModels.Posts
+namespace Profitable.Models.ResponseModels.Posts
 {
-    public class PostViewModel
+    public class PostResponseModel
     {
         public string GUID { get; set; }
 
@@ -23,8 +23,8 @@ namespace Profitable.Models.ViewModels.Posts
 
         public string PostImageType { get; set; }
 
-        public IEnumerable<LikeViewModel> Likes { get; set; }
+        public IEnumerable<LikeResponseModel> Likes { get; set; }
 
-        public IEnumerable<CommentViewModel> Comments { get; set; }
+        public IEnumerable<CommentResponseModel> Comments { get; set; }
     }
 }

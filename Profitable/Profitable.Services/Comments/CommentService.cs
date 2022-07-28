@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Profitable.Common;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
-using Profitable.Models.InputModels.Comments;
-using Profitable.Models.ViewModels.Comments;
+using Profitable.Models.RequestModels.Comments;
+using Profitable.Models.ResponseModels.Comments;
 using Profitable.Services.Comments.Contracts;
 
 namespace Profitable.Services.Comments
@@ -20,7 +20,7 @@ namespace Profitable.Services.Comments
             this.mapper = mapper;
         }
 
-        public async Task<Result> AddCommentAsync(AddCommentInputModel newComment)
+        public async Task<Result> AddCommentAsync(AddCommentRequestModel newComment)
         {
             var comment = mapper.Map<Comment>(newComment);
 
@@ -44,27 +44,27 @@ namespace Profitable.Services.Comments
             return true;
         }
 
-        public async Task<CommentViewModel> GetCommentAsync(string guid)
+        public async Task<CommentResponseModel> GetCommentAsync(string guid)
         {
             var comment = await repository
                 .GetAllAsNoTracking()
                 .FirstAsync(entity => entity.GUID.ToString() == guid);
 
-            return mapper.Map<CommentViewModel>(comment);
+            return mapper.Map<CommentResponseModel>(comment);
         }
 
-        public async Task<List<CommentViewModel>> GetCommentsByPostAsync(string postGUID)
+        public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(string postGUID)
         {
             var comments = await repository
                 .GetAllAsNoTracking()
                 .Where(comment => comment.PostId == postGUID)
-                .Select(comment => mapper.Map<CommentViewModel>(comment))
+                .Select(comment => mapper.Map<CommentResponseModel>(comment))
                 .ToListAsync();
 
             return comments;
         }
 
-        public async Task<Result> UpdateCommentAsync(UpdateCommentInputModel newComment)
+        public async Task<Result> UpdateCommentAsync(UpdateCommentRequestModel newComment)
         {
             var comment = mapper.Map<Comment>(newComment);
 

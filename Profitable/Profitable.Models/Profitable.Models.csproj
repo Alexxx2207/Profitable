@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="RequestModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Profitable.GlobalConstants\Profitable.GlobalConstants.csproj" />
   </ItemGroup>
 

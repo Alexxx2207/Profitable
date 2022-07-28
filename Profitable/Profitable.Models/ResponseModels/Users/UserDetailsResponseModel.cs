@@ -1,6 +1,6 @@
-﻿namespace Profitable.Models.ViewModels.Users
+﻿namespace Profitable.Models.ResponseModels.Users
 {
-    public class UserDetailsViewModel
+    public class UserDetailsResponseModel
     {
         public string GUID { get; set; }
 

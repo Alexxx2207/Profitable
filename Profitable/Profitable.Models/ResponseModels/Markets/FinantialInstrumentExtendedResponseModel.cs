@@ -1,13 +1,11 @@
-﻿namespace Profitable.Models.ViewModels.Markets
+﻿namespace Profitable.Models.ResponseModels.Markets
 {
-    public class FinantialInstrumentViewModel
+    public class FinantialInstrumentExtendedResponseModel
     {
         public string GUID { get; set; }
 
         public string TickerSymbol { get; set; }
 
         public string ExchangeName { get; set; }
-
-        public string MarketType { get; set; }
     }
 }

@@ -2,8 +2,8 @@
 using Profitable.Automapper.TypeConverters;
 using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
-using Profitable.Models.InputModels.Posts;
-using Profitable.Models.ViewModels.Posts;
+using Profitable.Models.RequestModels.Posts;
+using Profitable.Models.ResponseModels.Posts;
 
 namespace Profitable.Automapper
 {
@@ -11,9 +11,9 @@ namespace Profitable.Automapper
     {
         public PostsMapper()
         {
-            CreateMap<AddPostInputModel, Post>();
-            CreateMap<UpdatePostInputModel, Post>();
-            CreateMap<Post, PostViewModel>()
+            CreateMap<AddPostRequestModel, Post>();
+            CreateMap<UpdatePostRequestModel, Post>();
+            CreateMap<Post, PostResponseModel>()
                 .ForMember(
                     dest => dest.Author,
                     opt => opt.MapFrom(source => $"{source.Author.FirstName} {source.Author.LastName}"))

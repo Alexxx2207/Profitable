@@ -5,14 +5,6 @@ using Profitable.Data;
 using Profitable.Data.Repository;
 using Profitable.Data.Repository.Contract;
 using Profitable.Data.Seeding;
-using Profitable.Services.Comments;
-using Profitable.Services.Comments.Contracts;
-using Profitable.Services.Markets;
-using Profitable.Services.Markets.Contract;
-using Profitable.Services.Posts;
-using Profitable.Services.Posts.Contracts;
-using Profitable.Services.Users;
-using Profitable.Services.Users.Contracts;
 using Profitable.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,12 +27,8 @@ IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped<ApplicationDbContext>();
 
-builder.Services.AddTransient<IPostService, PostService>();
-builder.Services.AddTransient<ICommentService, CommentService>();
-builder.Services.AddTransient<IMarketsService, MarketsService>();
-builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddBusinessServices();
 
 builder.Services.AddCors(options =>
 {
@@ -53,7 +41,7 @@ builder.Services.AddCors(options =>
                       });
 });
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 

@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Profitable.Models.Contracts;
+using System.ComponentModel.DataAnnotations;
 
-namespace Profitable.Models.Contracts
+namespace Profitable.Models.EntityModels.EntityBaseClass
 {
     public class EntityBase : IDeletebleEntity
     {
