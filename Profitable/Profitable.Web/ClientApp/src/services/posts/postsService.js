@@ -1,5 +1,5 @@
 import { WEB_API_BASE_URL } from '../../common/config';
-
+import { request } from '../../utils/fetch/request';
 export const createImgURL = (imageType, image) => {
     const imageUrl = `data:image/${imageType};base64,${image}`;
     return imageUrl;
@@ -14,12 +14,12 @@ export const createAuthorImgURL = (imageType, image) => {
 }
 
 export const loadParticularPost = (postId) => {
-    return fetch(`${WEB_API_BASE_URL}/posts/${postId}`)
+    return request.get(`${WEB_API_BASE_URL}/posts/${postId}`)
         .then(response => response.json());
 }
 
 export const loadPostsPage = (page) => {
-    return fetch(`${WEB_API_BASE_URL}/posts/pages/${page}`)
+    return request.get(`${WEB_API_BASE_URL}/posts/pages/${page}`)
         .then(response => response.json());
 }
 
