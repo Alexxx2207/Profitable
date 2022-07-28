@@ -2,7 +2,7 @@
 using Profitable.Automapper.TypeConverters;
 using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
-using Profitable.Models.ViewModels.Users;
+using Profitable.Models.ResponseModels.Users;
 
 namespace Profitable.Automapper
 {
@@ -10,7 +10,7 @@ namespace Profitable.Automapper
     {
         public UsersMapper()
         {
-            CreateMap<ApplicationUser, UserDetailsViewModel>()
+            CreateMap<ApplicationUser, UserDetailsResponseModel>()
                 .ForMember(
                     dest => dest.GUID,
                     opt => opt.MapFrom(src => src.Id)

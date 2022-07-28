@@ -1,6 +1,6 @@
-﻿namespace Profitable.Models.InputModels.Posts
+﻿namespace Profitable.Models.RequestModels.Posts
 {
-    public class UpdatePostInputModel
+    public class UpdatePostRequestModel
     {
         public string GUID { get; set; }
 

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
-using Profitable.Models.ViewModels.Markets;
+using Profitable.Models.ResponseModels.Markets;
 using Profitable.Services.Markets.Contract;
 
 namespace Profitable.Services.Markets
@@ -23,43 +23,43 @@ namespace Profitable.Services.Markets
             this.mapper = mapper;
         }
 
-        public async Task<List<FinantialInstrumentShortViewModel>> GetAllFinantialInstrumentsAsync()
+        public async Task<List<FinantialInstrumentShortResponseModel>> GetAllFinantialInstrumentsAsync()
         {
             var instrument = await instrumentsRepository
                 .GetAllAsNoTracking()
-                .Select(instrument => mapper.Map<FinantialInstrumentShortViewModel>(instrument))
+                .Select(instrument => mapper.Map<FinantialInstrumentShortResponseModel>(instrument))
                 .ToListAsync();
 
             return instrument;
         }
 
-        public async Task<List<MarketTypeViewModel>> GetAllMarketTypesAsync()
+        public async Task<List<MarketTypeResponseModel>> GetAllMarketTypesAsync()
         {
             var marketTypes = await marketTypesRepository
                 .GetAllAsNoTracking()
-                .Select(marketType => mapper.Map<MarketTypeViewModel>(marketType))
+                .Select(marketType => mapper.Map<MarketTypeResponseModel>(marketType))
                 .ToListAsync();
 
             return marketTypes;
         }
 
-        public async Task<FinantialInstrumentExtendedViewModel> GetFinantialInstrumentBySymbolAsync(string symbol)
+        public async Task<FinantialInstrumentExtendedResponseModel> GetFinantialInstrumentBySymbolAsync(string symbol)
         {
             var instrument = await instrumentsRepository
                 .GetAllAsNoTracking()
                 .Include(i => i.Exchange)
-                .FirstAsync(entity => entity.TickerSymbol == symbol.ToUpper());
+                .FirstAsync(entity => entity.TickerSymbol == symbol);
 
-            return mapper.Map<FinantialInstrumentExtendedViewModel>(instrument);
+            return mapper.Map<FinantialInstrumentExtendedResponseModel>(instrument);
         }
 
-        public async Task<List<FinantialInstrumentShortViewModel>> GetFinantialInstrumentsByTypeAsync(string type)
+        public async Task<List<FinantialInstrumentShortResponseModel>> GetFinantialInstrumentsByTypeAsync(string type)
         {
             var instruments = await instrumentsRepository
                 .GetAllAsNoTracking()
                 .Include(i => i.MarketType)
                 .Where(i => i.MarketType.Name == type)
-                .Select(i => mapper.Map<FinantialInstrumentShortViewModel>(i))
+                .Select(i => mapper.Map<FinantialInstrumentShortResponseModel>(i))
                 .ToListAsync();
 
             return instruments;

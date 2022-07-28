@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
-using Profitable.Models.ViewModels.Users;
+using Profitable.Models.ResponseModels.Users;
 using Profitable.Services.Users.Contracts;
 
 namespace Profitable.Services.Users
@@ -18,13 +18,13 @@ namespace Profitable.Services.Users
             this.mapper = mapper;
         }
 
-        public async Task<UserDetailsViewModel> GetUserDetailsAsync(string username)
+        public async Task<UserDetailsResponseModel> GetUserDetailsAsync(string username)
         {
             var user = await repository
                 .GetAllAsNoTracking()
                 .FirstAsync(user => user.UserName == username);
 
-            return mapper.Map<UserDetailsViewModel>(user);
+            return mapper.Map<UserDetailsResponseModel>(user);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Profitable.Models.EntityModels;
-using Profitable.Models.ViewModels.Markets;
+using Profitable.Models.ResponseModels.Markets;
 
 namespace Profitable.Automapper
 {
@@ -8,13 +8,13 @@ namespace Profitable.Automapper
     {
         public MarketsMapper()
         {
-            CreateMap<FinancialInstrument, FinantialInstrumentShortViewModel>();
-            CreateMap<FinancialInstrument, FinantialInstrumentExtendedViewModel>()
+            CreateMap<FinancialInstrument, FinantialInstrumentShortResponseModel>();
+            CreateMap<FinancialInstrument, FinantialInstrumentExtendedResponseModel>()
                 .ForMember(destination => destination.ExchangeName, options =>
                 {
                     options.MapFrom(source => source.Exchange.Name);
                 });
-            CreateMap<MarketType, MarketTypeViewModel>();
+            CreateMap<MarketType, MarketTypeResponseModel>();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Profitable.Services.Posts.Contracts;
-using Profitable.Web.Controllers.Contracts;
+using Profitable.Web.Controllers.BaseApiControllers;
 
 namespace Profitable.Web.Controllers
 {
@@ -15,18 +15,18 @@ namespace Profitable.Web.Controllers
 
         [Route("pages/{page}")]
         [HttpGet]
-        public async Task<IActionResult> GetPostsByPageAsync([FromRoute] int page)
+        public async Task<IActionResult> GetByPageAsync([FromRoute] int page)
         {
             var posts = await postService.GetPostsByPageAsync(page);
 
             return Ok(posts);
         }
 
-        [Route("{postId}")]
+        [Route("{id}")]
         [HttpGet]
-        public async Task<IActionResult> GetPostByIdAsync([FromRoute] string postId)
+        public async Task<IActionResult> GetByIdAsync([FromRoute] string id)
         {
-            var post = await postService.GetPostByGuidAsync(postId);
+            var post = await postService.GetPostByGuidAsync(id);
 
             return Ok(post);
         }

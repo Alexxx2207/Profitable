@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Profitable.Web.Controllers.Contracts
+namespace Profitable.Web.Controllers.BaseApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]

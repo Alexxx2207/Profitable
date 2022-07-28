@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Profitable.Services.Markets.Contract;
-using Profitable.Web.Controllers.Contracts;
+using Profitable.Web.Controllers.BaseApiControllers;
 
 namespace Profitable.Web.Controllers
 {

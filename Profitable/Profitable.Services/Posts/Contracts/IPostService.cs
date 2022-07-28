@@ -1,26 +1,26 @@
 ﻿using Profitable.Common;
-using Profitable.Models.InputModels.Posts;
-using Profitable.Models.ViewModels.Like;
-using Profitable.Models.ViewModels.Posts;
+using Profitable.Models.RequestModels.Posts;
+using Profitable.Models.ResponseModels.Like;
+using Profitable.Models.ResponseModels.Posts;
 
 namespace Profitable.Services.Posts.Contracts
 {
     public interface IPostService
     {
-        Task<PostViewModel> GetPostByGuidAsync(string guid);
+        Task<PostResponseModel> GetPostByGuidAsync(string guid);
 
-        Task<List<PostViewModel>> GetPostsByPageAsync(int page);
+        Task<List<PostResponseModel>> GetPostsByPageAsync(int page);
 
-        Task<List<PostViewModel>> GetPostsByTraderAsync(string traderId);
+        Task<List<PostResponseModel>> GetPostsByTraderAsync(string traderId);
 
-        Task<List<LikeViewModel>> GetPostLikesAsync(string guid);
+        Task<List<LikeResponseModel>> GetPostLikesAsync(string guid);
 
-        Task<Result> AddPostAsync(AddPostInputModel newPost);
+        Task<Result> AddPostAsync(AddPostRequestModel newPost);
 
         Task<Result> DeletePostAsync(string guid);
 
         Task<Result> DeleteLikeAsync(string postGuid, string traderGuid);
 
-        Task<Result> UpdatePostAsync(UpdatePostInputModel newPost);
+        Task<Result> UpdatePostAsync(UpdatePostRequestModel newPost);
     }
 }

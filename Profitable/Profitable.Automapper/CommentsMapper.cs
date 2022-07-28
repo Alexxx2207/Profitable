@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Profitable.Models.EntityModels;
-using Profitable.Models.InputModels.Comments;
-using Profitable.Models.ViewModels.Comments;
+using Profitable.Models.RequestModels.Comments;
+using Profitable.Models.ResponseModels.Comments;
 
 namespace Profitable.Automapper
 {
@@ -9,9 +9,9 @@ namespace Profitable.Automapper
     {
         public CommentsMapper()
         {
-            CreateMap<AddCommentInputModel, Comment>();
-            CreateMap<UpdateCommentInputModel, Comment>();
-            CreateMap<Comment, CommentViewModel>();
+            CreateMap<AddCommentRequestModel, Comment>();
+            CreateMap<UpdateCommentRequestModel, Comment>();
+            CreateMap<Comment, CommentResponseModel>();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Profitable.Models.ViewModels.Markets
+﻿namespace Profitable.Models.ResponseModels.Markets
 {
-    public class FinantialInstrumentExtendedViewModel
+    public class FinantialInstrumentExtendedResponseModel
     {
         public string GUID { get; set; }
 

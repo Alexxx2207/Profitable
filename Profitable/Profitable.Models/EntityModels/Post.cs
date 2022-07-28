@@ -1,5 +1,5 @@
 ﻿using Profitable.GlobalConstants;
-using Profitable.Models.Contracts;
+using Profitable.Models.EntityModels.EntityBaseClass;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

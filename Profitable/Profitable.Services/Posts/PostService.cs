@@ -4,9 +4,9 @@ using Profitable.Common;
 using Profitable.Data.Repository.Contract;
 using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
-using Profitable.Models.InputModels.Posts;
-using Profitable.Models.ViewModels.Like;
-using Profitable.Models.ViewModels.Posts;
+using Profitable.Models.RequestModels.Posts;
+using Profitable.Models.ResponseModels.Like;
+using Profitable.Models.ResponseModels.Posts;
 using Profitable.Services.Posts.Contracts;
 
 namespace Profitable.Services.Posts
@@ -24,7 +24,7 @@ namespace Profitable.Services.Posts
             this.mapper = mapper;
         }
 
-        public async Task<Result> AddPostAsync(AddPostInputModel newPost)
+        public async Task<Result> AddPostAsync(AddPostRequestModel newPost)
         {
             var postToAdd = mapper.Map<Post>(newPost);
 
@@ -61,27 +61,27 @@ namespace Profitable.Services.Posts
             return true;
         }
 
-        public async Task<PostViewModel> GetPostByGuidAsync(string guid)
+        public async Task<PostResponseModel> GetPostByGuidAsync(string guid)
         {
-            return mapper.Map<PostViewModel>(await postsRepository
+            return mapper.Map<PostResponseModel>(await postsRepository
                 .GetAllAsNoTracking()
                 .Include(p => p.Tags)
                 .Include(p => p.Author)
                 .FirstAsync(entity => entity.GUID == guid));
         }
 
-        public async Task<List<LikeViewModel>> GetPostLikesAsync(string guid)
+        public async Task<List<LikeResponseModel>> GetPostLikesAsync(string guid)
         {
             var likes = await likesRepository
                 .GetAllAsNoTracking()
                 .Where(like => like.PostId == guid)
-                .Select(like => mapper.Map<LikeViewModel>(like))
+                .Select(like => mapper.Map<LikeResponseModel>(like))
                 .ToListAsync();
 
             return likes;
         }
 
-        public async Task<List<PostViewModel>> GetPostsByPageAsync(int page)
+        public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page)
         {
             var posts = await postsRepository
                 .GetAllAsNoTracking()
@@ -92,25 +92,25 @@ namespace Profitable.Services.Posts
                 .Include(p => p.Author)
                 .Include(p => p.Likes)
                 .Include(p => p.Comments)
-                .Select(post => mapper.Map<PostViewModel>(post))
+                .Select(post => mapper.Map<PostResponseModel>(post))
                 .ToListAsync();
 
             return posts;
         }
 
-        public async Task<List<PostViewModel>> GetPostsByTraderAsync(string traderId)
+        public async Task<List<PostResponseModel>> GetPostsByTraderAsync(string traderId)
         {
             var posts = await postsRepository
                 .GetAllAsNoTracking()
                 .Where(post => post.AuthorId == traderId)
                 .Include(p => p.Tags)
-                .Select(post => mapper.Map<PostViewModel>(post))
+                .Select(post => mapper.Map<PostResponseModel>(post))
                 .ToListAsync();
 
             return posts;
         }
 
-        public async Task<Result> UpdatePostAsync(UpdatePostInputModel newPost)
+        public async Task<Result> UpdatePostAsync(UpdatePostRequestModel newPost)
         {
             var post = await postsRepository
                 .GetAll()

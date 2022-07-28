@@ -2,6 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using Profitable.Data;
 using Profitable.Models.EntityModels;
+using Profitable.Services.Comments;
+using Profitable.Services.Comments.Contracts;
+using Profitable.Services.Markets;
+using Profitable.Services.Markets.Contract;
+using Profitable.Services.Posts;
+using Profitable.Services.Posts.Contracts;
+using Profitable.Services.Users;
+using Profitable.Services.Users.Contracts;
 
 namespace Profitable.Web.Infrastructure
 {
@@ -21,6 +29,16 @@ namespace Profitable.Web.Infrastructure
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            return services;
+        }
+
+        public static IServiceCollection AddBusinessServices(this IServiceCollection services)
+        {
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IMarketsService, MarketsService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

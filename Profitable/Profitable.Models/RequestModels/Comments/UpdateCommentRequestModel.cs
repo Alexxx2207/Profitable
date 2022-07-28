@@ -1,6 +1,6 @@
-﻿namespace Profitable.Models.InputModels.Comments
+﻿namespace Profitable.Models.RequestModels.Comments
 {
-    public class UpdateCommentInputModel
+    public class UpdateCommentRequestModel
     {
         public string Guid { get; set; }
 
