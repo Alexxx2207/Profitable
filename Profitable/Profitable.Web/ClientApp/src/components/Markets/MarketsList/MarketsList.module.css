@@ -1,0 +1,44 @@
+.marketsList {
+    height: 82vh;
+}
+
+.searchSection {
+    margin: 2rem;
+}
+
+.searchDropdown {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0.3rem;
+    text-align: center;
+    z-index: 1;
+    outline: none;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    border: 2px solid white
+}
+
+.searchDropdown:hover {
+    cursor: pointer;
+}
+
+.searchInstrumentPart {
+    display: flex;
+    align-items: center;
+}
+
+.chooseInstrumentHeading {
+    display: inline-block;
+    margin: 0px;
+    margin-right: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 2rem;
+}
+
+.searchDropdown {
+    margin: 1rem 0rem;
+}
