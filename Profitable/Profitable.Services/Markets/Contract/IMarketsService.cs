@@ -4,10 +4,13 @@ namespace Profitable.Services.Markets.Contract
 {
     public interface IMarketsService
     {
-        Task<List<FinantialInstrumentViewModel>> GetAllFinantialInstrumentsAsync();
+        Task<List<FinantialInstrumentShortViewModel>> GetAllFinantialInstrumentsAsync();
 
-        Task<List<FinantialInstrumentViewModel>> GetFinantialInstrumentsByType(string type);
+        Task<List<MarketTypeViewModel>> GetAllMarketTypesAsync();
 
-        Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbolAsync(string symbol);
+        Task<List<FinantialInstrumentShortViewModel>> GetFinantialInstrumentsByTypeAsync(string type);
+
+        Task<FinantialInstrumentExtendedViewModel> GetFinantialInstrumentBySymbolAsync(string symbol);
+
     }
 }

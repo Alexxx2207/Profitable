@@ -13,21 +13,40 @@ namespace Profitable.Web.Controllers
             this.marketsService = marketsService;
         }
 
-        [Route("{symbol}")]
+        [Route("instruments/{symbol}")]
         [HttpGet]
-        public async Task<IActionResult> GetInstrumentAsync([FromRoute] string symbol)
+        public async Task<IActionResult> GetInstrumentBySymbolAsync([FromRoute] string symbol)
         {
             var instrument = await this.marketsService.GetFinantialInstrumentBySymbolAsync(symbol);
 
             return Ok(instrument);
         }
 
+        [Route("marketTypes/{marketType}/instruments")]
         [HttpGet]
-        public async Task<IActionResult> GetInstrumentsAsync()
+        public async Task<IActionResult> GetFinantialInstrumentsByMarketTypeAsync([FromRoute] string marketType)
         {
-            var instrument = await this.marketsService.GetAllFinantialInstrumentsAsync();
+            var instruments = await this.marketsService.GetFinantialInstrumentsByTypeAsync(marketType);
 
-            return Ok(instrument);
+            return Ok(instruments);
+        }
+
+        [Route("instruments")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllInstrumentsAsync()
+        {
+            var instruments = await this.marketsService.GetAllFinantialInstrumentsAsync();
+
+            return Ok(instruments);
+        }
+
+        [Route("marketTypes")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllMarketTypesAsync()
+        {
+            var marketTypes = await this.marketsService.GetAllMarketTypesAsync();
+
+            return Ok(marketTypes);
         }
     }
 }

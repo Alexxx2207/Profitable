@@ -1,16 +1,42 @@
 import { useEffect, useState } from 'react';
 import { MarketWidget } from '../MarketWidget/MarketWidget';
-import { getAllInstruments, getInstrument } from '../../../services/markets/marketsService';
+import {
+    getInstrument,
+    getAllMarketTypes,
+    getAllInstrumentsByMarketType
+} from '../../../services/markets/marketsService';
 import styles from './MarketsList.module.css';
 
 export const MarketsList = () => {
-    const requiredInstrument = {
-        exchangeName: 'NASDAQ',
-        tickerSymbol: 'AAPL'
-    };
+    
+    const initialMarketType = 'stock';
 
-    const [instrument, setInstrument] = useState({ ...requiredInstrument });
+    const [instrument, setInstrument] = useState({
+        tickerSymbol: 'AAPL',
+        exchangeName: 'NASDAQ'
+
+    });
+    const [marketType, setMarketType] = useState({
+        name : initialMarketType
+    });
     const [allInstruments, setAllInstruments] = useState([]);
+    const [allMarketTypes, setAllMarketTypes] = useState([]);
+
+    useEffect(() => {
+        getAllMarketTypes()
+        .then(responseMarketTypes => {
+            setAllMarketTypes(responseMarketTypes);
+        });
+    }, []);
+    
+
+    useEffect(() => {
+        getAllInstrumentsByMarketType(marketType.name)
+            .then(responseInstruments => {
+                setAllInstruments(responseInstruments);
+            });
+    }, [marketType]);
+
 
     const fetchInstrumentData = (instrument) => {
         getInstrument(instrument)
@@ -19,16 +45,19 @@ export const MarketsList = () => {
             })
     }
 
-    useEffect(() => {
-        getAllInstruments()
-            .then(responseInstrument => {
-                setAllInstruments(responseInstrument);
-            })
-    }, []);
+    const OnChangeMarketType = (marketTypeSelected) => {
+        setMarketType({ name: marketTypeSelected });
+    }
 
     return (
         <div className={styles.marketsList}>
             <section className={styles.searchSection}>
+                <div className={styles.searchMarketTypePart}>
+                    <h1 className={styles.chooseMarketTypeHeading}>Market</h1>
+                    <select className={styles.searchDropdown} onChange={(e) => OnChangeMarketType(e.target.value)} value={marketType.name}>
+                        {allMarketTypes.map(marketType => <option key={marketType.guid} value={marketType.name}>{marketType.name}</option>)}
+                    </select>
+                </div>
                 <div className={styles.searchInstrumentPart}>
                     <h1 className={styles.chooseInstrumentHeading}>Instrument</h1>
                     <select className={styles.searchDropdown} onChange={(e) => fetchInstrumentData(e.target.value)} value={instrument.tickerSymbol}>
