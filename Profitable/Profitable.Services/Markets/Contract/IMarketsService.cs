@@ -6,6 +6,8 @@ namespace Profitable.Services.Markets.Contract
     {
         Task<List<FinantialInstrumentViewModel>> GetAllFinantialInstrumentsAsync();
 
+        Task<List<FinantialInstrumentViewModel>> GetFinantialInstrumentsByType(string type);
+
         Task<FinantialInstrumentViewModel> GetFinantialInstrumentBySymbolAsync(string symbol);
     }
 }

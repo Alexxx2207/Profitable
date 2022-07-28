@@ -29,6 +29,8 @@ export const PostsList = () => {
     useEffect(() => {
         loadPosts();
         window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener('scroll', handleScroll);
     }, [handleScroll, loadPosts]);
 
     return (
