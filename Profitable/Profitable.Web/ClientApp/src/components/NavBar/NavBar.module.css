@@ -17,15 +17,11 @@
 }
 
 .navbarLogo {
-    font-size: 2.6vw;
-    letter-spacing: 0.4rem;
+    font-size: 4.6vh;
+    letter-spacing: 0.3rem;
     padding: 0.5rem 0.8rem;
     transition: 0.5s;
     margin: 0px;
-}
-.navbarLogo:hover {
-    letter-spacing: 0.6rem;
-    transition: 0.5s;
 }
 
 .navbarList {
@@ -38,7 +34,7 @@
 }
 
 .navbarListItems {
-    font-size: 1.3vw;
+    font-size: 2.4vh;
     font-weight: 600;
     letter-spacing: 2px;
     display: inline-block;

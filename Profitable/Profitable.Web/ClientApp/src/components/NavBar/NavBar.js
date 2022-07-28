@@ -14,9 +14,6 @@ export const NavBar = () => {
 
             <ul className={styles.navbarList}>
                 <li>
-                    <NavLink to="/" className={classNames(styles.navbarListItems, styles.navLink)}>HOME</NavLink>
-                </li>
-                <li>
                     <NavLink to="/markets" className={classNames(styles.navbarListItems, styles.navLink)}>MARKETS</NavLink>
                 </li>
                 <li>

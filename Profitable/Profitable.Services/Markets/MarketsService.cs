@@ -37,5 +37,17 @@ namespace Profitable.Services.Markets
 
             return mapper.Map<FinantialInstrumentViewModel>(instrument);
         }
+
+        public async Task<List<FinantialInstrumentViewModel>> GetFinantialInstrumentsByType(string type)
+        {
+            var instruments = await repository
+                .GetAllAsNoTracking()
+                .Include(i => i.MarketType)
+                .Where(i => i.MarketType.Name == type)
+                .Select(i => mapper.Map<FinantialInstrumentViewModel>(i))
+                .ToListAsync();
+
+            return instruments;
+        }
     }
 }
