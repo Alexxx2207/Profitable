@@ -31,11 +31,11 @@ namespace Profitable.Services.Comments
             return true;
         }
 
-        public async Task<Result> DeleteCommentAsync(string guid)
+        public async Task<Result> DeleteCommentAsync(Guid guid)
         {
             var comment = await repository
                 .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.GUID.ToString() == guid);
+                .FirstAsync(entity => entity.Guid == guid);
 
             repository.Delete(comment);
 
@@ -44,20 +44,20 @@ namespace Profitable.Services.Comments
             return true;
         }
 
-        public async Task<CommentResponseModel> GetCommentAsync(string guid)
+        public async Task<CommentResponseModel> GetCommentAsync(Guid guid)
         {
             var comment = await repository
                 .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.GUID.ToString() == guid);
+                .FirstAsync(entity => entity.Guid == guid);
 
             return mapper.Map<CommentResponseModel>(comment);
         }
 
-        public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(string postGUID)
+        public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid)
         {
             var comments = await repository
                 .GetAllAsNoTracking()
-                .Where(comment => comment.PostId == postGUID)
+                .Where(comment => comment.PostId == guid)
                 .Select(comment => mapper.Map<CommentResponseModel>(comment))
                 .ToListAsync();
 
@@ -70,7 +70,7 @@ namespace Profitable.Services.Comments
 
             var existingComment = await repository
                 .GetAll().
-                FirstAsync(entity => entity.GUID.ToString() == newComment.Guid);
+                FirstAsync(entity => entity.Guid == Guid.Parse(newComment.Guid));
 
             if (existingComment == null)
             {

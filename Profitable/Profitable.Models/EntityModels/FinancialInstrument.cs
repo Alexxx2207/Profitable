@@ -15,11 +15,11 @@ namespace Profitable.Models.EntityModels
         public string TickerSymbol { get; set; }
 
         [Required]
-        public string ExchangeId { get; set; }
+        public Guid ExchangeId { get; set; }
         public Exchange Exchange { get; set; }
 
         [Required]
-        public string MarketTypeId { get; set; }
+        public Guid MarketTypeId { get; set; }
 
         public MarketType MarketType { get; set; }
 

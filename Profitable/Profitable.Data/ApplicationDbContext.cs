@@ -6,7 +6,7 @@ using Profitable.Models.EntityModels;
 
 namespace Profitable.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public ApplicationDbContext()
         {
@@ -54,6 +54,11 @@ namespace Profitable.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Ignore<IdentityUserLogin<string>>();
+            builder.Ignore<IdentityUserRole<string>>();
+            builder.Ignore<IdentityUserClaim<string>>();
+            builder.Ignore<IdentityUserToken<string>>();
+            builder.Ignore<IdentityUser<string>>();
 
             builder.Entity<Comment>()
                 .HasOne(c => c.Post)
@@ -64,6 +69,9 @@ namespace Profitable.Data
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Likes)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<FinancialInstrument>()
+                .HasKey(e => e.Guid);
 
             builder.Entity<FinancialInstrument>()
                 .HasKey(e => e.TickerSymbol)

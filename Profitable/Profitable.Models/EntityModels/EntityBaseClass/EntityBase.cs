@@ -7,11 +7,11 @@ namespace Profitable.Models.EntityModels.EntityBaseClass
     {
         public EntityBase()
         {
-            GUID = Guid.NewGuid().ToString();
+            Guid = Guid.NewGuid();
         }
 
         [Key]
-        public string GUID { get; set; }
+        public Guid Guid { get; set; }
 
         public bool IsDeleted { get; set; }
 

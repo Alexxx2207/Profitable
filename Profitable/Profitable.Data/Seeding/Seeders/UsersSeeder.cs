@@ -26,7 +26,7 @@ namespace Profitable.Data.Seeding.Seeders
             {
                 var user = new ApplicationUser()
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
                     Email = trader.Email,
                     UserName = trader.Email,
                     FirstName = trader.FirstName,

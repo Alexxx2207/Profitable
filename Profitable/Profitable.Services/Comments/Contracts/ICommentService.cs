@@ -6,13 +6,13 @@ namespace Profitable.Services.Comments.Contracts
 {
     public interface ICommentService
     {
-        Task<CommentResponseModel> GetCommentAsync(string guid);
+        Task<CommentResponseModel> GetCommentAsync(Guid guid);
 
-        Task<List<CommentResponseModel>> GetCommentsByPostAsync(string postGUID);
+        Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid);
 
         Task<Result> AddCommentAsync(AddCommentRequestModel newComment);
 
-        Task<Result> DeleteCommentAsync(string guid);
+        Task<Result> DeleteCommentAsync(Guid guid);
 
         Task<Result> UpdateCommentAsync(UpdateCommentRequestModel newComment);
     }
