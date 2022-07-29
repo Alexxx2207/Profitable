@@ -11,7 +11,6 @@
     {
         public ApplicationUser()
         {
-            Id = Guid.NewGuid();
             Roles = new HashSet<IdentityUserRole<string>>();
             Claims = new HashSet<IdentityUserClaim<string>>();
             Logins = new HashSet<IdentityUserLogin<string>>();

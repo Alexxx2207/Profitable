@@ -252,17 +252,16 @@ namespace Profitable.Data.Migrations
                 name: "FinancialInstruments",
                 columns: table => new
                 {
-                    TickerSymbol = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TickerSymbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExchangeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MarketTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("IX_TickerSymbol", x => x.TickerSymbol)
-                        .Annotation("SqlServer:Clustered", false);
+                    table.PrimaryKey("PK_FinancialInstruments", x => x.Guid);
                     table.ForeignKey(
                         name: "FK_FinancialInstruments_Exchanges_ExchangeId",
                         column: x => x.ExchangeId,
@@ -367,7 +366,6 @@ namespace Profitable.Data.Migrations
                     Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ListId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FinancialInstrumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FinancialInstrumentTickerSymbol = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -375,10 +373,10 @@ namespace Profitable.Data.Migrations
                 {
                     table.PrimaryKey("PK_ListsFinancialInstruments", x => x.Guid);
                     table.ForeignKey(
-                        name: "FK_ListsFinancialInstruments_FinancialInstruments_FinancialInstrumentTickerSymbol",
-                        column: x => x.FinancialInstrumentTickerSymbol,
+                        name: "FK_ListsFinancialInstruments_FinancialInstruments_FinancialInstrumentId",
+                        column: x => x.FinancialInstrumentId,
                         principalTable: "FinancialInstruments",
-                        principalColumn: "TickerSymbol",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ListsFinancialInstruments_Lists_ListId",
@@ -463,9 +461,9 @@ namespace Profitable.Data.Migrations
                 column: "TraderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListsFinancialInstruments_FinancialInstrumentTickerSymbol",
+                name: "IX_ListsFinancialInstruments_FinancialInstrumentId",
                 table: "ListsFinancialInstruments",
-                column: "FinancialInstrumentTickerSymbol");
+                column: "FinancialInstrumentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ListsFinancialInstruments_ListId",
