@@ -37,9 +37,9 @@ namespace Profitable.Services.Posts
             return true;
         }
 
-        public async Task<Result> DeletePostAsync(string guid)
+        public async Task<Result> DeletePostAsync(Guid guid)
         {
-            var entity = await postsRepository.GetAllAsNoTracking().FirstAsync(entity => entity.GUID.ToString() == guid);
+            var entity = await postsRepository.GetAllAsNoTracking().FirstAsync(entity => entity.Guid == guid);
 
             postsRepository.Delete(entity);
 
@@ -48,7 +48,7 @@ namespace Profitable.Services.Posts
             return true;
         }
 
-        public async Task<Result> DeleteLikeAsync(string postGuid, string traderId)
+        public async Task<Result> DeleteLikeAsync(Guid postGuid, Guid traderId)
         {
             var like = await likesRepository
                 .GetAllAsNoTracking()
@@ -61,16 +61,16 @@ namespace Profitable.Services.Posts
             return true;
         }
 
-        public async Task<PostResponseModel> GetPostByGuidAsync(string guid)
+        public async Task<PostResponseModel> GetPostByGuidAsync(Guid guid)
         {
             return mapper.Map<PostResponseModel>(await postsRepository
                 .GetAllAsNoTracking()
                 .Include(p => p.Tags)
                 .Include(p => p.Author)
-                .FirstAsync(entity => entity.GUID == guid));
+                .FirstAsync(entity => entity.Guid == guid));
         }
 
-        public async Task<List<LikeResponseModel>> GetPostLikesAsync(string guid)
+        public async Task<List<LikeResponseModel>> GetPostLikesAsync(Guid guid)
         {
             var likes = await likesRepository
                 .GetAllAsNoTracking()
@@ -98,7 +98,7 @@ namespace Profitable.Services.Posts
             return posts;
         }
 
-        public async Task<List<PostResponseModel>> GetPostsByTraderAsync(string traderId)
+        public async Task<List<PostResponseModel>> GetPostsByTraderAsync(Guid traderId)
         {
             var posts = await postsRepository
                 .GetAllAsNoTracking()
@@ -114,11 +114,11 @@ namespace Profitable.Services.Posts
         {
             var post = await postsRepository
                 .GetAll()
-                .FirstAsync(entity => entity.GUID.ToString() == newPost.GUID);
+                .FirstAsync(entity => entity.Guid == Guid.Parse(newPost.Guid));
 
             var existingPost = await postsRepository
                .GetAll()
-               .FirstAsync(entity => entity.GUID.ToString() == newPost.GUID);
+               .FirstAsync(entity => entity.Guid == Guid.Parse(newPost.Guid));
 
             if (existingPost == null)
             {

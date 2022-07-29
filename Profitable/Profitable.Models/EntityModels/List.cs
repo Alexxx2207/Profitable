@@ -14,7 +14,7 @@ namespace Profitable.Models.EntityModels
         public string Name { get; set; }
 
         [Required]
-        public string TraderId { get; set; }
+        public Guid TraderId { get; set; }
         public ApplicationUser Trader { get; set; }
 
         public ICollection<ListsFinancialInstruments> FinancialInstruments { get; set; }

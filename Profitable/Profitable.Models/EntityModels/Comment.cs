@@ -9,7 +9,7 @@ namespace Profitable.Models.EntityModels
     {
 
         [ForeignKey("Author")]
-        public string AuthorId { get; set; }
+        public Guid AuthorId { get; set; }
         public ApplicationUser Author { get; set; }
 
 
@@ -21,7 +21,7 @@ namespace Profitable.Models.EntityModels
 
 
         [ForeignKey("Post")]
-        public string PostId { get; set; }
+        public Guid PostId { get; set; }
         public Post Post { get; set; }
 
     }

@@ -15,7 +15,7 @@ namespace Profitable.Models.EntityModels
 
         [Required]
         [ForeignKey("Author")]
-        public string AuthorId { get; set; }
+        public Guid AuthorId { get; set; }
         public ApplicationUser Author { get; set; }
 
         [Required]

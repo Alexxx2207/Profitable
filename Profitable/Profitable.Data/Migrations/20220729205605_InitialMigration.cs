@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,7 +13,7 @@ namespace Profitable.Data.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -26,7 +27,7 @@ namespace Profitable.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageType = table.Column<int>(type: "int", nullable: true),
@@ -57,42 +58,42 @@ namespace Profitable.Data.Migrations
                 name: "Exchanges",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Exchanges", x => x.GUID);
+                    table.PrimaryKey("PK_Exchanges", x => x.Guid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "MarketTypes",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MarketTypes", x => x.GUID);
+                    table.PrimaryKey("PK_MarketTypes", x => x.Guid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Tag",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tag", x => x.GUID);
+                    table.PrimaryKey("PK_Tag", x => x.Guid);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,7 +102,7 @@ namespace Profitable.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -122,19 +123,13 @@ namespace Profitable.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AspNetUserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -150,17 +145,11 @@ namespace Profitable.Data.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -173,9 +162,8 @@ namespace Profitable.Data.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,11 +174,6 @@ namespace Profitable.Data.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -203,7 +186,7 @@ namespace Profitable.Data.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -223,15 +206,15 @@ namespace Profitable.Data.Migrations
                 name: "Lists",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TraderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TraderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lists", x => x.GUID);
+                    table.PrimaryKey("PK_Lists", x => x.Guid);
                     table.ForeignKey(
                         name: "FK_Lists_AspNetUsers_TraderId",
                         column: x => x.TraderId,
@@ -244,8 +227,8 @@ namespace Profitable.Data.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -256,7 +239,7 @@ namespace Profitable.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Posts", x => x.GUID);
+                    table.PrimaryKey("PK_Posts", x => x.Guid);
                     table.ForeignKey(
                         name: "FK_Posts_AspNetUsers_AuthorId",
                         column: x => x.AuthorId,
@@ -270,9 +253,9 @@ namespace Profitable.Data.Migrations
                 columns: table => new
                 {
                     TickerSymbol = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ExchangeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MarketTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    GUID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExchangeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MarketTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -284,13 +267,13 @@ namespace Profitable.Data.Migrations
                         name: "FK_FinancialInstruments_Exchanges_ExchangeId",
                         column: x => x.ExchangeId,
                         principalTable: "Exchanges",
-                        principalColumn: "GUID",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FinancialInstruments_MarketTypes_MarketTypeId",
                         column: x => x.MarketTypeId,
                         principalTable: "MarketTypes",
-                        principalColumn: "GUID",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -298,17 +281,17 @@ namespace Profitable.Data.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PostedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.GUID);
+                    table.PrimaryKey("PK_Comments", x => x.Guid);
                     table.ForeignKey(
                         name: "FK_Comments_AspNetUsers_AuthorId",
                         column: x => x.AuthorId,
@@ -319,7 +302,7 @@ namespace Profitable.Data.Migrations
                         name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "GUID",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -327,15 +310,15 @@ namespace Profitable.Data.Migrations
                 name: "Likes",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TraderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PostId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TraderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Likes", x => x.GUID);
+                    table.PrimaryKey("PK_Likes", x => x.Guid);
                     table.ForeignKey(
                         name: "FK_Likes_AspNetUsers_TraderId",
                         column: x => x.TraderId,
@@ -346,7 +329,7 @@ namespace Profitable.Data.Migrations
                         name: "FK_Likes_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "GUID",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -354,26 +337,26 @@ namespace Profitable.Data.Migrations
                 name: "PostTag",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PostId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TagId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostTag", x => x.GUID);
+                    table.PrimaryKey("PK_PostTag", x => x.Guid);
                     table.ForeignKey(
                         name: "FK_PostTag_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "GUID",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PostTag_Tag_TagId",
                         column: x => x.TagId,
                         principalTable: "Tag",
-                        principalColumn: "GUID",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -381,18 +364,19 @@ namespace Profitable.Data.Migrations
                 name: "ListsFinancialInstruments",
                 columns: table => new
                 {
-                    GUID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ListId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FinancialInstrumentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ListId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FinancialInstrumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FinancialInstrumentTickerSymbol = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ListsFinancialInstruments", x => x.GUID);
+                    table.PrimaryKey("PK_ListsFinancialInstruments", x => x.Guid);
                     table.ForeignKey(
-                        name: "FK_ListsFinancialInstruments_FinancialInstruments_FinancialInstrumentId",
-                        column: x => x.FinancialInstrumentId,
+                        name: "FK_ListsFinancialInstruments_FinancialInstruments_FinancialInstrumentTickerSymbol",
+                        column: x => x.FinancialInstrumentTickerSymbol,
                         principalTable: "FinancialInstruments",
                         principalColumn: "TickerSymbol",
                         onDelete: ReferentialAction.Cascade);
@@ -400,7 +384,7 @@ namespace Profitable.Data.Migrations
                         name: "FK_ListsFinancialInstruments_Lists_ListId",
                         column: x => x.ListId,
                         principalTable: "Lists",
-                        principalColumn: "GUID",
+                        principalColumn: "Guid",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -417,29 +401,14 @@ namespace Profitable.Data.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_ApplicationUserId",
-                table: "AspNetUserClaims",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
                 table: "AspNetUserClaims",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_ApplicationUserId",
-                table: "AspNetUserLogins",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserLogins_UserId",
                 table: "AspNetUserLogins",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_ApplicationUserId",
-                table: "AspNetUserRoles",
-                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserRoles_RoleId",
@@ -494,9 +463,9 @@ namespace Profitable.Data.Migrations
                 column: "TraderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListsFinancialInstruments_FinancialInstrumentId",
+                name: "IX_ListsFinancialInstruments_FinancialInstrumentTickerSymbol",
                 table: "ListsFinancialInstruments",
-                column: "FinancialInstrumentId");
+                column: "FinancialInstrumentTickerSymbol");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ListsFinancialInstruments_ListId",

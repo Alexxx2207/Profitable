@@ -2,7 +2,7 @@
 {
     public class UserDetailsResponseModel
     {
-        public string GUID { get; set; }
+        public string Guid { get; set; }
 
         public string Email { get; set; }
 

@@ -7,11 +7,11 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class ApplicationUser : IdentityUser, IDeletebleEntity
+    public class ApplicationUser : IdentityUser<Guid>, IDeletebleEntity
     {
         public ApplicationUser()
         {
-            Id = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid();
             Roles = new HashSet<IdentityUserRole<string>>();
             Claims = new HashSet<IdentityUserClaim<string>>();
             Logins = new HashSet<IdentityUserLogin<string>>();

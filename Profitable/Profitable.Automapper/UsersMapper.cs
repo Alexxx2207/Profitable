@@ -12,7 +12,7 @@ namespace Profitable.Automapper
         {
             CreateMap<ApplicationUser, UserDetailsResponseModel>()
                 .ForMember(
-                    dest => dest.GUID,
+                    dest => dest.Guid,
                     opt => opt.MapFrom(src => src.Id)
                 )
                 .ForMember(

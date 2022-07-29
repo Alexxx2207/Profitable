@@ -12,7 +12,7 @@ using Profitable.Data;
 namespace Profitable.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220725105344_InitialMigration")]
+    [Migration("20220729205605_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,10 +24,11 @@ namespace Profitable.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -51,7 +52,7 @@ namespace Profitable.Data.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,9 +66,8 @@ namespace Profitable.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -76,7 +76,7 @@ namespace Profitable.Data.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,29 +84,23 @@ namespace Profitable.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -114,49 +108,38 @@ namespace Profitable.Data.Migrations
                     b.Property<string>("ProviderKey")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -174,8 +157,9 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -259,12 +243,12 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Comment", b =>
                 {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -276,14 +260,13 @@ namespace Profitable.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PostId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("PostedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("GUID");
+                    b.HasKey("Guid");
 
                     b.HasIndex("AuthorId");
 
@@ -294,8 +277,9 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Exchange", b =>
                 {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -307,7 +291,7 @@ namespace Profitable.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("GUID");
+                    b.HasKey("Guid");
 
                     b.ToTable("Exchanges");
                 });
@@ -320,19 +304,17 @@ namespace Profitable.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ExchangeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ExchangeId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("Guid")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MarketTypeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("MarketTypeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("TickerSymbol")
                         .HasName("IX_TickerSymbol");
@@ -348,8 +330,9 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Like", b =>
                 {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -357,15 +340,13 @@ namespace Profitable.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PostId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("TraderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("TraderId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("GUID");
+                    b.HasKey("Guid");
 
                     b.HasIndex("PostId");
 
@@ -376,8 +357,9 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.List", b =>
                 {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -389,11 +371,10 @@ namespace Profitable.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TraderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("TraderId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("GUID");
+                    b.HasKey("Guid");
 
                     b.HasIndex("TraderId");
 
@@ -402,26 +383,29 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.ListsFinancialInstruments", b =>
                 {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FinancialInstrumentId")
+                    b.Property<Guid>("FinancialInstrumentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FinancialInstrumentTickerSymbol")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ListId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ListId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("GUID");
+                    b.HasKey("Guid");
 
-                    b.HasIndex("FinancialInstrumentId");
+                    b.HasIndex("FinancialInstrumentTickerSymbol");
 
                     b.HasIndex("ListId");
 
@@ -430,8 +414,9 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.MarketType", b =>
                 {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -443,19 +428,19 @@ namespace Profitable.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("GUID");
+                    b.HasKey("Guid");
 
                     b.ToTable("MarketTypes");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
                 {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -480,7 +465,7 @@ namespace Profitable.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("GUID");
+                    b.HasKey("Guid");
 
                     b.HasIndex("AuthorId");
 
@@ -489,8 +474,9 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.PostTag", b =>
                 {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -498,15 +484,13 @@ namespace Profitable.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PostId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("TagId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("GUID");
+                    b.HasKey("Guid");
 
                     b.HasIndex("PostId");
 
@@ -517,8 +501,9 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Tag", b =>
                 {
-                    b.Property<string>("GUID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -530,26 +515,22 @@ namespace Profitable.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("GUID");
+                    b.HasKey("Guid");
 
                     b.ToTable("Tag");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
-                        .WithMany("Claims")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -557,12 +538,8 @@ namespace Profitable.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
-                        .WithMany("Logins")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -570,13 +547,9 @@ namespace Profitable.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -589,7 +562,7 @@ namespace Profitable.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Profitable.Models.EntityModels.ApplicationUser", null)
                         .WithMany()
@@ -670,7 +643,7 @@ namespace Profitable.Data.Migrations
                 {
                     b.HasOne("Profitable.Models.EntityModels.FinancialInstrument", "FinancialInstrument")
                         .WithMany("ListsContainingIt")
-                        .HasForeignKey("FinancialInstrumentId")
+                        .HasForeignKey("FinancialInstrumentTickerSymbol")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -717,19 +690,13 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.ApplicationUser", b =>
                 {
-                    b.Navigation("Claims");
-
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
 
                     b.Navigation("Lists");
 
-                    b.Navigation("Logins");
-
                     b.Navigation("Posts");
-
-                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>

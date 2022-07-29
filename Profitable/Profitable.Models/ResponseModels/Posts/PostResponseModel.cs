@@ -5,7 +5,7 @@ namespace Profitable.Models.ResponseModels.Posts
 {
     public class PostResponseModel
     {
-        public string GUID { get; set; }
+        public string Guid { get; set; }
 
         public string Title { get; set; }
 
