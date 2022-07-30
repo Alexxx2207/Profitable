@@ -18,7 +18,7 @@ namespace Profitable.Web.Infrastructure
         public static IServiceCollection AddIdentity(this IServiceCollection services)
         {
             services
-                .AddIdentity<ApplicationUser, IdentityRole>(options =>
+                .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
                 {
                     options.SignIn.RequireConfirmedEmail = true;
                     options.Password.RequireDigit = false;
@@ -28,6 +28,7 @@ namespace Profitable.Web.Infrastructure
                     options.Password.RequiredLength = 6;
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddRoles<IdentityRole<Guid>>()
                 .AddDefaultTokenProviders();
 
             return services;

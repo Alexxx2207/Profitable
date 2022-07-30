@@ -54,6 +54,7 @@ namespace Profitable.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
             builder.Ignore<IdentityUserLogin<string>>();
             builder.Ignore<IdentityUserRole<string>>();
             builder.Ignore<IdentityUserClaim<string>>();
@@ -69,14 +70,6 @@ namespace Profitable.Data
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Likes)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<FinancialInstrument>()
-                .HasKey(e => e.Guid);
-
-            builder.Entity<FinancialInstrument>()
-                .HasKey(e => e.TickerSymbol)
-                .IsClustered(false)
-                .HasName("IX_TickerSymbol");
         }
     }
 }

@@ -12,7 +12,7 @@ using Profitable.Data;
 namespace Profitable.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220729205605_InitialMigration")]
+    [Migration("20220729210117_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -298,16 +298,14 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>
                 {
-                    b.Property<string>("TickerSymbol")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("ExchangeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Guid")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -316,10 +314,11 @@ namespace Profitable.Data.Migrations
                     b.Property<Guid>("MarketTypeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("TickerSymbol")
-                        .HasName("IX_TickerSymbol");
+                    b.Property<string>("TickerSymbol")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("TickerSymbol"), false);
+                    b.HasKey("Guid");
 
                     b.HasIndex("ExchangeId");
 
@@ -393,10 +392,6 @@ namespace Profitable.Data.Migrations
                     b.Property<Guid>("FinancialInstrumentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("FinancialInstrumentTickerSymbol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -405,7 +400,7 @@ namespace Profitable.Data.Migrations
 
                     b.HasKey("Guid");
 
-                    b.HasIndex("FinancialInstrumentTickerSymbol");
+                    b.HasIndex("FinancialInstrumentId");
 
                     b.HasIndex("ListId");
 
@@ -643,7 +638,7 @@ namespace Profitable.Data.Migrations
                 {
                     b.HasOne("Profitable.Models.EntityModels.FinancialInstrument", "FinancialInstrument")
                         .WithMany("ListsContainingIt")
-                        .HasForeignKey("FinancialInstrumentTickerSymbol")
+                        .HasForeignKey("FinancialInstrumentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Profitable.GlobalConstants\Profitable.GlobalConstants.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EntityModels\UserConfiguration\" />
+  </ItemGroup>
+
 </Project>
