@@ -12,12 +12,11 @@ export const MarketsList = () => {
     const initialMarketType = 'stock';
 
     const [instrument, setInstrument] = useState({
-        tickerSymbol: 'AAPL',
-        exchangeName: 'NASDAQ'
-
-    });
+        tikcerSymbol: '',
+        exchangeName: ''
+});
     const [marketType, setMarketType] = useState({
-        name : initialMarketType
+        name: initialMarketType
     });
     const [allInstruments, setAllInstruments] = useState([]);
     const [allMarketTypes, setAllMarketTypes] = useState([]);
@@ -28,7 +27,13 @@ export const MarketsList = () => {
             setAllMarketTypes(responseMarketTypes);
         });
     }, []);
-    
+
+    useEffect(() => {
+        getAllInstrumentsByMarketType(marketType.name)
+            .then(responseInstruments => {
+                setAllInstruments(responseInstruments);
+            });
+    }, [allMarketTypes]);
 
     useEffect(() => {
         getAllInstrumentsByMarketType(marketType.name)
@@ -37,8 +42,13 @@ export const MarketsList = () => {
             });
     }, [marketType]);
 
+    useEffect(() => {
+        if(allInstruments.length > 0) {
+            OnChangeSetInstrument(allInstruments[0].tickerSymbol)
+        }
+    }, [allInstruments]);
 
-    const fetchInstrumentData = (instrument) => {
+    const OnChangeSetInstrument = (instrument) => {
         getInstrument(instrument)
             .then(responseInstrument => {
                 setInstrument(responseInstrument);
@@ -60,7 +70,7 @@ export const MarketsList = () => {
                 </div>
                 <div className={styles.searchInstrumentPart}>
                     <h1 className={styles.chooseInstrumentHeading}>Instrument</h1>
-                    <select className={styles.searchDropdown} onChange={(e) => fetchInstrumentData(e.target.value)} value={instrument.tickerSymbol}>
+                    <select className={styles.searchDropdown} onChange={(e) => OnChangeSetInstrument(e.target.value)} value={instrument.tickerSymbol}>
                         {allInstruments.map(instr => <option key={instr.guid} value={instr.tickerSymbol}>{instr.tickerSymbol}</option>)}
                     </select>
                 </div>
