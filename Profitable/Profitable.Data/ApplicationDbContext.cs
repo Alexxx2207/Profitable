@@ -60,17 +60,6 @@ namespace Profitable.Data
             builder.Ignore<IdentityUserClaim<string>>();
             builder.Ignore<IdentityUserToken<string>>();
             builder.Ignore<IdentityUser<string>>();
-            builder.Ignore<IdentityRole<string>>();
-
-            builder.Entity<ApplicationUser>(b =>
-            {
-                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
-            });
-
-            builder.Entity<IdentityRole<Guid>>(b =>
-            {
-                b.Property(u => u.Id).HasDefaultValueSql("newsequentialid()");
-            });
 
             builder.Entity<Comment>()
                 .HasOne(c => c.Post)
