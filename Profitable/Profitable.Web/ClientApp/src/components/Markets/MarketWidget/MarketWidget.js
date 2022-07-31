@@ -1,12 +1,13 @@
 import React from 'react';
 import { AdvancedChart } from "react-tradingview-embed";
 
-export function MarketWidget(props) {
+export function MarketWidget({instrument}) {
+    
     return <div style={{height: '700px'}}>
         <AdvancedChart widgetProps={{
             "width": "100%",
             "height": "100%",
-            "symbol": `${props.instrument.exchangeName}:${props.instrument.tickerSymbol}`,
+            "symbol": `${instrument.exchangeName}:${instrument.tickerSymbol}`,
             "timezone": "Atlantic/Reykjavik",
             "theme": "dark",
             "locale": "en",
