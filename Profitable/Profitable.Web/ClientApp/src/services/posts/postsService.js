@@ -6,7 +6,7 @@ export const createImgURL = (imageType, image) => {
 }
 
 export const createAuthorImgURL = (imageType, image) => {
-    if(image != '') {
+    if (image !== '') {
         return createImgURL(imageType, image);
     } else {
         return `${process.env.PUBLIC_URL}images/defaultProfilePicture.png`;
@@ -18,8 +18,17 @@ export const loadParticularPost = (postId) => {
         .then(response => response.json());
 }
 
-export const loadPostsPage = (page) => {
-    return request.get(`${WEB_API_BASE_URL}/posts/pages/${page}`)
+export const loadPostsPage = (page, postsCount) => {
+
+    const postBody = {
+        'PostsCount': postsCount,
+        'Page': page
+    };
+
+    return request.post(
+        `${WEB_API_BASE_URL}/posts/pages`,
+        postBody
+    )
         .then(response => response.json());
 }
 

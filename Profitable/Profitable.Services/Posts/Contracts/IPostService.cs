@@ -9,7 +9,7 @@ namespace Profitable.Services.Posts.Contracts
     {
         Task<PostResponseModel> GetPostByGuidAsync(Guid guid);
 
-        Task<List<PostResponseModel>> GetPostsByPageAsync(int page);
+        Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int postsCount);
 
         Task<List<PostResponseModel>> GetPostsByTraderAsync(Guid traderId);
 

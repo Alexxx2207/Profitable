@@ -7,7 +7,7 @@ import {
 import { NavBar } from "../NavBar/NavBar";
 import { Home } from '../Home/Home';
 import { About } from '../About/About';
-import { MarketsList } from '../Markets/MarketsList/MarketsList';
+import { MarketsPage } from '../Markets/MarketsPage/MarketsPage';
 import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
 import { PostDetails } from '../PostsAndComments/Posts/PostDetails/PostDetails';
 import styles from './App.module.css'
@@ -27,7 +27,7 @@ export function App() {
                 }>
                 </Route>
                 <Route path="/markets" element={
-                    <MarketsList />
+                    <MarketsPage />
                 }>
                 </Route>
                 <Route path="/posts" element={

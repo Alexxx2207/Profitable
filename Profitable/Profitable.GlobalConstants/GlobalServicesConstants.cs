@@ -3,7 +3,7 @@
     public class GlobalServicesConstants
     {
 
-        public static readonly int PostsCountInPage = 6;
+        public static readonly int PostsMaxCountInPage = 100;
 
         public static readonly string EntityDoesNotExist = "Entity does not exist!";
 
