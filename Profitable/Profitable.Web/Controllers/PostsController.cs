@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Profitable.Models.RequestModels.Posts;
 using Profitable.Services.Posts.Contracts;
 using Profitable.Web.Controllers.BaseApiControllers;
 
@@ -13,13 +14,22 @@ namespace Profitable.Web.Controllers
             this.postService = postService;
         }
 
-        [Route("pages/{page}")]
-        [HttpGet]
-        public async Task<IActionResult> GetByPageAsync([FromRoute] int page)
+        [Route("pages")]
+        [HttpPost]
+        public async Task<IActionResult> GetByPageAsync([FromBody] GetPostsRequestModel getPostsRequestModel)
         {
-            var posts = await postService.GetPostsByPageAsync(page);
+            try
+            {
+                var posts = await postService.GetPostsByPageAsync(getPostsRequestModel.Page, getPostsRequestModel.PostsCount);
 
-            return Ok(posts);
+                return Ok(posts);
+            }
+            catch (Exception err)
+            {
+
+                return BadRequest(err);
+            }
+
         }
 
         [Route("{id}")]

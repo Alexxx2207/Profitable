@@ -81,21 +81,28 @@ namespace Profitable.Services.Posts
             return likes;
         }
 
-        public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page)
+        public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int postsCount)
         {
-            var posts = await postsRepository
-                .GetAllAsNoTracking()
-                .OrderByDescending(p => p.PostedOn)
-                .Skip(page * GlobalServicesConstants.PostsCountInPage)
-                .Take(GlobalServicesConstants.PostsCountInPage)
-                .Include(p => p.Tags)
-                .Include(p => p.Author)
-                .Include(p => p.Likes)
-                .Include(p => p.Comments)
-                .Select(post => mapper.Map<PostResponseModel>(post))
-                .ToListAsync();
+            if (postsCount > 0 && postsCount <= GlobalServicesConstants.PostsMaxCountInPage)
+            {
+                var posts = await postsRepository
+                    .GetAllAsNoTracking()
+                    .OrderByDescending(p => p.PostedOn)
+                    .Skip(page * postsCount)
+                    .Take(postsCount)
+                    .Include(p => p.Tags)
+                    .Include(p => p.Author)
+                    .Include(p => p.Likes)
+                    .Include(p => p.Comments)
+                    .Select(post => mapper.Map<PostResponseModel>(post))
+                    .ToListAsync();
 
-            return posts;
+                return posts;
+            }
+            else
+            {
+                throw new Exception($"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
+            }
         }
 
         public async Task<List<PostResponseModel>> GetPostsByTraderAsync(Guid traderId)
