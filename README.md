@@ -23,8 +23,8 @@ This platform helps traders to make decisions, observe the financial markets and
 ![image](https://user-images.githubusercontent.com/61185321/182322515-427f9103-ffb2-4c05-a017-37aa9e8c12f8.png)
 <br />
 4. In Solution Explorer open folder Web and right click on Profitable.Web
-![image](https://user-images.githubusercontent.com/61185321/182325621-894effc4-ac26-4483-9dc7-6d72f7c42961.png)
-![image](https://user-images.githubusercontent.com/61185321/182323486-4615f1aa-93db-44f4-b1b0-f7cdb46bf544.png)
+![image](https://user-images.githubusercontent.com/61185321/182330066-0dd0ebf4-2160-4f9d-a09e-1bed6ae080ac.png)
+![image](https://user-images.githubusercontent.com/61185321/182330356-6590855b-3d76-4b86-ab9a-8e5d7375d5e8.png)
 <br />
 **A dialog with many options is opened! **
 <br />
