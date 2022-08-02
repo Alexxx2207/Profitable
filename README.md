@@ -36,4 +36,4 @@ This platform helps traders to make decisions, observe the financial markets and
 <br />
 **This will start both the backend and the frontend servers and automatically open a browser tab with the project application.**
 <br />
-> :warning: **Do NOT close the consoles that were opened after clicking the empty green arrow!** :warning: 
+>:warning: **Do NOT close the consoles that were opened after clicking the empty green arrow!** :warning: 
