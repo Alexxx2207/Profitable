@@ -33,7 +33,7 @@ namespace Profitable.Services.Users
         {
             var user = await repository
                 .GetAllAsNoTracking()
-                .FirstAsync(user => user.UserName == email);
+                .FirstAsync(user => user.Email == email);
 
             return mapper.Map<UserDetailsResponseModel>(user);
         }
