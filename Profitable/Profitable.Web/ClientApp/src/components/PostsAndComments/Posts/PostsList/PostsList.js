@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { PostsListItem } from './PostsListItem/PostsListItem';
 import { loadPostsPage } from '../../../../services/posts/postsService';
-import { POSTS_LIST_POSTS_IN_PAGE_COUTN } from '../../../../common/config';
+import { POSTS_LIST_POSTS_IN_PAGE_COUNT } from '../../../../common/config';
 import styles from './PostsList.module.css';
 
 export const PostsList = () => {
@@ -9,7 +9,7 @@ export const PostsList = () => {
     let page = 0;
 
     const loadPosts = useCallback(() => {
-        loadPostsPage(page, POSTS_LIST_POSTS_IN_PAGE_COUTN)
+        loadPostsPage(page, POSTS_LIST_POSTS_IN_PAGE_COUNT)
             .then(result => {
                 if (result.length > 0) {
                     setPosts(posts => [...posts, ...result])

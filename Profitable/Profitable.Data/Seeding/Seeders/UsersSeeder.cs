@@ -21,7 +21,8 @@ namespace Profitable.Data.Seeding.Seeders
 
         private static async Task SeedUserAsync(UserManager<ApplicationUser> userManager, SeededTrader trader, string role = null)
         {
-            var userExists = await userManager.FindByNameAsync(trader.Email);
+            var userExists = await userManager.FindByEmailAsync(trader.Email);
+
             if (userExists == null)
             {
                 var user = new ApplicationUser()

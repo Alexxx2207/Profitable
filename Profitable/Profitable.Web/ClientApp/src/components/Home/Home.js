@@ -1,4 +1,5 @@
 ﻿import { Watchlist } from '../Watchlist/Watchlist';
+import { About } from './About/About';
 import styles from './Home.module.css';
 
 export const Home = () => {
@@ -17,6 +18,10 @@ export const Home = () => {
                         Execute
                     </div>
                 </div>
+            </section>
+            <section className={styles.aboutSection}>
+                <h1>About Us</h1>
+                <About />
             </section>
         </main>
     </div>

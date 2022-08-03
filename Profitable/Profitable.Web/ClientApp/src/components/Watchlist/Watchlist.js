@@ -19,7 +19,7 @@ export function Watchlist() {
             "showChart": true,
             "locale": "en",
             "width": "100%",
-            "height": "100%",
+            "height": "99%",
             "largeChartUrl": "",
             "isTransparent": true,
             "showSymbolLogo": true,

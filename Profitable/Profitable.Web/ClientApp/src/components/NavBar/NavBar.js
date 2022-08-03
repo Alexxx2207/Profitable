@@ -1,8 +1,13 @@
 import classNames from 'classnames';
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
 import styles from './NavBar.module.css';
 
 export const NavBar = () => {
+
+    const { jwt } = useContext(AuthContext);
+    
     return (
         <nav className={styles.navbarContainer}>
 
@@ -12,16 +17,23 @@ export const NavBar = () => {
                 </NavLink>
             </div>
 
-            <ul className={styles.navbarList}>
-                <li>
+            <div className={styles.navButtonsContainers}>
+                <div className={styles.pages}>
                     <NavLink to="/markets" className={classNames(styles.navbarListItems, styles.navLink)}>MARKETS</NavLink>
-                </li>
-                <li>
+
                     <NavLink to="/posts" className={classNames(styles.navbarListItems, styles.navLink)}>POSTS</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/about" className={classNames(styles.navbarListItems, styles.navLink)}>ABOUT US</NavLink>
-                </li>
-            </ul>
+
+                </div>
+                <div className={styles.userPanel}>
+                    {jwt ?
+                        <NavLink to="/user-profile" className={classNames(styles.navbarListItems, styles.navLink)}>PROFILE</NavLink>
+                        :
+                        <div className={styles.logiRegisterContainer}>
+                        <NavLink to="/login" className={classNames(styles.navbarListItems, styles.navLink)}>LOGIN</NavLink>
+                        <NavLink to="/register" className={classNames(styles.navbarListItems, styles.navLink)}>REGISTER</NavLink>
+                    </div>
+                    }
+                </div>
+            </div>
         </nav>);
 }

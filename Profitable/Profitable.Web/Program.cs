@@ -28,6 +28,7 @@ builder.Services.AddSingleton(mapper);
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+builder.Services.AddJwtAuthentication(builder.Configuration["JWT_KEY"]);
 builder.Services.AddBusinessServices();
 
 builder.Services.AddCors(options =>
@@ -40,6 +41,7 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod();
                       });
 });
+
 
 builder.Services.AddControllers();
 
@@ -70,6 +72,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
