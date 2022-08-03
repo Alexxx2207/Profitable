@@ -14,7 +14,7 @@ export const registerUser = async (userData) => {
     let response = await request.post(`${WEB_API_BASE_URL}/users/register`, userData);
     
     if(response.status == 401) {
-        throw new Error(response.message);
+        throw new Error(await response.text());
     }
     return response;
 }

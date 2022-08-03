@@ -12,6 +12,7 @@ import { MarketsPage } from '../Markets/MarketsPage/MarketsPage';
 import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
 import { PostDetails } from '../PostsAndComments/Posts/PostDetails/PostDetails';
 import { Login } from "../Login/Login";
+import { Register } from "../Register/Register";
 import styles from './App.module.css'
 
 export function App() {
@@ -49,6 +50,10 @@ export function App() {
 
                     <Route path="/login" element={
                         <Login />
+                    }>
+                    </Route>
+                    <Route path="/register" element={
+                        <Register />
                     }>
                     </Route>
                 </Routes>
