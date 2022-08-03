@@ -24,13 +24,31 @@
     margin: 0px;
 }
 
-.navbarList {
-    list-style-type: none;
+.navButtonsContainers {
+    padding-left: 2rem;
+    width: 100%;
     display: flex;
     align-items: center;
-    margin: 0px;
     justify-content: space-between;
-    width: 45%;
+}
+
+.pages {
+    display: flex;
+    width: 100%;
+}
+
+.pages>* {
+    margin-left: 2vw;
+}
+
+.userPanel>* {
+    margin-left: 2vw;
+}
+
+.logiRegisterContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
 }
 
 .navbarListItems {
@@ -41,7 +59,7 @@
     border: 3px solid #4a4b4e;
     border-radius: 0.5rem;
     padding: 0.5rem 0.8rem;
-    transition: linear 0.5s;
+    transition: linear 0.3s;
 }
 
 .navbarListItems:hover {
@@ -49,5 +67,6 @@
     border: 3px solid white;
     border-radius: 0.5rem;
     background-color: white;
-    transition: 0.7s;
+    transition: linear 0.3s;
 }
+
