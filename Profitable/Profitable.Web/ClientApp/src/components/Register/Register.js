@@ -1,25 +1,29 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from '../../contexts/AuthContext';
-import { loginUser } from '../../services/users/usersService';
-import styles from './Login.module.css';
+import { registerUser } from '../../services/users/usersService';
+import styles from './Register.module.css';
 
-export const Login = () => {
+export const Register = () => {
 
     const { setUserAuth } = useContext(AuthContext);
     const [email, setEmail] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if(email == '' || password == '') {
+        if(email == '' || firstName == '' || lastName == '' || password == '') {
             return alert('Fields cannot be empty!');
         }
-
-        loginUser({
+        
+        registerUser({
             email,
+            firstName,
+            lastName,
             password
         })
         .then(response => response.json())
@@ -31,10 +35,10 @@ export const Login = () => {
     }
 
     return (
-        <div className={styles.loginContainer}>
-            <form className={styles.loginForm} onSubmit={onSubmit} >
-                <div className={styles.loginLabelContainer}>
-                    <h1 className={styles.loginLabel}>Login</h1>
+        <div className={styles.registerContainer}>
+            <form className={styles.registerForm} onSubmit={onSubmit} >
+                <div className={styles.registerLabelContainer}>
+                    <h1 className={styles.registerLabel}>Register</h1>
                 </div>
                 <div className={styles.formGroup}>
                     <div>
@@ -44,12 +48,24 @@ export const Login = () => {
                 </div>
                 <div className={styles.formGroup}>
                     <div>
+                        <h5>First Name</h5>
+                    </div>
+                    <input className={styles.inputField} type="text" placeholder={'Steven'} value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                </div>
+                <div className={styles.formGroup}>
+                    <div>
+                        <h5>Last Name</h5>
+                    </div>
+                    <input className={styles.inputField} type="text" placeholder={'Smith'} value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                </div>
+                <div className={styles.formGroup}>
+                    <div>
                         <h5>Password</h5>
                     </div>
                     <input className={styles.inputField} type="password" placeholder={'Password123'} defaultValue={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className={styles.submitButtonContainer}>
-                    <input className={styles.submitButton} type="submit" value='Login' />
+                    <input className={styles.submitButton} type="submit" value='Register' />
                 </div>
             </form>
         </div>

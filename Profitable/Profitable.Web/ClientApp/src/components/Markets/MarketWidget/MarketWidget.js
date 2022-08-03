@@ -3,7 +3,7 @@ import { AdvancedChart } from "react-tradingview-embed";
 
 export function MarketWidget({instrument}) {
     
-    return <div style={{height: '700px'}}>
+    return <div style={{height: '1100px'}}>
         <AdvancedChart widgetProps={{
             "width": "100%",
             "height": "100%",
