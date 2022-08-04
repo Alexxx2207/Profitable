@@ -20,7 +20,6 @@ export const Home = () => {
                 </div>
             </section>
             <section className={styles.aboutSection}>
-                <h1>About Us</h1>
                 <About />
             </section>
         </main>

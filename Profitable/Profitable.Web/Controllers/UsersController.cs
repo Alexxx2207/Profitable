@@ -1,27 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Users;
 using Profitable.Services.Users.Contracts;
 using Profitable.Web.Controllers.BaseApiControllers;
+using System.Security.Claims;
 
 namespace Profitable.Web.Controllers
 {
     public class UsersController : BaseApiController
     {
         private readonly IUserService userService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, UserManager<ApplicationUser> userManager)
         {
             this.userService = userService;
+            this.userManager = userManager;
         }
 
-        [Route("{email}")]
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAsync([FromRoute] string email)
+        [Route("user")]
+        public async Task<IActionResult> GetAsync()
         {
-            var user = await userService.GetUserDetailsAsync(email);
+            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
 
-            return Ok(user);
+            var userInfo = await userService.GetUserDetailsAsync(user.Email);
+
+            return Ok(userInfo);
         }
+
 
         [Route("login")]
         [HttpPost]
@@ -29,9 +39,9 @@ namespace Profitable.Web.Controllers
         {
             try
             {
-                var user = await userService.LoginUser(userRequestModel);
+                var token = await userService.LoginUserAsync(userRequestModel);
 
-                return Ok(user);
+                return Ok(token);
             }
             catch (Exception error)
             {
@@ -45,9 +55,9 @@ namespace Profitable.Web.Controllers
         {
             try
             {
-                var user = await userService.RegisterUser(userRequestModel);
+                var token = await userService.RegisterUserAsync(userRequestModel);
 
-                return Ok(user);
+                return Ok(token);
             }
             catch (Exception error)
             {

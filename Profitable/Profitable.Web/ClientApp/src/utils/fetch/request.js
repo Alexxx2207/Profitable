@@ -1,11 +1,10 @@
-const requester = (method, url, data) => {
+const requester = (method, url, data, headers = {}) => {
     let options = {
-        method
+        method,
+        headers
     };
 
     if (data) {
-        options.headers = {};
-
         options.headers['Content-Type'] = 'application/json';
         options.body = JSON.stringify(data);
     }

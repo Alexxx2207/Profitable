@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { createImgURL, loadParticularPost, createAuthorImgURL } from '../../../../services/posts/postsService';
 import { PostsLikeWidget } from '../PostsLikeWidget/PostsLikeWidget';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
+
 import styles from './PostDetails.module.css';
 
 export const PostDetails = () => {
+
+    const navigate = useNavigate();
 
     const { postId } = useParams();
     const [post, setPost] = useState({
@@ -24,14 +31,26 @@ export const PostDetails = () => {
     useEffect(() => {
         loadParticularPost(postId)
             .then(result => setPost(result))
-    }, [postId])
+    }, [postId]);
+
+    const goBackHandler = (e) => {
+        navigate('/posts');
+    }
 
     return (
         <div className={styles.post}>
-            <img className={styles.postImage} src={createImgURL(post.postImageType, post.postImage)} alt="" />
+            <div className={styles.backButtonContainer} onClick={goBackHandler}>
+                <button className={styles.backButton}>
+                    <FontAwesomeIcon className={styles.iconLeftArrow} icon={faArrowCircleLeft} />
+                    <div className={styles.backText}>
+                        Go Back
+                    </div>
+                </button>
+            </div>
             <div className={styles.postContent}>
                 <div className={styles.text}>
                     <h1 className={styles.title}>{post.title}</h1>
+            <img className={styles.postImage} src={createImgURL(post.postImageType, post.postImage)} alt="" />
                     <div className={styles.content}>
                         {post.content.split('\\n').map((paragraph, index) =>
                             <p key={index}>{paragraph}<br /></p>

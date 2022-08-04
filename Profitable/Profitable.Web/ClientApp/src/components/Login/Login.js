@@ -2,11 +2,12 @@ import { useContext, useState } from 'react';
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from '../../contexts/AuthContext';
 import { loginUser } from '../../services/users/usersService';
+
 import styles from './Login.module.css';
 
 export const Login = () => {
 
-    const { setUserAuth } = useContext(AuthContext);
+    const { setJWT } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ export const Login = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if(email == '' || password == '') {
+        if(email === '' || password === '') {
             return alert('Fields cannot be empty!');
         }
 
@@ -22,9 +23,8 @@ export const Login = () => {
             email,
             password
         })
-        .then(response => response.json())
         .then(jwt => {
-            setUserAuth(jwt);
+            setJWT(jwt);
             navigate('/');
         })
         .catch(err => alert(err));

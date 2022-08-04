@@ -17,7 +17,7 @@ namespace Profitable.Automapper
                 )
                 .ForMember(
                     dest => dest.ImageType,
-                    opt => opt.MapFrom(src => src.ToString())
+                    opt => opt.MapFrom(src => src.ImageType.ToString())
                 )
                 .ForMember(
                 dest => dest.ProfileImage,

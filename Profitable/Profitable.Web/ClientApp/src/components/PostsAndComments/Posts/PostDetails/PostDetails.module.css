@@ -6,10 +6,47 @@
     text-align: center;
 }
 
+.backButtonContainer {
+    margin-bottom: 5vh;
+    padding-left: 2vw;
+}
+
+.backButtonContainer:hover {
+    cursor: pointer;
+}
+
+.backButton {
+    background-color: white;
+    border: none;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1rem;
+}
+
+.backButton * {
+    background-color: white;
+    color: black;
+}
+
+.iconLeftArrow {
+    font-size: 1.2vw;
+
+    margin-right: 0.5rem;
+    color: black;
+}
+
+.backText {
+    font-weight: 600;
+    font-size: 1.2vw;
+    padding-bottom: 0.1rem;
+}
+
 .postImage {
     width: 70%;
     border: 2px solid white;
     border-radius: 1rem;
+    margin-bottom: 2rem;
 }
 
 .postContent {
@@ -18,7 +55,7 @@
 
 .title {
     letter-spacing: 1px;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     font-size: 6vh;
     text-transform: capitalize;
 }
