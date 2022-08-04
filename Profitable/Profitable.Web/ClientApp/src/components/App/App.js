@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Routes,
     Route,
+    useNavigate
 } from "react-router-dom";
 
 import { AuthContext } from '../../contexts/AuthContext';
@@ -13,18 +14,47 @@ import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
 import { PostDetails } from '../PostsAndComments/Posts/PostDetails/PostDetails';
 import { Login } from "../Login/Login";
 import { Register } from "../Register/Register";
+import { ProfilePage } from "../ProfilePage/ProfilePage";
+
+import { JWT_KEY } from '../../common/config';
+import { getLocalStorage, setLocalStorage, clearLocalStorage } from "../../utils/localStorage";
+
+import { getUserData } from "../../services/users/usersService";
+
 import styles from './App.module.css'
 
 export function App() {
 
-    const [jwt, setAuth] = useState('');
+    const [ JWT, setJWTState ] = useState('');
+    const navigate = useNavigate();
 
-    const setUserAuth = (userData) => {
-        setAuth(userData.token);
+    useEffect(() => {
+        getUserData(getLocalStorage(JWT_KEY))
+        .then(result => setJWTState(getLocalStorage(JWT_KEY)))
+        .catch(err => {
+            clearLocalStorage(JWT_KEY);
+            navigate('/');
+        })
+    }, []);
+
+    const setAuthState = ({token}) => {
+        setLocalStorage(JWT_KEY, token);
+        setJWTState(token)
+    }
+    
+    const removeAuthState = () => {
+        clearLocalStorage(JWT_KEY);
+        setJWTState('')
+    }
+
+    const authUtils = {
+        JWT: getLocalStorage(JWT_KEY),
+        setJWT: setAuthState,
+        removeJWT: removeAuthState
     }
 
     return (
-        <AuthContext.Provider value={{jwt, setUserAuth}}>
+        <AuthContext.Provider value={{ ...authUtils }}>
             <div>
                 <NavBar />
                 <Routes>
@@ -52,8 +82,14 @@ export function App() {
                         <Login />
                     }>
                     </Route>
+
                     <Route path="/register" element={
                         <Register />
+                    }>
+                    </Route>
+
+                    <Route path="/user-profile" element={
+                        <ProfilePage />
                     }>
                     </Route>
                 </Routes>

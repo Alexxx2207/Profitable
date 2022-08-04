@@ -17,17 +17,19 @@ namespace Profitable.Services.Users
             this.iconfiguration = iconfiguration;
         }
 
-        public JWTToken Authenticate(AuthUserModel users)
+        public JWTToken Authenticate(AuthUserModel user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.ASCII.GetBytes(iconfiguration["JWT_Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                Claims = new Dictionary<string, object>()
                 {
-                    new Claim(ClaimTypes.Name, users.Email)
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(10),
+                    { ClaimTypes.NameIdentifier, user.Guid },
+                    { ClaimTypes.Name, user.UserName },
+                    { ClaimTypes.Email, user.Email },
+                },
+                Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
 

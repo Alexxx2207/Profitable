@@ -6,8 +6,8 @@ import styles from './NavBar.module.css';
 
 export const NavBar = () => {
 
-    const { jwt } = useContext(AuthContext);
-    
+    const { JWT } = useContext(AuthContext);
+
     return (
         <nav className={styles.navbarContainer}>
 
@@ -25,7 +25,7 @@ export const NavBar = () => {
 
                 </div>
                 <div className={styles.userPanel}>
-                    {jwt ?
+                    {JWT ?
                         <NavLink to="/user-profile" className={classNames(styles.navbarListItems, styles.navLink)}>PROFILE</NavLink>
                         :
                         <div className={styles.logiRegisterContainer}>

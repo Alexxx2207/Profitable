@@ -26,7 +26,6 @@ export const Register = () => {
             lastName,
             password
         })
-        .then(response => response.json())
         .then(jwt => {
             setUserAuth(jwt);
             navigate('/');

@@ -38,32 +38,30 @@ namespace Profitable.Services.Users
             return mapper.Map<UserDetailsResponseModel>(user);
         }
 
-        public async Task<JWTToken> LoginUser(LoginUserRequestModel userRequestModel)
+        public async Task<JWTToken> LoginUserAsync(LoginUserRequestModel userRequestModel)
         {
-            var userExists = await userManager.FindByNameAsync(userRequestModel.Email);
+            var user = await userManager.FindByEmailAsync(userRequestModel.Email);
 
-            if (userExists != null &&
-                await userManager.CheckPasswordAsync(userExists, userRequestModel.Password))
+            if (user != null &&
+                await userManager.CheckPasswordAsync(user, userRequestModel.Password))
             {
                 return jWTManagerRepository.Authenticate(new AuthUserModel
                 {
-                    Email = userRequestModel.Email,
-                    Password = userRequestModel.Password,
+                    Guid = user.Id.ToString(),
+                    Email = user.Email,
+                    UserName = user.UserName,
                 });
             }
             else
             {
                 throw new Exception("User with this credentials doesn't exist");
-
             }
-
         }
 
-        public async Task<JWTToken> RegisterUser(RegisterUserRequestModel userRequestModel)
+        public async Task<JWTToken> RegisterUserAsync(RegisterUserRequestModel userRequestModel)
         {
             var user = new ApplicationUser()
             {
-                Id = Guid.NewGuid(),
                 Email = userRequestModel.Email,
                 UserName = userRequestModel.Email,
                 FirstName = userRequestModel.FirstName,
@@ -80,8 +78,9 @@ namespace Profitable.Services.Users
             {
                 return jWTManagerRepository.Authenticate(new AuthUserModel
                 {
-                    Email = userRequestModel.Email,
-                    Password = userRequestModel.Password,
+                    Guid = user.Id.ToString(),
+                    Email = user.Email,
+                    UserName = user.UserName,
                 });
             }
         }

@@ -8,8 +8,8 @@ namespace Profitable.Services.Users.Contracts
     {
         Task<UserDetailsResponseModel> GetUserDetailsAsync(string email);
 
-        Task<JWTToken> RegisterUser(RegisterUserRequestModel user);
+        Task<JWTToken> RegisterUserAsync(RegisterUserRequestModel user);
 
-        Task<JWTToken> LoginUser(LoginUserRequestModel user);
+        Task<JWTToken> LoginUserAsync(LoginUserRequestModel user);
     }
 }
