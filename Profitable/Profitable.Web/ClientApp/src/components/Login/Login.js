@@ -14,7 +14,7 @@ export const Login = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if(email == '' || password == '') {
+        if(email === '' || password === '') {
             return alert('Fields cannot be empty!');
         }
 
