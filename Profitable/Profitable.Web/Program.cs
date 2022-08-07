@@ -60,7 +60,6 @@ using (var serviceScope = app.Services.CreateScope())
         .GetResult();
 }
 
-
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();

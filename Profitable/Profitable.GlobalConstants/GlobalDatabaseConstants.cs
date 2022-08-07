@@ -1,4 +1,4 @@
-﻿using Profitable.Models.InputModels.Seedeing;
+﻿using Profitable.Common.Models;
 
 namespace Profitable.GlobalConstants
 {
@@ -14,7 +14,7 @@ namespace Profitable.GlobalConstants
                 FirstName = "Alexander",
                 LastName = "Ivanov",
                 Password = "123456",
-                ProfilePictureURL = null
+                ProfilePictureURL = "admin.jfif",
             }
         };
     }

@@ -26,12 +26,15 @@ export const NavBar = () => {
                 </div>
                 <div className={styles.userPanel}>
                     {JWT ?
-                        <NavLink to="/user-profile" className={classNames(styles.navbarListItems, styles.navLink)}>PROFILE</NavLink>
+                        <div className={styles.authContainer}>
+                            <NavLink to="/user-profile" className={classNames(styles.navbarListItems, styles.navLink)}>PROFILE</NavLink>
+                            <NavLink to="/logout" className={classNames(styles.navbarListItems, styles.navLink)}>LOGOUT</NavLink>
+                        </div>
                         :
-                        <div className={styles.logiRegisterContainer}>
-                        <NavLink to="/login" className={classNames(styles.navbarListItems, styles.navLink)}>LOGIN</NavLink>
-                        <NavLink to="/register" className={classNames(styles.navbarListItems, styles.navLink)}>REGISTER</NavLink>
-                    </div>
+                        <div className={styles.authContainer}>
+                            <NavLink to="/login" className={classNames(styles.navbarListItems, styles.navLink)}>LOGIN</NavLink>
+                            <NavLink to="/register" className={classNames(styles.navbarListItems, styles.navLink)}>REGISTER</NavLink>
+                        </div>
                     }
                 </div>
             </div>

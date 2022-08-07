@@ -16,12 +16,9 @@ namespace Profitable.Automapper
                     opt => opt.MapFrom(src => src.Id)
                 )
                 .ForMember(
-                    dest => dest.ImageType,
-                    opt => opt.MapFrom(src => src.ImageType.ToString())
-                )
-                .ForMember(
                 dest => dest.ProfileImage,
-                opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.ProfilePic), src => src.ProfilePictureURL));
+                opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Users), src => src.ProfilePictureURL));
+
         }
     }
 }

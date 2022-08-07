@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Profitable.Common.Models;
 using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.Models.EntityModels;
-using Profitable.Models.InputModels.Seedeing;
 
 namespace Profitable.Data.Seeding.Seeders
 {

@@ -17,11 +17,7 @@ namespace Profitable.Models.ResponseModels.Posts
 
         public byte[] AuthorImage { get; set; }
 
-        public string AuthorImageType { get; set; }
-
         public byte[] PostImage { get; set; }
-
-        public string PostImageType { get; set; }
 
         public IEnumerable<LikeResponseModel> Likes { get; set; }
 

@@ -10,8 +10,8 @@
 
         public string LastName { get; set; }
 
-        public string ImageType { get; set; }
-
         public byte[] ProfileImage { get; set; }
+
+        public string Description { get; set; }
     }
 }

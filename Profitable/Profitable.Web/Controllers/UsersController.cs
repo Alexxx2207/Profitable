@@ -21,8 +21,7 @@ namespace Profitable.Web.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("user")]
+        [HttpGet("user")]
         public async Task<IActionResult> GetAsync()
         {
             var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
@@ -32,9 +31,7 @@ namespace Profitable.Web.Controllers
             return Ok(userInfo);
         }
 
-
-        [Route("login")]
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequestModel userRequestModel)
         {
             try
