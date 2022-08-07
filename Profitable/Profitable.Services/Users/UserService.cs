@@ -60,28 +60,36 @@ namespace Profitable.Services.Users
 
         public async Task<JWTToken> RegisterUserAsync(RegisterUserRequestModel userRequestModel)
         {
-            var user = new ApplicationUser()
-            {
-                Email = userRequestModel.Email,
-                UserName = userRequestModel.Email,
-                FirstName = userRequestModel.FirstName,
-                LastName = userRequestModel.LastName,
-                ProfilePictureURL = userRequestModel.ProfilePictureURL,
-            };
 
-            var result = await userManager.CreateAsync(user, userRequestModel.Password);
-            if (!result.Succeeded)
+            if (userRequestModel.FirstName.Length >= 2 && userRequestModel.LastName.Length >= 2)
             {
-                throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+                var user = new ApplicationUser()
+                {
+                    Email = userRequestModel.Email,
+                    UserName = userRequestModel.Email,
+                    FirstName = userRequestModel.FirstName,
+                    LastName = userRequestModel.LastName,
+                    ProfilePictureURL = userRequestModel.ProfilePictureURL,
+                };
+
+                var result = await userManager.CreateAsync(user, userRequestModel.Password);
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+                }
+                else
+                {
+                    return jWTManagerRepository.Authenticate(new AuthUserModel
+                    {
+                        Guid = user.Id.ToString(),
+                        Email = user.Email,
+                        UserName = user.UserName,
+                    });
+                }
             }
             else
             {
-                return jWTManagerRepository.Authenticate(new AuthUserModel
-                {
-                    Guid = user.Id.ToString(),
-                    Email = user.Email,
-                    UserName = user.UserName,
-                });
+                return null;
             }
         }
     }

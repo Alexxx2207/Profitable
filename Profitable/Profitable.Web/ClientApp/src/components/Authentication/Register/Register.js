@@ -1,12 +1,12 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from "react-router-dom"
-import { AuthContext } from '../../contexts/AuthContext';
-import { registerUser } from '../../services/users/usersService';
+import { AuthContext } from '../../../contexts/AuthContext';
+import { registerUser } from '../../../services/users/usersService';
 import styles from './Register.module.css';
 
 export const Register = () => {
 
-    const { setUserAuth } = useContext(AuthContext);
+    const { setJWT } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -16,7 +16,7 @@ export const Register = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if(email == '' || firstName == '' || lastName == '' || password == '') {
+        if(email === '' || firstName === '' || lastName === '' || password === '') {
             return alert('Fields cannot be empty!');
         }
         
@@ -27,7 +27,7 @@ export const Register = () => {
             password
         })
         .then(jwt => {
-            setUserAuth(jwt);
+            setJWT(jwt);
             navigate('/');
         })
         .catch(err => alert(err));

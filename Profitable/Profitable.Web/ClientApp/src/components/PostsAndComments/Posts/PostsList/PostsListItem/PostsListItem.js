@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { createAuthorImgURL } from '../../../../../services/posts/postsService';
+import { createAuthorImgURL } from '../../../../../services/common/imageService';
 import { PostsLikeWidget } from '../../PostsLikeWidget/PostsLikeWidget';
 import styles from './PostsListItem.module.css';
 
@@ -26,8 +26,10 @@ export const PostsListItem = (props) => {
 
             <div className={styles.information}>
                 <div className={styles.author}>
-                    <img className={styles.authorImage} src={createAuthorImgURL(props.authorImageType, props.authorImage)} alt="" />
-                    {props.author}
+                    <img className={styles.authorImage} src={createAuthorImgURL(props.authorImage)} alt="" />
+                    <div>
+                        {props.author}
+                    </div>
                 </div>
                 <div className={styles.author}>
                     <FontAwesomeIcon className={styles.iconComments} icon={faComments} />

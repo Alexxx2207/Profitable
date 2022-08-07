@@ -1,1 +1,60 @@
 
+.profilePageContainer {
+    margin: 5vh 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.profilePageContainer * {
+    color: white;
+}
+
+.imageContainer {
+    width: 13rem;
+    background-color: #1e222d;
+    border-radius: 50%;
+    padding: 2rem;
+    z-index: 1;
+}
+
+.imageContainer img {
+    min-height: 8.5rem;
+    max-height: 15rem;
+    width: 100%;
+    border: 5px solid white;
+    border-radius: 50%;
+    background-size:cover
+}
+
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+    border-radius: 20px;
+    width: 100%;
+    padding: 0rem 3rem;
+    padding-top: 7rem;
+    position: relative;
+    bottom: 6rem;
+}
+
+.profileInfo * {
+    background-color: white;
+    color: black;
+    text-align: center;
+}
+
+.userName {
+    margin-bottom: 0.1rem;
+}
+
+.emailContainer{
+    margin-bottom: 2rem;
+}
+
+.email {
+    color: grey;
+}

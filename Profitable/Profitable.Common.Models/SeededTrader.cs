@@ -1,4 +1,4 @@
-﻿namespace Profitable.Models.InputModels.Seedeing
+﻿namespace Profitable.Common.Models
 {
     public class SeededTrader
     {
@@ -10,6 +10,6 @@
 
         public string Password { get; set; }
 
-        public string ProfilePictureURL { get; set; }
+        public string? ProfilePictureURL { get; set; }
     }
 }

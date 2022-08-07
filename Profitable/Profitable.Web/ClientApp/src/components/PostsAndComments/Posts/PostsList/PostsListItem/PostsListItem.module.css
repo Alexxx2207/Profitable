@@ -44,6 +44,7 @@
 .information {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     border-top: 2px solid white;
     padding-top: 1rem;
 }
@@ -54,8 +55,12 @@
 }
 
 .authorImage {
-    width: 13%;
+    width: 3rem;
+    min-height: 3rem;
+    max-height: 10rem;
     margin-right: 0.5rem;
+    border: 2px solid white;
+    border-radius: 50%;
 }
 
 .iconComments {

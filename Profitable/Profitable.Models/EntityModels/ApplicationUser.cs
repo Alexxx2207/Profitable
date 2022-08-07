@@ -1,7 +1,6 @@
 ﻿namespace Profitable.Models.EntityModels
 {
     using Microsoft.AspNetCore.Identity;
-    using Profitable.GlobalConstants;
     using Profitable.Models.Contracts;
     using System;
     using System.Collections.Generic;
@@ -30,7 +29,7 @@
         [Required]
         public string LastName { get; set; }
 
-        public ImageTypes? ImageType { get; set; }
+        public string? Description { get; set; }
 
         public string? ProfilePictureURL { get; set; }
 

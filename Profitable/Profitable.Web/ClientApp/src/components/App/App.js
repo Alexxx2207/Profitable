@@ -12,9 +12,11 @@ import { Home } from '../Home/Home';
 import { MarketsPage } from '../Markets/MarketsPage/MarketsPage';
 import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
 import { PostDetails } from '../PostsAndComments/Posts/PostDetails/PostDetails';
-import { Login } from "../Login/Login";
-import { Register } from "../Register/Register";
+import { Login } from "../Authentication/Login/Login";
+import { Register } from "../Authentication/Register/Register";
 import { ProfilePage } from "../ProfilePage/ProfilePage";
+import { Logout } from "../Authentication/Logout";
+import { NotFoundPage } from "../NotFoundPage/NotFoundPage";
 
 import { JWT_KEY } from '../../common/config';
 import { getLocalStorage, setLocalStorage, clearLocalStorage } from "../../utils/localStorage";
@@ -35,6 +37,7 @@ export function App() {
             clearLocalStorage(JWT_KEY);
             navigate('/');
         })
+    // eslint-disable-next-line
     }, []);
 
     const setAuthState = ({token}) => {
@@ -48,10 +51,10 @@ export function App() {
     }
 
     const authUtils = {
-        JWT: getLocalStorage(JWT_KEY),
+        JWT: JWT,
         setJWT: setAuthState,
         removeJWT: removeAuthState
-    }
+    };
 
     return (
         <AuthContext.Provider value={{ ...authUtils }}>
@@ -90,6 +93,16 @@ export function App() {
 
                     <Route path="/user-profile" element={
                         <ProfilePage />
+                    }>
+                    </Route>
+                   
+                    <Route path="/logout" element={
+                        <Logout />
+                    }>
+                    </Route>
+                    
+                    <Route path="*" element={
+                        <NotFoundPage />
                     }>
                     </Route>
                 </Routes>

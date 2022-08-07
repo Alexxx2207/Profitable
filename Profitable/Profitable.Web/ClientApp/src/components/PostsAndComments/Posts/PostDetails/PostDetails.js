@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { createImgURL, loadParticularPost, createAuthorImgURL } from '../../../../services/posts/postsService';
+import { loadParticularPost } from '../../../../services/posts/postsService';
 import { PostsLikeWidget } from '../PostsLikeWidget/PostsLikeWidget';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
+
+import { createImgURL, createAuthorImgURL } from '../../../../services/common/imageService';
+
+import { MISSING_POST_GUID_ERROR_PAGE_PATH } from '../../../../common/config';
 
 import styles from './PostDetails.module.css';
 
@@ -31,7 +35,8 @@ export const PostDetails = () => {
     useEffect(() => {
         loadParticularPost(postId)
             .then(result => setPost(result))
-    }, [postId]);
+            .catch(err => navigate(`${MISSING_POST_GUID_ERROR_PAGE_PATH}`))
+    }, [postId, navigate]);
 
     const goBackHandler = (e) => {
         navigate('/posts');
@@ -50,7 +55,7 @@ export const PostDetails = () => {
             <div className={styles.postContent}>
                 <div className={styles.text}>
                     <h1 className={styles.title}>{post.title}</h1>
-            <img className={styles.postImage} src={createImgURL(post.postImageType, post.postImage)} alt="" />
+            <img className={styles.postImage} src={createImgURL(post.postImage)} alt="" />
                     <div className={styles.content}>
                         {post.content.split('\\n').map((paragraph, index) =>
                             <p key={index}>{paragraph}<br /></p>
@@ -63,7 +68,7 @@ export const PostDetails = () => {
                 </div>
                 <div className={styles.information}>
                     <div className={styles.author}>
-                        <img className={styles.authorImage} src={createAuthorImgURL(post.authorImageType, post.authorImage)} alt="" />
+                        <img className={styles.authorImage} src={createAuthorImgURL(post.authorImage)} alt="" />
                         <div>
                             {post.author}
                         </div>

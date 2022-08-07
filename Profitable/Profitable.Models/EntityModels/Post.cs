@@ -1,5 +1,4 @@
-﻿using Profitable.GlobalConstants;
-using Profitable.Models.EntityModels.EntityBaseClass;
+﻿using Profitable.Models.EntityModels.EntityBaseClass;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,8 +27,6 @@ namespace Profitable.Models.EntityModels
         public DateTime PostedOn { get; set; }
 
         public string? ImageURL { get; set; }
-
-        public ImageTypes? ImageType { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
 
