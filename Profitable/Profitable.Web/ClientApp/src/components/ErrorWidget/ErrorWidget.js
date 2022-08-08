@@ -7,13 +7,13 @@ export const ErrorWidget = ({error}) => {
         <div className={styles.errorContainer}>
             {error.type == CLIENT_ERROR_TYPE ?
                 (error.fulfilled ? 
-                    <h4 className={styles.errorMessageGreen}>{error.text}</h4>
+                    <h5 className={styles.errorMessageGreen}>{error.text}</h5>
                 :
-                    <h4 className={styles.errorMessageRed}>{error.text}</h4>
+                    <h5 className={styles.errorMessageRed}>{error.text}</h5>
                 )
             :
                 (error.display ?
-                    <h4 className={styles.errorMessageYellow}>{error.text}</h4>
+                    <h5 className={styles.errorMessageYellow}>{error.text}</h5>
                 :
                     ''
                 )

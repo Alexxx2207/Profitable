@@ -5,10 +5,10 @@ import { loginUser } from '../../../services/users/usersService';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
-
-import styles from './Login.module.css';
 import { isEmptyFieldChecker } from '../../../services/common/errorValidationCheckers';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
+
+import styles from './Login.module.css';
 
 export const Login = () => {
 
@@ -52,11 +52,7 @@ export const Login = () => {
                         ...state,
                         errors: {
                             ...state.errors,
-                            serverError: {
-                                text: err.message,
-                                display: true,
-                                type: createServerErrorObject(err.message, true)
-                            }
+                            serverError: createServerErrorObject(err.message, true),
                         }
                     }));
                 });
@@ -76,7 +72,7 @@ export const Login = () => {
                     emailEmpty: createClientErrorObject(state.errors.emailEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
                 }
             }));
-        } else {
+        } else  if(e.target.name == 'password'){
             setLoginState(state => ({
                 ...state,
                 values: {
@@ -89,8 +85,6 @@ export const Login = () => {
                 }
             }));
         }
-
-        
     };
 
     return (
@@ -122,7 +116,6 @@ export const Login = () => {
                     <h1 className={styles.errorsHeading}>Login State</h1>
                 </div>
                 <div className={styles.errorsContainer}>
-
                     {Object.values(loginState.errors).map((error, index) => <ErrorWidget key={index} error={error} />)}
                 </div>
             </aside>
