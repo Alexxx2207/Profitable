@@ -1,0 +1,25 @@
+.errorContainer {
+    margin: 1rem;
+}
+
+.errorMessageRed, .errorMessageGreen, .errorMessageYellow {
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    text-transform: capitalize;
+    transition: linear 0.3s;
+}
+
+.errorMessageRed {
+    color: while;
+    background-color: rgb(171, 1, 1);
+}
+
+.errorMessageGreen {
+    color: while;
+    background-color: green;
+}
+
+.errorMessageYellow {
+    color: while;
+    background-color: rgb(164, 164, 3);
+}

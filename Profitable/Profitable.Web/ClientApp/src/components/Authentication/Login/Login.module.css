@@ -1,7 +1,14 @@
+.pageContainer {
+    display: flex;
+    justify-content: center;
+    padding-top: 12vh;
+}
+
 .loginContainer {
     display: flex;
     justify-content: center;
-    margin-top: 12vh;
+    width: 40%;
+    margin-right: 5vw;
 }
 
 .loginForm {
@@ -10,7 +17,7 @@
     align-self: center;
     align-items: center;
 
-    width: 45%;
+    width: 100%;
     background-color: white;
     border-radius: 20px;
 
@@ -86,4 +93,25 @@
     color: white;
     border-radius: 1vh;
     transition: linear 0.3s;
+}
+
+.loginAside {
+    width: 35%;
+}
+
+.errorsHeadingContainer {
+    border-bottom: 2px solid white;
+    margin-bottom: 3vh;
+}
+
+.errorsHeading {
+    text-align: center;
+    margin-bottom: 2vh;
+}
+
+.errorsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
 }
