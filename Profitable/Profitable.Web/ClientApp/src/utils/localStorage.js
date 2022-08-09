@@ -1,5 +1,5 @@
 
-export function getLocalStorage(key) {
+export function getFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
 }
 

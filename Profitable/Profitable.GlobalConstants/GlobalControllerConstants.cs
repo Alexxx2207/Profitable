@@ -3,6 +3,6 @@
     public class GlobalControllerConstants
     {
         public const string JWT = "JWT";
-        public const int JWTExpirationInDays = 3;
+        public const int JWTExpirationInDays = 1;
     }
 }

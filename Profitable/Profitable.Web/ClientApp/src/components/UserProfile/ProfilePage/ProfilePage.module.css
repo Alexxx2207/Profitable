@@ -7,10 +7,6 @@
     position: relative;
 }
 
-.profilePageContainer * {
-    color: white;
-}
-
 .imageContainer {
     width: 13rem;
     background-color: #1e222d;
@@ -35,7 +31,7 @@
     background-color: white;
     border-radius: 20px;
     width: 100%;
-    padding: 0rem 3rem;
+    padding: 2rem 3rem;
     padding-top: 7rem;
     position: relative;
     bottom: 6rem;
@@ -57,4 +53,37 @@
 
 .email {
     color: grey;
+}
+
+.description>* {
+    font-size: 1.5rem;
+}
+
+.userPrivateZoneHeading {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid white;
+    font-size: 6vh;
+    text-align: center;
+}
+
+.editContainer {
+    margin-top: 6rem;
+    border-bottom: 2px solid white;
+    padding-bottom: 4rem;
+}
+
+.editHeadingContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+}
+
+.editHeadingContainer * {
+    font-size: 4vh;
+}
+
+.editHeadingText {
+    margin: 0px;
+    margin-right: 1rem;
 }

@@ -14,16 +14,16 @@ import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
 import { PostDetails } from '../PostsAndComments/Posts/PostDetails/PostDetails';
 import { Login } from "../Authentication/Login/Login";
 import { Register } from "../Authentication/Register/Register";
-import { ProfilePage } from "../ProfilePage/ProfilePage";
+import { ProfilePage } from "../UserProfile/ProfilePage/ProfilePage";
 import { Logout } from "../Authentication/Logout";
 import { NotFoundPage } from "../NotFoundPage/NotFoundPage";
 
-import { JWT_KEY } from '../../common/config';
-import { getLocalStorage, setLocalStorage, clearLocalStorage } from "../../utils/localStorage";
+import { JWT_LOCAL_STORAGE_KEY } from '../../common/config';
+import { getFromLocalStorage, setLocalStorage, clearLocalStorage } from "../../utils/localStorage";
 
-import { getUserData } from "../../services/users/usersService";
+import { getUserDataByJWT } from "../../services/users/usersService";
 
-import styles from './App.module.css'
+import styles from './App.module.css';
 
 export function App() {
 
@@ -31,28 +31,27 @@ export function App() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getUserData(getLocalStorage(JWT_KEY))
-        .then(result => setJWTState(getLocalStorage(JWT_KEY)))
+        getUserDataByJWT(getFromLocalStorage(JWT_LOCAL_STORAGE_KEY))
+        .then(result => setJWTState(getFromLocalStorage(JWT_LOCAL_STORAGE_KEY)))
         .catch(err => {
-            clearLocalStorage(JWT_KEY);
-            navigate('/');
+            clearLocalStorage(JWT_LOCAL_STORAGE_KEY);
         })
     // eslint-disable-next-line
     }, []);
 
     const setAuthState = ({token}) => {
-        setLocalStorage(JWT_KEY, token);
+        setLocalStorage(JWT_LOCAL_STORAGE_KEY, token);
         setJWTState(token)
     }
     
     const removeAuthState = () => {
-        clearLocalStorage(JWT_KEY);
+        clearLocalStorage(JWT_LOCAL_STORAGE_KEY);
         setJWTState('')
     }
 
     const authUtils = {
-        JWT: JWT,
-        setJWT: setAuthState,
+        JWT: getFromLocalStorage(JWT_LOCAL_STORAGE_KEY),
+        setAuth: setAuthState,
         removeJWT: removeAuthState
     };
 
@@ -90,17 +89,17 @@ export function App() {
                         <Register />
                     }>
                     </Route>
-
-                    <Route path="/user-profile" element={
-                        <ProfilePage />
-                    }>
-                    </Route>
                    
                     <Route path="/logout" element={
                         <Logout />
                     }>
                     </Route>
                     
+                    <Route path="/user-profile/:profileEmail" element={
+                        <ProfilePage />
+                    }>
+                    </Route>
+
                     <Route path="*" element={
                         <NotFoundPage />
                     }>

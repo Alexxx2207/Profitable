@@ -1,4 +1,4 @@
-export const JWT_KEY = 'JWT';
+export const JWT_LOCAL_STORAGE_KEY = 'JWT';
 
 export const WEB_API_BASE_URL = 'https://localhost:7048/api';
 
