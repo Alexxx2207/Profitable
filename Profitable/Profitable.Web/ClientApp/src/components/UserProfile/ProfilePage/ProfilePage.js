@@ -1,13 +1,14 @@
 import { useEffect, useState, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { createAuthorImgURL } from '../../../services/common/imageService';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
+import { EditUser } from "../EditUser/EditUser";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
-import { EditUser } from "../EditUser/EditUser";
+import { USER_NOT_FOUND_ERROR_PAGE_PATH } from '../../../common/config';
 
 import styles from './ProfilePage.module.css';
 
@@ -15,7 +16,9 @@ export const ProfilePage = () => {
 
     const navigate = useNavigate();
 
-    const { profileEmail } = useParams();
+    const location = useLocation();
+
+    const { searchedProfileEmail } = useParams();
 
     const [ profileInfo, setProfileInfo ] = useState({});
 
@@ -26,17 +29,24 @@ export const ProfilePage = () => {
     useEffect(() => {
         getUserEmailFromJWT(JWT)
             .then(result => setLoggedInUserEmail(email => result))
-            .catch(err => err)
+            .catch(err => {
+                removeJWT();
+                navigate(location.pathname);
+            })
+    // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
-        getUserDataByEmail(profileEmail)
+        getUserDataByEmail(searchedProfileEmail)
             .then(result => setProfileInfo(result))
-            .catch(err => {
-                removeJWT();
-                navigate('/login');
-            })
-    }, [JWT, removeJWT, navigate]);
+            .catch(err => navigate(USER_NOT_FOUND_ERROR_PAGE_PATH))
+    }, [JWT, searchedProfileEmail, navigate]);
+
+    const changeProfileInfo = (user) => {
+        setProfileInfo(state => ({
+            ...user
+        }))
+    }
 
     return (
         <div className={styles.profilePageContainer}>
@@ -64,7 +74,7 @@ export const ProfilePage = () => {
                     </div>
                 </div>
             </div>
-            {profileEmail == loggedInUserEmail ?
+            {searchedProfileEmail === loggedInUserEmail ?
                 <div className={styles.userSection}>
                     <h1 className={styles.userPrivateZoneHeading}>User Private Zone</h1>
                     <div className={styles.editContainer}>
@@ -73,7 +83,7 @@ export const ProfilePage = () => {
                             <FontAwesomeIcon icon={faEdit} className={styles.editIcon} />
                         </div>
                         <div className={styles.editForm}>
-                            <EditUser loggedInUserEmail={loggedInUserEmail} profileEmail={profileEmail} />
+                            <EditUser changeProfileInfo={changeProfileInfo} searchedProfileEmail={searchedProfileEmail} />
                         </div>
                     </div>
                 </div>

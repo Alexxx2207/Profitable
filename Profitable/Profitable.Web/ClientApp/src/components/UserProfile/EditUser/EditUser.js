@@ -5,7 +5,7 @@ import { AuthContext } from '../../../contexts/AuthContext';
 import { getUserDataByJWT } from '../../../services/users/usersService';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
-import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
+import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE } from '../../../common/config';
 import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH } from '../../../common/validationConstants';
 import { isEmptyFieldChecker, minLengthChecker } from '../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
@@ -14,7 +14,7 @@ import { editUser } from '../../../services/users/usersService';
 
 import styles from './EditUser.module.css';
 
-export const EditUser = ({userEmail, profileEmail}) => {
+export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
 
     const navigate = useNavigate();
 
@@ -51,11 +51,8 @@ export const EditUser = ({userEmail, profileEmail}) => {
                     }
                 })
             ))
-            .catch(err => {
-                removeJWT();
-                navigate('/login');
-            })
-    }, [JWT, removeJWT, navigate]);
+            .catch(err => err);
+    }, [JWT]);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -64,23 +61,30 @@ export const EditUser = ({userEmail, profileEmail}) => {
 
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
             editUser(
-                profileEmail,
+                searchedProfileEmail,
                 editState.values.firstName,
                 editState.values.lastName,
                 editState.values.description,
                 JWT,
                 )
-                .then(jwt => {
-                    navigate(`/user-profile/${userEmail}`);
+                .then(user => {
+                    changeProfileInfo(user);
                 })
-                .catch(err =>
-                    setEditState(state => ({
-                        ...state,
-                        errors: {
-                            ...state.errors,
-                            serverError: createServerErrorObject(err.message, true),
-                        }
-                    })));
+                .catch(err => {
+                    if(err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
+                        removeJWT();
+                        navigate('/login');
+                    } else {
+                        setEditState(state => ({
+                            ...state,
+                            errors: {
+                                ...state.errors,
+                                serverError: createServerErrorObject(err.message, true),
+                            }
+                        }));
+                    }
+                });
+                    
         }
     };
 

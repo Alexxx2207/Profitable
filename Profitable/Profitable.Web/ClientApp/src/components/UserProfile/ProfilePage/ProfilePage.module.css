@@ -60,10 +60,11 @@
 }
 
 .userPrivateZoneHeading {
-    margin-bottom: 2rem;
+    margin-bottom: 1.6rem;
     padding-bottom: 1rem;
     border-bottom: 2px solid white;
     font-size: 6vh;
+    letter-spacing: 1px;
     text-align: center;
 }
 

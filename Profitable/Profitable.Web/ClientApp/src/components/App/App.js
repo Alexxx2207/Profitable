@@ -95,7 +95,7 @@ export function App() {
                     }>
                     </Route>
                     
-                    <Route path="/user-profile/:profileEmail" element={
+                    <Route path="/user-profile/:searchedProfileEmail" element={
                         <ProfilePage />
                     }>
                     </Route>
