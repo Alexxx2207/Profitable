@@ -16,5 +16,6 @@ export const request = {
     get: requester.bind(null, 'GET'),
     post: requester.bind(null, 'POST'),
     put: requester.bind(null, 'PUT'),
-    del: requester.bind(null, 'DELETE')
+    del: requester.bind(null, 'DELETE'),
+    patch: requester.bind(null, 'PATCH'),
 }

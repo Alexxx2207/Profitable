@@ -14,7 +14,7 @@ export const NotFoundPage = () => {
     });
 
     useEffect(() => {
-        console.log(location.pathname);
+        console.log('a');
         if(location.pathname === MISSING_POST_GUID_ERROR_PAGE_PATH) {
             setRedirectButtonData({
                 textContent: 'Go To Posts List',

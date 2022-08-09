@@ -38,6 +38,29 @@ namespace Profitable.Services.Users
             return mapper.Map<UserDetailsResponseModel>(user);
         }
 
+        public async Task<UserDetailsResponseModel> EditUserAsync(string email, EditUserRequestModel editUserData)
+        {
+            var user = await repository
+                .GetAll()
+                .FirstAsync(user => user.Email == email);
+
+            if (user != null)
+            {
+                user.FirstName = editUserData.FirstName;
+                user.LastName = editUserData.LastName;
+                user.Description = editUserData.Description;
+
+                repository.Update(user);
+                await repository.SaveChangesAsync();
+
+                return mapper.Map<UserDetailsResponseModel>(user);
+            }
+            else
+            {
+                throw new Exception("User was not edited");
+            }
+        }
+
         public async Task<JWTToken> LoginUserAsync(LoginUserRequestModel userRequestModel)
         {
             var user = await userManager.FindByEmailAsync(userRequestModel.Email);
@@ -69,7 +92,6 @@ namespace Profitable.Services.Users
                     UserName = userRequestModel.Email,
                     FirstName = userRequestModel.FirstName,
                     LastName = userRequestModel.LastName,
-                    ProfilePictureURL = userRequestModel.ProfilePictureURL,
                 };
 
                 var result = await userManager.CreateAsync(user, userRequestModel.Password);

@@ -1,12 +1,22 @@
 import classNames from 'classnames';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
+
+import { getUserEmailFromJWT } from '../../services/users/usersService';
+
 import styles from './NavBar.module.css';
 
 export const NavBar = () => {
 
     const { JWT } = useContext(AuthContext);
+    const [ email, setEmail ] = useState('');
+
+    useEffect(() => {
+        getUserEmailFromJWT(JWT)
+            .then(result => setEmail(state => result))
+            .catch(err => err);
+    }, [JWT])
 
     return (
         <nav className={styles.navbarContainer}>
@@ -27,7 +37,7 @@ export const NavBar = () => {
                 <div className={styles.userPanel}>
                     {JWT ?
                         <div className={styles.authContainer}>
-                            <NavLink to="/user-profile" className={classNames(styles.navbarListItems, styles.navLink)}>PROFILE</NavLink>
+                            <NavLink to={`/user-profile/${email}`} className={classNames(styles.navbarListItems, styles.navLink)}>PROFILE</NavLink>
                             <NavLink to="/logout" className={classNames(styles.navbarListItems, styles.navLink)}>LOGOUT</NavLink>
                         </div>
                         :

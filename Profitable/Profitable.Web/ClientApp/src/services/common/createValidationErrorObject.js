@@ -10,11 +10,6 @@ export const createClientErrorObject = (error, funtionChecker) => {
 }
 
 export const createServerErrorObject = (errorMessage, display) => {
-    console.log({
-        text: errorMessage,
-        display: display,
-        type: SERVER_ERROR_TYPE
-    });
     return {
         text: errorMessage,
         display: display,

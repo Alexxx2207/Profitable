@@ -5,14 +5,15 @@ import { loginUser } from '../../../services/users/usersService';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
-import { isEmptyFieldChecker } from '../../../services/common/errorValidationCheckers';
+import { isEmptyFieldChecker, isEmailValidChecker } from '../../../services/common/errorValidationCheckers';
+import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
 
 import styles from './Login.module.css';
 
 export const Login = () => {
 
-    const { setJWT } = useContext(AuthContext);
+    const { setAuth } = useContext(AuthContext);
 
     const [loginState, setLoginState] = useState({
         values: {
@@ -20,7 +21,7 @@ export const Login = () => {
             password: '',
         },
         errors: {
-            emailEmpty: { text: 'Insert email', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            emailValid: { text: 'Insert valid email', fulfilled: false, type: CLIENT_ERROR_TYPE },
             passwordEmpty: { text: 'Insert password', fulfilled: false, type: CLIENT_ERROR_TYPE },
             serverError: {
                 text: '',
@@ -39,12 +40,12 @@ export const Login = () => {
         const clientErrors = Object.values(loginState.errors).filter(err => err.type == CLIENT_ERROR_TYPE);
 
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
-            loginUser({
-                email: loginState.values.email,
-                password: loginState.values.password
-            })
+            loginUser(
+                loginState.values.email,
+                loginState.values.password,
+            )
                 .then(jwt => {
-                    setJWT(jwt);
+                    setAuth(jwt);
                     navigate('/');
                 })
                 .catch(err => {
@@ -63,22 +64,16 @@ export const Login = () => {
         if(e.target.name == 'email') {
             setLoginState(state => ({
                 ...state,
-                values: {
-                    ...state.values,
-                    [e.target.name]: e.target.value
-                },
+                values: changeStateValuesForControlledForms(state.values, e.target),
                 errors: {
                     ...state.errors,
-                    emailEmpty: createClientErrorObject(state.errors.emailEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    emailValid: createClientErrorObject(state.errors.emailValid, isEmailValidChecker.bind(null, e.target.value)),
                 }
             }));
         } else  if(e.target.name == 'password'){
             setLoginState(state => ({
                 ...state,
-                values: {
-                    ...state.values,
-                    [e.target.name]: e.target.value
-                },
+                values: changeStateValuesForControlledForms(state.values, e.target),
                 errors: {
                     ...state.errors,
                     passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),

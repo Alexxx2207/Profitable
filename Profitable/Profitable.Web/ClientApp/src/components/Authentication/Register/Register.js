@@ -5,7 +5,8 @@ import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
 import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH, PASSWORD_MIN_LENGTH } from '../../../common/validationConstants';
-import { isEmptyFieldChecker, minLengthChecker } from '../../../services/common/errorValidationCheckers';
+import { isEmptyFieldChecker, minLengthChecker, isEmailValidChecker } from '../../../services/common/errorValidationCheckers';
+import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
 import { registerUser } from '../../../services/users/usersService';
 
@@ -13,9 +14,9 @@ import styles from './Register.module.css';
 
 export const Register = () => {
 
-    const { setJWT } = useContext(AuthContext);
+    const { setAuth } = useContext(AuthContext);
 
-    const [registerState, setLoginState] = useState({
+    const [registerState, setRegisterState] = useState({
         values: {
             email: '',
             password: '',
@@ -23,7 +24,7 @@ export const Register = () => {
             lastName: '',
         },
         errors: {
-            emailEmpty: { text: 'Insert email', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            emailValid: { text: 'Insert valid email', fulfilled: false, type: CLIENT_ERROR_TYPE },
             passwordEmpty: { text: 'Insert password', fulfilled: false, type: CLIENT_ERROR_TYPE },
             passwordLength: { text: `Password at ${PASSWORD_MIN_LENGTH} characters long`, fulfilled: false, type: CLIENT_ERROR_TYPE },
             firstNameEmpty: { text: 'Insert first name', fulfilled: false, type: CLIENT_ERROR_TYPE },
@@ -46,18 +47,18 @@ export const Register = () => {
         const clientErrors = Object.values(registerState.errors).filter(err => err.type == CLIENT_ERROR_TYPE);
 
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
-            registerUser({
-                email: registerState.values.email,
-                firstName: registerState.values.firstName,
-                lastName: registerState.values.lastName,
-                password: registerState.values.password
-            })
+            registerUser(
+                registerState.values.email,
+                registerState.values.firstName,
+                registerState.values.lastName,
+                registerState.values.password,
+            )
                 .then(jwt => {
-                    setJWT(jwt);
+                    setAuth(jwt);
                     navigate('/');
                 })
                 .catch(err => 
-                    setLoginState(state => ({
+                    setRegisterState(state => ({
                     ...state,
                     errors: {
                         ...state.errors,
@@ -69,24 +70,18 @@ export const Register = () => {
 
     const changeHandler = (e) => {
         if (e.target.name == 'email') {
-            setLoginState(state => ({
+            setRegisterState(state => ({
                 ...state,
-                values: {
-                    ...state.values,
-                    [e.target.name]: e.target.value
-                },
+                values:changeStateValuesForControlledForms(state.values, e.target),
                 errors: {
                     ...state.errors,
-                    emailEmpty: createClientErrorObject(state.errors.emailEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    emailValid: createClientErrorObject(state.errors.emailValid, isEmailValidChecker.bind(null, e.target.value)),
                 }
             }));
         } else if (e.target.name == 'password') {
-            setLoginState(state => ({
+            setRegisterState(state => ({
                 ...state,
-                values: {
-                    ...state.values,
-                    [e.target.name]: e.target.value
-                },
+                values: changeStateValuesForControlledForms(state.values, e.target),
                 errors: {
                     ...state.errors,
                     passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -94,12 +89,9 @@ export const Register = () => {
                 }
             }));
         } else if (e.target.name == 'firstName') {
-            setLoginState(state => ({
+            setRegisterState(state => ({
                 ...state,
-                values: {
-                    ...state.values,
-                    [e.target.name]: e.target.value
-                },
+                values: changeStateValuesForControlledForms(state.values, e.target),
                 errors: {
                     ...state.errors,
                     firstNameEmpty: createClientErrorObject(state.errors.firstNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -107,12 +99,9 @@ export const Register = () => {
                 }
             }));
         } else if (e.target.name == 'lastName') {
-            setLoginState(state => ({
+            setRegisterState(state => ({
                 ...state,
-                values: {
-                    ...state.values,
-                    [e.target.name]: e.target.value
-                },
+                values: changeStateValuesForControlledForms(state.values, e.target),
                 errors: {
                     ...state.errors,
                     lastNameEmpty: createClientErrorObject(state.errors.lastNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),

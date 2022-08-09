@@ -13,8 +13,7 @@ namespace Profitable.Web.Controllers
             this.marketsService = marketsService;
         }
 
-        [Route("instruments/{symbol}")]
-        [HttpGet]
+        [HttpGet("instruments/{symbol}")]
         public async Task<IActionResult> GetInstrumentBySymbolAsync([FromRoute] string symbol)
         {
             var instrument = await this.marketsService.GetFinantialInstrumentBySymbolAsync(symbol);
@@ -22,8 +21,7 @@ namespace Profitable.Web.Controllers
             return Ok(instrument);
         }
 
-        [Route("marketTypes/{marketType}/instruments")]
-        [HttpGet]
+        [HttpGet("marketTypes/{marketType}/instruments")]
         public async Task<IActionResult> GetFinantialInstrumentsByMarketTypeAsync([FromRoute] string marketType)
         {
             var instruments = await this.marketsService.GetFinantialInstrumentsByTypeAsync(marketType);
@@ -31,8 +29,7 @@ namespace Profitable.Web.Controllers
             return Ok(instruments);
         }
 
-        [Route("instruments")]
-        [HttpGet]
+        [HttpGet("instruments")]
         public async Task<IActionResult> GetAllInstrumentsAsync()
         {
             var instruments = await this.marketsService.GetAllFinantialInstrumentsAsync();
@@ -40,8 +37,7 @@ namespace Profitable.Web.Controllers
             return Ok(instruments);
         }
 
-        [Route("marketTypes")]
-        [HttpGet]
+        [HttpGet("marketTypes")]
         public async Task<IActionResult> GetAllMarketTypesAsync()
         {
             var marketTypes = await this.marketsService.GetAllMarketTypesAsync();
