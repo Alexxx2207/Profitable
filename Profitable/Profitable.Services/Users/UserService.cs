@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Profitable.Common.Models;
 using Profitable.Data.Repository.Contract;
+using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Users;
 using Profitable.Models.ResponseModels.Users;
 using Profitable.Services.Users.Contracts;
+using System.Text.RegularExpressions;
 
 namespace Profitable.Services.Users
 {
@@ -126,6 +128,34 @@ namespace Profitable.Services.Users
             else
             {
                 throw new Exception("Invalid old password");
+            }
+        }
+
+        public async Task<UserDetailsResponseModel> EditUserProfileImageAsync(ApplicationUser user, EditUserProfileImageRequestModel editUserData)
+        {
+            string time = Regex.Replace(DateTime.Today.ToString(), @"\/|\:|\s", "");
+            string newFileName = time + editUserData.FileName;
+
+            string path = GlobalServicesConstants.UploadsFolderPath +
+                GlobalServicesConstants.DirectorySeparatorChar +
+                ImageFor.Users.ToString() +
+                GlobalServicesConstants.DirectorySeparatorChar +
+                newFileName;
+
+            await File.WriteAllBytesAsync(path, Convert.FromBase64String(editUserData.Image));
+
+            if (user != null)
+            {
+                user.ProfilePictureURL = newFileName;
+
+                repository.Update(user);
+                await repository.SaveChangesAsync();
+
+                return mapper.Map<UserDetailsResponseModel>(user);
+            }
+            else
+            {
+                throw new Exception("User profile image was not edited");
             }
         }
     }

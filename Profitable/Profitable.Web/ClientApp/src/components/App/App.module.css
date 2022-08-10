@@ -19,3 +19,7 @@ html, html *{
 ::-webkit-scrollbar-thumb:hover {
     background: white;
 }
+
+::-webkit-file-upload-button {
+    cursor:pointer;
+}

@@ -18,10 +18,23 @@ namespace Profitable.Automapper.TypeConverters
                 return Array.Empty<byte>();
             }
 
-            var filePath = $"{GlobalServicesConstants.UploadsFolderPath}\\{imageFor}\\{sourceMember}";
-            var fileBytes = File.ReadAllBytes(filePath);
+            try
+            {
+                var filePath =
+                $"{GlobalServicesConstants.UploadsFolderPath}" +
+                $"{GlobalServicesConstants.DirectorySeparatorChar}" +
+                $"{imageFor}" +
+                $"{GlobalServicesConstants.DirectorySeparatorChar}" +
+                $"{sourceMember}";
 
-            return fileBytes;
+                var fileBytes = File.ReadAllBytes(filePath);
+
+                return fileBytes;
+            }
+            catch (Exception)
+            {
+                return Array.Empty<byte>();
+            }
         }
     }
 }

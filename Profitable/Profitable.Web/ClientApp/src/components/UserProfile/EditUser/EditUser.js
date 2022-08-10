@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createAuthorImgURL } from '../../../services/common/imageService';
-import { AuthContext } from '../../../contexts/AuthContext';
+import { AuthContext, MessageBoxContext } from '../../../contexts/AuthContext';
 import { getUserDataByJWT } from '../../../services/users/usersService';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
@@ -18,7 +17,8 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
 
     const navigate = useNavigate();
 
-    const { JWT, removeAuth, setMessageBoxSettings } = useContext(AuthContext);
+    const { JWT, removeAuth } = useContext(AuthContext);
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const [editState, setEditState] = useState({
         values: {

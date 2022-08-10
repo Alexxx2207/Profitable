@@ -13,6 +13,8 @@ namespace Profitable.Services.Users.Contracts
 
         Task<UserDetailsResponseModel> EditUserPasswordAsync(ApplicationUser user, EditUserPasswordRequestModel editUserData);
 
+        Task<UserDetailsResponseModel> EditUserProfileImageAsync(ApplicationUser user, EditUserProfileImageRequestModel editUserData);
+
         Task<JWTToken> RegisterUserAsync(RegisterUserRequestModel user);
 
         Task<JWTToken> LoginUserAsync(LoginUserRequestModel user);
