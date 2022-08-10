@@ -1,4 +1,5 @@
-﻿using Profitable.Common.Models;
+﻿using Profitable.Common;
+using Profitable.Common.Models;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Users;
 using Profitable.Models.ResponseModels.Users;
@@ -8,6 +9,10 @@ namespace Profitable.Services.Users.Contracts
     public interface IUserService
     {
         Task<UserDetailsResponseModel> GetUserDetailsAsync(string email);
+
+        Task<Result> SoftDeleteUserAsync(ApplicationUser email);
+
+        Task<Result> HardDeleteUserAsync(ApplicationUser email);
 
         Task<UserDetailsResponseModel> EditUserAsync(string email, EditUserRequestModel editUserData);
 

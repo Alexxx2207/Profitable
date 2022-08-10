@@ -1,14 +1,14 @@
 import { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { createAuthorImgURL } from '../../../services/common/imageService';
-import { AuthContext, MessageBoxContext } from '../../../contexts/AuthContext';
-import { getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
+import { AuthContext } from '../../../contexts/AuthContext';
+import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
+import { deleteUserDataByJWT, getUserDataByEmail, getUserEmailFromJWT, loginUser } from '../../../services/users/usersService';
 import { EditUser } from "../EditUser/EditUser";
 import { EditPassword } from "../EditPassword/EditPassword";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { faUserLock } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faUserLock, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 import { editUserImage } from '../../../services/users/usersService';
 
@@ -96,10 +96,24 @@ export const ProfilePage = () => {
                     previewImage: undefined,
                     previewImageFileName: undefined,
                 }));
-                setMessageBoxSettings('Profile image was changed successfully!', true, true);
+                setMessageBoxSettings('Profile image was changed successfully!', true);
             })
             .catch((err) => {
-                setMessageBoxSettings(err.message, false, true);
+                setMessageBoxSettings(err.message, false);
+                navigate('/login');
+            });
+    }
+
+    const deleteButtonClickHandler = () => {
+        deleteUserDataByJWT(JWT)
+            .then(result => {
+                setMessageBoxSettings(`Your account was deleted succeefully!`, true);
+                removeAuth();
+                navigate('/');
+            })
+            .catch(err => {
+                setMessageBoxSettings(`Your account was not deleted, session has expired!`, false);
+                removeAuth();
                 navigate('/login');
             });
     }
@@ -123,7 +137,11 @@ export const ProfilePage = () => {
                             :
                             createAuthorImgURL(profileInfo.profileImage)}
                         alt="" />
-                    <input type="file" accept="image/*" className={styles.fileInput} onChange={changeImageHandler} />
+                    {searchedProfileEmail === loggedInUserEmail ?
+                        <input type="file" accept="image/*" className={styles.fileInput} onChange={changeImageHandler} />
+                        :
+                        ""
+                    }
                 </div>
             </div>
             <div className={styles.profileInfo}>
@@ -151,21 +169,39 @@ export const ProfilePage = () => {
                     <h1 className={styles.userPrivateZoneHeading}>User Private Zone</h1>
                     <div className={styles.editContainer}>
                         <div className={styles.editHeadingContainer}>
-                            <h3 className={styles.editHeadingText}>General Information</h3>
+                            <h2 className={styles.editHeadingText}>General Information</h2>
                             <FontAwesomeIcon icon={faEdit} className={styles.editIcon} />
                         </div>
                         <div className={styles.editForm}>
                             <EditUser changeProfileInfo={changeProfileInfo} searchedProfileEmail={searchedProfileEmail} />
                         </div>
-
                     </div>
                     <div className={styles.editContainer}>
                         <div className={styles.editHeadingContainer}>
-                            <h3 className={styles.editHeadingText}>Change Password</h3>
+                            <h2 className={styles.editHeadingText}>Change Password</h2>
                             <FontAwesomeIcon icon={faUserLock} className={styles.editIcon} />
                         </div>
                         <div className={styles.editForm}>
                             <EditPassword />
+                        </div>
+                    </div>
+                    <div className={styles.dangerZoneContainer}>
+                        <div className={styles.dangerZoneHeadingContainer}>
+                            <h2 className={styles.dangerZoneHeadingText}>Danger Zone</h2>
+                            <FontAwesomeIcon icon={faTriangleExclamation} className={styles.editIcon} />
+                        </div>
+                        <div className={styles.dangerZone}>
+                            <div className={styles.deleteSection}>
+                                <div className={styles.deleteHeadingContainer}>
+                                    <h3 className={styles.deleteHeading}>
+                                        Delete Account
+                                    </h3>
+                                    <h5 className={styles.deleteHeading}>Your posts will also be deleted!</h5>
+                                </div>
+                                <button onClick={deleteButtonClickHandler} className={styles.deleteButton}>
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

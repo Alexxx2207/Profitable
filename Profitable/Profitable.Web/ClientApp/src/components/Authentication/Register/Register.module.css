@@ -1,13 +1,13 @@
 .pageContainer {
     display: flex;
     justify-content: center;
-    padding-top: 5vh;
+    padding-top: 3vh;
 }
 
 .registerContainer {
     display: flex;
     justify-content: center;
-    width: 50%;
+    width: 40%;
     margin-right: 5vw;
 }
 
@@ -24,7 +24,7 @@
     background-color: white;
     border-radius: 20px;
 
-    padding: 4vh 4vw;
+    padding: 2vh 4vw;
 }
 
 .registerForm * {
@@ -74,7 +74,7 @@
 
 .submitButtonContainer {
     width: 100%;
-    padding: 7vh 0vw 2vh 0vw;
+    padding: 5vh 0vw 2vh 0vw;
 }
 
 .submitButton {
@@ -100,7 +100,7 @@
 
 
 .registerAside {
-    width: 35%;
+    width: 40%;
 }
 
 .errorsHeadingContainer {
