@@ -17,15 +17,13 @@
 }
 
 .navbarLogo {
-    font-size: 3vw;
+    font-size: 5vh;
     letter-spacing: 0.3rem;
-    padding: 0.5rem 0.8rem;
-    transition: 0.5s;
+    padding: 0.5rem 0rem;
     margin: 0px;
 }
 
 .navButtonsContainers {
-    padding-left: 2rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -38,7 +36,7 @@
 }
 
 .pages>* {
-    margin-left: 2vw;
+    margin-left: 1vw;
 }
 
 .userPanel>* {
@@ -52,7 +50,7 @@
 }
 
 .navbarListItems {
-    font-size: 2.4vh;
+    font-size: 2.6vh;
     font-weight: 600;
     letter-spacing: 2px;
     display: inline-block;

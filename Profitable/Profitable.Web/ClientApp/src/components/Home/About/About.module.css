@@ -1,14 +1,14 @@
 
 .aboutContainer {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     text-align: center;
+    gap: 2vw;
 }
 
 .aboutUsHeading {
     font-size: 3.5vw;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 .sectionHeading {
@@ -19,7 +19,8 @@
     background-color: white;
     padding: 1.5rem 3rem;
     margin: 2rem 0rem;
-    width: 80%;
+    flex: 1;
+    border-radius: 20px;
 }
 
 .aboutSection * {
@@ -32,6 +33,6 @@
 }
 
 .aboutParagraph {
-    font-size: 1.3vw;
+    font-size: 1.5vw;
     letter-spacing: 0.5px;
 }

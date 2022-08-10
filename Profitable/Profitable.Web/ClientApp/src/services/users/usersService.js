@@ -1,5 +1,9 @@
 import { request } from "../../utils/fetch/request";
-import { WEB_API_BASE_URL, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE } from '../../common/config';
+import {
+    WEB_API_BASE_URL,
+    JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
+    INVALID_OLD_PASSWORD_PROVIDED_ERROR_MESSAGE,
+} from '../../common/config';
 
 export const loginUser = async (email, password) => {
     let response = await request.post(`${WEB_API_BASE_URL}/users/login`, {
@@ -28,7 +32,7 @@ export const registerUser = async (email, firstName, lastName, password) => {
     return await response.json();
 }
 
-export const editUser = async (email, firstName, lastName, description, jwt) => {
+export const editGeneralUserData = async (email, firstName, lastName, description, jwt) => {
     let response = await request.patch(`${WEB_API_BASE_URL}/users/user/edit`, {
         email,
         firstName,
@@ -41,6 +45,23 @@ export const editUser = async (email, firstName, lastName, description, jwt) => 
     if (response.status === 401) {
         throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
     }
+    return await response.json();
+}
+
+export const editUserPasswоrd = async (jwt, oldPassword, newPassword) => {
+    let response = await request.patch(`${WEB_API_BASE_URL}/users/user/edit/password`, {
+        oldPassword,
+        newPassword,
+    }, {
+        'Authorization': 'Bearer ' + jwt
+    });
+
+    if (response.status === 401) {
+        throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
+    } else if(response.status === 400) {
+        throw new Error(INVALID_OLD_PASSWORD_PROVIDED_ERROR_MESSAGE);
+    }
+
     return await response.json();
 }
 

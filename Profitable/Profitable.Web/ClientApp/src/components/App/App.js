@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
     Routes,
     Route,
+    useLocation,
     useNavigate
 } from "react-router-dom";
 
@@ -17,9 +18,15 @@ import { Register } from "../Authentication/Register/Register";
 import { ProfilePage } from "../UserProfile/ProfilePage/ProfilePage";
 import { Logout } from "../Authentication/Logout";
 import { NotFoundPage } from "../NotFoundPage/NotFoundPage";
+import { MessageBox } from '../MessageBox/MessageBox';
+
 
 import { JWT_LOCAL_STORAGE_KEY } from '../../common/config';
-import { getFromLocalStorage, setLocalStorage, clearLocalStorage } from "../../utils/localStorage";
+import {
+    getFromLocalStorage,
+    setLocalStorage,
+    clearLocalStorage
+} from "../../utils/localStorage";
 
 import { getUserDataByJWT } from "../../services/users/usersService";
 
@@ -27,36 +34,61 @@ import styles from './App.module.css';
 
 export function App() {
 
-    const [ JWT, setJWTState ] = useState('');
+    const location = useLocation();
     const navigate = useNavigate();
+
+    const messageBoxInitialState = {
+        message: '',
+        good: false,
+        show: false,
+    };
+
+    const [JWT, setJWTState] = useState('');
+
+    const [messageBox, setMessageBox] = useState([{ ...messageBoxInitialState }]);
 
     useEffect(() => {
         getUserDataByJWT(getFromLocalStorage(JWT_LOCAL_STORAGE_KEY))
-        .then(result => setJWTState(getFromLocalStorage(JWT_LOCAL_STORAGE_KEY)))
-        .catch(err => {
-            clearLocalStorage(JWT_LOCAL_STORAGE_KEY);
-        })
-    // eslint-disable-next-line
+            .then(result => setJWTState(getFromLocalStorage(JWT_LOCAL_STORAGE_KEY)))
+            .catch(err => {
+                removeAuthState(JWT_LOCAL_STORAGE_KEY);
+                navigate(location.pathname);
+            })
+        // eslint-disable-next-line
     }, []);
 
-    const setAuthState = ({token}) => {
+    const setAuthState = ({ token }) => {
         setLocalStorage(JWT_LOCAL_STORAGE_KEY, token);
-        setJWTState(token)
+        setJWTState(token);
     }
-    
+
     const removeAuthState = () => {
         clearLocalStorage(JWT_LOCAL_STORAGE_KEY);
-        setJWTState('')
+        setJWTState('');
     }
 
     const authUtils = {
         JWT: getFromLocalStorage(JWT_LOCAL_STORAGE_KEY),
         setAuth: setAuthState,
-        removeJWT: removeAuthState
+        removeAuth: removeAuthState
     };
 
+    const setMessageBoxSettings = (message, good, show) => {
+        setMessageBox({
+            message: message,
+            good,
+            show,
+        });
+    }
+
+    const disposeMessageBoxSettings = () => {
+        setTimeout(() => {
+            setMessageBox({ ...messageBoxInitialState })
+        }, 4000); 
+    }
+
     return (
-        <AuthContext.Provider value={{ ...authUtils }}>
+        <AuthContext.Provider value={{ ...authUtils, setMessageBoxSettings }}>
             <div>
                 <NavBar />
                 <Routes>
@@ -89,12 +121,12 @@ export function App() {
                         <Register />
                     }>
                     </Route>
-                   
+
                     <Route path="/logout" element={
                         <Logout />
                     }>
                     </Route>
-                    
+
                     <Route path="/user-profile/:searchedProfileEmail" element={
                         <ProfilePage />
                     }>
@@ -105,6 +137,11 @@ export function App() {
                     }>
                     </Route>
                 </Routes>
+                {messageBox.show ?
+                    <MessageBox message={messageBox.message} good={messageBox.good} disposeMessageBoxSettings={disposeMessageBoxSettings} />
+                    :
+                    ""
+                }
             </div>
         </AuthContext.Provider>
     );

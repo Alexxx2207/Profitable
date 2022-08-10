@@ -4,9 +4,11 @@ import { createAuthorImgURL } from '../../../services/common/imageService';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
 import { EditUser } from "../EditUser/EditUser";
+import { EditPassword } from "../EditPassword/EditPassword";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faUserLock } from '@fortawesome/free-solid-svg-icons';
 
 import { USER_NOT_FOUND_ERROR_PAGE_PATH } from '../../../common/config';
 
@@ -24,13 +26,13 @@ export const ProfilePage = () => {
 
     const [ loggedInUserEmail, setLoggedInUserEmail] = useState({});
 
-    const { JWT, removeJWT } = useContext(AuthContext);
+    const { JWT, removeAuth } = useContext(AuthContext);
 
     useEffect(() => {
         getUserEmailFromJWT(JWT)
             .then(result => setLoggedInUserEmail(email => result))
             .catch(err => {
-                removeJWT();
+                removeAuth();
                 navigate(location.pathname);
             })
     // eslint-disable-next-line
@@ -50,7 +52,6 @@ export const ProfilePage = () => {
 
     return (
         <div className={styles.profilePageContainer}>
-
             <div className={styles.imageContainer}>
                 <img className={styles.authorImage} src={createAuthorImgURL(profileInfo.profileImage)} alt="" />
             </div>
@@ -79,11 +80,21 @@ export const ProfilePage = () => {
                     <h1 className={styles.userPrivateZoneHeading}>User Private Zone</h1>
                     <div className={styles.editContainer}>
                         <div className={styles.editHeadingContainer}>
-                            <h3 className={styles.editHeadingText}>Edit Section</h3>
+                            <h3 className={styles.editHeadingText}>General Information</h3>
                             <FontAwesomeIcon icon={faEdit} className={styles.editIcon} />
                         </div>
                         <div className={styles.editForm}>
                             <EditUser changeProfileInfo={changeProfileInfo} searchedProfileEmail={searchedProfileEmail} />
+                        </div>
+                        
+                    </div>
+                    <div className={styles.editContainer}>
+                        <div className={styles.editHeadingContainer}>
+                            <h3 className={styles.editHeadingText}>Change Password</h3>
+                            <FontAwesomeIcon icon={faUserLock} className={styles.editIcon} />
+                        </div>
+                        <div className={styles.editForm}>
+                            <EditPassword />
                         </div>
                     </div>
                 </div>

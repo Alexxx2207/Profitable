@@ -1,0 +1,33 @@
+.messageBoxGreen {
+    background-color: green;
+}
+
+.messageBoxRed {
+    background-color: rgb(195, 19, 19);
+}
+
+.messageBoxRed, .messageBoxGreen {
+    color: white;
+    position: fixed;
+    top: 5rem;
+    right: 1rem;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    animation: FadeAnimation 4s ease-in forwards;
+}
+
+.message {
+    background-color: transparent;
+}
+
+@keyframes FadeAnimation {
+    0% {
+      opacity: 1;
+      visibility: visible;
+    }
+  
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }

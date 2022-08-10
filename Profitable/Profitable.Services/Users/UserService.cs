@@ -114,5 +114,19 @@ namespace Profitable.Services.Users
                 return null;
             }
         }
+
+        public async Task<UserDetailsResponseModel> EditUserPasswordAsync(ApplicationUser user, EditUserPasswordRequestModel editUserData)
+        {
+            var result = await userManager.ChangePasswordAsync(user, editUserData.OldPassword, editUserData.newPassword);
+
+            if (result.Succeeded)
+            {
+                return mapper.Map<UserDetailsResponseModel>(user);
+            }
+            else
+            {
+                throw new Exception("Invalid old password");
+            }
+        }
     }
 }
