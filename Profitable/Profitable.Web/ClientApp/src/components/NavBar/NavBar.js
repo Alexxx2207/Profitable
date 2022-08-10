@@ -10,7 +10,7 @@ import styles from './NavBar.module.css';
 export const NavBar = () => {
 
     const { JWT } = useContext(AuthContext);
-    const [ email, setEmail ] = useState('');
+    const [email, setEmail] = useState('');
 
     useEffect(() => {
         getUserEmailFromJWT(JWT)

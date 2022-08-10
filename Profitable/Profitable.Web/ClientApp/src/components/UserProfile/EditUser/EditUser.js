@@ -10,7 +10,7 @@ import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH } from '../../../common/val
 import { isEmptyFieldChecker, minLengthChecker } from '../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
-import { editUser } from '../../../services/users/usersService';
+import { editGeneralUserData } from '../../../services/users/usersService';
 
 import styles from './EditUser.module.css';
 
@@ -18,7 +18,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
 
     const navigate = useNavigate();
 
-    const { JWT, removeJWT } = useContext(AuthContext);
+    const { JWT, removeAuth, setMessageBoxSettings } = useContext(AuthContext);
 
     const [editState, setEditState] = useState({
         values: {
@@ -60,7 +60,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
         const clientErrors = Object.values(editState.errors).filter(err => err.type === CLIENT_ERROR_TYPE);
 
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
-            editUser(
+            editGeneralUserData(
                 searchedProfileEmail,
                 editState.values.firstName,
                 editState.values.lastName,
@@ -69,10 +69,12 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
                 )
                 .then(user => {
                     changeProfileInfo(user);
+                    setMessageBoxSettings('General information was changed successfully!', true, true);
                 })
                 .catch(err => {
                     if(err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
-                        removeJWT();
+                        setMessageBoxSettings(err.message, false, true);
+                        removeAuth();
                         navigate('/login');
                     } else {
                         setEditState(state => ({
@@ -156,7 +158,6 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
                     {Object.values(editState.errors).map((error, index) => <ErrorWidget key={index} error={error} />)}
                 </div>
             </aside>
-
         </div>
     );
 }

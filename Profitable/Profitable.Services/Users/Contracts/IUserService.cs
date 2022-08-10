@@ -1,4 +1,5 @@
 ﻿using Profitable.Common.Models;
+using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Users;
 using Profitable.Models.ResponseModels.Users;
 
@@ -8,7 +9,9 @@ namespace Profitable.Services.Users.Contracts
     {
         Task<UserDetailsResponseModel> GetUserDetailsAsync(string email);
 
-        Task<UserDetailsResponseModel> EditUserAsync(string email, EditUserRequestModel EditUserData);
+        Task<UserDetailsResponseModel> EditUserAsync(string email, EditUserRequestModel editUserData);
+
+        Task<UserDetailsResponseModel> EditUserPasswordAsync(ApplicationUser user, EditUserPasswordRequestModel editUserData);
 
         Task<JWTToken> RegisterUserAsync(RegisterUserRequestModel user);
 

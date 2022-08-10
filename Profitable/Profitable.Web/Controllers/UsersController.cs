@@ -66,6 +66,24 @@ namespace Profitable.Web.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPatch("user/edit/password")]
+        public async Task<IActionResult> EditPasswordAsync([FromBody] EditUserPasswordRequestModel userRequestModel)
+        {
+            try
+            {
+                var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+
+                var userResult = await userService.EditUserPasswordAsync(user, userRequestModel);
+
+                return Ok(user);
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequestModel userRequestModel)
         {
