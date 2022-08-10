@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { createAuthorImgURL } from '../../../services/common/imageService';
-import { AuthContext } from '../../../contexts/AuthContext';
+import { AuthContext, MessageBoxContext } from '../../../contexts/AuthContext';
 import { getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
 import { EditUser } from "../EditUser/EditUser";
 import { EditPassword } from "../EditPassword/EditPassword";
@@ -31,7 +31,8 @@ export const ProfilePage = () => {
 
     const [loggedInUserEmail, setLoggedInUserEmail] = useState({});
 
-    const { JWT, removeAuth, setMessageBoxSettings } = useContext(AuthContext);
+    const { JWT, removeAuth } = useContext(AuthContext);
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     useEffect(() => {
         getUserEmailFromJWT(JWT)

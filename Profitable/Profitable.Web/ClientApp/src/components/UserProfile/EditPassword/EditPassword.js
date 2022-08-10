@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../../contexts/AuthContext';
+import { AuthContext, MessageBoxContext } from '../../../contexts/AuthContext';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
 import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERROR_TYPE } from '../../../common/config';
@@ -17,7 +17,8 @@ export const EditPassword = () => {
 
     const navigate = useNavigate();
 
-    const { JWT, setMessageBoxSettings } = useContext(AuthContext);
+    const { JWT } = useContext(AuthContext);
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const initialState = {
         values: {

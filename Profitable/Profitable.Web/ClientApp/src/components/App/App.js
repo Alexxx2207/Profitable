@@ -6,7 +6,7 @@ import {
     useNavigate
 } from "react-router-dom";
 
-import { AuthContext } from '../../contexts/AuthContext';
+import { AuthContext, MessageBoxContext } from '../../contexts/AuthContext';
 
 import { NavBar } from "../NavBar/NavBar";
 import { Home } from '../Home/Home';
@@ -84,65 +84,67 @@ export function App() {
     const disposeMessageBoxSettings = () => {
         setTimeout(() => {
             setMessageBox({ ...messageBoxInitialState })
-        }, 4000); 
+        }, 4000);
     }
 
     return (
-        <AuthContext.Provider value={{ ...authUtils, setMessageBoxSettings }}>
-            <div>
-                <NavBar />
-                <Routes>
-                    <Route path="/" element={
-                        <Home />
-                    }>
-                    </Route>
+        <AuthContext.Provider value={{ ...authUtils }}>
+            <MessageBoxContext.Provider value={{ setMessageBoxSettings }}>
+                <div>
+                    <NavBar />
+                    <Routes>
+                        <Route path="/" element={
+                            <Home />
+                        }>
+                        </Route>
 
-                    <Route path="/markets" element={
-                        <MarketsPage />
-                    }>
-                    </Route>
+                        <Route path="/markets" element={
+                            <MarketsPage />
+                        }>
+                        </Route>
 
-                    <Route path="/posts" element={
-                        <PostsList />
-                    }>
-                    </Route>
+                        <Route path="/posts" element={
+                            <PostsList />
+                        }>
+                        </Route>
 
-                    <Route path="/posts/:postId" element={
-                        <PostDetails />
-                    }>
-                    </Route>
+                        <Route path="/posts/:postId" element={
+                            <PostDetails />
+                        }>
+                        </Route>
 
-                    <Route path="/login" element={
-                        <Login />
-                    }>
-                    </Route>
+                        <Route path="/login" element={
+                            <Login />
+                        }>
+                        </Route>
 
-                    <Route path="/register" element={
-                        <Register />
-                    }>
-                    </Route>
+                        <Route path="/register" element={
+                            <Register />
+                        }>
+                        </Route>
 
-                    <Route path="/logout" element={
-                        <Logout />
-                    }>
-                    </Route>
+                        <Route path="/logout" element={
+                            <Logout />
+                        }>
+                        </Route>
 
-                    <Route path="/user-profile/:searchedProfileEmail" element={
-                        <ProfilePage />
-                    }>
-                    </Route>
+                        <Route path="/user-profile/:searchedProfileEmail" element={
+                            <ProfilePage />
+                        }>
+                        </Route>
 
-                    <Route path="*" element={
-                        <NotFoundPage />
-                    }>
-                    </Route>
-                </Routes>
-                {messageBox.show ?
-                    <MessageBox message={messageBox.message} good={messageBox.good} disposeMessageBoxSettings={disposeMessageBoxSettings} />
-                    :
-                    ""
-                }
-            </div>
+                        <Route path="*" element={
+                            <NotFoundPage />
+                        }>
+                        </Route>
+                    </Routes>
+                    {messageBox.show ?
+                        <MessageBox message={messageBox.message} good={messageBox.good} disposeMessageBoxSettings={disposeMessageBoxSettings} />
+                        :
+                        ""
+                    }
+                </div>
+            </MessageBoxContext.Provider>
         </AuthContext.Provider>
     );
 }
