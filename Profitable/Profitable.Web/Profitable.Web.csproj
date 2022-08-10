@@ -53,6 +53,7 @@
     <Folder Include="ClientApp\src\components\Communication\Posts\" />
     <Folder Include="ClientApp\src\components\Markets\" />
     <Folder Include="Uploads\Posts\" />
+    <Folder Include="Uploads\Users\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,7 +7,7 @@ export const POSTS_LIST_POSTS_IN_PAGE_COUNT = 6;
 export const MISSING_POST_GUID_ERROR_PAGE_PATH = '/the-post-does-not-exist';
 export const USER_NOT_FOUND_ERROR_PAGE_PATH = '/user-not-found';
 
-export const JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE = 'You session has expired!';
+export const JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE = 'Your session has expired!';
 export const INVALID_OLD_PASSWORD_PROVIDED_ERROR_MESSAGE = 'Invalid old password provided!';
 
 export const CLIENT_ERROR_TYPE = 'client';

@@ -65,6 +65,21 @@ export const editUserPasswоrd = async (jwt, oldPassword, newPassword) => {
     return await response.json();
 }
 
+export const editUserImage = async (jwt, fileName, image) => {
+    let response = await request.patch(`${WEB_API_BASE_URL}/users/user/edit/profileImage`, {
+        fileName,
+        image,
+    }, {
+        'Authorization': 'Bearer ' + jwt
+    });
+
+    if (response.status === 401) {
+        throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
+    }
+
+    return await response.json();
+}
+
 export const getUserDataByJWT = async (jwt) => {
     let response = await request.get(`${WEB_API_BASE_URL}/users/user`, null, {
         'Authorization': 'Bearer ' + jwt

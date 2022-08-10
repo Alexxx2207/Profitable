@@ -84,6 +84,17 @@ namespace Profitable.Web.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPatch("user/edit/profileImage")]
+        public async Task<IActionResult> EditProfileImageAsync([FromBody] EditUserProfileImageRequestModel userRequestModel)
+        {
+            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+
+            var userResult = await userService.EditUserProfileImageAsync(user, userRequestModel);
+
+            return Ok(user);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequestModel userRequestModel)
         {
