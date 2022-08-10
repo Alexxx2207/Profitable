@@ -92,11 +92,11 @@ namespace Profitable.Web.Controllers
 
             var userResult = await userService.EditUserProfileImageAsync(user, userRequestModel);
 
-            return Ok(user);
+            return Ok(userResult);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserRequestModel userRequestModel)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginUserRequestModel userRequestModel)
         {
             try
             {
@@ -106,13 +106,12 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception error)
             {
-                return Unauthorized(error.Message);
+                return BadRequest(error.Message);
             }
         }
 
-        [Route("register")]
-        [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegisterUserRequestModel userRequestModel)
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequestModel userRequestModel)
         {
             try
             {
@@ -122,7 +121,7 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception error)
             {
-                return Unauthorized(
+                return BadRequest(
                     string.Join(
                         Environment.NewLine,
                         error.Message
@@ -130,6 +129,17 @@ namespace Profitable.Web.Controllers
                             .Where(messages => messages != $"Username '{userRequestModel.Email}' is already taken."))
                );
             }
+        }
+
+        [Authorize]
+        [HttpDelete("user/delete")]
+        public async Task<IActionResult> DeleteAsync()
+        {
+            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+
+            var result = await userService.HardDeleteUserAsync(user);
+
+            return Ok(result.Succeeded);
         }
     }
 }

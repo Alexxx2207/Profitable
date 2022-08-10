@@ -11,8 +11,12 @@ export const loginUser = async (email, password) => {
         password
     });
 
-    if (response.status === 401) {
-        throw new Error(await response.text());
+    if (response.status === 400) {
+        let errorMessage = await response.text();
+        if(errorMessage == 'Sequence contains no elements.') {
+            errorMessage = 'We haven\'t found you.\\nCheck the provided email and password for misspellings.';
+        }
+        throw new Error(errorMessage);
     }
     
     return await response.json();
@@ -26,7 +30,7 @@ export const registerUser = async (email, firstName, lastName, password) => {
         lastName,
     });
 
-    if (response.status === 401) {
+    if (response.status === 400) {
         throw new Error(await response.text());
     }
     return await response.json();
@@ -82,6 +86,18 @@ export const editUserImage = async (jwt, fileName, image) => {
 
 export const getUserDataByJWT = async (jwt) => {
     let response = await request.get(`${WEB_API_BASE_URL}/users/user`, null, {
+        'Authorization': 'Bearer ' + jwt
+    });
+
+    if (response.status === 401) {
+        throw new Error(await response.text());
+    }
+
+    return await response.json();
+}
+
+export const deleteUserDataByJWT = async (jwt) => {
+    let response = await request.delete(`${WEB_API_BASE_URL}/users/user/delete`, null, {
         'Authorization': 'Bearer ' + jwt
     });
 

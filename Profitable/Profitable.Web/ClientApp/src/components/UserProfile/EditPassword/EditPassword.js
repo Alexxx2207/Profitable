@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext, MessageBoxContext } from '../../../contexts/AuthContext';
+import { AuthContext } from '../../../contexts/AuthContext';
+import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
 import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERROR_TYPE } from '../../../common/config';
@@ -17,7 +18,7 @@ export const EditPassword = () => {
 
     const navigate = useNavigate();
 
-    const { JWT } = useContext(AuthContext);
+    const { JWT, removeAuth } = useContext(AuthContext);
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const initialState = {
@@ -77,11 +78,12 @@ export const EditPassword = () => {
             )
                 .then(user => {
                     setEditPassword({...initialState});
-                    setMessageBoxSettings('Password was changed successfully!', true, true);
+                    setMessageBoxSettings('Password was changed successfully!', true);
                 })
                 .catch(err => {
-                    setMessageBoxSettings(err.message, false, true);
+                    setMessageBoxSettings(err.message, false);
                     if(err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
+                        removeAuth();
                         navigate('/login');
                     }
                 });

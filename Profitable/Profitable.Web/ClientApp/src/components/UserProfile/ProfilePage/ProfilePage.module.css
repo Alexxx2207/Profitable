@@ -121,13 +121,65 @@
     display: flex;
     align-items: center;
     margin-left: 2rem;
+    margin-bottom: 1.5vh;
 }
 
 .editHeadingContainer * {
-    font-size: 4vh;
+    font-size: 5vh;
 }
 
 .editHeadingText {
     margin: 0px;
     margin-right: 1rem;
+}
+
+
+.dangerZoneContainer {
+    margin-top: 10vh;
+    border-radius: 10px;
+    border: 2px solid red;
+}
+
+.dangerZoneHeadingContainer {
+    display: flex;
+    align-items: center;
+    margin: 5vh 4vw;
+}
+
+.dangerZoneHeadingContainer *{
+    font-size: 5vh;
+    color: rgb(196, 0, 0);
+}
+
+.dangerZoneHeadingText {
+    margin: 0px;
+    margin-right: 1rem;
+}
+
+.deleteSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8vh 4vw;
+    padding: 3vh 2vw;
+    border: 2px solid rgba(128, 128, 128, 0.427);
+    border-radius: 10px;
+}
+
+.deleteHeading {
+    letter-spacing: 1px;
+}
+
+.deleteButton {
+    color: rgb(196, 0, 0);
+    border-radius: 10px;
+    border: 3px solid rgba(128, 128, 128, 0.484);
+    padding: 1vh 2vw;
+    font-size: 1.7vw;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.deleteButton:hover {
+    border-color: red;
 }

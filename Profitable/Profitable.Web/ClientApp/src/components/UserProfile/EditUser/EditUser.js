@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext, MessageBoxContext } from '../../../contexts/AuthContext';
+import { AuthContext } from '../../../contexts/AuthContext';
+import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
 import { getUserDataByJWT } from '../../../services/users/usersService';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
@@ -69,11 +70,11 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
                 )
                 .then(user => {
                     changeProfileInfo(user);
-                    setMessageBoxSettings('General information was changed successfully!', true, true);
+                    setMessageBoxSettings('General information was changed successfully!', true);
                 })
                 .catch(err => {
                     if(err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
-                        setMessageBoxSettings(err.message, false, true);
+                        setMessageBoxSettings(err.message, false);
                         removeAuth();
                         navigate('/login');
                     } else {

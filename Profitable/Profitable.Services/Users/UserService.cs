@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Profitable.Common;
 using Profitable.Common.Models;
 using Profitable.Data.Repository.Contract;
 using Profitable.GlobalConstants;
@@ -35,6 +36,7 @@ namespace Profitable.Services.Users
         {
             var user = await repository
                 .GetAllAsNoTracking()
+                .Where(user => !user.IsDeleted)
                 .FirstAsync(user => user.Email == email);
 
             return mapper.Map<UserDetailsResponseModel>(user);
@@ -44,6 +46,7 @@ namespace Profitable.Services.Users
         {
             var user = await repository
                 .GetAll()
+                .Where(user => !user.IsDeleted)
                 .FirstAsync(user => user.Email == email);
 
             if (user != null)
@@ -65,7 +68,10 @@ namespace Profitable.Services.Users
 
         public async Task<JWTToken> LoginUserAsync(LoginUserRequestModel userRequestModel)
         {
-            var user = await userManager.FindByEmailAsync(userRequestModel.Email);
+            var user = await repository
+                .GetAllAsNoTracking()
+                .Where(user => !user.IsDeleted)
+                .FirstAsync(user => user.Email == userRequestModel.Email);
 
             if (user != null &&
                 await userManager.CheckPasswordAsync(user, userRequestModel.Password))
@@ -119,43 +125,90 @@ namespace Profitable.Services.Users
 
         public async Task<UserDetailsResponseModel> EditUserPasswordAsync(ApplicationUser user, EditUserPasswordRequestModel editUserData)
         {
-            var result = await userManager.ChangePasswordAsync(user, editUserData.OldPassword, editUserData.newPassword);
-
-            if (result.Succeeded)
+            if (!user.IsDeleted)
             {
-                return mapper.Map<UserDetailsResponseModel>(user);
+                var result = await userManager.ChangePasswordAsync(user, editUserData.OldPassword, editUserData.newPassword);
+
+                if (result.Succeeded)
+                {
+                    return mapper.Map<UserDetailsResponseModel>(user);
+                }
+                else
+                {
+                    throw new Exception("Invalid old password");
+                }
+
             }
             else
             {
-                throw new Exception("Invalid old password");
+                throw new Exception("User was deleted");
             }
         }
 
         public async Task<UserDetailsResponseModel> EditUserProfileImageAsync(ApplicationUser user, EditUserProfileImageRequestModel editUserData)
         {
-            string time = Regex.Replace(DateTime.Today.ToString(), @"\/|\:|\s", "");
-            string newFileName = time + editUserData.FileName;
-
-            string path = GlobalServicesConstants.UploadsFolderPath +
-                GlobalServicesConstants.DirectorySeparatorChar +
-                ImageFor.Users.ToString() +
-                GlobalServicesConstants.DirectorySeparatorChar +
-                newFileName;
-
-            await File.WriteAllBytesAsync(path, Convert.FromBase64String(editUserData.Image));
-
-            if (user != null)
+            if (!user.IsDeleted)
             {
-                user.ProfilePictureURL = newFileName;
+                string time = Regex.Replace(DateTime.Today.ToString(), @"\/|\:|\s", "");
+                string newFileName = time + editUserData.FileName;
 
-                repository.Update(user);
-                await repository.SaveChangesAsync();
+                string path = GlobalServicesConstants.UploadsFolderPath +
+                    GlobalServicesConstants.DirectorySeparatorChar +
+                    ImageFor.Users.ToString() +
+                    GlobalServicesConstants.DirectorySeparatorChar +
+                    newFileName;
 
-                return mapper.Map<UserDetailsResponseModel>(user);
+                await File.WriteAllBytesAsync(path, Convert.FromBase64String(editUserData.Image));
+
+                if (user != null)
+                {
+                    user.ProfilePictureURL = newFileName;
+
+                    repository.Update(user);
+                    await repository.SaveChangesAsync();
+
+                    return mapper.Map<UserDetailsResponseModel>(user);
+                }
+                else
+                {
+                    throw new Exception("User profile image was not edited");
+                }
             }
             else
             {
-                throw new Exception("User profile image was not edited");
+                throw new Exception("User was deleted");
+            }
+        }
+
+        public async Task<Result> SoftDeleteUserAsync(ApplicationUser user)
+        {
+            if (!user.IsDeleted)
+            {
+                repository.Delete(user);
+
+                await repository.SaveChangesAsync();
+
+                return true;
+            }
+            else
+            {
+                throw new Exception("User was deleted");
+            }
+        }
+
+        public async Task<Result> HardDeleteUserAsync(ApplicationUser user)
+        {
+            if (!user.IsDeleted)
+            {
+                repository.HardDelete(user);
+
+                await repository.SaveChangesAsync();
+
+                return true;
+            }
+            else
+            {
+                throw new Exception("User was deleted");
             }
         }
     }

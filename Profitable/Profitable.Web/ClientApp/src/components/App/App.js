@@ -6,7 +6,8 @@ import {
     useNavigate
 } from "react-router-dom";
 
-import { AuthContext, MessageBoxContext } from '../../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
+import { MessageBoxContext } from '../../contexts/MessageBoxContext';
 
 import { NavBar } from "../NavBar/NavBar";
 import { Home } from '../Home/Home';
@@ -57,6 +58,12 @@ export function App() {
         // eslint-disable-next-line
     }, []);
 
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
+
     const setAuthState = ({ token }) => {
         setLocalStorage(JWT_LOCAL_STORAGE_KEY, token);
         setJWTState(token);
@@ -73,11 +80,11 @@ export function App() {
         removeAuth: removeAuthState
     };
 
-    const setMessageBoxSettings = (message, good, show) => {
+    const setMessageBoxSettings = (message, good) => {
         setMessageBox({
             message: message,
             good,
-            show,
+            show: true,
         });
     }
 
