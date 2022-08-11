@@ -95,7 +95,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
       if (e.target.name === 'firstName') {
             setEditState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     firstNameEmpty: createClientErrorObject(state.errors.firstNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -105,7 +105,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
         } else if (e.target.name === 'lastName') {
             setEditState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     lastNameEmpty: createClientErrorObject(state.errors.lastNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -115,7 +115,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
         } else if (e.target.name === 'description') {
             setEditState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target)
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value)
             }));
         }
     };

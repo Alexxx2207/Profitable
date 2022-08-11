@@ -24,9 +24,9 @@ namespace Profitable.Web.Controllers
         [HttpGet("user")]
         public async Task<IActionResult> GetByJWTAsync()
         {
-            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+            var userEmail = this.User.FindFirstValue(ClaimTypes.Email);
 
-            var userInfo = await userService.GetUserDetailsAsync(user.Email);
+            var userInfo = await userService.GetUserDetailsAsync(userEmail);
 
             return Ok(userInfo);
         }
@@ -43,9 +43,9 @@ namespace Profitable.Web.Controllers
         [HttpGet("user/email")]
         public async Task<IActionResult> GetEmailFromJWTAsync()
         {
-            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+            var userEmail = this.User.FindFirstValue(ClaimTypes.Email);
 
-            return Ok(user.Email);
+            return Ok(userEmail);
         }
 
         [Authorize]
@@ -56,7 +56,7 @@ namespace Profitable.Web.Controllers
 
             if (user.Email == userRequestModel.Email)
             {
-                var userInfo = await userService.EditUserAsync(user.Email, userRequestModel);
+                var userInfo = await userService.EditUserAsync(user, userRequestModel);
 
                 return Ok(userInfo);
             }
@@ -139,7 +139,14 @@ namespace Profitable.Web.Controllers
 
             var result = await userService.HardDeleteUserAsync(user);
 
-            return Ok(result.Succeeded);
+            if (result.Succeeded)
+            {
+                return Ok(result.Succeeded);
+            }
+            else
+            {
+                return BadRequest(result.Error);
+            }
         }
     }
 }

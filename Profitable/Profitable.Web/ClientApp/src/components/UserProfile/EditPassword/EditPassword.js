@@ -45,7 +45,7 @@ export const EditPassword = () => {
         if (e.target.name === 'oldPassword') {
             setEditPassword(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     oldPasswordEmpty: createClientErrorObject(state.errors.oldPasswordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -55,7 +55,7 @@ export const EditPassword = () => {
         } else if (e.target.name === 'newPassword') {
             setEditPassword(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     newPasswordEmpty: createClientErrorObject(state.errors.newPasswordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),

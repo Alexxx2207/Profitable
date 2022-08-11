@@ -32,6 +32,7 @@ import {
 import { getUserDataByJWT } from "../../services/users/usersService";
 
 import styles from './App.module.css';
+import { CreatePost } from "../PostsAndComments/Posts/CreatePost/CreatePost";
 
 export function App() {
 
@@ -57,8 +58,6 @@ export function App() {
             })
         // eslint-disable-next-line
     }, []);
-
-    const { pathname } = useLocation();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -137,6 +136,11 @@ export function App() {
 
                         <Route path="/user-profile/:searchedProfileEmail" element={
                             <ProfilePage />
+                        }>
+                        </Route>
+
+                        <Route path="/posts/create" element={
+                            <CreatePost />
                         }>
                         </Route>
 

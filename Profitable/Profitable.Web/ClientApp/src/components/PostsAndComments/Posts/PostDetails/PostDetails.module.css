@@ -25,20 +25,18 @@
 }
 
 .backButton * {
+    font-size: 1.3rem;
     background-color: white;
     color: black;
 }
 
 .iconLeftArrow {
-    font-size: 1.2vw;
-
     margin-right: 0.5rem;
     color: black;
 }
 
 .backText {
     font-weight: 600;
-    font-size: 1.2vw;
     padding-bottom: 0.1rem;
 }
 
@@ -47,6 +45,7 @@
     border: 2px solid white;
     border-radius: 1rem;
     margin-bottom: 2rem;
+    max-width: 80vh;
 }
 
 .postContent {
@@ -64,6 +63,7 @@
     font-size: 3.6vh;
     letter-spacing: 1px;
     line-height: 7vh;
+    overflow-wrap: break-word;
 }
 
 .postsLikeWidgetContainer {

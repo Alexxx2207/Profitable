@@ -55,14 +55,18 @@ export const PostDetails = () => {
             <div className={styles.postContent}>
                 <div className={styles.text}>
                     <h1 className={styles.title}>{post.title}</h1>
-            <img className={styles.postImage} src={createImgURL(post.postImage)} alt="" />
+                    {post.postImage ?
+                        <img className={styles.postImage} src={createImgURL(post.postImage)} alt="" />
+                        :
+                        ""
+                    }
                     <div className={styles.content}>
                         {post.content.split('\\n').map((paragraph, index) =>
                             <p key={index}>{paragraph}<br /></p>
                         )}
                     </div>
                     <div className={styles.postsLikeWidgetContainer}>
-                    <PostsLikeWidget style={styles.postsLikeWidget} likesCount={post.likes.length} postId={post.guid}/>
+                        <PostsLikeWidget style={styles.postsLikeWidget} likesCount={post.likes.length} postId={post.guid} />
 
                     </div>
                 </div>
@@ -80,5 +84,5 @@ export const PostDetails = () => {
             </div>
         </div>
         //// Comments section
-        );
+    );
 }

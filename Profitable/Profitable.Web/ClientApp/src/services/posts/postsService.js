@@ -7,6 +7,20 @@ export const loadParticularPost = (postId) => {
         .then(response => response.json());
 }
 
+export const createPost = async (jwt, post) => {
+    let result = await request.post(`${WEB_API_BASE_URL}/posts/create`, post, {
+        'Authorization': 'Bearer ' + jwt
+    });
+
+    if(result.status === 400) {
+        throw new Error(await result.text());
+    } else if(result.status === 401) {
+        throw new Error('Should auth first');
+    }
+
+    return await result.json();
+}
+
 export const loadPostsPage = (page, postsCount) => {
 
     const postBody = {

@@ -1,4 +1,5 @@
 ﻿using Profitable.Common;
+using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Posts;
 using Profitable.Models.ResponseModels.Like;
 using Profitable.Models.ResponseModels.Posts;
@@ -15,12 +16,12 @@ namespace Profitable.Services.Posts.Contracts
 
         Task<List<LikeResponseModel>> GetPostLikesAsync(Guid guid);
 
-        Task<Result> AddPostAsync(AddPostRequestModel newPost);
+        Task<Result> AddPostAsync(ApplicationUser author, AddPostRequestModel newPost);
 
         Task<Result> DeletePostAsync(Guid guid);
 
         Task<Result> DeleteLikeAsync(Guid postGuid, Guid traderGuid);
 
-        Task<Result> UpdatePostAsync(UpdatePostRequestModel newPost);
+        Task<Result> UpdatePostAsync(string postToUpdateGuid, UpdatePostRequestModel newPost);
     }
 }

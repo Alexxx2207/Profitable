@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { createAuthorImgURL } from '../../../services/common/imageService';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
-import { deleteUserDataByJWT, getUserDataByEmail, getUserEmailFromJWT, loginUser } from '../../../services/users/usersService';
+import { deleteUserDataByJWT, getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
 import { EditUser } from "../EditUser/EditUser";
 import { EditPassword } from "../EditPassword/EditPassword";
 
@@ -64,9 +64,11 @@ export const ProfilePage = () => {
         const file = e.target.files[0];
         const reader = new FileReader();
 
+        const base64 = 'base64,';
+
         reader.onloadend = () => {
             const base64Image = reader.result.toString();
-            const byteArray = base64Image.slice(base64Image.indexOf('base64,') + 'base64,'.length);
+            const byteArray = base64Image.slice(base64Image.indexOf(base64) + base64.length);
 
             setProfileInfo(state => ({
                 ...state,
@@ -76,7 +78,7 @@ export const ProfilePage = () => {
         }
 
         reader.readAsDataURL(file);
-    }
+    };
 
     const discardClickHandler = () => {
         setProfileInfo(state => ({
@@ -84,7 +86,7 @@ export const ProfilePage = () => {
             previewImage: undefined,
             previewImageFileName: undefined,
         }));
-    }
+    };
 
     const saveClickHandler = () => {
 
@@ -107,7 +109,7 @@ export const ProfilePage = () => {
     const deleteButtonClickHandler = () => {
         deleteUserDataByJWT(JWT)
             .then(result => {
-                setMessageBoxSettings(`Your account was deleted succeefully!`, true);
+                setMessageBoxSettings(`Your account was deleted successfully!`, true);
                 removeAuth();
                 navigate('/');
             })
@@ -129,7 +131,6 @@ export const ProfilePage = () => {
                     :
                     ''
                 }
-
                 <div className={styles.imageContainer}>
                     <img className={styles.authorImage}
                         src={profileInfo.previewImage ?

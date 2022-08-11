@@ -72,7 +72,7 @@ export const Register = () => {
         if (e.target.name == 'email') {
             setRegisterState(state => ({
                 ...state,
-                values:changeStateValuesForControlledForms(state.values, e.target),
+                values:changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     emailValid: createClientErrorObject(state.errors.emailValid, isEmailValidChecker.bind(null, e.target.value)),
@@ -81,7 +81,7 @@ export const Register = () => {
         } else if (e.target.name == 'password') {
             setRegisterState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -91,7 +91,7 @@ export const Register = () => {
         } else if (e.target.name == 'firstName') {
             setRegisterState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     firstNameEmpty: createClientErrorObject(state.errors.firstNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -101,7 +101,7 @@ export const Register = () => {
         } else if (e.target.name == 'lastName') {
             setRegisterState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     lastNameEmpty: createClientErrorObject(state.errors.lastNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
