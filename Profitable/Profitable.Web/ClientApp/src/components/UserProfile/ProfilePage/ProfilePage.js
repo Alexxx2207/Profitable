@@ -12,7 +12,7 @@ import { faEdit, faUserLock, faTriangleExclamation } from '@fortawesome/free-sol
 
 import { editUserImage } from '../../../services/users/usersService';
 
-import { USER_NOT_FOUND_ERROR_PAGE_PATH } from '../../../common/config';
+import { JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, USER_NOT_FOUND_ERROR_PAGE_PATH } from '../../../common/config';
 
 import styles from './ProfilePage.module.css';
 
@@ -38,8 +38,14 @@ export const ProfilePage = () => {
         getUserEmailFromJWT(JWT)
             .then(result => setLoggedInUserEmail(email => result))
             .catch(err => {
-                removeAuth();
-                navigate(location.pathname);
+                if(JWT) {
+                    setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
+                    removeAuth();
+                    navigate('/login');
+                } else {
+                    removeAuth();
+                    navigate(location.pathname);
+                }
             })
         // eslint-disable-next-line
     }, []);

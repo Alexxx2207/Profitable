@@ -1,27 +1,31 @@
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
-import { createPost } from '../../../../services/posts/postsService';
 import { ErrorWidget } from '../../../ErrorWidget/ErrorWidget';
 
-import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERROR_TYPE } from '../../../../common/config';
+import { JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, MISSING_POST_GUID_ERROR_PAGE_PATH } from '../../../../common/config';
+import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../../common/config';
 import { getUserEmailFromJWT } from '../../../../services/users/usersService';
 import { isEmptyFieldChecker } from '../../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
+import { editPost, loadParticularPost } from '../../../../services/posts/postsService';
 
-import styles from './CreatePost.module.css';
+import styles from './EditPost.module.css';
 
-export const CreatePost = () => {
+
+export const EditPost = () => {
 
     const { JWT, removeAuth } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
+    const { postId } = useParams();
+
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
-    const [createState, setCreateState] = useState({
+    const [editState, setEditState] = useState({
         values: {
             title: '',
             content: '',
@@ -29,8 +33,8 @@ export const CreatePost = () => {
             imageFileName: '',
         },
         errors: {
-            titleEmpty: { text: 'Insert title', fulfilled: false, type: CLIENT_ERROR_TYPE },
-            contentEmpty: { text: 'Insert main content', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            titleEmpty: { text: 'Insert title', fulfilled: true, type: CLIENT_ERROR_TYPE },
+            contentEmpty: { text: 'Insert main content', fulfilled: true, type: CLIENT_ERROR_TYPE },
             serverError: {
                 text: '',
                 display: false,
@@ -43,31 +47,46 @@ export const CreatePost = () => {
         getUserEmailFromJWT(JWT)
         .then(result => result)
         .catch(err => {
-            setMessageBoxSettings('You should login before creating a post!', false);
+            setMessageBoxSettings('You should login before editing a post!', false);
             removeAuth();
             navigate('/login');
         })
     }, []);
 
+    useEffect(() => {
+        loadParticularPost(postId)
+            .then(result =>
+                setEditState(state => ({
+                    ...state,
+                    values: {
+                        title: result.title,
+                        content: result.content,
+                        image: result.postImage,
+                    }
+                }))
+            )
+            .catch(err => navigate(`${MISSING_POST_GUID_ERROR_PAGE_PATH}`))
+    }, [postId, navigate]);
+
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const clientErrors = Object.values(createState.errors).filter(err => err.type === CLIENT_ERROR_TYPE);
+        const clientErrors = Object.values(editState.errors).filter(err => err.type === CLIENT_ERROR_TYPE);
 
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
-            createPost(
-                JWT, { ...createState.values }
+            editPost(
+                JWT, postId, { ...editState.values }
             )
                 .then(jwt => {
-                    navigate('/posts');
+                    navigate(`/posts/${postId}`);
                 })
                 .catch(err => {
                     if(JWT && err.message === 'Should auth first') {
-                        setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE + ' The post was not created!', false);
+                        setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE + ' The post was not edited!', false);
                         removeAuth();
                         navigate('/login');
                     } else {
-                        setCreateState(state => ({
+                        setEditState(state => ({
                             ...state,
                             errors: {
                                 ...state.errors,
@@ -80,8 +99,8 @@ export const CreatePost = () => {
     }
 
     const changeHandler = (e) => {
-        if(e.target.name === 'title') {
-            setCreateState(state => ({
+        if (e.target.name === 'title') {
+            setEditState(state => ({
                 ...state,
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
@@ -89,8 +108,8 @@ export const CreatePost = () => {
                     titleEmpty: createClientErrorObject(state.errors.titleEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
                 }
             }));
-        } else  if(e.target.name === 'content'){
-            setCreateState(state => ({
+        } else if (e.target.name === 'content') {
+            setEditState(state => ({
                 ...state,
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
@@ -111,10 +130,10 @@ export const CreatePost = () => {
             const base64Image = reader.result.toString();
             const byteArray = base64Image.slice(base64Image.indexOf(base64) + base64.length);
 
-            const valuesObjectWithImage = changeStateValuesForControlledForms(createState.values, 'image', byteArray);
+            const valuesObjectWithImage = changeStateValuesForControlledForms(editState.values, 'image', byteArray);
             const newValuesObjectWithImageFileName = changeStateValuesForControlledForms(valuesObjectWithImage, 'imageFileName', file.name);
 
-            setCreateState(state => ({
+            setEditState(state => ({
                 ...state,
                 values: newValuesObjectWithImageFileName,
             }));
@@ -125,22 +144,22 @@ export const CreatePost = () => {
 
     return (
         <div className={styles.pageContainer}>
-            <div className={styles.createContainer}>
-                <form className={styles.createForm} onSubmit={onSubmit} >
-                    <div className={styles.createLabelContainer}>
-                        <h1 className={styles.createLabel}>Create Post</h1>
+            <div className={styles.editContainer}>
+                <form className={styles.editForm} onSubmit={onSubmit} >
+                    <div className={styles.editLabelContainer}>
+                        <h1 className={styles.editLabel}>Edit Post</h1>
                     </div>
                     <div className={styles.formGroup}>
                         <div>
                             <h5>Title</h5>
                         </div>
-                        <input className={styles.inputField} type="text" name="title" placeholder={'The Fed Rising Interest Rates'} value={createState.values.title} onChange={changeHandler} />
+                        <input className={styles.inputField} type="text" name="title" placeholder={'The Fed Rising Interest Rates'} value={editState.values.title} onChange={changeHandler} />
                     </div>
                     <div className={styles.formGroup}>
                         <div>
                             <h5>Main Content</h5>
                         </div>
-                        <textarea className={styles.inputField} name="content" placeholder={'While economists are worrying about the economy...'} defaultValue={createState.values.content} onChange={changeHandler} />
+                        <textarea className={styles.inputField} name="content" placeholder={'While economists are worrying about the economy...'} defaultValue={editState.values.content} onChange={changeHandler} />
                     </div>
                     <div className={styles.formGroup}>
                         <div>
@@ -149,16 +168,16 @@ export const CreatePost = () => {
                         <input className={styles.inputField} type="file" name="image" accept="image/*" onChange={changeImageHandler} />
                     </div>
                     <div className={styles.submitButtonContainer}>
-                        <input className={styles.submitButton} type="submit" value='Create' />
+                        <input className={styles.submitButton} type="submit" value='Edit' />
                     </div>
                 </form>
             </div>
-            <aside className={styles.createAside}>
+            <aside className={styles.editAside}>
                 <div className={styles.errorsHeadingContainer}>
-                    <h1 className={styles.errorsHeading}>Create State</h1>
+                    <h1 className={styles.errorsHeading}>Edit State</h1>
                 </div>
                 <div className={styles.errorsContainer}>
-                    {Object.values(createState.errors).map((error, index) => <ErrorWidget key={index} error={error} />)}
+                    {Object.values(editState.errors).map((error, index) => <ErrorWidget key={index} error={error} />)}
                 </div>
             </aside>
         </div>

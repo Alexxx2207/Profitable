@@ -90,7 +90,7 @@ export const getUserDataByJWT = async (jwt) => {
     });
 
     if (response.status === 401) {
-        throw new Error(await response.text());
+        throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
     }
 
     return await response.json();

@@ -31,8 +31,11 @@ import {
 
 import { getUserDataByJWT } from "../../services/users/usersService";
 
-import styles from './App.module.css';
 import { CreatePost } from "../PostsAndComments/Posts/CreatePost/CreatePost";
+import { EditPost } from "../PostsAndComments/Posts/EditPost/EditPost";
+
+// eslint-disable-next-line
+import styles from './App.module.css';
 
 export function App() {
 
@@ -45,6 +48,7 @@ export function App() {
         show: false,
     };
 
+    // eslint-disable-next-line
     const [JWT, setJWTState] = useState('');
 
     const [messageBox, setMessageBox] = useState([{ ...messageBoxInitialState }]);
@@ -141,6 +145,11 @@ export function App() {
 
                         <Route path="/posts/create" element={
                             <CreatePost />
+                        }>
+                        </Route>
+
+                        <Route path="/posts/:postId/edit" element={
+                            <EditPost />
                         }>
                         </Route>
 

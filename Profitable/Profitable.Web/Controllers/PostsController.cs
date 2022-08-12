@@ -51,7 +51,7 @@ namespace Profitable.Web.Controllers
             catch (Exception err)
             {
 
-                return BadRequest(err);
+                return BadRequest(err.Message);
             }
 
         }

@@ -12,6 +12,9 @@ namespace Profitable.Automapper
         {
             CreateMap<Post, PostResponseModel>()
                 .ForMember(
+                    dest => dest.AuthorEmail,
+                    opt => opt.MapFrom(source => source.Author.Email))
+                .ForMember(
                     dest => dest.Author,
                     opt => opt.MapFrom(source => $"{source.Author.FirstName} {source.Author.LastName}"))
                 .ForMember(
