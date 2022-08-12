@@ -78,12 +78,15 @@ namespace Profitable.Services.Posts
 
         public async Task<PostResponseModel> GetPostByGuidAsync(Guid guid)
         {
-            return mapper.Map<PostResponseModel>(await postsRepository
+            var post = await postsRepository
                 .GetAllAsNoTracking()
                 .Where(post => !post.IsDeleted)
                 .Include(p => p.Tags)
                 .Include(p => p.Author)
-                .FirstAsync(entity => entity.Guid == guid));
+                .Include(p => p.Likes)
+                .FirstAsync(entity => entity.Guid == guid);
+
+            return mapper.Map<PostResponseModel>(post);
         }
 
         public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int postsCount)
@@ -118,6 +121,7 @@ namespace Profitable.Services.Posts
                 .Where(post => !post.IsDeleted)
                 .Where(post => post.AuthorId == traderId)
                 .Include(p => p.Tags)
+                .Include(p => p.Likes)
                 .Select(post => mapper.Map<PostResponseModel>(post))
                 .ToListAsync();
 
@@ -159,7 +163,7 @@ namespace Profitable.Services.Posts
             var postToUpdateGuidCasted = Guid.Parse(postGuid);
 
             var postToUpdate = await postsRepository
-                 .GetAll()
+                 .GetAllAsNoTracking()
                  .Where(post => !post.IsDeleted)
                  .Include(post => post.Likes)
                  .FirstOrDefaultAsync(post => post.Guid == postToUpdateGuidCasted);
@@ -168,6 +172,8 @@ namespace Profitable.Services.Posts
                 .GetAllAsNoTracking()
                 .FirstOrDefaultAsync(postLike =>
                     postLike.PostId == postToUpdateGuidCasted && postLike.AuthorId == author.Id);
+
+            int likesToShow = postToUpdate.Likes.Count;
 
             if (postLikeExisted == null)
             {
@@ -178,18 +184,17 @@ namespace Profitable.Services.Posts
                 };
 
                 await likesRepository.AddAsync(likeToAdd);
-
-                await likesRepository.SaveChangesAsync();
-
+                likesToShow++;
             }
             else
             {
                 likesRepository.HardDelete(postLikeExisted);
-
-                await likesRepository.SaveChangesAsync();
+                likesToShow--;
             }
 
-            return postToUpdate.Likes.Count;
+            await likesRepository.SaveChangesAsync();
+
+            return likesToShow;
         }
     }
 }

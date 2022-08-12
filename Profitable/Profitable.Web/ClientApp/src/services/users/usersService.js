@@ -137,3 +137,15 @@ export const getUserEmailFromJWT = async (jwt) => {
 
     return await response.text();
 }
+
+export const getUserGuidFromJWT = async (jwt) => {
+    let response = await request.get(`${WEB_API_BASE_URL}/users/user/guid`, null, {
+        'Authorization': 'Bearer ' + jwt
+    });
+
+    if (response.status === 401) {
+        throw new Error(await response.text());
+    }
+
+    return await response.text();
+}

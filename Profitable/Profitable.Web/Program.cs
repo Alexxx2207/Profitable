@@ -18,6 +18,7 @@ builder.Services.AddIdentity();
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new PostsMapper());
+    mc.AddProfile(new LikesMapper());
     mc.AddProfile(new CommentsMapper());
     mc.AddProfile(new MarketsMapper());
     mc.AddProfile(new UsersMapper());

@@ -1,7 +1,5 @@
 .wrapper {
     padding: 1rem;
-    display: flex;
-    flex-direction: column;
 }
 
 .discoverHeading {
@@ -24,11 +22,10 @@
 }
 
 .createPostContainer {
+    display: inline-block;
     background-color: transparent;
-    float: left;
     position: sticky;
     top: 5vh;
-    left: -1rem;
     z-index: 1000;;
 }
 

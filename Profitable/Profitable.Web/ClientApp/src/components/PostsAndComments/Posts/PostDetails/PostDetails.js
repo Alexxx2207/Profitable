@@ -134,8 +134,7 @@ export const PostDetails = () => {
                         )}
                     </div>
                     <div className={styles.postsLikeWidgetContainer}>
-                        <PostsLikeWidget style={styles.postsLikeWidget} likesCount={post.likes.length} postId={post.guid} />
-
+                        <PostsLikeWidget style={styles.postsLikeWidget} post={post} />
                     </div>
                 </div>
                 <div className={styles.information}>

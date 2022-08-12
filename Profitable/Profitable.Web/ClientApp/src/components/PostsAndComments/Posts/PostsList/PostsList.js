@@ -47,20 +47,20 @@ export const PostsList = () => {
     const addPostClickHandler = () => {
 
         getUserDataByJWT(JWT)
-        .then(result => {
-            setPosts([]);
-            navigate('/posts/create');
-        })
-        .catch(err => {
-            if(JWT && err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
-                setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
-                removeAuth();
-                navigate('/login');
-            } else {
-                setMessageBoxSettings('You should login before creating a post!', false);
-                navigate('/login');
-            }
-        });
+            .then(result => {
+                setPosts([]);
+                navigate('/posts/create');
+            })
+            .catch(err => {
+                if (JWT && err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
+                    setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
+                    removeAuth();
+                    navigate('/login');
+                } else {
+                    setMessageBoxSettings('You should login before creating a post!', false);
+                    navigate('/login');
+                }
+            });
     };
 
     useEffect(() => {
@@ -73,7 +73,7 @@ export const PostsList = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.createPostContainer}>
-            <button className={styles.addPostButton} onClick={addPostClickHandler}>
+                <button className={styles.addPostButton} onClick={addPostClickHandler}>
                     <FontAwesomeIcon className={styles.iconPlus} icon={faCirclePlus} />
                     <div className={styles.addPostText}>
                         Add Post
@@ -82,7 +82,7 @@ export const PostsList = () => {
             </div>
             <h1 className={styles.discoverHeading}>Discover</h1>
             <div className={styles.postsList}>
-                {posts.map(post => <PostsListItem key={post.guid} {...post} />)}
+                {posts.map(post => <PostsListItem key={post.guid} post={post} />)}
             </div>
         </div>
     );
