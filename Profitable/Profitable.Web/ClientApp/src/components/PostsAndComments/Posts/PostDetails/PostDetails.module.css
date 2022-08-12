@@ -6,39 +6,60 @@
     text-align: center;
 }
 
-.backButtonContainer {
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 5vh;
     padding-left: 2vw;
 }
 
-.backButtonContainer:hover {
-    cursor: pointer;
+.ownerButtonSection {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
-.backButton {
+.button {
+    cursor: pointer;
     background-color: white;
     border: none;
     border-radius: 100px;
     display: flex;
     align-items: center;
     padding: 0.7rem 1rem;
+    transition: ease-out 0.3s;
 }
 
-.backButton * {
+.button * {
+    font-size: 1.2rem;
+    letter-spacing: 0.7px;
     background-color: white;
     color: black;
+    transition: ease-out 0.3s;
 }
 
-.iconLeftArrow {
-    font-size: 1.2vw;
-
+.iconLeftArrow, .iconEdit, .iconDelete {
     margin-right: 0.5rem;
-    color: black;
+}
+
+.backButton, .editButton {
+    border: 2px solid white;
+}
+
+.backButton:hover, .backButton:hover *, .editButton:hover, .editButton:hover *{
+    background-color: #1e222d;
+    color: white;
+    transition: ease-out 0.3s;
+}
+
+.deleteButton:hover, .deleteButton:hover *{
+    background-color: rgb(206, 2, 2);
+    color: white;
+    transition: ease-out 0.3s;
 }
 
 .backText {
     font-weight: 600;
-    font-size: 1.2vw;
     padding-bottom: 0.1rem;
 }
 
@@ -47,6 +68,7 @@
     border: 2px solid white;
     border-radius: 1rem;
     margin-bottom: 2rem;
+    max-width: 80vh;
 }
 
 .postContent {
@@ -64,6 +86,7 @@
     font-size: 3.6vh;
     letter-spacing: 1px;
     line-height: 7vh;
+    overflow-wrap: break-word;
 }
 
 .postsLikeWidgetContainer {

@@ -1,7 +1,6 @@
 import styles from './ErrorWidgetMessage.module.css';
 
 export const ErrorWidgetMessage = ({message}) => {
-    console.log(message.split('\\n'));
     if(message.includes('\\n')) {
         return <div className={styles.messageParagraphsContainer}>
             {

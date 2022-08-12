@@ -1,15 +1,16 @@
 .wrapper {
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .discoverHeading {
-    width: 50%;
+    width: 100%;
     border-bottom: 5px solid white;
     text-align: center;
-    letter-spacing: 3px;
+    letter-spacing: 5px;
+    font-size: 3rem;
+    text-transform: uppercase;
     margin-bottom: 3rem;
     padding-bottom: 1rem;
 }
@@ -19,4 +20,53 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 2rem;
+    margin: 0rem 2rem;
+}
+
+.createPostContainer {
+    background-color: transparent;
+    float: left;
+    position: sticky;
+    top: 5vh;
+    left: -1rem;
+    z-index: 1000;;
+}
+
+.addPostButton {
+    background-color: white;
+    border: none;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    transition: ease-out 0.3s;
+    font-size: 3rem;
+    padding: 0.7rem 0.7rem;
+}
+
+.addPostButton:hover {
+    transition: ease-out 0.3s;
+}
+
+.addPostButton * {
+    background-color: white;
+    color: #1e222d;
+    border-radius: 100px;
+}
+
+.addPostText {
+    color: black;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    background-color: transparent;
+    transition: ease-out 0.3s;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 0.1rem;
+}
+
+.addPostButton:hover>.addPostText {
+    transition: ease-out 0.3s;
+    width: 10rem;
 }

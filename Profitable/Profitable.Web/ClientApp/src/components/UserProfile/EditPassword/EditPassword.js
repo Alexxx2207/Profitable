@@ -45,7 +45,7 @@ export const EditPassword = () => {
         if (e.target.name === 'oldPassword') {
             setEditPassword(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     oldPasswordEmpty: createClientErrorObject(state.errors.oldPasswordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -55,7 +55,7 @@ export const EditPassword = () => {
         } else if (e.target.name === 'newPassword') {
             setEditPassword(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     newPasswordEmpty: createClientErrorObject(state.errors.newPasswordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -79,12 +79,16 @@ export const EditPassword = () => {
                 .then(user => {
                     setEditPassword({...initialState});
                     setMessageBoxSettings('Password was changed successfully!', true);
+                    window.scrollTo(0, 0);
                 })
                 .catch(err => {
-                    setMessageBoxSettings(err.message, false);
                     if(err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
+                        setMessageBoxSettings('Your password was not changed! ' + JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
                         removeAuth();
                         navigate('/login');
+                    } else {
+                        setMessageBoxSettings(err.message, false);
+
                     }
                 });
         }

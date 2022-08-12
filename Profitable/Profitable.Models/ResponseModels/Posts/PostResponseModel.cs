@@ -13,6 +13,8 @@ namespace Profitable.Models.ResponseModels.Posts
 
         public string PostedOn { get; set; }
 
+        public string AuthorEmail { get; set; }
+
         public string Author { get; set; }
 
         public byte[] AuthorImage { get; set; }

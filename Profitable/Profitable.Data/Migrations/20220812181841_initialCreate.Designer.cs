@@ -12,8 +12,8 @@ using Profitable.Data;
 namespace Profitable.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220729210117_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220812181841_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -171,6 +171,9 @@ namespace Profitable.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -181,9 +184,6 @@ namespace Profitable.Data.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ImageType")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -333,6 +333,9 @@ namespace Profitable.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
@@ -342,14 +345,11 @@ namespace Profitable.Data.Migrations
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TraderId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Guid");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("TraderId");
+                    b.HasIndex("PostId");
 
                     b.ToTable("Likes");
                 });
@@ -443,9 +443,6 @@ namespace Profitable.Data.Migrations
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("ImageType")
-                        .HasColumnType("int");
 
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
@@ -606,21 +603,21 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Like", b =>
                 {
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Author")
+                        .WithMany("Likes")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Profitable.Models.EntityModels.Post", "Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Trader")
-                        .WithMany("Likes")
-                        .HasForeignKey("TraderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Author");
 
                     b.Navigation("Post");
-
-                    b.Navigation("Trader");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.List", b =>

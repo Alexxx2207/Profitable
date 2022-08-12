@@ -331,6 +331,9 @@ namespace Profitable.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
@@ -340,14 +343,11 @@ namespace Profitable.Data.Migrations
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("TraderId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Guid");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("TraderId");
+                    b.HasIndex("PostId");
 
                     b.ToTable("Likes");
                 });
@@ -601,21 +601,21 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Like", b =>
                 {
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Author")
+                        .WithMany("Likes")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Profitable.Models.EntityModels.Post", "Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Trader")
-                        .WithMany("Likes")
-                        .HasForeignKey("TraderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Author");
 
                     b.Navigation("Post");
-
-                    b.Navigation("Trader");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.List", b =>

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from '../../../contexts/AuthContext';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
@@ -8,13 +8,15 @@ import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH, PASSWORD_MIN_LENGTH } from
 import { isEmptyFieldChecker, minLengthChecker, isEmailValidChecker } from '../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
-import { registerUser } from '../../../services/users/usersService';
+import { getUserEmailFromJWT, registerUser } from '../../../services/users/usersService';
 
 import styles from './Register.module.css';
 
 export const Register = () => {
 
-    const { setAuth } = useContext(AuthContext);
+    const { JWT, setAuth } = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const [registerState, setRegisterState] = useState({
         values: {
@@ -39,12 +41,18 @@ export const Register = () => {
         }
     });
 
-    const navigate = useNavigate();
+
+    useEffect(() => {
+        getUserEmailFromJWT(JWT)
+        .then(email => navigate(`/users/${email}`))
+        .catch(err => err);
+    }, []);
+
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const clientErrors = Object.values(registerState.errors).filter(err => err.type == CLIENT_ERROR_TYPE);
+        const clientErrors = Object.values(registerState.errors).filter(err => err.type === CLIENT_ERROR_TYPE);
 
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
             registerUser(
@@ -69,39 +77,39 @@ export const Register = () => {
     }
 
     const changeHandler = (e) => {
-        if (e.target.name == 'email') {
+        if (e.target.name === 'email') {
             setRegisterState(state => ({
                 ...state,
-                values:changeStateValuesForControlledForms(state.values, e.target),
+                values:changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     emailValid: createClientErrorObject(state.errors.emailValid, isEmailValidChecker.bind(null, e.target.value)),
                 }
             }));
-        } else if (e.target.name == 'password') {
+        } else if (e.target.name === 'password') {
             setRegisterState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
                     passwordLength: createClientErrorObject(state.errors.passwordLength, minLengthChecker.bind(null, e.target.value, PASSWORD_MIN_LENGTH)),
                 }
             }));
-        } else if (e.target.name == 'firstName') {
+        } else if (e.target.name === 'firstName') {
             setRegisterState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     firstNameEmpty: createClientErrorObject(state.errors.firstNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
                     firstNameLength: createClientErrorObject(state.errors.firstNameLength, minLengthChecker.bind(null, e.target.value, FIRST_NAME_MIN_LENGTH)),
                 }
             }));
-        } else if (e.target.name == 'lastName') {
+        } else if (e.target.name === 'lastName') {
             setRegisterState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     lastNameEmpty: createClientErrorObject(state.errors.lastNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),

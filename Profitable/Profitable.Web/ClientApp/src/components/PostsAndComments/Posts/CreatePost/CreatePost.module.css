@@ -1,20 +1,21 @@
-.editPageContainer {
-    display: flex;
-    justify-content: center;
+
+.pageContainer {
     padding-top: 5vh;
 }
 
-.editContainer {
+.createSectionContainer {
     display: flex;
     justify-content: center;
-    width: 70%;
+}
+
+.createContainer {
+    display: flex;
+    justify-content: center;
+    width: 60%;
     margin-right: 5vw;
 }
 
-.editForm {
-    position: sticky;
-    top: 8vh;
-
+.createForm {
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -24,22 +25,22 @@
     background-color: white;
     border-radius: 20px;
 
-    padding: 4vh 4vw;
+    padding: 2vh 4vw;
 }
 
-.editForm * {
+.createForm * {
     background-color: white;
     color: black;
 }
 
-.editLabelContainer {
+.createLabelContainer {
     border-bottom: 2px solid black;
     width: 100%;
     text-align: center;
     margin-bottom: 4vh;
 }
 
-.editLabel {
+.createLabel {
     margin-bottom: 1rem;
 }
 
@@ -50,46 +51,26 @@
     width: 100%;
 }
 
-.formHeading h5 {
+.formGroup div {
+    width: 30%;
+
+}
+
+.formGroup div h5 {
     font-size: 1.5vw;
     margin: 0px;
 }
 
-.formHeading {
-    width: 30%;
-}
-
 .inputField {
-    border: 2px solid #1e222d3d;
+    border: 2px solid #1e222d5c;
     display: inline-block;
     padding: 1vh 1vw;
-    width: 70%;
+    width: 90%;
     font-size: 1.5vw;
-    position: relative;
 }
 
 .inputField:focus {
     border: 2px solid #1e222d;
-}
-
-.chooseFileText{
-    margin: 0px;
-}
-
-.fileInput::-webkit-file-upload-button {
-    cursor: pointer; 
-}
-
-.fileInput {
-    position: absolute;
-    z-index: 1000;
-    opacity: 0;
-    cursor: pointer;
-    right: 0;
-    top: 0;
-    height: 100%;
-    font-size: 24px;
-    width: 100%;
 }
 
 .submitButtonContainer {
@@ -118,7 +99,7 @@
     transition: linear 0.3s;
 }
 
-.editAside {
+.createAside {
     width: 27%;
     position: sticky;
     height: 70vh;
@@ -137,6 +118,52 @@
 
 .errorsContainer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    flex-wrap: wrap;
+    width: 100%;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2vh;
+    padding-left: 4vw;
+}
+
+.button {
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    transition: ease-out 0.3s;
+}
+
+.button * {
+    font-size: 1.2rem;
+    letter-spacing: 0.7px;
+    background-color: white;
+    color: black;
+    transition: ease-out 0.3s;
+}
+
+.iconLeftArrow {
+    margin-right: 0.5rem;
+}
+
+.backButton {
+    border: 2px solid white;
+}
+
+.backButton:hover, .backButton:hover *{
+    background-color: #1e222d;
+    color: white;
+    transition: ease-out 0.3s;
+}
+
+.backText {
+    font-weight: 600;
+    padding-bottom: 0.1rem;
 }

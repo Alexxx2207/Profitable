@@ -5,7 +5,6 @@ using Profitable.Data.Repository.Contract;
 using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Posts;
-using Profitable.Models.ResponseModels.Like;
 using Profitable.Models.ResponseModels.Posts;
 using Profitable.Services.Posts.Contracts;
 
@@ -24,61 +23,67 @@ namespace Profitable.Services.Posts
             this.mapper = mapper;
         }
 
-        public async Task<Result> AddPostAsync(AddPostRequestModel newPost)
+        public async Task<Result> AddPostAsync(ApplicationUser author, AddPostRequestModel newPost)
         {
-            var postToAdd = mapper.Map<Post>(newPost);
+            try
+            {
+                var postToAdd = new Post()
+                {
+                    Title = newPost.Title,
+                    Content = newPost.Content,
+                    PostedOn = DateTime.UtcNow,
+                    Author = author,
 
-            postToAdd.PostedOn = DateTime.UtcNow;
+                };
 
-            await postsRepository.AddAsync(postToAdd);
+                if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
+                {
+                    string newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
+                    postToAdd.ImageURL = newFileName;
+                }
 
-            await postsRepository.SaveChangesAsync();
+                await postsRepository.AddAsync(postToAdd);
 
-            return true;
+                await postsRepository.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return "Post was not found!";
+            }
+
         }
 
         public async Task<Result> DeletePostAsync(Guid guid)
         {
-            var entity = await postsRepository.GetAllAsNoTracking().FirstAsync(entity => entity.Guid == guid);
-
-            postsRepository.Delete(entity);
-
-            await postsRepository.SaveChangesAsync();
-
-            return true;
-        }
-
-        public async Task<Result> DeleteLikeAsync(Guid postGuid, Guid traderId)
-        {
-            var like = await likesRepository
+            try
+            {
+                var entity = await postsRepository
                 .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.PostId == postGuid && entity.TraderId == traderId);
+                .FirstAsync(entity => entity.Guid == guid);
 
-            likesRepository.Delete(like);
+                postsRepository.Delete(entity);
 
-            await likesRepository.SaveChangesAsync();
+                await postsRepository.SaveChangesAsync();
 
-            return true;
+                return true;
+            }
+            catch (Exception)
+            {
+                return "Post was not found!";
+            }
+
         }
 
         public async Task<PostResponseModel> GetPostByGuidAsync(Guid guid)
         {
             return mapper.Map<PostResponseModel>(await postsRepository
                 .GetAllAsNoTracking()
+                .Where(post => !post.IsDeleted)
                 .Include(p => p.Tags)
                 .Include(p => p.Author)
                 .FirstAsync(entity => entity.Guid == guid));
-        }
-
-        public async Task<List<LikeResponseModel>> GetPostLikesAsync(Guid guid)
-        {
-            var likes = await likesRepository
-                .GetAllAsNoTracking()
-                .Where(like => like.PostId == guid)
-                .Select(like => mapper.Map<LikeResponseModel>(like))
-                .ToListAsync();
-
-            return likes;
         }
 
         public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int postsCount)
@@ -87,6 +92,7 @@ namespace Profitable.Services.Posts
             {
                 var posts = await postsRepository
                     .GetAllAsNoTracking()
+                    .Where(post => !post.IsDeleted)
                     .OrderByDescending(p => p.PostedOn)
                     .Skip(page * postsCount)
                     .Take(postsCount)
@@ -109,6 +115,7 @@ namespace Profitable.Services.Posts
         {
             var posts = await postsRepository
                 .GetAllAsNoTracking()
+                .Where(post => !post.IsDeleted)
                 .Where(post => post.AuthorId == traderId)
                 .Include(p => p.Tags)
                 .Select(post => mapper.Map<PostResponseModel>(post))
@@ -117,27 +124,72 @@ namespace Profitable.Services.Posts
             return posts;
         }
 
-        public async Task<Result> UpdatePostAsync(UpdatePostRequestModel newPost)
+        public async Task<Result> UpdatePostAsync(string postToUpdateGuid, UpdatePostRequestModel newPost)
         {
-            var post = await postsRepository
+            var postToUpdateGuidCasted = Guid.Parse(postToUpdateGuid);
+
+            var postToUpdate = await postsRepository
                 .GetAll()
-                .FirstAsync(entity => entity.Guid == Guid.Parse(newPost.Guid));
+                .Where(post => !post.IsDeleted)
+                .FirstOrDefaultAsync(post => post.Guid == postToUpdateGuidCasted);
 
-            var existingPost = await postsRepository
-               .GetAll()
-               .FirstAsync(entity => entity.Guid == Guid.Parse(newPost.Guid));
 
-            if (existingPost == null)
+            if (postToUpdate != null)
             {
-                return GlobalServicesConstants.EntityDoesNotExist;
+                string newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
+
+                postToUpdate.Title = newPost.Title;
+                postToUpdate.Content = newPost.Content;
+                postToUpdate.ImageURL = newFileName;
+
+                postsRepository.Update(postToUpdate);
+
+                await postsRepository.SaveChangesAsync();
+
+                return true;
+            }
+            else
+            {
+                return "Post was not found!";
+            }
+        }
+
+        public async Task<int> ManagePostLikeAsync(ApplicationUser author, string postGuid)
+        {
+            var postToUpdateGuidCasted = Guid.Parse(postGuid);
+
+            var postToUpdate = await postsRepository
+                 .GetAll()
+                 .Where(post => !post.IsDeleted)
+                 .Include(post => post.Likes)
+                 .FirstOrDefaultAsync(post => post.Guid == postToUpdateGuidCasted);
+
+            var postLikeExisted = await likesRepository
+                .GetAllAsNoTracking()
+                .FirstOrDefaultAsync(postLike =>
+                    postLike.PostId == postToUpdateGuidCasted && postLike.AuthorId == author.Id);
+
+            if (postLikeExisted == null)
+            {
+                var likeToAdd = new Like()
+                {
+                    PostId = postToUpdateGuidCasted,
+                    AuthorId = author.Id,
+                };
+
+                await likesRepository.AddAsync(likeToAdd);
+
+                await likesRepository.SaveChangesAsync();
+
+            }
+            else
+            {
+                likesRepository.HardDelete(postLikeExisted);
+
+                await likesRepository.SaveChangesAsync();
             }
 
-            existingPost.Title = newPost.Title;
-            existingPost.Content = newPost.Content;
-
-            await postsRepository.SaveChangesAsync();
-
-            return true;
+            return postToUpdate.Likes.Count;
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Profitable.Models.EntityModels;
-
-namespace Profitable.Models.RequestModels.Posts
+﻿namespace Profitable.Models.RequestModels.Posts
 {
     public class AddPostRequestModel
     {
@@ -8,6 +6,8 @@ namespace Profitable.Models.RequestModels.Posts
 
         public string Content { get; set; }
 
-        public ApplicationUser Author { get; set; }
+        public string? Image { get; set; }
+
+        public string? ImageFileName { get; set; }
     }
 }

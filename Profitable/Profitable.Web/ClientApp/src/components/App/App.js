@@ -31,6 +31,10 @@ import {
 
 import { getUserDataByJWT } from "../../services/users/usersService";
 
+import { CreatePost } from "../PostsAndComments/Posts/CreatePost/CreatePost";
+import { EditPost } from "../PostsAndComments/Posts/EditPost/EditPost";
+
+// eslint-disable-next-line
 import styles from './App.module.css';
 
 export function App() {
@@ -44,6 +48,7 @@ export function App() {
         show: false,
     };
 
+    // eslint-disable-next-line
     const [JWT, setJWTState] = useState('');
 
     const [messageBox, setMessageBox] = useState([{ ...messageBoxInitialState }]);
@@ -57,8 +62,6 @@ export function App() {
             })
         // eslint-disable-next-line
     }, []);
-
-    const { pathname } = useLocation();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -91,7 +94,7 @@ export function App() {
     const disposeMessageBoxSettings = () => {
         setTimeout(() => {
             setMessageBox({ ...messageBoxInitialState })
-        }, 4000);
+        }, 5000);
     }
 
     return (
@@ -135,8 +138,18 @@ export function App() {
                         }>
                         </Route>
 
-                        <Route path="/user-profile/:searchedProfileEmail" element={
+                        <Route path="/users/:searchedProfileEmail" element={
                             <ProfilePage />
+                        }>
+                        </Route>
+
+                        <Route path="/posts/create" element={
+                            <CreatePost />
+                        }>
+                        </Route>
+
+                        <Route path="/posts/:postId/edit" element={
+                            <EditPost />
                         }>
                         </Route>
 

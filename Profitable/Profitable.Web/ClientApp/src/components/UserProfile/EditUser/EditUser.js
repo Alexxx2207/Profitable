@@ -71,10 +71,11 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
                 .then(user => {
                     changeProfileInfo(user);
                     setMessageBoxSettings('General information was changed successfully!', true);
+                    window.scrollTo(0, 0);
                 })
                 .catch(err => {
                     if(err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
-                        setMessageBoxSettings(err.message, false);
+                        setMessageBoxSettings('Your profile was not edited! ' + JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
                         removeAuth();
                         navigate('/login');
                     } else {
@@ -95,7 +96,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
       if (e.target.name === 'firstName') {
             setEditState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     firstNameEmpty: createClientErrorObject(state.errors.firstNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -105,7 +106,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
         } else if (e.target.name === 'lastName') {
             setEditState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target),
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     lastNameEmpty: createClientErrorObject(state.errors.lastNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
@@ -115,7 +116,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
         } else if (e.target.name === 'description') {
             setEditState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target)
+                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value)
             }));
         }
     };

@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { createAuthorImgURL } from '../../../services/common/imageService';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
-import { deleteUserDataByJWT, getUserDataByEmail, getUserEmailFromJWT, loginUser } from '../../../services/users/usersService';
+import { deleteUserData, deleteUserImage, getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
 import { EditUser } from "../EditUser/EditUser";
 import { EditPassword } from "../EditPassword/EditPassword";
 
@@ -12,7 +12,7 @@ import { faEdit, faUserLock, faTriangleExclamation } from '@fortawesome/free-sol
 
 import { editUserImage } from '../../../services/users/usersService';
 
-import { USER_NOT_FOUND_ERROR_PAGE_PATH } from '../../../common/config';
+import { JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, USER_NOT_FOUND_ERROR_PAGE_PATH } from '../../../common/config';
 
 import styles from './ProfilePage.module.css';
 
@@ -38,8 +38,14 @@ export const ProfilePage = () => {
         getUserEmailFromJWT(JWT)
             .then(result => setLoggedInUserEmail(email => result))
             .catch(err => {
-                removeAuth();
-                navigate(location.pathname);
+                if (JWT) {
+                    setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
+                    removeAuth();
+                    navigate('/login');
+                } else {
+                    removeAuth();
+                    navigate(location.pathname);
+                }
             })
         // eslint-disable-next-line
     }, []);
@@ -64,9 +70,11 @@ export const ProfilePage = () => {
         const file = e.target.files[0];
         const reader = new FileReader();
 
+        const base64 = 'base64,';
+
         reader.onloadend = () => {
             const base64Image = reader.result.toString();
-            const byteArray = base64Image.slice(base64Image.indexOf('base64,') + 'base64,'.length);
+            const byteArray = base64Image.slice(base64Image.indexOf(base64) + base64.length);
 
             setProfileInfo(state => ({
                 ...state,
@@ -76,7 +84,7 @@ export const ProfilePage = () => {
         }
 
         reader.readAsDataURL(file);
-    }
+    };
 
     const discardClickHandler = () => {
         setProfileInfo(state => ({
@@ -84,7 +92,7 @@ export const ProfilePage = () => {
             previewImage: undefined,
             previewImageFileName: undefined,
         }));
-    }
+    };
 
     const saveClickHandler = () => {
 
@@ -97,6 +105,7 @@ export const ProfilePage = () => {
                     previewImageFileName: undefined,
                 }));
                 setMessageBoxSettings('Profile image was changed successfully!', true);
+                window.scrollTo(0, 0);
             })
             .catch((err) => {
                 setMessageBoxSettings(err.message, false);
@@ -104,10 +113,29 @@ export const ProfilePage = () => {
             });
     }
 
-    const deleteButtonClickHandler = () => {
-        deleteUserDataByJWT(JWT)
+    const deleteImageButtonClickHandler = () => {
+        deleteUserImage(JWT)
             .then(result => {
-                setMessageBoxSettings(`Your account was deleted succeefully!`, true);
+                setMessageBoxSettings(`Your image was deleted successfully!`, true);
+                setProfileInfo(state => ({
+                    ...state,
+                    profileImage: undefined
+                }));
+                window.scrollTo(0, 0);
+            })
+            .catch(err => {
+                setMessageBoxSettings(`Your image was not deleted, session has expired!`, false);
+                setProfileInfo(state => ({
+                    ...state,
+                    profileImage: undefined
+                }));
+            });
+    }
+
+    const deleteUserButtonClickHandler = () => {
+        deleteUserData(JWT)
+            .then(result => {
+                setMessageBoxSettings(`Your account was deleted successfully!`, true);
                 removeAuth();
                 navigate('/');
             })
@@ -117,6 +145,7 @@ export const ProfilePage = () => {
                 navigate('/login');
             });
     }
+
 
     return (
         <div className={styles.profilePageContainer}>
@@ -129,7 +158,6 @@ export const ProfilePage = () => {
                     :
                     ''
                 }
-
                 <div className={styles.imageContainer}>
                     <img className={styles.authorImage}
                         src={profileInfo.previewImage ?
@@ -198,8 +226,19 @@ export const ProfilePage = () => {
                                     </h3>
                                     <h5 className={styles.deleteHeading}>Your posts will also be deleted!</h5>
                                 </div>
-                                <button onClick={deleteButtonClickHandler} className={styles.deleteButton}>
-                                    Delete
+                                <button onClick={deleteUserButtonClickHandler} className={styles.deleteButton}>
+                                    Delete Account
+                                </button>
+                            </div>
+                            <div className={styles.deleteSection}>
+                                <div className={styles.deleteHeadingContainer}>
+                                    <h3 className={styles.deleteHeading}>
+                                        Remove Profile Image
+                                    </h3>
+                                    <h5 className={styles.deleteHeading}>Your profile picture will be the default one!</h5>
+                                </div>
+                                <button onClick={deleteImageButtonClickHandler} className={styles.deleteButton}>
+                                    Remove Profile Image
                                 </button>
                             </div>
                         </div>

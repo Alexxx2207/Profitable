@@ -9,7 +9,6 @@ using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Users;
 using Profitable.Models.ResponseModels.Users;
 using Profitable.Services.Users.Contracts;
-using System.Text.RegularExpressions;
 
 namespace Profitable.Services.Users
 {
@@ -42,28 +41,16 @@ namespace Profitable.Services.Users
             return mapper.Map<UserDetailsResponseModel>(user);
         }
 
-        public async Task<UserDetailsResponseModel> EditUserAsync(string email, EditUserRequestModel editUserData)
+        public async Task<UserDetailsResponseModel> EditUserAsync(ApplicationUser user, EditUserRequestModel editUserData)
         {
-            var user = await repository
-                .GetAll()
-                .Where(user => !user.IsDeleted)
-                .FirstAsync(user => user.Email == email);
+            user.FirstName = editUserData.FirstName;
+            user.LastName = editUserData.LastName;
+            user.Description = editUserData.Description;
 
-            if (user != null)
-            {
-                user.FirstName = editUserData.FirstName;
-                user.LastName = editUserData.LastName;
-                user.Description = editUserData.Description;
+            repository.Update(user);
+            await repository.SaveChangesAsync();
 
-                repository.Update(user);
-                await repository.SaveChangesAsync();
-
-                return mapper.Map<UserDetailsResponseModel>(user);
-            }
-            else
-            {
-                throw new Exception("User was not edited");
-            }
+            return mapper.Map<UserDetailsResponseModel>(user);
         }
 
         public async Task<JWTToken> LoginUserAsync(LoginUserRequestModel userRequestModel)
@@ -85,7 +72,7 @@ namespace Profitable.Services.Users
             }
             else
             {
-                throw new Exception("User with this credentials doesn't exist");
+                throw new Exception("We have found you by email, but the provided password is invalid.");
             }
         }
 
@@ -149,16 +136,7 @@ namespace Profitable.Services.Users
         {
             if (!user.IsDeleted)
             {
-                string time = Regex.Replace(DateTime.Today.ToString(), @"\/|\:|\s", "");
-                string newFileName = time + editUserData.FileName;
-
-                string path = GlobalServicesConstants.UploadsFolderPath +
-                    GlobalServicesConstants.DirectorySeparatorChar +
-                    ImageFor.Users.ToString() +
-                    GlobalServicesConstants.DirectorySeparatorChar +
-                    newFileName;
-
-                await File.WriteAllBytesAsync(path, Convert.FromBase64String(editUserData.Image));
+                string newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Users, editUserData.FileName, editUserData.Image);
 
                 if (user != null)
                 {
@@ -180,11 +158,13 @@ namespace Profitable.Services.Users
             }
         }
 
-        public async Task<Result> SoftDeleteUserAsync(ApplicationUser user)
+        public async Task<Result> DeleteUserImageAsync(ApplicationUser user)
         {
             if (!user.IsDeleted)
             {
-                repository.Delete(user);
+                user.ProfilePictureURL = "";
+
+                repository.Update(user);
 
                 await repository.SaveChangesAsync();
 
@@ -192,7 +172,7 @@ namespace Profitable.Services.Users
             }
             else
             {
-                throw new Exception("User was deleted");
+                return "User was not found!";
             }
         }
 
@@ -208,7 +188,8 @@ namespace Profitable.Services.Users
             }
             else
             {
-                throw new Exception("User was deleted");
+                return "User was not found!";
+
             }
         }
     }

@@ -1,8 +1,8 @@
 
 
-export const changeStateValuesForControlledForms = (values, inputTargetToChange) =>{
+export const changeStateValuesForControlledForms = (values, inputName, inputValue) =>{
     return {
         ...values,
-        [inputTargetToChange.name]: inputTargetToChange.value
+        [inputName]: inputValue
     }
 }
