@@ -148,5 +148,16 @@ namespace Profitable.Web.Controllers
                 return BadRequest(result.Error);
             }
         }
+
+        [Authorize]
+        [HttpDelete("user/image/delete")]
+        public async Task<IActionResult> DeleteUserImageAsync()
+        {
+            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+
+            var result = await userService.DeleteUserImageAsync(user);
+
+            return Ok(result);
+        }
     }
 }

@@ -71,10 +71,11 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
                 .then(user => {
                     changeProfileInfo(user);
                     setMessageBoxSettings('General information was changed successfully!', true);
+                    window.scrollTo(0, 0);
                 })
                 .catch(err => {
                     if(err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
-                        setMessageBoxSettings(err.message, false);
+                        setMessageBoxSettings('Your profile was not edited! ' + JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
                         removeAuth();
                         navigate('/login');
                     } else {

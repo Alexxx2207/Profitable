@@ -5,7 +5,7 @@ export const createImgURL = (image) => {
 }
 
 export const createAuthorImgURL = (image) => {
-    if (image !== '') {
+    if (image) {
         return createImgURL(image);
     } else {
         return `${process.env.PUBLIC_URL}images/defaultProfilePicture.png`;

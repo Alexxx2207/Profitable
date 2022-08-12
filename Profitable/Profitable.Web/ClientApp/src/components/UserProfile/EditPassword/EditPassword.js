@@ -79,12 +79,16 @@ export const EditPassword = () => {
                 .then(user => {
                     setEditPassword({...initialState});
                     setMessageBoxSettings('Password was changed successfully!', true);
+                    window.scrollTo(0, 0);
                 })
                 .catch(err => {
-                    setMessageBoxSettings(err.message, false);
                     if(err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
+                        setMessageBoxSettings('Your password was not changed! ' + JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
                         removeAuth();
                         navigate('/login');
+                    } else {
+                        setMessageBoxSettings(err.message, false);
+
                     }
                 });
         }

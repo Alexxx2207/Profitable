@@ -5,9 +5,9 @@ namespace Profitable.Models.EntityModels
 {
     public class Like : EntityBase
     {
-        [ForeignKey("Trader")]
-        public Guid TraderId { get; set; }
-        public ApplicationUser Trader { get; set; }
+        [ForeignKey("Author")]
+        public Guid AuthorId { get; set; }
+        public ApplicationUser Author { get; set; }
 
 
         [ForeignKey("Post")]

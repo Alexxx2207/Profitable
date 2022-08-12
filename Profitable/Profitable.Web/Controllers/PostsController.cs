@@ -57,6 +57,17 @@ namespace Profitable.Web.Controllers
         }
 
         [Authorize]
+        [HttpPost("/posts/{guid}/likes/manage")]
+        public async Task<IActionResult> ManageLikeAsync([FromRoute] string guid)
+        {
+            var author = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+
+            var likesCount = await postService.ManagePostLikeAsync(author, guid);
+
+            return Ok(likesCount);
+        }
+
+        [Authorize]
         [HttpPatch("{guid}/edit")]
         public async Task<IActionResult> EditAsync([FromRoute] string guid, [FromBody] UpdatePostRequestModel editPostRequestModel)
         {

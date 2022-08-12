@@ -10,7 +10,7 @@ namespace Profitable.Services.Users.Contracts
     {
         Task<UserDetailsResponseModel> GetUserDetailsAsync(string email);
 
-        Task<Result> SoftDeleteUserAsync(ApplicationUser email);
+        Task<Result> DeleteUserImageAsync(ApplicationUser email);
 
         Task<Result> HardDeleteUserAsync(ApplicationUser email);
 

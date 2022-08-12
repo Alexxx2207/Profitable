@@ -94,7 +94,7 @@ export function App() {
     const disposeMessageBoxSettings = () => {
         setTimeout(() => {
             setMessageBox({ ...messageBoxInitialState })
-        }, 4000);
+        }, 5000);
     }
 
     return (

@@ -96,8 +96,20 @@ export const getUserDataByJWT = async (jwt) => {
     return await response.json();
 }
 
-export const deleteUserDataByJWT = async (jwt) => {
+export const deleteUserData = async (jwt) => {
     let response = await request.delete(`${WEB_API_BASE_URL}/users/user/delete`, null, {
+        'Authorization': 'Bearer ' + jwt
+    });
+
+    if (response.status === 401) {
+        throw new Error(await response.text());
+    }
+
+    return await response.json();
+}
+
+export const deleteUserImage = async (jwt) => {
+    let response = await request.delete(`${WEB_API_BASE_URL}/users/user/image/delete`, null, {
         'Authorization': 'Bearer ' + jwt
     });
 

@@ -8,7 +8,7 @@
     text-transform: capitalize;
     transition: linear 0.3s;
     text-align: center;
-    font-size: 3vh;
+    font-size: 1.6vw;
 }
 
 .errorMessageRed {

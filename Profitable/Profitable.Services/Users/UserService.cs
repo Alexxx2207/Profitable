@@ -158,11 +158,13 @@ namespace Profitable.Services.Users
             }
         }
 
-        public async Task<Result> SoftDeleteUserAsync(ApplicationUser user)
+        public async Task<Result> DeleteUserImageAsync(ApplicationUser user)
         {
             if (!user.IsDeleted)
             {
-                repository.Delete(user);
+                user.ProfilePictureURL = "";
+
+                repository.Update(user);
 
                 await repository.SaveChangesAsync();
 

@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { createAuthorImgURL } from '../../../services/common/imageService';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
-import { deleteUserDataByJWT, getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
+import { deleteUserData, deleteUserImage, getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
 import { EditUser } from "../EditUser/EditUser";
 import { EditPassword } from "../EditPassword/EditPassword";
 
@@ -38,7 +38,7 @@ export const ProfilePage = () => {
         getUserEmailFromJWT(JWT)
             .then(result => setLoggedInUserEmail(email => result))
             .catch(err => {
-                if(JWT) {
+                if (JWT) {
                     setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
                     removeAuth();
                     navigate('/login');
@@ -105,6 +105,7 @@ export const ProfilePage = () => {
                     previewImageFileName: undefined,
                 }));
                 setMessageBoxSettings('Profile image was changed successfully!', true);
+                window.scrollTo(0, 0);
             })
             .catch((err) => {
                 setMessageBoxSettings(err.message, false);
@@ -112,8 +113,27 @@ export const ProfilePage = () => {
             });
     }
 
-    const deleteButtonClickHandler = () => {
-        deleteUserDataByJWT(JWT)
+    const deleteImageButtonClickHandler = () => {
+        deleteUserImage(JWT)
+            .then(result => {
+                setMessageBoxSettings(`Your image was deleted successfully!`, true);
+                setProfileInfo(state => ({
+                    ...state,
+                    profileImage: undefined
+                }));
+                window.scrollTo(0, 0);
+            })
+            .catch(err => {
+                setMessageBoxSettings(`Your image was not deleted, session has expired!`, false);
+                setProfileInfo(state => ({
+                    ...state,
+                    profileImage: undefined
+                }));
+            });
+    }
+
+    const deleteUserButtonClickHandler = () => {
+        deleteUserData(JWT)
             .then(result => {
                 setMessageBoxSettings(`Your account was deleted successfully!`, true);
                 removeAuth();
@@ -125,6 +145,7 @@ export const ProfilePage = () => {
                 navigate('/login');
             });
     }
+
 
     return (
         <div className={styles.profilePageContainer}>
@@ -205,8 +226,19 @@ export const ProfilePage = () => {
                                     </h3>
                                     <h5 className={styles.deleteHeading}>Your posts will also be deleted!</h5>
                                 </div>
-                                <button onClick={deleteButtonClickHandler} className={styles.deleteButton}>
-                                    Delete
+                                <button onClick={deleteUserButtonClickHandler} className={styles.deleteButton}>
+                                    Delete Account
+                                </button>
+                            </div>
+                            <div className={styles.deleteSection}>
+                                <div className={styles.deleteHeadingContainer}>
+                                    <h3 className={styles.deleteHeading}>
+                                        Remove Profile Image
+                                    </h3>
+                                    <h5 className={styles.deleteHeading}>Your profile picture will be the default one!</h5>
+                                </div>
+                                <button onClick={deleteImageButtonClickHandler} className={styles.deleteButton}>
+                                    Remove Profile Image
                                 </button>
                             </div>
                         </div>
