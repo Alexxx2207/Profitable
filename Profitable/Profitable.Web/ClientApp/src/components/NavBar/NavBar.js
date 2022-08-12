@@ -37,7 +37,7 @@ export const NavBar = () => {
                 <div className={styles.userPanel}>
                     {JWT ?
                         <div className={styles.authContainer}>
-                            <NavLink to={`/user-profile/${email}`} className={classNames(styles.navbarListItems, styles.navLink)}>PROFILE</NavLink>
+                            <NavLink to={`/users/${email}`} className={classNames(styles.navbarListItems, styles.navLink)}>PROFILE</NavLink>
                             <NavLink to="/logout" className={classNames(styles.navbarListItems, styles.navLink)}>LOGOUT</NavLink>
                         </div>
                         :

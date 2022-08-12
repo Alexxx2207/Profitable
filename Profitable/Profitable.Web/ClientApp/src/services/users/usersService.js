@@ -13,7 +13,7 @@ export const loginUser = async (email, password) => {
 
     if (response.status === 400) {
         let errorMessage = await response.text();
-        if(errorMessage == 'Sequence contains no elements.') {
+        if(errorMessage === 'Sequence contains no elements.') {
             errorMessage = 'We haven\'t found you.\\nCheck the provided email and password for misspellings.';
         }
         throw new Error(errorMessage);

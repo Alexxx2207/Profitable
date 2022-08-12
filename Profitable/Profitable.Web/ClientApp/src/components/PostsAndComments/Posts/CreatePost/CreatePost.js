@@ -47,6 +47,7 @@ export const CreatePost = () => {
             removeAuth();
             navigate('/login');
         })
+        // eslint-disable-next-line
     }, []);
 
     const onSubmit = (e) => {

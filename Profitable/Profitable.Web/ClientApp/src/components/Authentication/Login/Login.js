@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from '../../../contexts/AuthContext';
-import { loginUser } from '../../../services/users/usersService';
+import { getUserEmailFromJWT, loginUser } from '../../../services/users/usersService';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
@@ -13,7 +13,7 @@ import styles from './Login.module.css';
 
 export const Login = () => {
 
-    const { setAuth } = useContext(AuthContext);
+    const { JWT, setAuth } = useContext(AuthContext);
 
     const [loginState, setLoginState] = useState({
         values: {
@@ -31,13 +31,18 @@ export const Login = () => {
         }
     });
 
+    useEffect(() => {
+        getUserEmailFromJWT(JWT)
+        .then(email => navigate(`/users/${email}`))
+        .catch(err => err);
+    }, []);
 
     const navigate = useNavigate();
 
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const clientErrors = Object.values(loginState.errors).filter(err => err.type == CLIENT_ERROR_TYPE);
+        const clientErrors = Object.values(loginState.errors).filter(err => err.type === CLIENT_ERROR_TYPE);
 
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
             loginUser(
@@ -61,7 +66,7 @@ export const Login = () => {
     }
 
     const changeHandler = (e) => {
-        if(e.target.name == 'email') {
+        if(e.target.name === 'email') {
             setLoginState(state => ({
                 ...state,
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
@@ -70,7 +75,7 @@ export const Login = () => {
                     emailValid: createClientErrorObject(state.errors.emailValid, isEmailValidChecker.bind(null, e.target.value)),
                 }
             }));
-        } else  if(e.target.name == 'password'){
+        } else  if(e.target.name === 'password'){
             setLoginState(state => ({
                 ...state,
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),

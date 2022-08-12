@@ -51,6 +51,7 @@ export const EditPost = () => {
             removeAuth();
             navigate('/login');
         })
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
