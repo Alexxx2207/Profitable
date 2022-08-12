@@ -49,6 +49,15 @@ namespace Profitable.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet("user/guid")]
+        public async Task<IActionResult> GetGuidFromJWTAsync()
+        {
+            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+
+            return Ok(user.Id.ToString());
+        }
+
+        [Authorize]
         [HttpPatch("user/edit")]
         public async Task<IActionResult> EditGeneralDataAsync([FromBody] EditUserRequestModel userRequestModel)
         {

@@ -5,38 +5,38 @@ import { createAuthorImgURL } from '../../../../../services/common/imageService'
 import { PostsLikeWidget } from '../../PostsLikeWidget/PostsLikeWidget';
 import styles from './PostsListItem.module.css';
 
-export const PostsListItem = (props) => {
+export const PostsListItem = ({post}) => {
 
     const navigate = useNavigate();
 
     const postDetailsClickHandler = () => {
-        navigate(`/posts/${props.guid}`, { replace: false });
+        navigate(`/posts/${post.guid}`, { replace: false });
     }
 
     return (
         <div className={styles.post} onClick={postDetailsClickHandler}>
             <div className={styles.header}>
-                <h2 className={styles.title}>{props.title}</h2>
-                <PostsLikeWidget likesCount={props.likes.length} postId={props.guid} />
+                <h2 className={styles.title}>{post.title}</h2>
+                <PostsLikeWidget likesCount={post.likes.length} post={post} />
             </div>
 
             <div className={styles.mainContent}>
-                <p className={styles.mainContent}>{props.content}</p>
+                <p className={styles.mainContent}>{post.content}</p>
             </div>
 
             <div className={styles.information}>
                 <div className={styles.author}>
-                    <img className={styles.authorImage} src={createAuthorImgURL(props.authorImage)} alt="" />
+                    <img className={styles.authorImage} src={createAuthorImgURL(post.authorImage)} alt="" />
                     <div>
-                        {props.author}
+                        {post.author}
                     </div>
                 </div>
                 <div className={styles.author}>
                     <FontAwesomeIcon className={styles.iconComments} icon={faComments} />
-                    Comments: <strong>{props.comments.length}</strong>
+                    Comments: <strong>{post.comments.length}</strong>
                 </div>
                 <div className={styles.postedOn}>
-                    {props.postedOn}
+                    {post.postedOn}
                 </div>
             </div>
         </div>);

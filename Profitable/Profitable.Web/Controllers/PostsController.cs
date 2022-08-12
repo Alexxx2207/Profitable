@@ -57,7 +57,7 @@ namespace Profitable.Web.Controllers
         }
 
         [Authorize]
-        [HttpPost("/posts/{guid}/likes/manage")]
+        [HttpPost("{guid}/likes/manage")]
         public async Task<IActionResult> ManageLikeAsync([FromRoute] string guid)
         {
             var author = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));

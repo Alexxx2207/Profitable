@@ -2,6 +2,6 @@
 {
     public class LikeResponseModel
     {
-        public string Trader { get; set; }
+        public string AuthorId { get; set; }
     }
 }
