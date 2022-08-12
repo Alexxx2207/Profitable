@@ -64,6 +64,7 @@ export const CreatePost = () => {
                 JWT, { ...createState.values }
             )
                 .then(jwt => {
+                    setMessageBoxSettings('The post was created successfully!', true);
                     navigate('/posts');
                 })
                 .catch(err => {

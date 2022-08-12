@@ -2,7 +2,7 @@ import classnames from "classnames";
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../../../contexts/AuthContext';
-import { loadParticularPost } from '../../../../services/posts/postsService';
+import { deletePost, loadParticularPost } from '../../../../services/posts/postsService';
 import { PostsLikeWidget } from '../PostsLikeWidget/PostsLikeWidget';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -60,21 +60,36 @@ export const PostDetails = () => {
     }
 
     const goToEditPageHandler = (e) => {
-
         getUserDataByJWT(JWT)
-        .then(result => {
-            navigate(`/posts/${postId}/edit`);
-        })
-        .catch(err => {
-            if(JWT && err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
-                setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
-                removeAuth();
+            .then(result => {
+                navigate(`/posts/${postId}/edit`);
+            })
+            .catch(err => {
+                if (JWT && err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
+                    setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
+                    removeAuth();
+                } else {
+                    setMessageBoxSettings('You should login before editing a post!', false);
+                }
                 navigate('/login');
-            } else {
-                setMessageBoxSettings('You should login before editing a post!', false);
+            });
+    };
+
+    const deletePostClickHandler = () => {
+        deletePost(JWT, postId)
+            .then(result => {
+                setMessageBoxSettings('The post was deleted successfully!', true);
+                navigate('/posts')
+            })
+            .catch(err => {
+                if (JWT && err.message === 'Should auth first') {
+                    setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE + ' The post was not deleted!', false);
+                    removeAuth();
+                } else {
+                    setMessageBoxSettings('You should login before editing a post!', false);
+                }
                 navigate('/login');
-            }
-        });
+            })
     }
 
     return (
@@ -94,7 +109,7 @@ export const PostDetails = () => {
                                 Edit
                             </div>
                         </button>
-                        <button className={classnames(styles.button, styles.deleteButton)}>
+                        <button className={classnames(styles.button, styles.deleteButton)} onClick={deletePostClickHandler}>
                             <FontAwesomeIcon className={styles.iconDelete} icon={faTrash} />
                             <div className={styles.backText}>
                                 Delete

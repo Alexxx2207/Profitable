@@ -82,6 +82,7 @@ export const EditPost = () => {
                 JWT, postId, { ...editState.values }
             )
                 .then(jwt => {
+                    setMessageBoxSettings('The post was edited successfully!', true);
                     navigate(`/posts/${postId}`);
                 })
                 .catch(err => {
