@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import classnames from "classnames";
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
 import { createPost } from '../../../../services/posts/postsService';
@@ -10,6 +11,9 @@ import { getUserEmailFromJWT } from '../../../../services/users/usersService';
 import { isEmptyFieldChecker } from '../../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './CreatePost.module.css';
 
@@ -41,12 +45,12 @@ export const CreatePost = () => {
 
     useEffect(() => {
         getUserEmailFromJWT(JWT)
-        .then(result => result)
-        .catch(err => {
-            setMessageBoxSettings('You should login before creating a post!', false);
-            removeAuth();
-            navigate('/login');
-        })
+            .then(result => result)
+            .catch(err => {
+                setMessageBoxSettings('You should login before creating a post!', false);
+                removeAuth();
+                navigate('/login');
+            })
         // eslint-disable-next-line
     }, []);
 
@@ -63,7 +67,7 @@ export const CreatePost = () => {
                     navigate('/posts');
                 })
                 .catch(err => {
-                    if(JWT && err.message === 'Should auth first') {
+                    if (JWT && err.message === 'Should auth first') {
                         setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE + ' The post was not created!', false);
                         removeAuth();
                         navigate('/login');
@@ -81,7 +85,7 @@ export const CreatePost = () => {
     }
 
     const changeHandler = (e) => {
-        if(e.target.name === 'title') {
+        if (e.target.name === 'title') {
             setCreateState(state => ({
                 ...state,
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
@@ -90,7 +94,7 @@ export const CreatePost = () => {
                     titleEmpty: createClientErrorObject(state.errors.titleEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
                 }
             }));
-        } else  if(e.target.name === 'content'){
+        } else if (e.target.name === 'content') {
             setCreateState(state => ({
                 ...state,
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
@@ -124,44 +128,58 @@ export const CreatePost = () => {
         reader.readAsDataURL(file);
     };
 
+    const goBackHandler = (e) => {
+        navigate(`/posts`);
+    }
+
     return (
         <div className={styles.pageContainer}>
-            <div className={styles.createContainer}>
-                <form className={styles.createForm} onSubmit={onSubmit} >
-                    <div className={styles.createLabelContainer}>
-                        <h1 className={styles.createLabel}>Create Post</h1>
+            <div className={styles.buttonContainer}>
+                <button className={classnames(styles.button, styles.backButton)} onClick={goBackHandler}>
+                    <FontAwesomeIcon className={styles.iconLeftArrow} icon={faArrowCircleLeft} />
+                    <div className={styles.backText}>
+                        Go Back
                     </div>
-                    <div className={styles.formGroup}>
-                        <div>
-                            <h5>Title</h5>
-                        </div>
-                        <input className={styles.inputField} type="text" name="title" placeholder={'The Fed Rising Interest Rates'} value={createState.values.title} onChange={changeHandler} />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <div>
-                            <h5>Main Content</h5>
-                        </div>
-                        <textarea className={styles.inputField} name="content" placeholder={'While economists are worrying about the economy...'} defaultValue={createState.values.content} onChange={changeHandler} />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <div>
-                            <h5>Image</h5>
-                        </div>
-                        <input className={styles.inputField} type="file" name="image" accept="image/*" onChange={changeImageHandler} />
-                    </div>
-                    <div className={styles.submitButtonContainer}>
-                        <input className={styles.submitButton} type="submit" value='Create' />
-                    </div>
-                </form>
+                </button>
             </div>
-            <aside className={styles.createAside}>
-                <div className={styles.errorsHeadingContainer}>
-                    <h1 className={styles.errorsHeading}>Create State</h1>
+            <div className={styles.createSectionContainer}>
+                <div className={styles.createContainer}>
+                    <form className={styles.createForm} onSubmit={onSubmit} >
+                        <div className={styles.createLabelContainer}>
+                            <h1 className={styles.createLabel}>Create Post</h1>
+                        </div>
+                        <div className={styles.formGroup}>
+                            <div>
+                                <h5>Title</h5>
+                            </div>
+                            <input className={styles.inputField} type="text" name="title" placeholder={'The Fed Rising Interest Rates'} value={createState.values.title} onChange={changeHandler} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <div>
+                                <h5>Main Content</h5>
+                            </div>
+                            <textarea className={styles.inputField} name="content" placeholder={'While economists are worrying about the economy...'} defaultValue={createState.values.content} onChange={changeHandler} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <div>
+                                <h5>Image</h5>
+                            </div>
+                            <input className={styles.inputField} type="file" name="image" accept="image/*" onChange={changeImageHandler} />
+                        </div>
+                        <div className={styles.submitButtonContainer}>
+                            <input className={styles.submitButton} type="submit" value='Create' />
+                        </div>
+                    </form>
                 </div>
-                <div className={styles.errorsContainer}>
-                    {Object.values(createState.errors).map((error, index) => <ErrorWidget key={index} error={error} />)}
-                </div>
-            </aside>
+                <aside className={styles.createAside}>
+                    <div className={styles.errorsHeadingContainer}>
+                        <h1 className={styles.errorsHeading}>Create State</h1>
+                    </div>
+                    <div className={styles.errorsContainer}>
+                        {Object.values(createState.errors).map((error, index) => <ErrorWidget key={index} error={error} />)}
+                    </div>
+                </aside>
+            </div>
         </div>
     );
 }

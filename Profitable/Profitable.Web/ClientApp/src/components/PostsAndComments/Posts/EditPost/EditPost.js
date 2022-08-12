@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import classnames from "classnames";
 import { useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
@@ -12,8 +13,10 @@ import { changeStateValuesForControlledForms } from '../../../../services/common
 import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
 import { editPost, loadParticularPost } from '../../../../services/posts/postsService';
 
-import styles from './EditPost.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
+import styles from './EditPost.module.css';
 
 export const EditPost = () => {
 
@@ -45,12 +48,12 @@ export const EditPost = () => {
 
     useEffect(() => {
         getUserEmailFromJWT(JWT)
-        .then(result => result)
-        .catch(err => {
-            setMessageBoxSettings('You should login before editing a post!', false);
-            removeAuth();
-            navigate('/login');
-        })
+            .then(result => result)
+            .catch(err => {
+                setMessageBoxSettings('You should login before editing a post!', false);
+                removeAuth();
+                navigate('/login');
+            })
         // eslint-disable-next-line
     }, []);
 
@@ -82,7 +85,7 @@ export const EditPost = () => {
                     navigate(`/posts/${postId}`);
                 })
                 .catch(err => {
-                    if(JWT && err.message === 'Should auth first') {
+                    if (JWT && err.message === 'Should auth first') {
                         setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE + ' The post was not edited!', false);
                         removeAuth();
                         navigate('/login');
@@ -121,6 +124,10 @@ export const EditPost = () => {
         }
     };
 
+    const goBackHandler = (e) => {
+        navigate(`/posts/${postId}`);
+    }
+
     const changeImageHandler = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -145,42 +152,52 @@ export const EditPost = () => {
 
     return (
         <div className={styles.pageContainer}>
-            <div className={styles.editContainer}>
-                <form className={styles.editForm} onSubmit={onSubmit} >
-                    <div className={styles.editLabelContainer}>
-                        <h1 className={styles.editLabel}>Edit Post</h1>
+            <div className={styles.buttonContainer}>
+                <button className={classnames(styles.button, styles.backButton)} onClick={goBackHandler}>
+                    <FontAwesomeIcon className={styles.iconLeftArrow} icon={faArrowCircleLeft} />
+                    <div className={styles.backText}>
+                        Go Back
                     </div>
-                    <div className={styles.formGroup}>
-                        <div>
-                            <h5>Title</h5>
-                        </div>
-                        <input className={styles.inputField} type="text" name="title" placeholder={'The Fed Rising Interest Rates'} value={editState.values.title} onChange={changeHandler} />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <div>
-                            <h5>Main Content</h5>
-                        </div>
-                        <textarea className={styles.inputField} name="content" placeholder={'While economists are worrying about the economy...'} defaultValue={editState.values.content} onChange={changeHandler} />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <div>
-                            <h5>Image</h5>
-                        </div>
-                        <input className={styles.inputField} type="file" name="image" accept="image/*" onChange={changeImageHandler} />
-                    </div>
-                    <div className={styles.submitButtonContainer}>
-                        <input className={styles.submitButton} type="submit" value='Edit' />
-                    </div>
-                </form>
+                </button>
             </div>
-            <aside className={styles.editAside}>
-                <div className={styles.errorsHeadingContainer}>
-                    <h1 className={styles.errorsHeading}>Edit State</h1>
+            <div className={styles.editSectionContainer}>
+                <div className={styles.editContainer}>
+                    <form className={styles.editForm} onSubmit={onSubmit} >
+                        <div className={styles.editLabelContainer}>
+                            <h1 className={styles.editLabel}>Edit Post</h1>
+                        </div>
+                        <div className={styles.formGroup}>
+                            <div>
+                                <h5>Title</h5>
+                            </div>
+                            <input className={styles.inputField} type="text" name="title" placeholder={'The Fed Rising Interest Rates'} value={editState.values.title} onChange={changeHandler} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <div>
+                                <h5>Main Content</h5>
+                            </div>
+                            <textarea className={styles.inputField} name="content" placeholder={'While economists are worrying about the economy...'} defaultValue={editState.values.content} onChange={changeHandler} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <div>
+                                <h5>Image</h5>
+                            </div>
+                            <input className={styles.inputField} type="file" name="image" accept="image/*" onChange={changeImageHandler} />
+                        </div>
+                        <div className={styles.submitButtonContainer}>
+                            <input className={styles.submitButton} type="submit" value='Edit' />
+                        </div>
+                    </form>
                 </div>
-                <div className={styles.errorsContainer}>
-                    {Object.values(editState.errors).map((error, index) => <ErrorWidget key={index} error={error} />)}
-                </div>
-            </aside>
+                <aside className={styles.editAside}>
+                    <div className={styles.errorsHeadingContainer}>
+                        <h1 className={styles.errorsHeading}>Edit State</h1>
+                    </div>
+                    <div className={styles.errorsContainer}>
+                        {Object.values(editState.errors).map((error, index) => <ErrorWidget key={index} error={error} />)}
+                    </div>
+                </aside>
+            </div>
         </div>
     );
 }

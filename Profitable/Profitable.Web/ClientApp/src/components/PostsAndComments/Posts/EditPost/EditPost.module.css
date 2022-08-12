@@ -1,9 +1,11 @@
 
-
 .pageContainer {
+    padding-top: 5vh;
+}
+
+.editSectionContainer {
     display: flex;
     justify-content: center;
-    padding-top: 12vh;
 }
 
 .editContainer {
@@ -119,4 +121,49 @@
     flex-direction: column;
     justify-content: center;
     width: 100%;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2vh;
+    padding-left: 4vw;
+}
+
+.button {
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    transition: ease-out 0.3s;
+}
+
+.button * {
+    font-size: 1.2rem;
+    letter-spacing: 0.7px;
+    background-color: white;
+    color: black;
+    transition: ease-out 0.3s;
+}
+
+.iconLeftArrow {
+    margin-right: 0.5rem;
+}
+
+.backButton {
+    border: 2px solid white;
+}
+
+.backButton:hover, .backButton:hover *{
+    background-color: #1e222d;
+    color: white;
+    transition: ease-out 0.3s;
+}
+
+.backText {
+    font-weight: 600;
+    padding-bottom: 0.1rem;
 }
