@@ -13,6 +13,13 @@ export const PostsListItem = ({post}) => {
         navigate(`/posts/${post.guid}`, { replace: false });
     }
 
+    const clickUserProfileHandler = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        navigate(`/users/${post.authorEmail}`);
+    };
+
     return (
         <div className={styles.post} onClick={postDetailsClickHandler}>
             <div className={styles.header}>
@@ -25,13 +32,13 @@ export const PostsListItem = ({post}) => {
             </div>
 
             <div className={styles.information}>
-                <div className={styles.author}>
+                <div className={styles.author} onClick={clickUserProfileHandler}>
                     <img className={styles.authorImage} src={createAuthorImgURL(post.authorImage)} alt="" />
                     <div>
                         {post.author}
                     </div>
                 </div>
-                <div className={styles.author}>
+                <div className={styles.comments}>
                     <FontAwesomeIcon className={styles.iconComments} icon={faComments} />
                     Comments: <strong>{post.comments.length}</strong>
                 </div>

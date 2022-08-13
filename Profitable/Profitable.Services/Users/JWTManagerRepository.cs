@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Profitable.Common.Models;
+using Profitable.GlobalConstants;
 using Profitable.Services.Users.Contracts;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -29,8 +30,7 @@ namespace Profitable.Services.Users
                     { ClaimTypes.Name, user.UserName },
                     { ClaimTypes.Email, user.Email },
                 },
-                //Expires = DateTime.UtcNow.AddDays(GlobalControllerConstants.JWTExpirationInDays),
-                Expires = DateTime.UtcNow.AddSeconds(15),
+                Expires = DateTime.UtcNow.AddDays(GlobalControllerConstants.JWTExpirationInDays),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
 

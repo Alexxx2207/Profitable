@@ -90,7 +90,14 @@ export const PostDetails = () => {
                 }
                 navigate('/login');
             })
-    }
+    };
+
+    const clickUserProfileHandler = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        navigate(`/users/${post.authorEmail}`);
+    };
 
     return (
         <div className={styles.post}>
@@ -139,8 +146,8 @@ export const PostDetails = () => {
                 </div>
                 <div className={styles.information}>
                     <div className={styles.author}>
-                        <img className={styles.authorImage} src={createAuthorImgURL(post.authorImage)} alt="" />
-                        <div>
+                        <img onClick={clickUserProfileHandler} className={styles.authorImage} src={createAuthorImgURL(post.authorImage)} alt="" />
+                        <div onClick={clickUserProfileHandler} className={styles.authorName}>
                             {post.author}
                         </div>
                     </div>

@@ -5,6 +5,7 @@ export const MessageBox = ({message, good, disposeMessageBoxSettings}) => {
 
     useEffect(() => {
         disposeMessageBoxSettings();
+        // eslint-disable-next-line
     }, []);
 
     return (

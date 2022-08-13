@@ -38,14 +38,8 @@ export const ProfilePage = () => {
         getUserEmailFromJWT(JWT)
             .then(result => setLoggedInUserEmail(email => result))
             .catch(err => {
-                if (JWT) {
-                    setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
-                    removeAuth();
-                    navigate('/login');
-                } else {
-                    removeAuth();
-                    navigate(location.pathname);
-                }
+                removeAuth();
+                navigate(location.pathname);
             })
         // eslint-disable-next-line
     }, []);
@@ -61,6 +55,7 @@ export const ProfilePage = () => {
     }, [JWT, searchedProfileEmail, navigate]);
 
     const changeProfileInfo = (user) => {
+        console.log(user);
         setProfileInfo(state => ({
             ...user
         }))

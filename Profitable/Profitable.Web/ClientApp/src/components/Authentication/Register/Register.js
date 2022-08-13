@@ -46,6 +46,7 @@ export const Register = () => {
         getUserEmailFromJWT(JWT)
         .then(email => navigate(`/users/${email}`))
         .catch(err => err);
+        // eslint-disable-next-line
     }, []);
 
 
