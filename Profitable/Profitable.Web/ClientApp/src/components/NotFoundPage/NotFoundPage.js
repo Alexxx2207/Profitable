@@ -20,6 +20,7 @@ export const NotFoundPage = () => {
                 url: '/posts'
             })
         }
+        // eslint-disable-next-line
     }, []);
 
     return (

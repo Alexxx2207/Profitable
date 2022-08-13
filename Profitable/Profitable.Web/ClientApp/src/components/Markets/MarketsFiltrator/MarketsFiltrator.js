@@ -26,6 +26,7 @@ export const MarketsFiltrator = ({ instrument, onInstrumentChange }) => {
                 instrumentSelected: state.instrumentSelected
             });
         })();
+        // eslint-disable-next-line
     }, []);
 
     const OnChangeMarketType = (marketTypeSelected) => {

@@ -123,3 +123,11 @@
 .postedOn {
     font-size: 2.2vh;
 }
+
+.authorImage:hover {
+    cursor: pointer;
+}
+
+.authorName:hover {
+    cursor: pointer;
+}

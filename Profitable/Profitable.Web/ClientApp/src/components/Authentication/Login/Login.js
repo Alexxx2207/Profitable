@@ -35,6 +35,7 @@ export const Login = () => {
         getUserEmailFromJWT(JWT)
         .then(email => navigate(`/users/${email}`))
         .catch(err => err);
+        // eslint-disable-next-line
     }, []);
 
     const navigate = useNavigate();

@@ -7,7 +7,7 @@ import styles from './ErrorWidget.module.css';
 export const ErrorWidget = ({ error }) => {
     return (
         <div className={styles.errorContainer}>
-            {error.type == CLIENT_ERROR_TYPE ?
+            {error.type === CLIENT_ERROR_TYPE ?
                 (error.fulfilled ?
                     <h5 className={styles.errorMessageGreen}>
                         <ErrorWidgetMessage message={error.text} />

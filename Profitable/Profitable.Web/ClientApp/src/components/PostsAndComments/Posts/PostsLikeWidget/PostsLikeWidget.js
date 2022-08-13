@@ -26,23 +26,25 @@ export const PostsLikeWidget = ({ style, post }) => {
     useEffect(() => {
         getUserGuidFromJWT(JWT)
             .then(userGuid => {
-                if (post.likes.some(like => like.authorId == userGuid)) {
+                if (post.likes.some(like => like.authorId === userGuid)) {
                     setLiked(true);
                 }
             })
             .catch(err => err);
+            // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         setLikesCountState(state => post.likes.length);
         getUserGuidFromJWT(JWT)
             .then(userGuid => {
-                if (post.likes.some(like => like.authorId == userGuid)) {
+                if (post.likes.some(like => like.authorId === userGuid)) {
                     setLiked(true);
 
                 }
             })
             .catch(err => err);
+            // eslint-disable-next-line
     }, [post]);
 
     const likeWidgetClickHandle = (e) => {
@@ -59,11 +61,11 @@ export const PostsLikeWidget = ({ style, post }) => {
                 setLikesCountState(state => result);
             })
             .catch(err => {
-                if (JWT && err.message == 'Should auth first') {
+                if (JWT && err.message === 'Should auth first') {
                     setMessageBoxSettings('Your session has expired!', false);
                     removeAuth();
                     navigate('/login');
-                } else if (err.message == 'Should auth first') {
+                } else if (err.message === 'Should auth first') {
                     setMessageBoxSettings('You should login first!', false);
                     removeAuth();
                     navigate('/login');

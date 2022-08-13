@@ -1,8 +1,9 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useState } from 'react';
 import { MarketOverview } from "react-tradingview-embed";
 
 export function Watchlist() {
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+    // eslint-disable-next-line
+    const [ignored, forceUpdate] = useState('');
 
     useEffect(() => {
         document.querySelector('.StockMarketContainer').children[0].style.width = "100%";

@@ -67,3 +67,15 @@
 .iconComments {
     margin-right: 0.7rem;
 }
+
+.author {
+    border: 2px solid rgba(255, 255, 255, 0.189);
+    border-radius: 10px;
+    transition: linear 0.4s;
+    padding: 1rem;
+}
+
+.author:hover {
+    border: 2px solid white;
+    transition: linear 0.4s;
+}
