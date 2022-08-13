@@ -6,12 +6,14 @@
     font-weight: bold;
     padding: 0.5rem 1rem;
     border: 3px solid #282829;
-    border-radius: 1vw;
+    border-radius: 10px;
+    transition: linear 0.3s;
 }
 
 .likesContainer:hover {
     cursor: pointer;
     border: 3px solid white;
+    transition: linear 0.3s;
 }
 
 .iconLikes {
