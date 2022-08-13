@@ -12,7 +12,7 @@ import { faEdit, faUserLock, faTriangleExclamation } from '@fortawesome/free-sol
 
 import { editUserImage } from '../../../services/users/usersService';
 
-import { JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, USER_NOT_FOUND_ERROR_PAGE_PATH } from '../../../common/config';
+import { USER_NOT_FOUND_ERROR_PAGE_PATH } from '../../../common/config';
 
 import styles from './ProfilePage.module.css';
 
