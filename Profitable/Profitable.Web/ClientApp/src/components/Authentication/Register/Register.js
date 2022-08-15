@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import classnames from "classnames";
 import { AuthContext } from '../../../contexts/AuthContext';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
+import { PasswordEye } from '../../PasswordEye/PasswordEye';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
 import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH, PASSWORD_MIN_LENGTH } from '../../../common/validationConstants';
@@ -15,8 +17,10 @@ import styles from './Register.module.css';
 export const Register = () => {
 
     const { JWT, setAuth } = useContext(AuthContext);
-
+    
     const navigate = useNavigate();
+
+    const [passwordEyeOpened, setPasswordEyeOpened] = useState(false);
 
     const [registerState, setRegisterState] = useState({
         values: {
@@ -120,6 +124,10 @@ export const Register = () => {
         }
     };
 
+    const setPasswordView = () => {
+        setPasswordEyeOpened(state => !state);
+    }
+
     return (
         <div className={styles.pageContainer}>
             <div className={styles.registerContainer}>
@@ -149,7 +157,12 @@ export const Register = () => {
                         <div>
                             <h5>Password</h5>
                         </div>
-                        <input className={styles.inputField} type="password" name="password" placeholder={'Password123'} value={registerState.values.password} onChange={changeHandler} />
+                        {passwordEyeOpened ?
+                                <input className={classnames(styles.inputField, styles.passwordField)} type="text" name="password" placeholder={'Password123'} defaultValue={registerState.values.password} onChange={changeHandler} />
+                                :
+                                <input className={classnames(styles.inputField, styles.passwordField)} type="password" name="password" placeholder={'**************'} defaultValue={registerState.values.password} onChange={changeHandler} />
+                            }
+                            <PasswordEye setPasswordView={setPasswordView} opened={passwordEyeOpened} />
                     </div>
                     <div className={styles.submitButtonContainer}>
                         <input className={styles.submitButton} type="submit" value='Register' />
