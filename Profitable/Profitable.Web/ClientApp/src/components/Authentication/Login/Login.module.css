@@ -62,11 +62,15 @@
     display: inline-block;
     padding: 1vh 1vw;
     width: 70%;
-    font-size: 1.5vw;
+    font-size: 1.2rem;
 }
 
 .inputField:focus {
     border: 2px solid #1e222d;
+}
+
+.passwordField {
+    padding-right: 2.2rem;
 }
 
 .submitButtonContainer {
@@ -115,3 +119,4 @@
     justify-content: center;
     width: 100%;
 }
+

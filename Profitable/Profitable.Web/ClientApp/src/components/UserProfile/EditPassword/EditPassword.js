@@ -1,8 +1,10 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import classnames from "classnames";
 import { AuthContext } from '../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
 import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
+import { PasswordEye } from '../../PasswordEye/PasswordEye';
 
 import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERROR_TYPE } from '../../../common/config';
 import { PASSWORD_MIN_LENGTH } from '../../../common/validationConstants';
@@ -38,6 +40,8 @@ export const EditPassword = () => {
             }
         }
     };
+
+    const [passwordEyeOpened, setPasswordEyeOpened] = useState(false);
 
     const [editPassword, setEditPassword] = useState({...initialState});
 
@@ -94,6 +98,10 @@ export const EditPassword = () => {
         }
     };
 
+    const setPasswordView = () => {
+        setPasswordEyeOpened(state => !state);
+    }
+
     return (
         <div className={styles.editPasswordContainer}>
             <div className={styles.passwordFormContainer}>
@@ -111,7 +119,12 @@ export const EditPassword = () => {
                         <div className={styles.formHeading}>
                             <h5>New Password</h5>
                         </div>
-                        <input className={styles.inputField} type="password" name="newPassword" placeholder={'**************'} value={editPassword.values.newPassword} onChange={changeHandler} />
+                        {passwordEyeOpened ?
+                                <input className={classnames(styles.inputField, styles.passwordField)} type="text" name="password" placeholder={'Password123'} defaultValue={editPassword.values.password} onChange={changeHandler} />
+                                :
+                                <input className={classnames(styles.inputField, styles.passwordField)} type="password" name="password" placeholder={'**************'} defaultValue={editPassword.values.password} onChange={changeHandler} />
+                            }
+                            <PasswordEye setPasswordView={setPasswordView} opened={passwordEyeOpened} />
                     </div>
                     <div className={styles.submitButtonContainer}>
                         <input className={styles.submitButton} type="submit" value='Save' />
