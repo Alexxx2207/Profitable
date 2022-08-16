@@ -7,7 +7,7 @@ import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE } from '../../../common/config';
 import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH } from '../../../common/validationConstants';
-import { isEmptyFieldChecker, minLengthChecker } from '../../../services/common/errorValidationCheckers';
+import { isEmptyOrWhiteSpaceFieldChecker, minLengthChecker, isWhiteSpaceFieldChecker } from '../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
 import { editGeneralUserData } from '../../../services/users/usersService';
@@ -28,10 +28,11 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
             description: '',
         },
         errors: {
-            firstNameEmpty: { text: 'Insert first name', fulfilled: true, type: CLIENT_ERROR_TYPE },
+            firstNameEmpty: { text: 'Insert first name\\n(no whitespaces)', fulfilled: true, type: CLIENT_ERROR_TYPE },
             firstNameLength: { text: `First name at least ${FIRST_NAME_MIN_LENGTH} characters long`, fulfilled: true, type: CLIENT_ERROR_TYPE },
-            lastNameEmpty: { text: 'Insert last name', fulfilled: true, type: CLIENT_ERROR_TYPE },
+            lastNameEmpty: { text: 'Insert last name\\n(no whitespaces)', fulfilled: true, type: CLIENT_ERROR_TYPE },
             lastNameLength: { text: `Last name at least ${LAST_NAME_MIN_LENGTH} characters long`, fulfilled: true, type: CLIENT_ERROR_TYPE },
+            descriptionWhitespaces: { text: 'Description with no whitespaces\\n(can be left empty)', fulfilled: true, type: CLIENT_ERROR_TYPE },
             serverError: {
                 text: '',
                 display: false,
@@ -99,7 +100,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    firstNameEmpty: createClientErrorObject(state.errors.firstNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    firstNameEmpty: createClientErrorObject(state.errors.firstNameEmpty, isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)),
                     firstNameLength: createClientErrorObject(state.errors.firstNameLength, minLengthChecker.bind(null, e.target.value, FIRST_NAME_MIN_LENGTH)),
                 }
             }));
@@ -109,15 +110,32 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    lastNameEmpty: createClientErrorObject(state.errors.lastNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    lastNameEmpty: createClientErrorObject(state.errors.lastNameEmpty, isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)),
                     lastNameLength: createClientErrorObject(state.errors.lastNameLength, minLengthChecker.bind(null, e.target.value, LAST_NAME_MIN_LENGTH)),
                 }
             }));
         } else if (e.target.name === 'description') {
-            setEditState(state => ({
-                ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value)
-            }));
+            console.log(e.target.value === '');
+            if(e.target.value === '') {
+                setEditState(state => ({
+                    ...state,
+                    values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
+                    errors: {
+                        ...state.errors,
+                        descriptionWhitespaces: { text: 'Description with no whitespaces\\n(can be left empty)', fulfilled: true, type: CLIENT_ERROR_TYPE },
+                    }
+                }));
+            } else {
+                setEditState(state => ({
+                    ...state,
+                    values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
+                    errors: {
+                        ...state.errors,
+                        descriptionWhitespaces: createClientErrorObject(state.errors.descriptionWhitespaces, isWhiteSpaceFieldChecker.bind(null, e.target.value)),
+                    }
+                }));
+            }
+           
         }
     };
 

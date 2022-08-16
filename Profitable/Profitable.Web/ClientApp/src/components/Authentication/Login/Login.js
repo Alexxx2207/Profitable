@@ -7,7 +7,7 @@ import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 import { PasswordEye } from '../../PasswordEye/PasswordEye';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
-import { isEmptyFieldChecker, isEmailValidChecker } from '../../../services/common/errorValidationCheckers';
+import { isEmptyOrWhiteSpaceFieldChecker, isEmailValidChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
 
@@ -26,7 +26,7 @@ export const Login = () => {
         },
         errors: {
             emailValid: { text: 'Insert valid email', fulfilled: false, type: CLIENT_ERROR_TYPE },
-            passwordEmpty: { text: 'Insert password', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            passwordEmpty: { text: 'Insert password\\n(no whitespaces)', fulfilled: false, type: CLIENT_ERROR_TYPE },
             serverError: {
                 text: '',
                 display: false,
@@ -86,7 +86,7 @@ export const Login = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isPasswordValidChecker.bind(null, e.target.value)),
                 }
             }));
         }

@@ -7,7 +7,7 @@ import { PasswordEye } from '../../PasswordEye/PasswordEye';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
 import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH, PASSWORD_MIN_LENGTH } from '../../../common/validationConstants';
-import { isEmptyFieldChecker, minLengthChecker, isEmailValidChecker } from '../../../services/common/errorValidationCheckers';
+import { isEmptyOrWhiteSpaceFieldChecker, minLengthChecker, isEmailValidChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
 import { getUserEmailFromJWT, registerUser } from '../../../services/users/usersService';
@@ -31,11 +31,11 @@ export const Register = () => {
         },
         errors: {
             emailValid: { text: 'Insert valid email', fulfilled: false, type: CLIENT_ERROR_TYPE },
-            passwordEmpty: { text: 'Insert password', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            passwordEmpty: { text: 'Insert password\\n(no whitespaces)', fulfilled: false, type: CLIENT_ERROR_TYPE },
             passwordLength: { text: `Password at ${PASSWORD_MIN_LENGTH} characters long`, fulfilled: false, type: CLIENT_ERROR_TYPE },
-            firstNameEmpty: { text: 'Insert first name', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            firstNameEmpty: { text: 'Insert first name\\n(no whitespaces)', fulfilled: false, type: CLIENT_ERROR_TYPE },
             firstNameLength: { text: `First name at least ${FIRST_NAME_MIN_LENGTH} characters long`, fulfilled: false, type: CLIENT_ERROR_TYPE },
-            lastNameEmpty: { text: 'Insert last name', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            lastNameEmpty: { text: 'Insert last name\\n(no whitespaces)', fulfilled: false, type: CLIENT_ERROR_TYPE },
             lastNameLength: { text: `Last name at least ${LAST_NAME_MIN_LENGTH} characters long`, fulfilled: false, type: CLIENT_ERROR_TYPE },
             serverError: {
                 text: '',
@@ -97,7 +97,7 @@ export const Register = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isPasswordValidChecker.bind(null, e.target.value)),
                     passwordLength: createClientErrorObject(state.errors.passwordLength, minLengthChecker.bind(null, e.target.value, PASSWORD_MIN_LENGTH)),
                 }
             }));
@@ -107,7 +107,7 @@ export const Register = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    firstNameEmpty: createClientErrorObject(state.errors.firstNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    firstNameEmpty: createClientErrorObject(state.errors.firstNameEmpty, isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)),
                     firstNameLength: createClientErrorObject(state.errors.firstNameLength, minLengthChecker.bind(null, e.target.value, FIRST_NAME_MIN_LENGTH)),
                 }
             }));
@@ -117,7 +117,7 @@ export const Register = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    lastNameEmpty: createClientErrorObject(state.errors.lastNameEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    lastNameEmpty: createClientErrorObject(state.errors.lastNameEmpty, isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)),
                     lastNameLength: createClientErrorObject(state.errors.lastNameLength, minLengthChecker.bind(null, e.target.value, LAST_NAME_MIN_LENGTH)),
                 }
             }));

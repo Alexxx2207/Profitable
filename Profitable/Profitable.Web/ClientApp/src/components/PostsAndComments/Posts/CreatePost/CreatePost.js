@@ -8,7 +8,7 @@ import { ErrorWidget } from '../../../ErrorWidget/ErrorWidget';
 
 import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERROR_TYPE } from '../../../../common/config';
 import { getUserEmailFromJWT } from '../../../../services/users/usersService';
-import { isEmptyFieldChecker } from '../../../../services/common/errorValidationCheckers';
+import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
 
@@ -33,8 +33,8 @@ export const CreatePost = () => {
             imageFileName: '',
         },
         errors: {
-            titleEmpty: { text: 'Insert title', fulfilled: false, type: CLIENT_ERROR_TYPE },
-            contentEmpty: { text: 'Insert main content', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            titleEmpty: { text: 'Insert title\\n(no whitespaces)', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            contentEmpty: { text: 'Insert main content\\n(no whitespaces)', fulfilled: false, type: CLIENT_ERROR_TYPE },
             serverError: {
                 text: '',
                 display: false,
@@ -92,7 +92,7 @@ export const CreatePost = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    titleEmpty: createClientErrorObject(state.errors.titleEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    titleEmpty: createClientErrorObject(state.errors.titleEmpty, isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)),
                 }
             }));
         } else if (e.target.name === 'content') {
@@ -101,7 +101,7 @@ export const CreatePost = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    contentEmpty: createClientErrorObject(state.errors.contentEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    contentEmpty: createClientErrorObject(state.errors.contentEmpty, isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)),
                 }
             }));
         }

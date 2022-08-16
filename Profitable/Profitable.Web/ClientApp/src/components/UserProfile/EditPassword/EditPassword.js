@@ -9,7 +9,7 @@ import { PasswordEye } from '../../PasswordEye/PasswordEye';
 import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERROR_TYPE } from '../../../common/config';
 import { PASSWORD_MIN_LENGTH } from '../../../common/validationConstants';
 
-import { isEmptyFieldChecker, minLengthChecker } from '../../../services/common/errorValidationCheckers';
+import { isEmptyOrWhiteSpaceFieldChecker, minLengthChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject } from '../../../services/common/createValidationErrorObject';
 import { editUserPasswоrd } from '../../../services/users/usersService';
@@ -29,9 +29,9 @@ export const EditPassword = () => {
             newPassword: '',
         },
         errors: {
-            oldPasswordEmpty: { text: 'Insert old password', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            oldPasswordEmpty: { text: 'Insert old valid password\\n(no whitespaces)', fulfilled: false, type: CLIENT_ERROR_TYPE },
             oldPasswordLength: { text: `Old password at least ${PASSWORD_MIN_LENGTH} characters long`, fulfilled: false, type: CLIENT_ERROR_TYPE },
-            newPasswordEmpty: { text: 'Insert new password', fulfilled: false, type: CLIENT_ERROR_TYPE },
+            newPasswordEmpty: { text: 'Insert new password\\n(no whitespaces)', fulfilled: false, type: CLIENT_ERROR_TYPE },
             newPasswordLength: { text: `New Password at least ${PASSWORD_MIN_LENGTH} characters long`, fulfilled: false, type: CLIENT_ERROR_TYPE },
             serverError: {
                 text: '',
@@ -41,7 +41,8 @@ export const EditPassword = () => {
         }
     };
 
-    const [passwordEyeOpened, setPasswordEyeOpened] = useState(false);
+    const [oldPasswordEyeOpened, setOldPasswordEyeOpened] = useState(false);
+    const [newPasswordEyeOpened, setNewPasswordEyeOpened] = useState(false);
 
     const [editPassword, setEditPassword] = useState({...initialState});
 
@@ -52,7 +53,7 @@ export const EditPassword = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    oldPasswordEmpty: createClientErrorObject(state.errors.oldPasswordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    oldPasswordEmpty: createClientErrorObject(state.errors.oldPasswordEmpty, isPasswordValidChecker.bind(null, e.target.value)),
                     oldPasswordLength: createClientErrorObject(state.errors.oldPasswordLength, minLengthChecker.bind(null, e.target.value, PASSWORD_MIN_LENGTH)),
                 }
             }));
@@ -62,7 +63,7 @@ export const EditPassword = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    newPasswordEmpty: createClientErrorObject(state.errors.newPasswordEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    newPasswordEmpty: createClientErrorObject(state.errors.newPasswordEmpty, isPasswordValidChecker.bind(null, e.target.value)),
                     newPasswordLength: createClientErrorObject(state.errors.newPasswordLength, minLengthChecker.bind(null, e.target.value, PASSWORD_MIN_LENGTH)),
                 }
             }));
@@ -98,8 +99,12 @@ export const EditPassword = () => {
         }
     };
 
-    const setPasswordView = () => {
-        setPasswordEyeOpened(state => !state);
+    const setOldPasswordView = () => {
+        setOldPasswordEyeOpened(state => !state);
+    }
+
+    const setNewPasswordView = () => {
+        setNewPasswordEyeOpened(state => !state);
     }
 
     return (
@@ -113,18 +118,23 @@ export const EditPassword = () => {
                         <div className={styles.formHeading}>
                             <h5>Old Password</h5>
                         </div>
-                        <input className={styles.inputField} type="password" name="oldPassword" placeholder={'**************'} value={editPassword.values.oldPassword} onChange={changeHandler} />
+                        {oldPasswordEyeOpened ?
+                                <input className={classnames(styles.inputField, styles.passwordField)} type="text" name="oldPassword" placeholder={'Password123'} defaultValue={editPassword.values.password} onChange={changeHandler} />
+                                :
+                                <input className={classnames(styles.inputField, styles.passwordField)} type="password" name="oldPassword" placeholder={'**************'} defaultValue={editPassword.values.password} onChange={changeHandler} />
+                            }
+                            <PasswordEye setPasswordView={setOldPasswordView} opened={oldPasswordEyeOpened} />
                     </div>
                     <div className={styles.formGroup}>
                         <div className={styles.formHeading}>
                             <h5>New Password</h5>
                         </div>
-                        {passwordEyeOpened ?
-                                <input className={classnames(styles.inputField, styles.passwordField)} type="text" name="password" placeholder={'Password123'} defaultValue={editPassword.values.password} onChange={changeHandler} />
+                        {newPasswordEyeOpened ?
+                                <input className={classnames(styles.inputField, styles.passwordField)} type="text" name="newPassword" placeholder={'Password123'} defaultValue={editPassword.values.password} onChange={changeHandler} />
                                 :
-                                <input className={classnames(styles.inputField, styles.passwordField)} type="password" name="password" placeholder={'**************'} defaultValue={editPassword.values.password} onChange={changeHandler} />
+                                <input className={classnames(styles.inputField, styles.passwordField)} type="password" name="newPassword" placeholder={'**************'} defaultValue={editPassword.values.password} onChange={changeHandler} />
                             }
-                            <PasswordEye setPasswordView={setPasswordView} opened={passwordEyeOpened} />
+                            <PasswordEye setPasswordView={setNewPasswordView} opened={newPasswordEyeOpened} />
                     </div>
                     <div className={styles.submitButtonContainer}>
                         <input className={styles.submitButton} type="submit" value='Save' />

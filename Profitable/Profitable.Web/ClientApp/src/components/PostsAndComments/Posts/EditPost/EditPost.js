@@ -8,7 +8,7 @@ import { ErrorWidget } from '../../../ErrorWidget/ErrorWidget';
 import { JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, MISSING_POST_GUID_ERROR_PAGE_PATH } from '../../../../common/config';
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../../common/config';
 import { getUserEmailFromJWT } from '../../../../services/users/usersService';
-import { isEmptyFieldChecker } from '../../../../services/common/errorValidationCheckers';
+import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
 import { editPost, loadParticularPost } from '../../../../services/posts/postsService';
@@ -36,8 +36,8 @@ export const EditPost = () => {
             imageFileName: '',
         },
         errors: {
-            titleEmpty: { text: 'Insert title', fulfilled: true, type: CLIENT_ERROR_TYPE },
-            contentEmpty: { text: 'Insert main content', fulfilled: true, type: CLIENT_ERROR_TYPE },
+            titleEmpty: { text: 'Insert title\\n(no whitespaces)', fulfilled: true, type: CLIENT_ERROR_TYPE },
+            contentEmpty: { text: 'Insert main content\\n(no whitespaces)', fulfilled: true, type: CLIENT_ERROR_TYPE },
             serverError: {
                 text: '',
                 display: false,
@@ -110,7 +110,7 @@ export const EditPost = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    titleEmpty: createClientErrorObject(state.errors.titleEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    titleEmpty: createClientErrorObject(state.errors.titleEmpty, isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)),
                 }
             }));
         } else if (e.target.name === 'content') {
@@ -119,7 +119,7 @@ export const EditPost = () => {
                 values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
-                    contentEmpty: createClientErrorObject(state.errors.contentEmpty, isEmptyFieldChecker.bind(null, e.target.value)),
+                    contentEmpty: createClientErrorObject(state.errors.contentEmpty, isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)),
                 }
             }));
         }

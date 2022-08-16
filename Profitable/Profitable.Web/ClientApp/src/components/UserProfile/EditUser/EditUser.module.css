@@ -121,8 +121,8 @@
 .editAside {
     width: 27%;
     position: sticky;
-    height: 70vh;
-    top: 15vh;
+    height: 100vh;
+    top: 5vh;
 }
 
 .errorsHeadingContainer {
