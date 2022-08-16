@@ -19,8 +19,8 @@ This platform helps traders to make decisions, observe the financial markets and
 
 
 2. MSSQL or other database engine (you should configure your connection string on these lines below)
-https://github.com/Alexxx2207/Profitable/blob/0b79de45243187cdb8cdc0bd2c5063541722f55b/Profitable/Profitable.Data/appsettings.json#L3
-https://github.com/Alexxx2207/Profitable/blob/0b79de45243187cdb8cdc0bd2c5063541722f55b/Profitable/Profitable.Web/appsettings.json#L3
+https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce2387954e2/Profitable/Profitable.Web/appsettings.json#L3
+https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce2387954e2/Profitable/Profitable.Data/appsettings.json#L3
 3. NodeJS
 
 # How To Start The Project
