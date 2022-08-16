@@ -19,7 +19,7 @@ namespace Profitable.GlobalConstants
 
         public static async Task<string> SaveUploadedImageAsync(ImageFor imageFor, string fileName, string base64Image)
         {
-            string time = Regex.Replace(DateTime.Today.ToString(), @"\/|\:|\s", "");
+            string time = Regex.Replace(DateTime.UtcNow.ToString(), @"\/|\:|\s", "");
             string newFileName = time + fileName;
 
             string path = GlobalServicesConstants.UploadsFolderPath +
@@ -32,5 +32,21 @@ namespace Profitable.GlobalConstants
 
             return newFileName;
         }
-    }
+
+		public static async Task<string> DeleteUploadedImageAsync(ImageFor imageFor, string fileName)
+		{
+			string path = GlobalServicesConstants.UploadsFolderPath +
+				GlobalServicesConstants.DirectorySeparatorChar +
+				imageFor.ToString() +
+				GlobalServicesConstants.DirectorySeparatorChar +
+				fileName;
+
+			if (File.Exists(path))
+            {
+		    	File.Delete(path);
+            }
+
+			return fileName;
+		}
+	}
 }
