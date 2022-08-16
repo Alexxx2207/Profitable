@@ -140,9 +140,16 @@ namespace Profitable.Services.Posts
 
             if (postToUpdate != null)
             {
-                string newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
+                GlobalServicesConstants.DeleteUploadedImageAsync(ImageFor.Posts, postToUpdate.ImageURL);
 
-                postToUpdate.Title = newPost.Title;
+                string newFileName = "";
+
+                if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
+				{
+				    newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
+				}
+
+				postToUpdate.Title = newPost.Title;
                 postToUpdate.Content = newPost.Content;
                 postToUpdate.ImageURL = newFileName;
 

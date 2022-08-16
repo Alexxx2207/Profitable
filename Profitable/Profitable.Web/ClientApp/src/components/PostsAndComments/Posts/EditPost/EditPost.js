@@ -46,6 +46,8 @@ export const EditPost = () => {
         }
     });
 
+    const [removeImage, setRemoveImage] = useState(false);
+
     useEffect(() => {
         getUserEmailFromJWT(JWT)
             .then(result => result)
@@ -78,8 +80,16 @@ export const EditPost = () => {
         const clientErrors = Object.values(editState.errors).filter(err => err.type === CLIENT_ERROR_TYPE);
 
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
+
+            let body = { ...editState.values };
+
+            if(removeImage) {
+                body.image = '';
+                body.imageFileName = '';
+            }
+console.log(body);
             editPost(
-                JWT, postId, { ...editState.values }
+                JWT, postId, body
             )
                 .then(jwt => {
                     setMessageBoxSettings('The post was edited successfully!', true);
@@ -122,6 +132,8 @@ export const EditPost = () => {
                     contentEmpty: createClientErrorObject(state.errors.contentEmpty, isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)),
                 }
             }));
+        } else if(e.target.name === 'removeImage') {
+            setRemoveImage(state => e.target.checked)
         }
     };
 
@@ -184,6 +196,12 @@ export const EditPost = () => {
                                 <h5>Image</h5>
                             </div>
                             <input className={styles.inputField} type="file" name="image" accept="image/*" onChange={changeImageHandler} />
+                        </div>
+                        <div className={styles.formGroup}>
+                            <div>
+                                <h5>Remove Image</h5>
+                            </div>
+                            <input className={styles.inputCheckbox} type="checkbox" defaultChecked={removeImage} name="removeImage" onChange={changeHandler} />
                         </div>
                         <div className={styles.submitButtonContainer}>
                             <input className={styles.submitButton} type="submit" value='Edit' />

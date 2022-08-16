@@ -167,3 +167,8 @@
     font-weight: 600;
     padding-bottom: 0.1rem;
 }
+
+.inputCheckbox {
+    width: 3vw;
+    height: 3vw;
+}

@@ -136,10 +136,15 @@ namespace Profitable.Services.Users
         {
             if (!user.IsDeleted)
             {
-                string newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Users, editUserData.FileName, editUserData.Image);
 
                 if (user != null)
                 {
+                    if(!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
+                    {
+						GlobalServicesConstants.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+					}
+                    string newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Users, editUserData.FileName, editUserData.Image);
+
                     user.ProfilePictureURL = newFileName;
 
                     repository.Update(user);
@@ -162,7 +167,12 @@ namespace Profitable.Services.Users
         {
             if (!user.IsDeleted)
             {
-                user.ProfilePictureURL = "";
+				if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
+				{
+					GlobalServicesConstants.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+				}
+
+				user.ProfilePictureURL = "";
 
                 repository.Update(user);
 
@@ -180,7 +190,12 @@ namespace Profitable.Services.Users
         {
             if (!user.IsDeleted)
             {
-                repository.HardDelete(user);
+				if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
+				{
+					GlobalServicesConstants.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+				}
+
+				repository.HardDelete(user);
 
                 await repository.SaveChangesAsync();
 
