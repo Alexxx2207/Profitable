@@ -12,6 +12,7 @@ import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../services/common/err
 import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
 import { editPost, loadParticularPost } from '../../../../services/posts/postsService';
+import { validateImage } from '../../../../services/common/imageService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -87,7 +88,7 @@ export const EditPost = () => {
                 body.image = '';
                 body.imageFileName = '';
             }
-console.log(body);
+
             editPost(
                 JWT, postId, body
             )
@@ -145,22 +146,24 @@ console.log(body);
         const file = e.target.files[0];
         const reader = new FileReader();
 
-        const base64 = 'base64,';
+        if(validateImage(file, setMessageBoxSettings)) {
+            const base64 = 'base64,';
 
-        reader.onloadend = () => {
-            const base64Image = reader.result.toString();
-            const byteArray = base64Image.slice(base64Image.indexOf(base64) + base64.length);
+            reader.onloadend = () => {
+                const base64Image = reader.result.toString();
+                const byteArray = base64Image.slice(base64Image.indexOf(base64) + base64.length);
 
-            const valuesObjectWithImage = changeStateValuesForControlledForms(editState.values, 'image', byteArray);
-            const newValuesObjectWithImageFileName = changeStateValuesForControlledForms(valuesObjectWithImage, 'imageFileName', file.name);
+                const valuesObjectWithImage = changeStateValuesForControlledForms(editState.values, 'image', byteArray);
+                const newValuesObjectWithImageFileName = changeStateValuesForControlledForms(valuesObjectWithImage, 'imageFileName', file.name);
 
-            setEditState(state => ({
-                ...state,
-                values: newValuesObjectWithImageFileName,
-            }));
+                setEditState(state => ({
+                    ...state,
+                    values: newValuesObjectWithImageFileName,
+                }));
+            }
+
+            reader.readAsDataURL(file);
         }
-
-        reader.readAsDataURL(file);
     };
 
     return (

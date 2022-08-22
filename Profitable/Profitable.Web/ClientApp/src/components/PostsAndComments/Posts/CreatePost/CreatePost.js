@@ -11,6 +11,7 @@ import { getUserEmailFromJWT } from '../../../../services/users/usersService';
 import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
+import { validateImage } from '../../../../services/common/imageService';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -110,23 +111,25 @@ export const CreatePost = () => {
     const changeImageHandler = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
+        
+        if(validateImage(file, setMessageBoxSettings)) {
+            const base64 = 'base64,';
 
-        const base64 = 'base64,';
+            reader.onloadend = () => {
+                const base64Image = reader.result.toString();
+                const byteArray = base64Image.slice(base64Image.indexOf(base64) + base64.length);
 
-        reader.onloadend = () => {
-            const base64Image = reader.result.toString();
-            const byteArray = base64Image.slice(base64Image.indexOf(base64) + base64.length);
+                const valuesObjectWithImage = changeStateValuesForControlledForms(createState.values, 'image', byteArray);
+                const newValuesObjectWithImageFileName = changeStateValuesForControlledForms(valuesObjectWithImage, 'imageFileName', file.name);
 
-            const valuesObjectWithImage = changeStateValuesForControlledForms(createState.values, 'image', byteArray);
-            const newValuesObjectWithImageFileName = changeStateValuesForControlledForms(valuesObjectWithImage, 'imageFileName', file.name);
+                setCreateState(state => ({
+                    ...state,
+                    values: newValuesObjectWithImageFileName,
+                }));
+            }
 
-            setCreateState(state => ({
-                ...state,
-                values: newValuesObjectWithImageFileName,
-            }));
+            reader.readAsDataURL(file);
         }
-
-        reader.readAsDataURL(file);
     };
 
     const goBackHandler = (e) => {
