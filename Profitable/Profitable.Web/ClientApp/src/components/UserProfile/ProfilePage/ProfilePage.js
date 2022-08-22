@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { createAuthorImgURL } from '../../../services/common/imageService';
+import { createAuthorImgURL, validateImage } from '../../../services/common/imageService';
 import { AuthContext } from '../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
 import { deleteUserData, deleteUserImage, getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
@@ -65,20 +65,22 @@ export const ProfilePage = () => {
         const file = e.target.files[0];
         const reader = new FileReader();
 
-        const base64 = 'base64,';
+        
+        if(validateImage(file, setMessageBoxSettings)) {
+            const base64 = 'base64,';
 
-        reader.onloadend = () => {
-            const base64Image = reader.result.toString();
-            const byteArray = base64Image.slice(base64Image.indexOf(base64) + base64.length);
-
-            setProfileInfo(state => ({
-                ...state,
-                previewImage: byteArray,
-                previewImageFileName: file.name,
-            }));
+            reader.onloadend = () => {
+                const base64Image = reader.result.toString();
+                const byteArray = base64Image.slice(base64Image.indexOf(base64) + base64.length);
+    
+                setProfileInfo(state => ({
+                    ...state,
+                    previewImage: byteArray,
+                    previewImageFileName: file.name,
+                }));
+            }
+            reader.readAsDataURL(file);
         }
-
-        reader.readAsDataURL(file);
     };
 
     const discardClickHandler = () => {
