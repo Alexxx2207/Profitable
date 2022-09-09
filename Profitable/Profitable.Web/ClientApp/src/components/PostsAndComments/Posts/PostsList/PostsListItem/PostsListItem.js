@@ -24,7 +24,7 @@ export const PostsListItem = ({post}) => {
         <div className={styles.post} onClick={postDetailsClickHandler}>
             <div className={styles.header}>
                 <h2 className={styles.title}>{post.title}</h2>
-                <PostsLikeWidget likesCount={post.likes.length} post={post} />
+                
             </div>
 
             <div className={styles.mainContent}>
@@ -42,8 +42,8 @@ export const PostsListItem = ({post}) => {
                     <FontAwesomeIcon className={styles.iconComments} icon={faComments} />
                     Comments: <strong>{post.comments.length}</strong>
                 </div>
-                <div className={styles.postedOn}>
-                    {post.postedOn}
+                <div className={styles.likeRowContainer}>
+                    <PostsLikeWidget post={post} />
                 </div>
             </div>
         </div>);

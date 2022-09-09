@@ -25,7 +25,7 @@ namespace Profitable.Web.Controllers
         {
             try
             {
-                var posts = await postService.GetPostsByPageAsync(getPostsRequestModel.Page, getPostsRequestModel.PostsCount);
+                var posts = await postService.GetPostsByPageAsync(getPostsRequestModel);
 
                 return Ok(posts);
             }

@@ -1,6 +1,10 @@
-import classNames from 'classnames';
 import { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+
+import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons'
+
 import { AuthContext } from '../../contexts/AuthContext';
 
 import { getUserEmailFromJWT } from '../../services/users/usersService';
@@ -37,8 +41,12 @@ export const NavBar = () => {
                 <div className={styles.userPanel}>
                     {JWT ?
                         <div className={styles.authContainer}>
-                            <NavLink to={`/users/${email}`} className={classNames(styles.navbarListItems, styles.navLink)}>PROFILE</NavLink>
-                            <NavLink to="/logout" className={classNames(styles.navbarListItems, styles.navLink)}>LOGOUT</NavLink>
+                            <NavLink to={`/users/${email}`} className={classNames(styles.navbarListItems, styles.navLink)}>
+                                <FontAwesomeIcon icon={faUser} className={styles.navbarIcon}/>
+                            </NavLink>
+                            <NavLink to="/logout" className={classNames(styles.navbarListItems, styles.navLink)}>
+                                <FontAwesomeIcon icon={faRightFromBracket} className={styles.navbarIcon}/>
+                            </NavLink>
                         </div>
                         :
                         <div className={styles.authContainer}>

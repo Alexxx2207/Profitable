@@ -19,7 +19,7 @@ namespace Profitable.Automapper
                     opt => opt.MapFrom(source => $"{source.Author.FirstName} {source.Author.LastName}"))
                 .ForMember(
                     dest => dest.PostedOn,
-                    opt => opt.MapFrom(source => source.PostedOn.ToString("f")))
+                    opt => opt.MapFrom(source => source.PostedOn.ToString("D")))
                 .ForMember(
                     dest => dest.PostImage,
                     opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Posts), src => src.ImageURL))
