@@ -65,6 +65,10 @@
     border-radius: 50%;
 }
 
+.comments {
+    font-size: 1.2rem;
+}
+
 .iconComments {
     margin-right: 0.7rem;
 }
@@ -79,4 +83,10 @@
 .author:hover {
     border: 2px solid white;
     transition: linear 0.3s;
+}
+
+.likeRowContainer {
+    display: flex;
+    justify-content: center;
+    width: 20%;
 }

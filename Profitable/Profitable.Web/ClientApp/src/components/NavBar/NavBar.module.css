@@ -2,7 +2,7 @@
     border-bottom: 1px solid white;
     background-color: #1e222d;
     display: flex;
-    padding: 0.5rem 3rem;
+    padding: 0.5rem 2rem;
 }
 
 .navLink {
@@ -10,16 +10,14 @@
 }
 
 .logoWrapper {
-    width: 25vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .navbarLogo {
-    font-size: 5vh;
+    font-size: 2rem;
     letter-spacing: 0.3rem;
-    padding: 0.5rem 0rem;
     margin: 0px;
 }
 
@@ -50,13 +48,17 @@
 }
 
 .navbarListItems {
-    font-size: 2.6vh;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: 2px;
     display: inline-block;
     border: 3px solid #4a4b4e;
     border-radius: 0.5rem;
     padding: 0.5rem 0.8rem;
+    transition: linear 0.3s;
+}
+
+.navbarListItems * {
     transition: linear 0.3s;
 }
 
@@ -68,3 +70,8 @@
     transition: linear 0.3s;
 }
 
+.navbarListItems:hover * {
+    transition: linear 0.3s;
+    color: black;
+    background-color: white;
+}

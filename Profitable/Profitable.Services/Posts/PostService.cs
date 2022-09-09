@@ -89,16 +89,16 @@ namespace Profitable.Services.Posts
             return mapper.Map<PostResponseModel>(post);
         }
 
-        public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int postsCount)
+        public async Task<List<PostResponseModel>> GetPostsByPageAsync(GetPostsRequestModel getPostsRequestModel)
         {
-            if (postsCount > 0 && postsCount <= GlobalServicesConstants.PostsMaxCountInPage)
+            if (getPostsRequestModel.PostsCount > 0 && getPostsRequestModel.PostsCount <= GlobalServicesConstants.PostsMaxCountInPage)
             {
                 var posts = await postsRepository
                     .GetAllAsNoTracking()
                     .Where(post => !post.IsDeleted)
                     .OrderByDescending(p => p.PostedOn)
-                    .Skip(page * postsCount)
-                    .Take(postsCount)
+                    .Skip(getPostsRequestModel.Page * getPostsRequestModel.PostsCount)
+                    .Take(getPostsRequestModel.PostsCount)
                     .Include(p => p.Tags)
                     .Include(p => p.Author)
                     .Include(p => p.Likes)

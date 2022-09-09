@@ -1,7 +1,8 @@
-import { AuthContext } from '../../../../contexts/AuthContext';
-import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
 import { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
 
 import { PostsListItem } from './PostsListItem/PostsListItem';
 
@@ -15,6 +16,7 @@ import styles from './PostsList.module.css';
 import { getUserDataByJWT } from '../../../../services/users/usersService';
 
 export const PostsList = () => {
+    
 
     const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ export const PostsList = () => {
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const { JWT, removeAuth } = useContext(AuthContext);
-
+    
     const loadPosts = useCallback(() => {
         loadPostsPage(page, POSTS_LIST_POSTS_IN_PAGE_COUNT)
             .then(result => {
