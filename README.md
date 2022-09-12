@@ -57,3 +57,8 @@ https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce238
   
 > :warning: **Do NOT close the console windows that were opened after clicking the empty green arrow!** :warning:  
 > :warning: **Close them when you finish the web app usage!** :warning: 
+
+# Configuration
+
+1. Change the WEB_API_BASE_URL in Profitable.Web/ClientApp/src/common/config.js to meet your backend web API address
+> :warning: Be careful not to forget '/api' path string after the port number! :warning:
