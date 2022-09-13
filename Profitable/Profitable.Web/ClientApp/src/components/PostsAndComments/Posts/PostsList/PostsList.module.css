@@ -25,8 +25,8 @@
     display: inline-block;
     background-color: transparent;
     position: sticky;
-    top: 5vh;
-    z-index: 1000;;
+    top: 5rem;
+    z-index: 1000;
 }
 
 .addPostButton {
@@ -52,7 +52,7 @@
 
 .addPostText {
     color: black;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
     letter-spacing: 1px;
     background-color: transparent;
@@ -65,5 +65,5 @@
 
 .addPostButton:hover>.addPostText {
     transition: ease-out 0.3s;
-    width: 10rem;
+    width: 12rem;
 }

@@ -30,6 +30,7 @@ namespace Profitable.Data.Seeding
                 new MarketTypesSeeder(),
                 new ExchangesSeeder(),
                 new FinantialInstrumentsSeeder(),
+                new FuturesSeeder(),
             };
 
             if (!isProduction)

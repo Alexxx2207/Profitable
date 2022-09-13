@@ -78,7 +78,7 @@ export const PostsList = () => {
                 <button className={styles.addPostButton} onClick={addPostClickHandler}>
                     <FontAwesomeIcon className={styles.iconPlus} icon={faCirclePlus} />
                     <div className={styles.addPostText}>
-                        Add Post
+                        Create Post
                     </div>
                 </button>
             </div>

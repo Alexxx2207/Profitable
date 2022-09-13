@@ -1,0 +1,15 @@
+
+.selectContract {
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+}
+
+.futuresInformation {
+    display: flex;
+    gap: 20%;
+}
+
+.directions {
+    display: flex;
+    justify-content: space-evenly;
+}

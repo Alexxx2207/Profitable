@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     Routes,
     Route,
@@ -22,8 +22,11 @@ import { NotFoundPage } from "../NotFoundPage/NotFoundPage";
 import { CreatePost } from "../PostsAndComments/Posts/CreatePost/CreatePost";
 import { EditPost } from "../PostsAndComments/Posts/EditPost/EditPost";
 
+import { ProfileInfo } from "../UserProfile/ProfileInfo/ProfileInfo";
+
 // eslint-disable-next-line
 import styles from './App.module.css';
+import { Calcualtors } from "../Calculators/Calculators";
 
 export function App() {
 
@@ -36,8 +39,11 @@ export function App() {
     return (
         <AuthContextProvider location={location}>
            <MessageBoxContextProvider>
-                <div>
-                    <NavBar />
+                <div className={styles.content}>
+                    <div className={styles.navigation}>
+                        <NavBar />
+                    </div>
+                    <div className={styles.page}>
                     <Routes>
                         <Route path="/" element={
                             <Home />
@@ -74,9 +80,10 @@ export function App() {
                         }>
                         </Route>
 
-                        <Route path="/users/:searchedProfileEmail" element={
-                            <ProfilePage />
-                        }>
+                        <Route path="/users/:searchedProfileEmail" element={ <ProfilePage/> }>
+                            <Route index element={ <ProfileInfo /> } />
+                            <Route path="personal-info" element={ <ProfileInfo /> } />
+                            <Route path="account-statistics" element={null} />
                         </Route>
 
                         <Route path="/posts/create" element={
@@ -89,11 +96,16 @@ export function App() {
                         }>
                         </Route>
 
+                        <Route path="/calculators" element={
+                            <Calcualtors />
+                        }></Route>
+
                         <Route path="*" element={
                             <NotFoundPage />
                         }>
                         </Route>
                     </Routes>
+                    </div>
                 </div>
             </MessageBoxContextProvider>
         </AuthContextProvider>

@@ -36,6 +36,8 @@ namespace Profitable.Data
 
         public DbSet<MarketType> MarketTypes { get; set; }
 
+        public DbSet<FuturesContract> FuturesContracts { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

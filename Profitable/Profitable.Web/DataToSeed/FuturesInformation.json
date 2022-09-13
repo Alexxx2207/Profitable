@@ -1,0 +1,322 @@
+[
+    {
+        "name": "Micro E-Mini S&P 500",
+        "tickSize": "0.25",
+        "tickValue": "1.25"
+    },
+    {
+        "name": "Micro E-Mini Dow",
+        "tickSize": "1",
+        "tickValue": "0.50"
+    },
+    {
+        "name": "Micro E-Mini NASDAQ-100",
+        "tickSize": "0.25",
+        "tickValue": "0.50"
+    },
+    {
+        "name": "Micro E-Mini Russel 2000",
+        "tickSize": "0.10",
+        "tickValue": "0.50"
+    },
+    {
+        "name": "E-mini S&P 500 (ES) - Globex",
+        "tickSize": "0.25",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "E-mini Dow (YM) - Globex",
+        "tickSize": "1",
+        "tickValue": "5"
+    },
+    {
+        "name": "E-mini NASDAQ 100 (NQ) - Globex",
+        "tickSize": "0.25",
+        "tickValue": "5"
+    },
+    {
+        "name": "Russell 2000 Mini (RLM-M) - ICE",
+        "tickSize": "0.1",
+        "tickValue": "5"
+    },
+    {
+        "name": "E-mini Russell 2000 Index (RTY)",
+        "tickSize": "0.1",
+        "tickValue": "5"
+    },
+    {
+        "name": "E-mini S&P MidCap 400 (EMD) - Globex",
+        "tickSize": "0.1",
+        "tickValue": "10"
+    },
+    {
+        "name": "Nikkei 225/USD (NKD)",
+        "tickSize": "5",
+        "tickValue": "25"
+    },
+    {
+        "name": "US Dollar Index (DX) - ICE",
+        "tickSize": "0.005",
+        "tickValue": "5"
+    },
+    {
+        "name": "Australian Dollar FX (6A) - Globex",
+        "tickSize": "0.0001",
+        "tickValue": "10"
+    },
+    {
+        "name": "British Pound FX (6B) - Globex",
+        "tickSize": "0.0001",
+        "tickValue": "6.25"
+    },
+    {
+        "name": "Canadian Dollar FX (6C) - Globex",
+        "tickSize": "0.0001",
+        "tickValue": "10"
+    },
+    {
+        "name": "Euro FX (6E) - Globex",
+        "tickSize": "0.0001",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Swiss Franc FX (6S) - Globex",
+        "tickSize": "0.0001",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Japanese Yen FX (6J) - Globex",
+        "tickSize": "0.0001",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "New Zealand Dollar (6N)",
+        "tickSize": "0.0001",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Mexican Peso (6M)",
+        "tickSize": "0.00001",
+        "tickValue": "5"
+    },
+    {
+        "name": "E-mini Euro FX (E7)",
+        "tickSize": "0.0001",
+        "tickValue": "6.25"
+    },
+    {
+        "name": "E-micro Euro FX (M6E)",
+        "tickSize": "0.0001",
+        "tickValue": "1.25"
+    },
+    {
+        "name": "E-mini Japanese Yen (J7)",
+        "tickSize": "0.000001",
+        "tickValue": "6.25"
+    },
+    {
+        "name": "E-micro Japanese Yen (MJY)",
+        "tickSize": "0.00001",
+        "tickValue": "5"
+    },
+    {
+        "name": "E-micro Swiss Franc (MSF)",
+        "tickSize": "0.0001",
+        "tickValue": "1.25"
+    },
+    {
+        "name": "E-micro Canadian Dollar (MCD)",
+        "tickSize": "0.0001",
+        "tickValue": "1"
+    },
+    {
+        "name": "Crude Oil (CL) - NYMEX",
+        "tickSize": "0.01",
+        "tickValue": "10"
+    },
+    {
+        "name": "E-mini Crude Oil (QM) - NYMEX",
+        "tickSize": "0.025",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "RBOB Gasoline (RB) - NYMEX",
+        "tickSize": "0.0001",
+        "tickValue": "4.20"
+    },
+    {
+        "name": "Heating Oil (HO) - NYMEX",
+        "tickSize": "0.0001",
+        "tickValue": "4.20"
+    },
+    {
+        "name": "Natural Gas (NG) - NYMEX",
+        "tickSize": "0.001",
+        "tickValue": "10"
+    },
+    {
+        "name": "E-mini Natural Gas (QG)",
+        "tickSize": "0.005",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "E-Mini RBOB Gasoline (QU) - Globex",
+        "tickSize": "0.0001",
+        "tickValue": "21.00"
+    },
+    {
+        "name": "E-Mini Heating Oil (QH) - Globex",
+        "tickSize": "0.001",
+        "tickValue": "21"
+    },
+    {
+        "name": "Gold (GC) - COMEX",
+        "tickSize": "0.1",
+        "tickValue": "10"
+    },
+    {
+        "name": "Silver (SI) - COMEX",
+        "tickSize": "0.005",
+        "tickValue": "25"
+    },
+    {
+        "name": "Copper (HG) - COMEX",
+        "tickSize": "0.0005",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Platinum (GPL) - Globex",
+        "tickSize": "0.1",
+        "tickValue": "5"
+    },
+    {
+        "name": "Palladium (GPA) - Globex",
+        "tickSize": "0.05",
+        "tickValue": "5"
+    },
+    {
+        "name": "E-Mini Gold (QO) - Globex",
+        "tickSize": "0.25",
+        "tickValue": "5"
+    },
+    {
+        "name": "Mini Gold (ZYG) - ICE",
+        "tickSize": "0.1",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "E-Micro Gold (MGC) - Globex",
+        "tickSize": "0.1",
+        "tickValue": "1"
+    },
+    {
+        "name": "Corn (ZC) - Globex",
+        "tickSize": "0.0025",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Soybeans (ZS) - Globex",
+        "tickSize": "0.0025",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Wheat (ZW) - Globex",
+        "tickSize": "0.0025",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Soybean Meal (ZM) - Globex",
+        "tickSize": "0.1",
+        "tickValue": "10"
+    },
+    {
+        "name": "Soybean Oil (ZL) - Globex",
+        "tickSize": "0.0001",
+        "tickValue": "6"
+    },
+    {
+        "name": "Oats (ZO) - Globex",
+        "tickSize": "0.0025",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Rough Rice (ZR) - Globex",
+        "tickSize": "0.005",
+        "tickValue": "10"
+    },
+    {
+        "name": "Kansas City Wheat (KE) - Globex",
+        "tickSize": "0.0025",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Minneapolis Wheat (MWE) - Globex",
+        "tickSize": "0.0025",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Mini Corn (XC) - Globex",
+        "tickSize": "0.000025",
+        "tickValue": "1.25"
+    },
+    {
+        "name": "Mini Soybeans (XS) - Globex",
+        "tickSize": "0.000025",
+        "tickValue": "1.25"
+    },
+    {
+        "name": "Mini Wheat (XW) - Globex",
+        "tickSize": "0.000025",
+        "tickValue": "1.25"
+    },
+    {
+        "name": "Cocoa (CC) - ICE",
+        "tickSize": "1",
+        "tickValue": "10"
+    },
+    {
+        "name": "Coffee (KC) - ICE",
+        "tickSize": "0.05",
+        "tickValue": "18.75"
+    },
+    {
+        "name": "Cotton (CT) - ICE",
+        "tickSize": "0.01",
+        "tickValue": "5"
+    },
+    {
+        "name": "Sugar (SB) - ICE",
+        "tickSize": "0.01",
+        "tickValue": "11.20"
+    },
+    {
+        "name": "Orange Juice (OJ) - ICE",
+        "tickSize": "0.05",
+        "tickValue": "7.50"
+    },
+    {
+        "name": "Lumber (LB) - Globex",
+        "tickSize": "0.1",
+        "tickValue": "11.00"
+    },
+    {
+        "name": "Class III Milk (DA) - Globex",
+        "tickSize": "0.01",
+        "tickValue": "20.00"
+    },
+    {
+        "name": "Feeder Cattle (GF) - Globex",
+        "tickSize": "0.025",
+        "tickValue": "12.50"
+    },
+    {
+        "name": "Live Cattle (LE) - Globex",
+        "tickSize": "0.025",
+        "tickValue": "10.00"
+    },
+    {
+        "name": "Lean Hogs (HE) - Globex",
+        "tickSize": "0.025",
+        "tickValue": "10.00"
+    }
+]
