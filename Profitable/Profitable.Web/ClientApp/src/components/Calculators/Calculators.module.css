@@ -1,10 +1,10 @@
 
 .calculatorsContainer { 
-    margin: 10% 7%;
+    margin: 4% 5%;
 }
 
 .futuresCalculatorContainer {
-    padding: 1rem 2rem 2rem 1.2rem;
+    padding: 1rem 2rem;
     border: 1px solid white;
     background-color: white;
     color: black;
@@ -16,12 +16,3 @@
     color: black;
 }
 
-.futuresCalculatorHeading {
-    font-size: 2.2rem;
-    letter-spacing: 1px;
-    margin-bottom: 1.2rem;
-}
-
-.futuresCalculatorWrapper {
-    margin-left: 5%;
-}

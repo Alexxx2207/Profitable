@@ -17,7 +17,7 @@
 
 .navbarLogo {
     font-size: 2rem;
-    letter-spacing: 0.3rem;
+    letter-spacing: 0.2rem;
     margin: 0px;
 }
 
@@ -47,22 +47,22 @@
     font-weight: 600;
     letter-spacing: 2px;
     display: inline-block;
-    border: 3px solid #4a4b4e;
+    border: 2px solid #4a4b4e;
     border-radius: 0.5rem;
     padding: 0.5rem 0.8rem;
-    transition: linear 0.3s;
+    transition: 0.3s ease-in-out;
 }
 
 .navbarListItems * {
-    transition: linear 0.3s;
+    transition: 0.3s ease-in-out;
 }
 
 .navbarListItems:hover {
     color: #1e222d;
-    border: 3px solid white;
+    border: 2px solid white;
     border-radius: 0.5rem;
     background-color: white;
-    transition: linear 0.3s;
+    transition: 0.3s ease-in-out;
 }
 
 .navbarListItems:hover * {

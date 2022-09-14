@@ -5,10 +5,7 @@ export const Calcualtors = () => {
     return (
         <div className={styles.calculatorsContainer}>
             <section className={styles.futuresCalculatorContainer}>
-                <h3 className={styles.futuresCalculatorHeading}>Futures Calculator</h3>
-                <div className={styles.futuresCalculatorWrapper}>
-                    <FuturesCalculator />
-                </div>
+                <FuturesCalculator />
             </section>
         </div>
     );

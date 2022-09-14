@@ -1,3 +1,9 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
 html, html *{
     background-color: #1e222d;
     color: white;
@@ -25,12 +31,5 @@ html, html *{
 }
 
 .navigation { 
-    width: 100%;
-    position: fixed;
-    top: 0;
     z-index: 10000000000000000;
-}
-
-.page {
-    margin-top: 4rem;
 }
