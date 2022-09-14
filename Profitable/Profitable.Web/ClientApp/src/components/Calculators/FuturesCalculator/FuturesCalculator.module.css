@@ -1,0 +1,271 @@
+.futuresCalculatorHeading {
+    margin-bottom: 2rem;
+}
+
+.contractTypeContainer {
+    display: flex;
+}
+
+.contractTypeContainer .contractTypeHeading {
+    margin-right: 2rem;
+}
+
+.selectContract {
+    margin-bottom: 1.2rem;
+    padding: 0.5rem;
+    transform: translateY(-0.25rem);
+    border: 2px solid black;
+}
+
+.futuresInformation {
+    margin-left: 2%;
+}
+
+.futuresInformation {
+    display: flex;
+    gap: 4%;
+}
+
+.directionsHeading {
+    grid-area: 'directionHeading';
+}
+
+.directions {
+    grid-area: 'directionChange';
+}
+
+.entryPriceHeading {
+    grid-area: 'entryPriceHeading';
+}
+
+.entryPriceChange {
+    grid-area: 'entryPriceChange';
+}
+
+.exitPriceHeading {
+    grid-area: 'exitPriceHeading';
+}
+
+.exitPriceChange {
+    grid-area: 'exitPriceChange';
+}
+
+.contractsNumberHeading {
+    grid-area: 'contractsCountHeading';
+}
+
+.contractsNumberChange {
+    grid-area: 'contractCountChange';
+}
+
+.positionInformationContainer {
+    width: 70%;
+    display: grid;
+    grid-template-areas: 
+        'directionHeading directionChange'
+        'entryPriceHeading entryPriceChange'
+        'exitPriceHeading exitPriceChange'
+        'contractsCountHeading contractCountChange';
+    gap: 0.2rem;
+    background-color: black !important;
+    border: 0.2rem solid black;
+    border-radius: 3px;
+}
+
+.positionInformationContainer>* {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0rem;
+}
+
+.positionInformationContainer h1,
+.positionInformationContainer h2,
+.positionInformationContainer h3,
+.positionInformationContainer h4,
+.positionInformationContainer h5,
+.positionInformationContainer h6
+{
+    margin: 0;
+}
+
+.positionInformationContainer input[type="number"] {
+    width: 90%;
+    text-align:right;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.directions {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.contractNameContainer {
+    grid-area: name;
+}
+
+.tickSizeHeadingContainer {
+    grid-area: tickSizeHeading;
+}
+
+.tickSizeValueContainer {
+    grid-area: tickSizeValue;
+}
+
+.tickValueHeadingContainer {
+    grid-area: tickValueHeading;
+}
+
+.tickValueContainer {
+    grid-area: tickValue;
+}
+
+.contractInformationContainer {
+    width: 50%;
+    display: grid;
+    grid-template-areas: 
+        'name name'
+        'tickSizeHeading tickSizeValue'
+        'tickValueHeading tickValue';
+    gap: 0.2rem;
+    background-color: black !important;
+    border: 0.2rem solid black;
+    border-radius: 3px;
+}
+
+.contractInformationContainer>* {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.contractInformationContainer h1,
+.contractInformationContainer h2,
+.contractInformationContainer h3,
+.contractInformationContainer h4,
+.contractInformationContainer h5,
+.contractInformationContainer h6{
+    margin: 0;
+}
+
+.radioWrapper, .radioWrapper * {
+    cursor: pointer;
+}
+
+.radioLabel {
+    font-size: 1.1rem;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+}
+
+.directionBullish, .directionBearish {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    margin-right: 0.5rem;
+    color: currentColor;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 0.1rem solid currentColor;
+    border-radius: 50%;
+    transform: translateY(0.2rem);
+}
+
+.directionBullish:checked {
+    background-color: green;
+    
+}
+
+.directionBearish:checked {
+    background-color: rgb(231, 37, 37);
+}
+
+.answerWrapper {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.resultsLabel {
+    margin-right: 3rem;
+}
+
+.ticksHeading {
+    grid-area: ticksHeading;
+}
+
+.ticksValue {
+    grid-area: ticksValue;
+}
+
+.dollarsHeading {
+    grid-area: dollarsHeading;
+}
+
+.dollarsValue {
+    grid-area: dollarsValue;
+}
+
+.answerContainer {
+    display: grid;
+    grid-template-areas: 
+        'ticksHeading ticksValue'
+        'dollarsHeading dollarsValue';
+        gap: 0.2rem;
+        background-color: black !important;
+        border: 0.2rem solid black;
+        border-radius: 3px;
+}
+
+.answerContainer>* {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 5rem;
+}
+.answerContainer h1,
+.answerContainer h2,
+.answerContainer h3,
+.answerContainer h4,
+.answerContainer h5,
+.answerContainer h6
+ {
+    margin: 0;
+}
+
+.redPL {
+    color: red !important;
+}
+
+.greenPL { 
+    color: green !important;
+}
+
+.calculateButtonContainer {
+    margin: 2rem 0rem;
+    text-align: center;
+}
+
+.calculateButton {
+    display: inline-block;
+    text-align: center;
+    padding: 0.5rem 1.2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background-color: white;
+    color: black;
+    border: 3.5px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+}
+
+.calculateButton:hover {
+    background-color: black;
+    color: white;
+    transition: 0.3s ease-in-out;
+}

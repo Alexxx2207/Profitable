@@ -1,0 +1,18 @@
+
+.calculatorsContainer { 
+    margin: 4% 5%;
+}
+
+.futuresCalculatorContainer {
+    padding: 1rem 2rem;
+    border: 1px solid white;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.futuresCalculatorContainer *{
+    background-color: white;
+    color: black;
+}
+

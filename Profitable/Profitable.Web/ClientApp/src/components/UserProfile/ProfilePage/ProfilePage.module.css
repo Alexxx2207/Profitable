@@ -7,179 +7,42 @@
     position: relative;
 }
 
-.imageContainer {
-    width: 13rem;
-    background-color: #1e222d;
-    border-radius: 50%;
-    padding: 2rem;
-    z-index: 1;
-    position: relative;
-}
-
-.imageContainer img {
-    min-height: 8.5rem;
-    max-height: 15rem;
+.profilePageContainer>* {
     width: 100%;
-    border: 5px solid white;
-    border-radius: 50%;
-    background-size: cover;
 }
 
-.fileInput {
-    cursor: pointer;
-    opacity: 0;
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-    z-index: 20;
-    width: 70%;
-    height: 70%;
-    border-radius: 50%;
-}
-
-.imageSection {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.imageSectionButtons {
-    width: 20rem;
+.profilePageNavbarContainer {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    width: 100%;
+    border-bottom: 2px solid white;
 }
 
-.imageSectionButtons * {
-    border: none;
-    font-size: 1.7rem;
-    width: 50%;
-    border: 2px solid white;
-    border-radius: 10px;
+.profilePageNavbarContainer * {
+    margin: 0rem 2rem;
+    padding: 1rem 3rem;
+    text-decoration: none;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border: 3px solid #4a4b4e;
+    transition: 0.3s ease-out;
+    font-size: 1.2rem;
     letter-spacing: 1px;
+    font-weight: 600;
 }
 
-.discardImageButton {
-    background-color: rgb(154, 0, 0);
+.profilePageNavbarContainer *:hover:not(.active) {
+    color: white;
+    border: 3px solid white;
 }
 
-.saveImageButton {
-    background-color: green;
+.profilePageNavbarContainer *:hover.active {
+    color: black;
 }
 
-.profileInfo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: white;
-    border-radius: 20px;
-    width: 100%;
-    padding: 2rem 3rem;
-    padding-top: 7rem;
-    position: relative;
-    bottom: 6rem;
-}
-
-.profileInfo * {
+.active {
     background-color: white;
     color: black;
-    text-align: center;
-}
-
-.userName {
-    margin-bottom: 0.1rem;
-}
-
-.emailContainer {
-    margin-bottom: 2rem;
-}
-
-.email {
-    color: grey;
-}
-
-.description>* {
-    font-size: 1.5rem;
-}
-
-.userPrivateZoneHeading {
-    padding-bottom: 1rem;
-    border-bottom: 2px solid white;
-    font-size: 6vh;
-    letter-spacing: 1px;
-    text-align: center;
-}
-
-.editContainer {
-    margin-top: 3.5rem;
-    border-bottom: 2px solid white;
-    padding-bottom: 4rem;
-}
-
-.editHeadingContainer {
-    display: flex;
-    align-items: center;
-    margin-left: 2rem;
-    margin-bottom: 1.5vh;
-}
-
-.editHeadingContainer * {
-    font-size: 5vh;
-}
-
-.editHeadingText {
-    margin: 0px;
-    margin-right: 1rem;
-}
-
-
-.dangerZoneContainer {
-    margin-top: 10vh;
-    border-radius: 10px;
-    border: 3px solid red;
-}
-
-.dangerZoneHeadingContainer {
-    display: flex;
-    align-items: center;
-    margin: 5vh 4vw;
-}
-
-.dangerZoneHeadingContainer *{
-    font-size: 5vh;
-    color: red;
-}
-
-.dangerZoneHeadingText {
-    margin: 0px;
-    margin-right: 1rem;
-}
-
-.deleteSection {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 8vh 4vw;
-    padding: 3vh 2vw;
-    border: 1px solid rgba(128, 128, 128, 0.427);
-    border-radius: 10px;
-}
-
-.deleteHeading {
-    letter-spacing: 1px;
-}
-
-.deleteButton {
-    color: red;
-    border-radius: 10px;
-    border: 4px solid rgba(128, 128, 128, 0.148);
-    padding: 1vh 2vw;
-    font-size: 1.4rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-.deleteButton:hover {
-    border-color: red;
+    border: 3px solid white;
+    transition: 0.3s ease-out;
 }

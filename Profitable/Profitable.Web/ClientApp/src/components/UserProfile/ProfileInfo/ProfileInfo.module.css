@@ -1,0 +1,179 @@
+
+.imageContainer {
+    width: 12rem;
+    background-color: #1e222d;
+    border-radius: 50%;
+    padding: 1.5rem;
+    z-index: 1;
+    position: relative;
+}
+
+.imageContainer img {
+    min-height: 8.5rem;
+    max-height: 15rem;
+    width: 100%;
+    border: 5px solid white;
+    border-radius: 50%;
+    background-size: cover;
+}
+
+.fileInput {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 20;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+}
+
+.imageSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.imageSectionButtons {
+    width: 20rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.imageSectionButtons * {
+    border: none;
+    font-size: 1.7rem;
+    width: 50%;
+    border: 2px solid white;
+    border-radius: 10px;
+    letter-spacing: 1px;
+}
+
+.discardImageButton {
+    background-color: rgb(154, 0, 0);
+}
+
+.saveImageButton {
+    background-color: green;
+}
+
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+    border-radius: 20px;
+    width: 100%;
+    padding: 2rem 3rem;
+    padding-top: 7rem;
+    position: relative;
+    bottom: 6rem;
+}
+
+.profileInfo * {
+    background-color: white;
+    color: black;
+    text-align: center;
+}
+
+.userName {
+    margin-bottom: 0.1rem;
+}
+
+.emailContainer {
+    margin-bottom: 2rem;
+}
+
+.email {
+    color: grey;
+}
+
+.description>* {
+    font-size: 1.2rem;
+}
+
+.userPrivateZoneHeading {
+    padding-bottom: 1rem;
+    border-bottom: 2px solid white;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.editContainer {
+    margin-top: 2.7rem;
+    border-bottom: 2px solid white;
+    padding-bottom: 4rem;
+}
+
+.editHeadingContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+}
+
+.editHeadingContainer * {
+    font-size: 2rem;
+}
+
+.editHeadingText {
+    margin: 0px;
+    margin-right: 1rem;
+}
+
+
+.dangerZoneContainer {
+    margin-top: 3rem;
+    border-radius: 10px;
+    border: 3px solid red;
+}
+
+.dangerZoneHeadingContainer {
+    display: flex;
+    align-items: center;
+    margin: 5vh 4vw;
+}
+
+.dangerZoneHeadingContainer *{
+    font-size: 2rem;
+    color: red;
+}
+
+.dangerZoneHeadingText {
+    margin: 0px;
+    margin-right: 1rem;
+}
+
+.deleteSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8vh 4vw;
+    padding: 3vh 2vw;
+    border: 1px solid rgba(128, 128, 128, 0.427);
+    border-radius: 10px;
+}
+
+.deleteHeading {
+    letter-spacing: 1px;
+}
+
+.deleteButton {
+    color: red;
+    border-radius: 10px;
+    border: 4px solid rgba(128, 128, 128, 0.148);
+    padding: 0.6rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: 0.3s ease-out;
+}
+
+.deleteButton:hover {
+    border-color: red;
+    transition: 0.3s ease-out;
+}

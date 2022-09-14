@@ -6,6 +6,8 @@ using Profitable.Data;
 using Profitable.Models.EntityModels;
 using Profitable.Services.Comments;
 using Profitable.Services.Comments.Contracts;
+using Profitable.Services.Futures;
+using Profitable.Services.Futures.Contracts;
 using Profitable.Services.Markets;
 using Profitable.Services.Markets.Contract;
 using Profitable.Services.Posts;
@@ -38,19 +40,20 @@ namespace Profitable.Web.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddBusinessServices(this IServiceCollection services)
+        public static IServiceCollection AddBusinessLayerServices(this IServiceCollection services)
         {
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IMarketsService, MarketsService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IFuturesService, FuturesService>();
 
             return services;
         }
 
         public static IServiceCollection AddJwtAuthentication(
-         this IServiceCollection services,
-         string JWT_KEY)
+            this IServiceCollection services,
+            string JWT_KEY)
         {
             var key = Encoding.ASCII.GetBytes(JWT_KEY);
 

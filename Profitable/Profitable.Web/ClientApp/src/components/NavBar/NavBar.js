@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faRightFromBracket, faUser, faCalculator } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthContext } from '../../contexts/AuthContext';
 
@@ -33,15 +33,18 @@ export const NavBar = () => {
 
             <div className={styles.navButtonsContainers}>
                 <div className={styles.pages}>
-                    <NavLink to="/markets" className={classNames(styles.navbarListItems, styles.navLink)}>MARKETS</NavLink>
+                    <NavLink to="/markets" className={classNames(styles.navbarListItems, styles.navLink)}>CHARTS</NavLink>
 
                     <NavLink to="/posts" className={classNames(styles.navbarListItems, styles.navLink)}>POSTS</NavLink>
 
+                    <NavLink to="/calculators" className={classNames(styles.navbarListItems, styles.navLink)}>
+                        <FontAwesomeIcon icon={faCalculator} className={styles.navbarIcon}/>
+                    </NavLink>
                 </div>
                 <div className={styles.userPanel}>
                     {JWT ?
                         <div className={styles.authContainer}>
-                            <NavLink to={`/users/${email}`} className={classNames(styles.navbarListItems, styles.navLink)}>
+                            <NavLink to={`/users/${email}/personal-info`} className={classNames(styles.navbarListItems, styles.navLink)}>
                                 <FontAwesomeIcon icon={faUser} className={styles.navbarIcon}/>
                             </NavLink>
                             <NavLink to="/logout" className={classNames(styles.navbarListItems, styles.navLink)}>
