@@ -32,7 +32,7 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
             firstNameLength: { text: `First name at least ${FIRST_NAME_MIN_LENGTH} characters long`, fulfilled: true, type: CLIENT_ERROR_TYPE },
             lastNameEmpty: { text: 'Insert last name\\n(no whitespaces)', fulfilled: true, type: CLIENT_ERROR_TYPE },
             lastNameLength: { text: `Last name at least ${LAST_NAME_MIN_LENGTH} characters long`, fulfilled: true, type: CLIENT_ERROR_TYPE },
-            descriptionWhitespaces: { text: 'Description with no whitespaces\\n(can be left empty)', fulfilled: true, type: CLIENT_ERROR_TYPE },
+            descriptionWhitespaces: { text: 'Description\\n(can be left empty)', fulfilled: true, type: CLIENT_ERROR_TYPE },
             serverError: {
                 text: '',
                 display: false,

@@ -181,7 +181,7 @@ export const FuturesCalculator = () => {
                             <h5>Entry Price</h5>
                         </div>
                         <div className={styles.entryPriceChange}>
-                            <input className={styles.numberInput} type="number" onChange={(e) => entryPriceOnChange(e)} value={futures.position.entryPric} />
+                            <input className={styles.numberInput} type="number" onChange={(e) => entryPriceOnChange(e)} value={futures.position.entryPrice} />
                         </div>
 
                         <div className={styles.exitPriceHeading}>

@@ -27,6 +27,8 @@ import { ProfileInfo } from "../UserProfile/ProfileInfo/ProfileInfo";
 // eslint-disable-next-line
 import styles from './App.module.css';
 import { Calcualtors } from "../Calculators/Calculators";
+import { NewsList } from "../News/NewsList";
+import { NewsArticle } from "../News/NewsArticle/NewsArticle";
 
 export function App() {
 
@@ -98,6 +100,14 @@ export function App() {
 
                         <Route path="/calculators" element={
                             <Calcualtors />
+                        }></Route>
+
+                        <Route path="/news" element={
+                            <NewsList />
+                        }></Route>
+                        
+                        <Route path="/news/:newsTitle" element={
+                            <NewsArticle />
                         }></Route>
 
                         <Route path="*" element={

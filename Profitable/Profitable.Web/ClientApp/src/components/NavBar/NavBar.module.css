@@ -70,3 +70,11 @@
     color: black;
     background-color: white;
 }
+
+.navbarIcon {
+    font-size: 1.2rem;
+}
+
+.newsIcon {
+    --fa-animation-duration: 1.5s;
+}

@@ -42,6 +42,12 @@ export const MarketsFiltrator = ({ instrument, onInstrumentChange }) => {
     }
 
     const OnInstrumentListChangeSetInstrument = (instrument) => {
+        setState({
+            markets: state.markets,
+            instruments: state.instruments,
+            marketSelected: state.marketSelected,
+            instrumentSelected: instrument
+        });
         onInstrumentChange(instrument);
     }
 
@@ -49,13 +55,13 @@ export const MarketsFiltrator = ({ instrument, onInstrumentChange }) => {
         <section className={styles.searchSection}>
             <div className={styles.searchMarketTypePart}>
                 <h1 className={styles.chooseMarketTypeHeading}>Choose Market</h1>
-                <select className={styles.searchDropdown} onChange={(e) => OnChangeMarketType(e.target.value)} select={state.marketSelected}>
+                <select className={styles.searchDropdown} onChange={(e) => OnChangeMarketType(e.target.value)} value={state.marketSelected}>
                     {state.markets.map(marketType => <option key={marketType.guid} value={marketType.name}>{marketType.name}</option>)}
                 </select>
             </div>
             <div className={styles.searchInstrumentPart}>
                 <h1 className={styles.chooseInstrumentHeading}>Choose Instrument</h1>
-                <select className={styles.searchDropdown} onChange={(e) => OnInstrumentListChangeSetInstrument(e.target.value)} select={instrument.tickerSymbol}>
+                <select className={styles.searchDropdown} onChange={(e) => OnInstrumentListChangeSetInstrument(e.target.value)} value={state.instrumentSelected.tickerSymbol}>
                     {state.instruments.map(instr => <option key={instr.guid} value={instr.tickerSymbol}>{instr.tickerSymbol}</option>)}
                 </select>
             </div>

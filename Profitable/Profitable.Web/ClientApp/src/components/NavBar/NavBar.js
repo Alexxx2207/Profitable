@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import classnames from 'classnames';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket, faUser, faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket, faUser, faCalculator, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthContext } from '../../contexts/AuthContext';
 
@@ -12,6 +13,8 @@ import { getUserEmailFromJWT } from '../../services/users/usersService';
 import styles from './NavBar.module.css';
 
 export const NavBar = () => {
+
+    const location = useLocation();
 
     const { JWT } = useContext(AuthContext);
     const [email, setEmail] = useState('');
@@ -39,6 +42,15 @@ export const NavBar = () => {
 
                     <NavLink to="/calculators" className={classNames(styles.navbarListItems, styles.navLink)}>
                         <FontAwesomeIcon icon={faCalculator} className={styles.navbarIcon}/>
+                    </NavLink>
+
+                    <NavLink to="/news" className={classNames(styles.navbarListItems, styles.navLink)}>
+                        {
+                            location.pathname == '/news' ?
+                                <FontAwesomeIcon icon={faNewspaper} className={classnames(styles.navbarIcon, styles.newsIcon)} />
+                            :
+                                <FontAwesomeIcon icon={faNewspaper} className={classnames(styles.navbarIcon, styles.newsIcon)} beatFade />
+                        }
                     </NavLink>
                 </div>
                 <div className={styles.userPanel}>

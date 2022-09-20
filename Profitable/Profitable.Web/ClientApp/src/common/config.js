@@ -13,3 +13,5 @@ export const INVALID_OLD_PASSWORD_PROVIDED_ERROR_MESSAGE = 'Invalid old password
 export const CLIENT_ERROR_TYPE = 'client';
 
 export const SERVER_ERROR_TYPE = 'server';
+
+export const ARTICLE_LOCAL_STORAGE_KEY = 'Article'

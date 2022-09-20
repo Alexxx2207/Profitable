@@ -133,7 +133,7 @@ export const Register = () => {
             <div className={styles.registerContainer}>
                 <form className={styles.registerForm} onSubmit={onSubmit} >
                     <div className={styles.registerLabelContainer}>
-                        <h1 className={styles.registerLabel}>Register</h1>
+                        <h2 className={styles.registerLabel}>Register</h2>
                     </div>
                     <div className={styles.formGroup}>
                         <div>
@@ -171,7 +171,7 @@ export const Register = () => {
             </div>
             <aside className={styles.registerAside}>
                 <div className={styles.errorsHeadingContainer}>
-                    <h1 className={styles.errorsHeading}>Register State</h1>
+                    <h2 className={styles.errorsHeading}>Register State</h2>
                 </div>
                 <div className={styles.errorsContainer}>
 
