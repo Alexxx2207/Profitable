@@ -10,6 +10,8 @@ using Profitable.Services.Futures;
 using Profitable.Services.Futures.Contracts;
 using Profitable.Services.Markets;
 using Profitable.Services.Markets.Contract;
+using Profitable.Services.News;
+using Profitable.Services.News.Contract;
 using Profitable.Services.Posts;
 using Profitable.Services.Posts.Contracts;
 using Profitable.Services.Users;
@@ -47,6 +49,7 @@ namespace Profitable.Web.Infrastructure
             services.AddScoped<IMarketsService, MarketsService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFuturesService, FuturesService>();
+            services.AddScoped<INewsService, NewsService>();
 
             return services;
         }

@@ -56,14 +56,14 @@
 }
 
 .formHeading {
-    width: 30%;
+    width: 20%;
 }
 
 .inputField {
     border: 2px solid #1e222d3d;
     display: inline-block;
     padding: 1vh 1vw;
-    width: 70%;
+    width: 80%;
     font-size: 1.5vw;
     position: relative;
 }
@@ -121,8 +121,8 @@
 .editAside {
     width: 27%;
     position: sticky;
-    height: 100vh;
-    top: 3vh;
+    height: 85vh;
+    top: 12vh;
 }
 
 .errorsHeadingContainer {

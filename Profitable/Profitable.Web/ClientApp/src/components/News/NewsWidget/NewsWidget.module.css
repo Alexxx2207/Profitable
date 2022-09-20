@@ -1,0 +1,38 @@
+
+.newsWidget {
+    width: 95%;
+    background-color: white;
+    margin: 2rem;
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    display: flex;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.newsImage {
+    width: 25%;
+    margin: 0.3rem;
+    border-radius: 10px;
+}
+
+.newsWidget * {
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+.title {
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.authorAndTime {
+    letter-spacing: 1px;
+    padding-left: 0.5rem;
+}
+
+.articleOverview {
+    padding-left: 2rem;
+    font-size: 1.1rem;
+}

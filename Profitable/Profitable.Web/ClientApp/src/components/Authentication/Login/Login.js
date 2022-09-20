@@ -101,7 +101,7 @@ export const Login = () => {
             <div className={styles.loginContainer}>
                 <form className={styles.loginForm} onSubmit={onSubmit} >
                     <div className={styles.loginLabelContainer}>
-                        <h1 className={styles.loginLabel}>Login</h1>
+                        <h2 className={styles.loginLabel}>Login</h2>
                     </div>
                     <div className={styles.formGroup}>
                         <div>
@@ -127,7 +127,7 @@ export const Login = () => {
             </div>
             <aside className={styles.loginAside}>
                 <div className={styles.errorsHeadingContainer}>
-                    <h1 className={styles.errorsHeading}>Login State</h1>
+                    <h2 className={styles.errorsHeading}>Login State</h2>
                 </div>
                 <div className={styles.errorsContainer}>
                     {Object.values(loginState.errors).map((error, index) => <ErrorWidget key={index} error={error} />)}
