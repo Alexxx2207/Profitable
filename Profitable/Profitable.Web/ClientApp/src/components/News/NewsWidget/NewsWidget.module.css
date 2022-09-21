@@ -11,8 +11,9 @@
 }
 
 .newsImage {
-    width: 25%;
-    margin: 0.3rem;
+    max-width: 13rem;
+    width: 100%;
+    margin: 1rem 0rem;
     border-radius: 10px;
 }
 

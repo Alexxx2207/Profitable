@@ -9,7 +9,7 @@ import { PasswordEye } from '../../PasswordEye/PasswordEye';
 import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERROR_TYPE } from '../../../common/config';
 import { PASSWORD_MIN_LENGTH } from '../../../common/validationConstants';
 
-import { isEmptyOrWhiteSpaceFieldChecker, minLengthChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
+import { minLengthChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject } from '../../../services/common/createValidationErrorObject';
 import { editUserPasswоrd } from '../../../services/users/usersService';
