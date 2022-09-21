@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
     Routes,
     Route,
@@ -24,11 +24,14 @@ import { EditPost } from "../PostsAndComments/Posts/EditPost/EditPost";
 
 import { ProfileInfo } from "../UserProfile/ProfileInfo/ProfileInfo";
 
-// eslint-disable-next-line
-import styles from './App.module.css';
 import { Calcualtors } from "../Calculators/Calculators";
 import { NewsList } from "../News/NewsList";
 import { NewsArticle } from "../News/NewsArticle/NewsArticle";
+import { Calendars } from "../Calendars/Calendars";
+
+// eslint-disable-next-line
+import styles from './App.module.css';
+
 
 export function App() {
 
@@ -108,6 +111,10 @@ export function App() {
                         
                         <Route path="/news/:newsTitle" element={
                             <NewsArticle />
+                        }></Route>
+
+                        <Route path="/calendars" element={
+                            <Calendars />
                         }></Route>
 
                         <Route path="*" element={

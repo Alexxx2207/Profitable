@@ -7,7 +7,7 @@ import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
 import { PasswordEye } from '../../PasswordEye/PasswordEye';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
-import { isEmptyOrWhiteSpaceFieldChecker, isEmailValidChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
+import { isEmailValidChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
 
