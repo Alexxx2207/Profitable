@@ -1,0 +1,36 @@
+.commentWidget {
+    width: 100%;
+    background-color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+}
+
+.commentWidget * {
+    background-color: white;
+    color: black;
+}
+
+.commentHeader {
+    padding-left: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid black;
+    display: flex;
+    align-items: center;
+}
+
+.commentHeader * {
+    cursor: pointer;
+    margin-left: 0;
+}
+
+.commentAuthorEmail {
+    color: grey;
+    margin-left: 0.7rem;
+}
+
+.commentContent {
+    margin-top: 2rem;
+    margin-left: 3rem;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}

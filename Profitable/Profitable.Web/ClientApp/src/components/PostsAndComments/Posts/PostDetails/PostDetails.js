@@ -15,6 +15,7 @@ import { JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, MISSING_POST_GUID_ERROR_PAGE_P
 
 import styles from './PostDetails.module.css';
 import { MessageBoxContext } from "../../../../contexts/MessageBoxContext";
+import { CommentsList } from "./CommentsList/CommentsList";
 
 export const PostDetails = () => {
 
@@ -100,63 +101,68 @@ export const PostDetails = () => {
     };
 
     return (
-        <div className={styles.post}>
-            <div className={styles.buttonContainer}>
-                <button className={classnames(styles.button, styles.backButton)} onClick={goBackHandler}>
-                    <FontAwesomeIcon className={styles.iconLeftArrow} icon={faArrowCircleLeft} />
-                    <div className={styles.backText}>
-                        Go Back
-                    </div>
-                </button>
-                {post.authorEmail && post.authorEmail === userEmail ?
-                    <div className={styles.ownerButtonSection}>
-                        <button className={classnames(styles.button, styles.editButton)} onClick={goToEditPageHandler}>
-                            <FontAwesomeIcon className={styles.iconEdit} icon={faPenToSquare} />
-                            <div className={styles.backText}>
-                                Edit
-                            </div>
-                        </button>
-                        <button className={classnames(styles.button, styles.deleteButton)} onClick={deletePostClickHandler}>
-                            <FontAwesomeIcon className={styles.iconDelete} icon={faTrash} />
-                            <div className={styles.backText}>
-                                Delete
-                            </div>
-                        </button>
-                    </div>
-                    :
-                    ''
-                }
-            </div>
-            <div className={styles.postContent}>
-                <div className={styles.text}>
-                    <h1 className={styles.title}>{post.title}</h1>
-                    {post.postImage ?
-                        <img className={styles.postImage} src={createImgURL(post.postImage)} alt="" />
+        <div className={styles.postPage}>
+            <div className={styles.post}>
+                <div className={styles.buttonContainer}>
+                    <button className={classnames(styles.button, styles.backButton)} onClick={goBackHandler}>
+                        <FontAwesomeIcon className={styles.iconLeftArrow} icon={faArrowCircleLeft} />
+                        <div className={styles.backText}>
+                            Go Back
+                        </div>
+                    </button>
+                    {post.authorEmail && post.authorEmail === userEmail ?
+                        <div className={styles.ownerButtonSection}>
+                            <button className={classnames(styles.button, styles.editButton)} onClick={goToEditPageHandler}>
+                                <FontAwesomeIcon className={styles.iconEdit} icon={faPenToSquare} />
+                                <div className={styles.backText}>
+                                    Edit
+                                </div>
+                            </button>
+                            <button className={classnames(styles.button, styles.deleteButton)} onClick={deletePostClickHandler}>
+                                <FontAwesomeIcon className={styles.iconDelete} icon={faTrash} />
+                                <div className={styles.backText}>
+                                    Delete
+                                </div>
+                            </button>
+                        </div>
                         :
-                        ""
+                        ''
                     }
-                    <div className={styles.content}>
-                        {post.content.split('\\n').map((paragraph, index) =>
-                            <p key={index}>{paragraph}<br /></p>
-                        )}
-                    </div>
-                    <div className={styles.postsLikeWidgetContainer}>
-                        <PostsLikeWidget style={styles.postsLikeWidget} post={post} />
-                    </div>
                 </div>
-                <div className={styles.information}>
-                    <div className={styles.author}>
-                        <img onClick={clickUserProfileHandler} className={styles.authorImage} src={createAuthorImgURL(post.authorImage)} alt="" />
-                        <div onClick={clickUserProfileHandler} className={styles.authorName}>
-                            {post.author}
+                <div className={styles.postContent}>
+                    <div className={styles.text}>
+                        <h1 className={styles.title}>{post.title}</h1>
+                        {post.postImage ?
+                            <img className={styles.postImage} src={createImgURL(post.postImage)} alt="" />
+                            :
+                            ""
+                        }
+                        <div className={styles.content}>
+                            {post.content.split('\\n').map((paragraph, index) =>
+                                <p key={index}>{paragraph}<br /></p>
+                            )}
+                        </div>
+                        <div className={styles.postsLikeWidgetContainer}>
+                            <PostsLikeWidget style={styles.postsLikeWidget} post={post} />
                         </div>
                     </div>
-                    <div className={styles.postedOn}>
-                        {post.postedOn}
+                    <div className={styles.information}>
+                        <div className={styles.author}>
+                            <img onClick={clickUserProfileHandler} className={styles.authorImage} src={createAuthorImgURL(post.authorImage)} alt="" />
+                            <div onClick={clickUserProfileHandler} className={styles.authorName}>
+                                {post.author}
+                            </div>
+                        </div>
+                        <div className={styles.postedOn}>
+                            {post.postedOn}
+                        </div>
                     </div>
                 </div>
             </div>
+            <section className={styles.commentsSection}>
+                <h1 className={styles.commentsHeader}>Comments</h1>
+                <CommentsList postId={postId} />
+            </section>
         </div>
-        //// Comments section
     );
 }

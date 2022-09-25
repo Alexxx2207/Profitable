@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Posts;
+using Profitable.Models.ResponseModels.Comments;
 using Profitable.Services.Posts.Contracts;
 using Profitable.Web.Controllers.BaseApiControllers;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace Profitable.Web.Controllers
@@ -26,6 +29,26 @@ namespace Profitable.Web.Controllers
             try
             {
                 var posts = await postService.GetPostsByPageAsync(getPostsRequestModel);
+
+				using (var client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("https://localhost:7048/api");
+					client.DefaultRequestHeaders.Accept.Clear();
+					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+					foreach (var post in posts)
+					{
+						var response = await client.GetAsync($"comments/{post.Guid}/count");
+
+						if (response.IsSuccessStatusCode)
+						{
+							int commentsCount = await response.Content.ReadFromJsonAsync<int>();
+
+                            post.CommentsCount = commentsCount;
+						}
+					}
+				}
+				
 
                 return Ok(posts);
             }
@@ -107,7 +130,7 @@ namespace Profitable.Web.Controllers
         {
             var post = await postService.GetPostByGuidAsync(Guid.Parse(id));
 
-            return Ok(post);
+			return Ok(post);
         }
     }
 }

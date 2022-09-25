@@ -1,5 +1,5 @@
 .post {
-    margin: 4vw;
+    margin: 4rem;
     padding: 2rem;
     box-shadow: 0px 0px 2.7rem 0.2rem white;
     border-radius: 1rem;
@@ -130,4 +130,14 @@
 
 .authorName:hover {
     cursor: pointer;
+}
+
+.commentsHeader {
+    width: 70%;
+    padding-left: 0.8rem;
+    padding-bottom: 1.2rem;
+    margin-bottom: 3rem;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    border-bottom: 2px solid white;
 }

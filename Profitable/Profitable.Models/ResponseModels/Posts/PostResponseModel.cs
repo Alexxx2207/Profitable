@@ -21,6 +21,8 @@ namespace Profitable.Models.ResponseModels.Posts
 
         public byte[] PostImage { get; set; }
 
+        public int CommentsCount { get; set; }
+
         public IEnumerable<LikeResponseModel> Likes { get; set; }
 
         public IEnumerable<CommentResponseModel> Comments { get; set; }
