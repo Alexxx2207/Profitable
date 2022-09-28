@@ -2,7 +2,6 @@ import { NavLink, Outlet, useLocation  } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
 import styles from './ProfilePage.module.css';
-import { skipPartiallyEmittedExpressions } from 'typescript';
 
 export const ProfilePage = () => {
 
@@ -21,6 +20,7 @@ export const ProfilePage = () => {
                     Personal Info
                 </NavLink>
                 <NavLink to={'account-statistics'} className={(url.includes('account-statistics') ? styles.active : "")}>Account Statistics</NavLink>
+                <NavLink to={'account-activity'} className={(url.includes('account-activity') ? styles.active : "")}>Account Activity</NavLink>
             </nav>
             <Outlet />
         </div>

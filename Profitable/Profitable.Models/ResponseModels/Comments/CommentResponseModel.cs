@@ -9,5 +9,7 @@
         public string AuthorEmail { get; set; }
 
         public string Content { get; set; }
+
+        public string PostedOn { get; set; }
     }
 }

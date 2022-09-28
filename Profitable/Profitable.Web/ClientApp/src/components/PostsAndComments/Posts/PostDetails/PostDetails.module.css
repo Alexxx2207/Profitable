@@ -132,12 +132,43 @@
     cursor: pointer;
 }
 
+.commentsHeaderContainer {
+    display: flex;
+    align-items: center;
+}
+
 .commentsHeader {
-    width: 70%;
+    width: 50%;
     padding-left: 0.8rem;
     padding-bottom: 1.2rem;
     margin-bottom: 3rem;
     margin-left: 4rem;
-    margin-right: 4rem;
+    margin-right: 2rem;
     border-bottom: 2px solid white;
+}
+
+.addCommentButton {
+    font-size: 1.3rem;
+    padding: 0.9rem 2rem;
+    border: 2px solid white;
+    border-radius: 50px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.addCommentButton, .addCommentButton *{
+    background-color: white;
+    color: black;
+    transition: 0.3s ease-in-out;
+}
+
+.addCommentButton:hover, .addCommentButton:hover *{
+    background-color: black;
+    color: white;
+    transition: 0.3s ease-in-out;
+}
+
+.iconAddComment {
+    margin-right: 1rem;
 }

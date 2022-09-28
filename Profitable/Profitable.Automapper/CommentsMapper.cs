@@ -23,7 +23,10 @@ namespace Profitable.Automapper
                     src => {
                         src.MapFrom(comment => comment.Author.Email);
                     }
-                );
+                )
+				.ForMember(
+					dest => dest.PostedOn,
+					opt => opt.MapFrom(source => source.PostedOn.ToString("F")));
         }
     }
 }

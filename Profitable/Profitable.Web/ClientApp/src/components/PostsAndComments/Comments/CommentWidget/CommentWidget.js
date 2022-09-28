@@ -16,6 +16,7 @@ export const CommentWidget = ({comment}) => {
                 <h6 className={styles.commentAuthorEmail} onClick={() => profileOpen()}>({comment.authorEmail})</h6>
             </header>
             <p className={styles.commentContent}>{comment.content}</p>
+            <h6 className={styles.postedOnContainer}>{comment.postedOn}</h6>
         </div>
     );
 }

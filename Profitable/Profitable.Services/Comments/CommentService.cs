@@ -21,11 +21,9 @@ namespace Profitable.Services.Comments
 			this.mapper = mapper;
 		}
 
-		public async Task<Result> AddCommentAsync(AddCommentRequestModel newComment)
+		public async Task<Result> AddCommentAsync(Comment newComment)
 		{
-			var comment = mapper.Map<Comment>(newComment);
-
-			await repository.AddAsync(comment);
+			await repository.AddAsync(newComment);
 
 			await repository.SaveChangesAsync();
 
@@ -45,12 +43,15 @@ namespace Profitable.Services.Comments
 			return true;
 		}
 
-		public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid)
+		public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid, int page, int pageCount)
 		{
 			var comments = await repository
 				.GetAllAsNoTracking()
 				.Include(c => c.Author)
 				.Where(comment => comment.PostId == guid)
+				.OrderByDescending(c => c.PostedOn)
+				.Skip(page * pageCount)
+				.Take(pageCount)
 				.Select(comment => mapper.Map<CommentResponseModel>(comment))
 				.ToListAsync();
 

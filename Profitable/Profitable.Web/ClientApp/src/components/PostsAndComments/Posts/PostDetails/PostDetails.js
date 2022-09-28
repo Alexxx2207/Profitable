@@ -1,21 +1,33 @@
 import classnames from "classnames";
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { deletePost, loadParticularPost } from '../../../../services/posts/postsService';
 import { PostsLikeWidget } from '../PostsLikeWidget/PostsLikeWidget';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleLeft, faTrash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowCircleLeft,
+    faTrash,
+    faPenToSquare,
+    faPlusCircle,
+    faCircleMinus
+} from '@fortawesome/free-solid-svg-icons';
 
 import { createImgURL, createAuthorImgURL } from '../../../../services/common/imageService';
 import { getUserDataByJWT, getUserEmailFromJWT } from '../../../../services/users/usersService';
 
-import { JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, MISSING_POST_GUID_ERROR_PAGE_PATH } from '../../../../common/config';
+import {
+    JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
+    MISSING_POST_GUID_ERROR_PAGE_PATH,
+    COMMENTS_LIST_IN_POST_PAGE_COUNT
+} from '../../../../common/config';
 
 import styles from './PostDetails.module.css';
 import { MessageBoxContext } from "../../../../contexts/MessageBoxContext";
-import { CommentsList } from "./CommentsList/CommentsList";
+import { CommentsList } from "../../Comments/CommentsList/CommentsList";
+import { CreateComment } from "../../Comments/CreateComment/CreateComment";
+import { getCommentsByPostId } from "../../../../services/comments/commentsService";
 
 export const PostDetails = () => {
 
@@ -27,7 +39,7 @@ export const PostDetails = () => {
 
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
-    const [post, setPost] = useState({
+    const [postPage, setPostPage] = useState({
         guid: '',
         title: '',
         content: '',
@@ -38,15 +50,59 @@ export const PostDetails = () => {
         postImage: '',
         likes: [],
         comments: [],
+        showCreateCommentWidget: false,
     });
 
     const [userEmail, setUserEmail] = useState('');
 
+    let page = 0;
+
+    const loadComments = useCallback((page, pageCount) => {
+        getCommentsByPostId(postId, page, pageCount)
+        .then(commentsFromAPI => {
+            setPostPage(state => ({
+                ...state,
+                comments: [...state.comments, ...commentsFromAPI]
+            }))
+        });
+    }, [postId]);
+    
+    const loadFirstComments = useCallback(() => {
+        getCommentsByPostId(postId, 0, COMMENTS_LIST_IN_POST_PAGE_COUNT)
+        .then(commentsFromAPI => {
+            if(commentsFromAPI.length > 0) {
+                setPostPage(state => ({
+                    ...state,
+                    comments: [...commentsFromAPI]
+                }));
+            }
+        });
+    }, [postId]);
+
+    const handleScroll = useCallback((e) => {
+        const scrollHeight = e.target.documentElement.scrollHeight;
+        const currentHeight = e.target.documentElement.scrollTop + window.innerHeight;
+
+        if (currentHeight >= scrollHeight - 300 || currentHeight === scrollHeight) {
+            page++;
+            loadComments(page, COMMENTS_LIST_IN_POST_PAGE_COUNT);
+        }
+    }, [loadComments, page]);
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll])
+
     useEffect(() => {
         loadParticularPost(postId)
-            .then(result => setPost(result))
+            .then(result => {
+                setPostPage(result);
+                loadFirstComments();
+            })
             .catch(err => navigate(`${MISSING_POST_GUID_ERROR_PAGE_PATH}`))
-    }, [postId, navigate]);
+    }, [postId, navigate, loadFirstComments]);
 
     useEffect(() => {
         getUserEmailFromJWT(JWT)
@@ -97,7 +153,14 @@ export const PostDetails = () => {
         e.preventDefault();
         e.stopPropagation();
 
-        navigate(`/users/${post.authorEmail}`);
+        navigate(`/users/${postPage.authorEmail}`);
+    };
+
+    const handleAddCommentButton = () => {
+        setPostPage(state => ({
+            ...state,
+            showCreateCommentWidget: !state.showCreateCommentWidget
+        }))
     };
 
     return (
@@ -110,7 +173,7 @@ export const PostDetails = () => {
                             Go Back
                         </div>
                     </button>
-                    {post.authorEmail && post.authorEmail === userEmail ?
+                    {postPage.authorEmail && postPage.authorEmail === userEmail ?
                         <div className={styles.ownerButtonSection}>
                             <button className={classnames(styles.button, styles.editButton)} onClick={goToEditPageHandler}>
                                 <FontAwesomeIcon className={styles.iconEdit} icon={faPenToSquare} />
@@ -131,37 +194,70 @@ export const PostDetails = () => {
                 </div>
                 <div className={styles.postContent}>
                     <div className={styles.text}>
-                        <h1 className={styles.title}>{post.title}</h1>
-                        {post.postImage ?
-                            <img className={styles.postImage} src={createImgURL(post.postImage)} alt="" />
+                        <h1 className={styles.title}>{postPage.title}</h1>
+                        {postPage.postImage ?
+                            <img className={styles.postImage} src={createImgURL(postPage.postImage)} alt="" />
                             :
                             ""
                         }
                         <div className={styles.content}>
-                            {post.content.split('\\n').map((paragraph, index) =>
+                            {postPage.content.split('\\n').map((paragraph, index) =>
                                 <p key={index}>{paragraph}<br /></p>
                             )}
                         </div>
                         <div className={styles.postsLikeWidgetContainer}>
-                            <PostsLikeWidget style={styles.postsLikeWidget} post={post} />
+                            <PostsLikeWidget style={styles.postsLikeWidget} post={postPage} />
                         </div>
                     </div>
                     <div className={styles.information}>
                         <div className={styles.author}>
-                            <img onClick={clickUserProfileHandler} className={styles.authorImage} src={createAuthorImgURL(post.authorImage)} alt="" />
+                            <img
+                                onClick={clickUserProfileHandler}
+                                className={styles.authorImage}
+                                src={createAuthorImgURL(postPage.authorImage)}
+                                alt="" />
                             <div onClick={clickUserProfileHandler} className={styles.authorName}>
-                                {post.author}
+                                {postPage.author}
                             </div>
                         </div>
                         <div className={styles.postedOn}>
-                            {post.postedOn}
+                            {postPage.postedOn}
                         </div>
                     </div>
                 </div>
             </div>
             <section className={styles.commentsSection}>
-                <h1 className={styles.commentsHeader}>Comments</h1>
-                <CommentsList postId={postId} />
+                <div className={styles.commentsHeaderContainer}>
+                    <h1 className={styles.commentsHeader}>Comments</h1>
+                    <div className={styles.addCommentButtonContainer}>
+                        <button className={styles.addCommentButton} onClick={handleAddCommentButton} >
+                            {
+                                postPage.showCreateCommentWidget ? 
+                                    <>
+                                        <FontAwesomeIcon className={styles.iconAddComment} icon={faCircleMinus} />
+                                        Hide Adding Panel
+                                    </>
+                                   
+                                :
+                                    <>
+                                        <FontAwesomeIcon className={styles.iconAddComment} icon={faPlusCircle} />
+                                        Add Comment
+                                    </>
+                                   
+                            }
+                        </button>
+                    </div>
+                </div>
+                {
+                    postPage.showCreateCommentWidget ? 
+                        <CreateComment
+                            postId={postId}
+                            loadFirstComments={loadFirstComments}
+                            handleAddCommentButton={handleAddCommentButton} />
+                    :
+                    <></>
+                }
+                <CommentsList postId={postId} comments={postPage.comments} />
             </section>
         </div>
     );

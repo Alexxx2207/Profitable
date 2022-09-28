@@ -50,7 +50,6 @@ export const deletePost = async (jwt, postGuid) => {
 }
 
 export const loadPostsPage = (page, postsCount) => {
-
     const postBody = {
         'PostsCount': postsCount,
         'Page': page
