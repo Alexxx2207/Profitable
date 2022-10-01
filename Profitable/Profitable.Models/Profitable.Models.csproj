@@ -7,15 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EntityModels\UserConfiguration\**" />
+    <EmbeddedResource Remove="EntityModels\UserConfiguration\**" />
+    <None Remove="EntityModels\UserConfiguration\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Profitable.GlobalConstants\Profitable.GlobalConstants.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="EntityModels\UserConfiguration\" />
   </ItemGroup>
 
 </Project>

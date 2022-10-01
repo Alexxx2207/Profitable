@@ -112,10 +112,6 @@ export const PostDetails = () => {
             .catch(err => err)
     }, [JWT]);
 
-    const goBackHandler = (e) => {
-        navigate('/posts');
-    }
-
     const goToEditPageHandler = (e) => {
         getUserDataByJWT(JWT)
             .then(result => {
@@ -167,12 +163,6 @@ export const PostDetails = () => {
         <div className={styles.postPage}>
             <div className={styles.post}>
                 <div className={styles.buttonContainer}>
-                    <button className={classnames(styles.button, styles.backButton)} onClick={goBackHandler}>
-                        <FontAwesomeIcon className={styles.iconLeftArrow} icon={faArrowCircleLeft} />
-                        <div className={styles.backText}>
-                            Go Back
-                        </div>
-                    </button>
                     {postPage.authorEmail && postPage.authorEmail === userEmail ?
                         <div className={styles.ownerButtonSection}>
                             <button className={classnames(styles.button, styles.editButton)} onClick={goToEditPageHandler}>

@@ -19,8 +19,12 @@ export const ProfilePage = () => {
                 <NavLink to={'personal-info'} className={(url.includes('personal-info') ? styles.active : "")}>
                     Personal Info
                 </NavLink>
-                <NavLink to={'account-statistics'} className={(url.includes('account-statistics') ? styles.active : "")}>Account Statistics</NavLink>
-                <NavLink to={'account-activity'} className={(url.includes('account-activity') ? styles.active : "")}>Account Activity</NavLink>
+                <NavLink to={'account-statistics'} className={(url.includes('account-statistics') ? styles.active : "")}>
+                    Account Statistics
+                </NavLink>
+                <NavLink to={'account-activity'} className={(url.includes('account-activity') ? styles.active : "")}>
+                    Account Activity
+                </NavLink>
             </nav>
             <Outlet />
         </div>

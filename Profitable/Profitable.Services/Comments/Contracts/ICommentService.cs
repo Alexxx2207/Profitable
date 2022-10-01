@@ -11,7 +11,7 @@ namespace Profitable.Services.Comments.Contracts
 
         Task<int> GetCommentsCountByPostAsync(Guid guid);
 
-        Task<List<CommentResponseModel>> GetCommentsByUserAsync(Guid userGuid);
+        Task<List<CommentResponseModel>> GetCommentsByUserAsync(Guid userGuid, int page, int pageCount);
 
         Task<Result> AddCommentAsync(Comment newComment);
 

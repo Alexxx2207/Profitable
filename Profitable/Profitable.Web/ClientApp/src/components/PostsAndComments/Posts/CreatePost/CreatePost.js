@@ -132,20 +132,8 @@ export const CreatePost = () => {
         }
     };
 
-    const goBackHandler = (e) => {
-        navigate(`/posts`);
-    }
-
     return (
         <div className={styles.pageContainer}>
-            <div className={styles.buttonContainer}>
-                <button className={classnames(styles.button, styles.backButton)} onClick={goBackHandler}>
-                    <FontAwesomeIcon className={styles.iconLeftArrow} icon={faArrowCircleLeft} />
-                    <div className={styles.backText}>
-                        Go Back
-                    </div>
-                </button>
-            </div>
             <div className={styles.createSectionContainer}>
                 <div className={styles.createContainer}>
                     <form className={styles.createForm} onSubmit={onSubmit} >

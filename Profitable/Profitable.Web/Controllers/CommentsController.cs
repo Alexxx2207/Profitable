@@ -29,11 +29,21 @@ namespace Profitable.Web.Controllers
 			return Ok(commentsCount);
 		}
 
-		[HttpGet("{postGuid}/all/{page}/{pageCount}")]
+		[HttpGet("bypost/{postGuid}/all/{page}/{pageCount}")]
 		public async Task<IActionResult> GetAllByPost(Guid postGuid, string page, string pageCount)
 		{
 
 			var comments = await commentService.GetCommentsByPostAsync(postGuid, int.Parse(page), int.Parse(pageCount));
+
+			return Ok(comments);
+		}
+		
+		[HttpGet("byuser/all/{page}/{pageCount}")]
+		public async Task<IActionResult> GetAllByUser(string page, string pageCount)
+		{
+			var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+
+			var comments = await commentService.GetCommentsByUserAsync(user.Id, int.Parse(page), int.Parse(pageCount));
 
 			return Ok(comments);
 		}

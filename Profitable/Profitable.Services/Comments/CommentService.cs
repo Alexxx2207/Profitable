@@ -47,22 +47,26 @@ namespace Profitable.Services.Comments
 		{
 			var comments = await repository
 				.GetAllAsNoTracking()
-				.Include(c => c.Author)
 				.Where(comment => comment.PostId == guid)
-				.OrderByDescending(c => c.PostedOn)
 				.Skip(page * pageCount)
 				.Take(pageCount)
+				.OrderByDescending(c => c.PostedOn)
+				.Include(c => c.Author)
 				.Select(comment => mapper.Map<CommentResponseModel>(comment))
 				.ToListAsync();
 
 			return comments;
 		}
 
-		public async Task<List<CommentResponseModel>> GetCommentsByUserAsync(Guid userGuid)
+		public async Task<List<CommentResponseModel>> GetCommentsByUserAsync(Guid userGuid, int page, int pageCount)
 		{
 			var comments = await repository
 				.GetAllAsNoTracking()
 				.Where(comment => comment.AuthorId == userGuid)
+				.Skip(page * pageCount)
+				.Take(pageCount)
+				.OrderByDescending(c => c.PostedOn)
+				.Include(c => c.Author)
 				.Select(comment => mapper.Map<CommentResponseModel>(comment))
 				.ToListAsync();
 

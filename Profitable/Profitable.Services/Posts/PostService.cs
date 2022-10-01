@@ -89,16 +89,16 @@ namespace Profitable.Services.Posts
             return mapper.Map<PostResponseModel>(post);
         }
 
-        public async Task<List<PostResponseModel>> GetPostsByPageAsync(GetPostsRequestModel getPostsRequestModel)
+        public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int pageCount)
         {
-            if (getPostsRequestModel.PostsCount > 0 && getPostsRequestModel.PostsCount <= GlobalServicesConstants.PostsMaxCountInPage)
+            if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
             {
                 var posts = await postsRepository
                     .GetAllAsNoTracking()
                     .Where(post => !post.IsDeleted)
                     .OrderByDescending(p => p.PostedOn)
-                    .Skip(getPostsRequestModel.Page * getPostsRequestModel.PostsCount)
-                    .Take(getPostsRequestModel.PostsCount)
+                    .Skip(page * pageCount)
+                    .Take(pageCount)
                     .Include(p => p.Tags)
                     .Include(p => p.Author)
                     .Include(p => p.Likes)
@@ -114,19 +114,31 @@ namespace Profitable.Services.Posts
             }
         }
 
-        public async Task<List<PostResponseModel>> GetPostsByTraderAsync(Guid traderId)
+        public async Task<List<PostResponseModel>> GetPostsByUserAsync(Guid userId, int page, int pageCount)
         {
-            var posts = await postsRepository
-                .GetAllAsNoTracking()
-                .Where(post => !post.IsDeleted)
-                .Where(post => post.AuthorId == traderId)
-                .Include(p => p.Tags)
-                .Include(p => p.Likes)
-                .Select(post => mapper.Map<PostResponseModel>(post))
-                .ToListAsync();
+			if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
+			{
+				var posts = await postsRepository
+					.GetAllAsNoTracking()
+                    .Where(post => post.AuthorId == userId)
+					.Where(post => !post.IsDeleted)
+					.OrderByDescending(p => p.PostedOn)
+					.Skip(page * pageCount)
+					.Take(pageCount)
+					.Include(p => p.Tags)
+					.Include(p => p.Author)
+					.Include(p => p.Likes)
+					.Include(p => p.Comments)
+					.Select(post => mapper.Map<PostResponseModel>(post))
+					.ToListAsync();
 
-            return posts;
-        }
+				return posts;
+			}
+			else
+			{
+				throw new Exception($"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
+			}
+		}
 
         public async Task<Result> UpdatePostAsync(string postToUpdateGuid, UpdatePostRequestModel newPost)
         {

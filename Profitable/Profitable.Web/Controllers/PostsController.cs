@@ -23,12 +23,51 @@ namespace Profitable.Web.Controllers
             this.userManager = userManager;
         }
 
-        [HttpPost("pages")]
-        public async Task<IActionResult> GetByPageAsync([FromBody] GetPostsRequestModel getPostsRequestModel)
+        [HttpGet("feed/{page}/{pageCount}")]
+        public async Task<IActionResult> GetPostFeedAsync(int page, int pageCount)
         {
             try
             {
-                var posts = await postService.GetPostsByPageAsync(getPostsRequestModel);
+                var posts = await postService.GetPostsByPageAsync(page, pageCount);
+
+				using (var client = new HttpClient())
+				{
+					client.BaseAddress = new Uri("https://localhost:7048/api");
+					client.DefaultRequestHeaders.Accept.Clear();
+					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+					foreach (var post in posts)
+					{
+						var response = await client.GetAsync($"comments/{post.Guid}/count");
+
+						if (response.IsSuccessStatusCode)
+						{
+							int commentsCount = await response.Content.ReadFromJsonAsync<int>();
+
+                            post.CommentsCount = commentsCount;
+						}
+					}
+				}
+				
+
+                return Ok(posts);
+            }
+            catch (Exception err)
+            {
+
+                return BadRequest(err);
+            }
+        }
+
+        [Authorize]
+        [HttpGet("byuser/all/{page}/{pageCount}")]
+        public async Task<IActionResult> GetPostsByUserAsync(string page, string pageCount)
+        {
+            try
+            {
+				var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+
+				var posts = await postService.GetPostsByUserAsync(user.Id, int.Parse(page), int.Parse(pageCount));
 
 				using (var client = new HttpClient())
 				{
@@ -110,9 +149,9 @@ namespace Profitable.Web.Controllers
 
         [Authorize]
         [HttpDelete("{guid}/delete")]
-        public async Task<IActionResult> DeleteAsync([FromRoute] string guid)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid guid)
         {
-            var result = await postService.DeletePostAsync(Guid.Parse(guid));
+            var result = await postService.DeletePostAsync(guid);
 
             if (result.Succeeded)
             {
