@@ -156,7 +156,7 @@ export const PostDetails = () => {
         setPostPage(state => ({
             ...state,
             showCreateCommentWidget: !state.showCreateCommentWidget
-        }))
+        }));
     };
 
     return (
@@ -219,24 +219,29 @@ export const PostDetails = () => {
             <section className={styles.commentsSection}>
                 <div className={styles.commentsHeaderContainer}>
                     <h1 className={styles.commentsHeader}>Comments</h1>
-                    <div className={styles.addCommentButtonContainer}>
-                        <button className={styles.addCommentButton} onClick={handleAddCommentButton} >
+                    {JWT ?
+                        <div className={styles.addCommentButtonContainer}>
+                            <button className={styles.addCommentButton} onClick={handleAddCommentButton}>
                             {
                                 postPage.showCreateCommentWidget ? 
                                     <>
                                         <FontAwesomeIcon className={styles.iconAddComment} icon={faCircleMinus} />
                                         Hide Adding Panel
                                     </>
-                                   
+                                
                                 :
                                     <>
                                         <FontAwesomeIcon className={styles.iconAddComment} icon={faPlusCircle} />
                                         Add Comment
                                     </>
-                                   
+                                
                             }
-                        </button>
-                    </div>
+                            </button>
+                        </div>
+                    :
+                        ''
+                    }
+                    
                 </div>
                 {
                     postPage.showCreateCommentWidget ? 
