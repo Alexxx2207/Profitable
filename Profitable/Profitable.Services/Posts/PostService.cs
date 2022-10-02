@@ -6,6 +6,7 @@ using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Posts;
 using Profitable.Models.ResponseModels.Posts;
+using Profitable.Services.Common.Images.Contracts;
 using Profitable.Services.Posts.Contracts;
 
 namespace Profitable.Services.Posts
@@ -15,17 +16,28 @@ namespace Profitable.Services.Posts
         private readonly IRepository<Post> postsRepository;
         private readonly IRepository<Like> likesRepository;
         private readonly IMapper mapper;
+        private readonly IImageService imageService;
 
-        public PostService(IRepository<Post> postsRepository, IRepository<Like> likesRepository, IMapper mapper)
+        public PostService(
+            IRepository<Post> postsRepository,
+            IRepository<Like> likesRepository,
+            IMapper mapper,
+            IImageService imageService)
         {
             this.postsRepository = postsRepository;
             this.likesRepository = likesRepository;
             this.mapper = mapper;
+            this.imageService = imageService;
         }
 
         public async Task<Result> AddPostAsync(ApplicationUser author, AddPostRequestModel newPost)
         {
-            try
+			if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
+			{
+				throw new ArgumentException($"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
+			}
+
+			try
             {
                 var postToAdd = new Post()
                 {
@@ -38,7 +50,7 @@ namespace Profitable.Services.Posts
 
                 if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
                 {
-                    string newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
+                    string newFileName = await imageService.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
                     postToAdd.ImageURL = newFileName;
                 }
 
@@ -50,7 +62,7 @@ namespace Profitable.Services.Posts
             }
             catch (Exception)
             {
-                return "Post was not found!";
+                return "Post was not added!";
             }
 
         }
@@ -142,7 +154,12 @@ namespace Profitable.Services.Posts
 
         public async Task<Result> UpdatePostAsync(string postToUpdateGuid, UpdatePostRequestModel newPost)
         {
-            var postToUpdateGuidCasted = Guid.Parse(postToUpdateGuid);
+            if(newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
+            {
+				throw new ArgumentException($"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
+			}
+
+			var postToUpdateGuidCasted = Guid.Parse(postToUpdateGuid);
 
             var postToUpdate = await postsRepository
                 .GetAll()
@@ -152,13 +169,13 @@ namespace Profitable.Services.Posts
 
             if (postToUpdate != null)
             {
-                GlobalServicesConstants.DeleteUploadedImageAsync(ImageFor.Posts, postToUpdate.ImageURL);
+				await imageService.DeleteUploadedImageAsync(ImageFor.Posts, postToUpdate.ImageURL);
 
                 string newFileName = "";
 
                 if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
 				{
-				    newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
+				    newFileName = await imageService.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
 				}
 
 				postToUpdate.Title = newPost.Title;

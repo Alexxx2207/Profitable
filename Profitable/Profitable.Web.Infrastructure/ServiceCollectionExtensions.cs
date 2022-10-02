@@ -6,6 +6,8 @@ using Profitable.Data;
 using Profitable.Models.EntityModels;
 using Profitable.Services.Comments;
 using Profitable.Services.Comments.Contracts;
+using Profitable.Services.Common.Images;
+using Profitable.Services.Common.Images.Contracts;
 using Profitable.Services.Futures;
 using Profitable.Services.Futures.Contracts;
 using Profitable.Services.Markets;
@@ -44,6 +46,7 @@ namespace Profitable.Web.Infrastructure
 
         public static IServiceCollection AddBusinessLayerServices(this IServiceCollection services)
         {
+            services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IMarketsService, MarketsService>();

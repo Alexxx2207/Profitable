@@ -78,5 +78,37 @@ namespace Profitable.Web.Controllers
 				return BadRequest();
 			}
 		}
+		
+		[Authorize]
+		[HttpPatch("{commentGuid}/update")]
+		public async Task<IActionResult> Update(Guid commentGuid, UpdateCommentRequestModel newComment)
+		{
+			var result = await commentService.UpdateCommentAsync(commentGuid, newComment);
+
+			if(result.Succeeded)
+			{
+				return Ok();
+			}
+			else
+			{
+				return BadRequest(result.Error);
+			}
+		}
+		
+		[Authorize]
+		[HttpDelete("{commentGuid}/delete")]
+		public async Task<IActionResult> Delete(Guid commentGuid)
+		{
+			var result = await commentService.DeleteCommentAsync(commentGuid);
+
+			if(result.Succeeded)
+			{
+				return Ok();
+			}
+			else
+			{
+				return BadRequest(result.Error);
+			}
+		}
 	}
 }

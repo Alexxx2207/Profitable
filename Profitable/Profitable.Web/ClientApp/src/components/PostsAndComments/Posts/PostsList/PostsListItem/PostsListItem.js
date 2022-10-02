@@ -40,7 +40,7 @@ export const PostsListItem = ({post}) => {
                 </div>
                 <div className={styles.comments}>
                     <FontAwesomeIcon className={styles.iconComments} icon={faComments} />
-                    Comments: <strong>{post.comments.length}</strong>
+                    Comments: <strong>{post.commentsCount}</strong>
                 </div>
                 <div className={styles.likeRowContainer}>
                     <PostsLikeWidget post={post} />

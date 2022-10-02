@@ -17,6 +17,6 @@ namespace Profitable.Services.Comments.Contracts
 
         Task<Result> DeleteCommentAsync(Guid guid);
 
-        Task<Result> UpdateCommentAsync(UpdateCommentRequestModel newComment);
+        Task<Result> UpdateCommentAsync(Guid guid, UpdateCommentRequestModel newComment);
     }
 }

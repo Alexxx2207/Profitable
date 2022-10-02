@@ -7,7 +7,6 @@ import { PostsLikeWidget } from '../PostsLikeWidget/PostsLikeWidget';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faArrowCircleLeft,
     faTrash,
     faPenToSquare,
     faPlusCircle,

@@ -28,11 +28,46 @@ export const postComment = async (jwt, postId, comment) => {
             'Authorization': 'Bearer ' + jwt
         });
 
-        console.log(comment);
 
     if([400, 401].includes(result.status)) {
         throw new Error(result.status);
     } else {
         return await result.json();
+    }
+};
+
+export const deleteComment = async (jwt, commentId) => {
+    
+    let result = await request
+        .delete(`${WEB_API_BASE_URL}/comments/${commentId}/delete`,
+        null,
+        {
+            'Authorization': 'Bearer ' + jwt
+        });
+
+
+    if([400, 401].includes(result.status)) {
+        throw new Error(result.status);
+    } else {
+        return await result.text();
+    }
+};
+
+
+export const editComment = async (jwt, commentId, comment) => {
+    
+    let result = await request
+        .patch(`${WEB_API_BASE_URL}/comments/${commentId}/update`,
+        {
+            content: comment
+        },
+        {
+            'Authorization': 'Bearer ' + jwt
+        });
+
+    if([400, 401].includes(result.status)) {
+        throw new Error(result.status);
+    } else {
+        return await result.text();
     }
 };

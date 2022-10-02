@@ -32,13 +32,13 @@ namespace Profitable.Web.Controllers
 
 				using (var client = new HttpClient())
 				{
-					client.BaseAddress = new Uri("https://localhost:7048/api");
+					client.BaseAddress = new Uri("https://localhost:7048");
 					client.DefaultRequestHeaders.Accept.Clear();
 					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 					foreach (var post in posts)
 					{
-						var response = await client.GetAsync($"comments/{post.Guid}/count");
+						var response = await client.GetAsync($"api/comments/{post.Guid}/count");
 
 						if (response.IsSuccessStatusCode)
 						{
@@ -48,7 +48,6 @@ namespace Profitable.Web.Controllers
 						}
 					}
 				}
-				
 
                 return Ok(posts);
             }
@@ -71,13 +70,13 @@ namespace Profitable.Web.Controllers
 
 				using (var client = new HttpClient())
 				{
-					client.BaseAddress = new Uri("https://localhost:7048/api");
+					client.BaseAddress = new Uri("https://localhost:7048");
 					client.DefaultRequestHeaders.Accept.Clear();
 					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 					foreach (var post in posts)
 					{
-						var response = await client.GetAsync($"comments/{post.Guid}/count");
+						var response = await client.GetAsync($"api/comments/{post.Guid}/count");
 
 						if (response.IsSuccessStatusCode)
 						{
@@ -142,7 +141,7 @@ namespace Profitable.Web.Controllers
             catch (Exception err)
             {
 
-                return BadRequest(err);
+                return BadRequest(err.Message);
             }
 
         }

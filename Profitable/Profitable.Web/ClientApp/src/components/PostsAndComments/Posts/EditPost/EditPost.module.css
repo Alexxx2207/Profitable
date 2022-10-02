@@ -153,21 +153,6 @@
     margin-right: 0.5rem;
 }
 
-.backButton {
-    border: 2px solid white;
-}
-
-.backButton:hover, .backButton:hover *{
-    background-color: #1e222d;
-    color: white;
-    transition: ease-out 0.3s;
-}
-
-.backText {
-    font-weight: 600;
-    padding-bottom: 0.1rem;
-}
-
 .inputCheckbox {
     width: 3vw;
     height: 3vw;

@@ -138,10 +138,6 @@ export const EditPost = () => {
         }
     };
 
-    const goBackHandler = (e) => {
-        navigate(`/posts/${postId}`);
-    }
-
     const changeImageHandler = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -168,14 +164,6 @@ export const EditPost = () => {
 
     return (
         <div className={styles.pageContainer}>
-            <div className={styles.buttonContainer}>
-                <button className={classnames(styles.button, styles.backButton)} onClick={goBackHandler}>
-                    <FontAwesomeIcon className={styles.iconLeftArrow} icon={faArrowCircleLeft} />
-                    <div className={styles.backText}>
-                        Go Back
-                    </div>
-                </button>
-            </div>
             <div className={styles.editSectionContainer}>
                 <div className={styles.editContainer}>
                     <form className={styles.editForm} onSubmit={onSubmit} >

@@ -7,6 +7,10 @@ namespace Profitable.GlobalConstants
 
         public static readonly int PostsMaxCountInPage = 100;
 
+        public static readonly short PostMaxLength = 2000;
+
+        public static readonly short CommentMaxLength = 1000;
+
         public static readonly string EntityDoesNotExist = "Entity does not exist!";
 
         public static readonly string UploadsFolderInProject = "Profitable.Web";
@@ -16,37 +20,5 @@ namespace Profitable.GlobalConstants
         public static readonly string UploadsFolderPath =
             Path.GetDirectoryName(Directory.GetCurrentDirectory())
             + $"{DirectorySeparatorChar}{UploadsFolderInProject}{DirectorySeparatorChar}Uploads";
-
-        public static async Task<string> SaveUploadedImageAsync(ImageFor imageFor, string fileName, string base64Image)
-        {
-            string time = Regex.Replace(DateTime.UtcNow.ToString(), @"\/|\:|\s", "");
-            string newFileName = time + fileName;
-
-            string path = GlobalServicesConstants.UploadsFolderPath +
-                GlobalServicesConstants.DirectorySeparatorChar +
-                imageFor.ToString() +
-                GlobalServicesConstants.DirectorySeparatorChar +
-                newFileName;
-
-            await File.WriteAllBytesAsync(path, Convert.FromBase64String(base64Image));
-
-            return newFileName;
-        }
-
-		public static async Task<string> DeleteUploadedImageAsync(ImageFor imageFor, string fileName)
-		{
-			string path = GlobalServicesConstants.UploadsFolderPath +
-				GlobalServicesConstants.DirectorySeparatorChar +
-				imageFor.ToString() +
-				GlobalServicesConstants.DirectorySeparatorChar +
-				fileName;
-
-			if (File.Exists(path))
-            {
-		    	File.Delete(path);
-            }
-
-			return fileName;
-		}
 	}
 }

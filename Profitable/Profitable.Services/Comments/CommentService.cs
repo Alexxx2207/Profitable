@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Profitable.Common;
 using Profitable.Data.Repository.Contract;
+using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Comments;
 using Profitable.Models.ResponseModels.Comments;
@@ -23,6 +24,11 @@ namespace Profitable.Services.Comments
 
 		public async Task<Result> AddCommentAsync(Comment newComment)
 		{
+			if (newComment.Content.Length > GlobalServicesConstants.CommentMaxLength)
+			{
+				return $"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
+			}
+
 			await repository.AddAsync(newComment);
 
 			await repository.SaveChangesAsync();
@@ -47,6 +53,7 @@ namespace Profitable.Services.Comments
 		{
 			var comments = await repository
 				.GetAllAsNoTracking()
+				.Where(comment => comment.IsDeleted == false)
 				.Where(comment => comment.PostId == guid)
 				.Skip(page * pageCount)
 				.Take(pageCount)
@@ -62,6 +69,7 @@ namespace Profitable.Services.Comments
 		{
 			var comments = await repository
 				.GetAllAsNoTracking()
+				.Where(comment => comment.IsDeleted == false)
 				.Where(comment => comment.AuthorId == userGuid)
 				.Skip(page * pageCount)
 				.Take(pageCount)
@@ -75,26 +83,41 @@ namespace Profitable.Services.Comments
 
 		public async Task<int> GetCommentsCountByPostAsync(Guid guid)
 		{
-			var comments = await repository
+			var a = (await repository
 				.GetAllAsNoTracking()
 				.Where(comment => comment.PostId == guid)
-				.Select(comment => mapper.Map<CommentResponseModel>(comment))
-				.ToListAsync();
+				.Where(comment => comment.IsDeleted == false)
+				.ToListAsync()).Count;
 
-			return comments.Count;
+			var comments = (
+				await repository
+				.GetAllAsNoTracking()
+				.Where(comment => comment.PostId == guid)
+				.Where(comment => comment.IsDeleted == false)
+				.Select(comment => mapper.Map<CommentResponseModel>(comment))
+				.ToListAsync()
+				)
+				.Count;
+
+			return comments;
 		}
 
-		public async Task<Result> UpdateCommentAsync(UpdateCommentRequestModel newComment)
+		public async Task<Result> UpdateCommentAsync(Guid guid, UpdateCommentRequestModel newComment)
 		{
+			if (newComment.Content.Length > GlobalServicesConstants.CommentMaxLength)
+			{
+				return $"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
+			}
+
 			var comment = mapper.Map<Comment>(newComment);
 
 			var existingComment = await repository
 				.GetAll().
-				FirstAsync(entity => entity.Guid == Guid.Parse(newComment.Guid));
+				FirstAsync(entity => entity.Guid == guid);
 
 			if (existingComment == null)
 			{
-				return GlobalConstants.GlobalServicesConstants.EntityDoesNotExist;
+				return GlobalServicesConstants.EntityDoesNotExist;
 			}
 
 			existingComment.Content = newComment.Content;

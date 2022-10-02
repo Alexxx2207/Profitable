@@ -6,7 +6,11 @@ export const CommentsList = ({comments}) => {
     return (
         <div className={styles.commentsListContainer}>
             {comments.length > 0 ?
-                comments.map((comment, index) => <CommentWidget key={index} comment={comment} />)
+                comments.map((comment, index) => 
+                    <CommentWidget
+                    key={index}
+                    comment={comment}
+                    deleteFromList={null} />)
             :
                 <h3 className={styles.noCommentsYetMessage}>No Comments Yet</h3>
             }
