@@ -8,6 +8,7 @@ using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Users;
 using Profitable.Models.ResponseModels.Users;
+using Profitable.Services.Common.Images.Contracts;
 using Profitable.Services.Users.Contracts;
 
 namespace Profitable.Services.Users
@@ -18,17 +19,20 @@ namespace Profitable.Services.Users
         private readonly IMapper mapper;
         private readonly IJWTManagerRepository jWTManagerRepository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IImageService imageService;
 
         public UserService(
             IRepository<ApplicationUser> repository,
             IMapper mapper,
             IJWTManagerRepository jWTManagerRepository,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IImageService imageService)
         {
             this.repository = repository;
             this.mapper = mapper;
             this.jWTManagerRepository = jWTManagerRepository;
             this.userManager = userManager;
+            this.imageService = imageService;
         }
 
         public async Task<UserDetailsResponseModel> GetUserDetailsAsync(string email)
@@ -141,9 +145,9 @@ namespace Profitable.Services.Users
                 {
                     if(!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
                     {
-						GlobalServicesConstants.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+						imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
 					}
-                    string newFileName = await GlobalServicesConstants.SaveUploadedImageAsync(ImageFor.Users, editUserData.FileName, editUserData.Image);
+                    string newFileName = await imageService.SaveUploadedImageAsync(ImageFor.Users, editUserData.FileName, editUserData.Image);
 
                     user.ProfilePictureURL = newFileName;
 
@@ -169,7 +173,7 @@ namespace Profitable.Services.Users
             {
 				if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
 				{
-					GlobalServicesConstants.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+					imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
 				}
 
 				user.ProfilePictureURL = "";
@@ -192,7 +196,7 @@ namespace Profitable.Services.Users
             {
 				if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
 				{
-					GlobalServicesConstants.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+					imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
 				}
 
 				repository.HardDelete(user);

@@ -157,7 +157,7 @@ export const FuturesCalculator = () => {
                     <h4 className={styles.contractTypeHeading}>Select Contract</h4>
                     <select className={styles.selectContract} onChange={(e) => OnChangeContractType(e.target.value)} select={futures.chosenFutures.name}>
                         {futures.allFutures.map((futureContract, index) =>
-                            <option key={futureContract.guid} value={index}>{futureContract.name}</option>
+                            <option className={styles.selectContractOption} key={futureContract.guid} value={index}>{futureContract.name}</option>
                         )}
                     </select>
                 </div>

@@ -25,7 +25,7 @@ export const About = () => {
                 <section className={styles.aboutSection}>
                     <h1 className={styles.sectionHeading}>Contact Us</h1>
 
-                    <p className={styles.aboutParagraph}>Office Location: <a href="https://g.page/GaritagePark?share">Geritage Park Sofia</a></p>
+                    <p className={styles.aboutParagraph}>Office Location:<br /><a href="https://g.page/GaritagePark?share">Geritage Park Sofia</a></p>
                     <p className={styles.aboutParagraph}>Email: customer.support@profitable.com</p>
                 </section>
             </div>

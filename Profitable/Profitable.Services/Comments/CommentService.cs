@@ -2,86 +2,129 @@
 using Microsoft.EntityFrameworkCore;
 using Profitable.Common;
 using Profitable.Data.Repository.Contract;
+using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Comments;
 using Profitable.Models.ResponseModels.Comments;
 using Profitable.Services.Comments.Contracts;
+using System;
 
 namespace Profitable.Services.Comments
 {
-    public class CommentService : ICommentService
-    {
-        private readonly IRepository<Comment> repository;
-        private readonly IMapper mapper;
+	public class CommentService : ICommentService
+	{
+		private readonly IRepository<Comment> repository;
+		private readonly IMapper mapper;
 
-        public CommentService(IRepository<Comment> repository, IMapper mapper)
-        {
-            this.repository = repository;
-            this.mapper = mapper;
-        }
+		public CommentService(IRepository<Comment> repository, IMapper mapper)
+		{
+			this.repository = repository;
+			this.mapper = mapper;
+		}
 
-        public async Task<Result> AddCommentAsync(AddCommentRequestModel newComment)
-        {
-            var comment = mapper.Map<Comment>(newComment);
+		public async Task<Result> AddCommentAsync(Comment newComment)
+		{
+			if (newComment.Content.Length > GlobalServicesConstants.CommentMaxLength)
+			{
+				return $"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
+			}
 
-            await repository.AddAsync(comment);
+			await repository.AddAsync(newComment);
 
-            await repository.SaveChangesAsync();
+			await repository.SaveChangesAsync();
 
-            return true;
-        }
+			return true;
+		}
 
-        public async Task<Result> DeleteCommentAsync(Guid guid)
-        {
-            var comment = await repository
-                .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.Guid == guid);
+		public async Task<Result> DeleteCommentAsync(Guid guid)
+		{
+			var comment = await repository
+				.GetAllAsNoTracking()
+				.FirstAsync(entity => entity.Guid == guid);
 
-            repository.Delete(comment);
+			repository.Delete(comment);
 
-            await repository.SaveChangesAsync();
+			await repository.SaveChangesAsync();
 
-            return true;
-        }
+			return true;
+		}
 
-        public async Task<CommentResponseModel> GetCommentAsync(Guid guid)
-        {
-            var comment = await repository
-                .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.Guid == guid);
+		public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid, int page, int pageCount)
+		{
+			var comments = await repository
+				.GetAllAsNoTracking()
+				.Where(comment => comment.IsDeleted == false)
+				.Where(comment => comment.PostId == guid)
+				.Skip(page * pageCount)
+				.Take(pageCount)
+				.OrderByDescending(c => c.PostedOn)
+				.Include(c => c.Author)
+				.Select(comment => mapper.Map<CommentResponseModel>(comment))
+				.ToListAsync();
 
-            return mapper.Map<CommentResponseModel>(comment);
-        }
+			return comments;
+		}
 
-        public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid)
-        {
-            var comments = await repository
-                .GetAllAsNoTracking()
-                .Where(comment => comment.PostId == guid)
-                .Select(comment => mapper.Map<CommentResponseModel>(comment))
-                .ToListAsync();
+		public async Task<List<CommentResponseModel>> GetCommentsByUserAsync(Guid userGuid, int page, int pageCount)
+		{
+			var comments = await repository
+				.GetAllAsNoTracking()
+				.Where(comment => comment.IsDeleted == false)
+				.Where(comment => comment.AuthorId == userGuid)
+				.Skip(page * pageCount)
+				.Take(pageCount)
+				.OrderByDescending(c => c.PostedOn)
+				.Include(c => c.Author)
+				.Select(comment => mapper.Map<CommentResponseModel>(comment))
+				.ToListAsync();
 
-            return comments;
-        }
+			return comments;
+		}
 
-        public async Task<Result> UpdateCommentAsync(UpdateCommentRequestModel newComment)
-        {
-            var comment = mapper.Map<Comment>(newComment);
+		public async Task<int> GetCommentsCountByPostAsync(Guid guid)
+		{
+			var a = (await repository
+				.GetAllAsNoTracking()
+				.Where(comment => comment.PostId == guid)
+				.Where(comment => comment.IsDeleted == false)
+				.ToListAsync()).Count;
 
-            var existingComment = await repository
-                .GetAll().
-                FirstAsync(entity => entity.Guid == Guid.Parse(newComment.Guid));
+			var comments = (
+				await repository
+				.GetAllAsNoTracking()
+				.Where(comment => comment.PostId == guid)
+				.Where(comment => comment.IsDeleted == false)
+				.Select(comment => mapper.Map<CommentResponseModel>(comment))
+				.ToListAsync()
+				)
+				.Count;
 
-            if (existingComment == null)
-            {
-                return GlobalConstants.GlobalServicesConstants.EntityDoesNotExist;
-            }
+			return comments;
+		}
 
-            existingComment.Content = newComment.Content;
+		public async Task<Result> UpdateCommentAsync(Guid guid, UpdateCommentRequestModel newComment)
+		{
+			if (newComment.Content.Length > GlobalServicesConstants.CommentMaxLength)
+			{
+				return $"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
+			}
 
-            await repository.SaveChangesAsync();
+			var comment = mapper.Map<Comment>(newComment);
 
-            return true;
-        }
-    }
+			var existingComment = await repository
+				.GetAll().
+				FirstAsync(entity => entity.Guid == guid);
+
+			if (existingComment == null)
+			{
+				return GlobalServicesConstants.EntityDoesNotExist;
+			}
+
+			existingComment.Content = newComment.Content;
+
+			await repository.SaveChangesAsync();
+
+			return true;
+		}
+	}
 }

@@ -23,6 +23,7 @@
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    width: 10rem;
     margin: 1rem 0rem;
     padding: 0.3rem;
     text-align: center;

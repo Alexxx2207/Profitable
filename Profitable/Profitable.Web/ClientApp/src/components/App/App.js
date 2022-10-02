@@ -7,7 +7,6 @@ import {
 
 import { AuthContextProvider } from '../../contexts/AuthContext';
 import { MessageBoxContextProvider } from '../../contexts/MessageBoxContext';
-
 import { NavBar } from "../NavBar/NavBar";
 import { Home } from '../Home/Home';
 import { MarketsPage } from '../Markets/MarketsPage/MarketsPage';
@@ -15,14 +14,14 @@ import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
 import { PostDetails } from '../PostsAndComments/Posts/PostDetails/PostDetails';
 import { Login } from "../Authentication/Login/Login";
 import { Register } from "../Authentication/Register/Register";
-import { ProfilePage } from "../UserProfile/ProfilePage/ProfilePage";
+import { ProfilePage } from "../User/ProfilePage/ProfilePage";
 import { Logout } from "../Authentication/Logout";
 import { NotFoundPage } from "../NotFoundPage/NotFoundPage";
 
 import { CreatePost } from "../PostsAndComments/Posts/CreatePost/CreatePost";
 import { EditPost } from "../PostsAndComments/Posts/EditPost/EditPost";
 
-import { ProfileInfo } from "../UserProfile/ProfileInfo/ProfileInfo";
+import { ProfileInfo } from "../User/ProfileInfo/ProfileInfo";
 
 import { Calcualtors } from "../Calculators/Calculators";
 import { NewsList } from "../News/NewsList";
@@ -31,6 +30,8 @@ import { Calendars } from "../Calendars/Calendars";
 
 // eslint-disable-next-line
 import styles from './App.module.css';
+import { AccountActivity } from "../User/AccountActivity/AccountActivity";
+import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExplorer";
 
 
 export function App() {
@@ -61,12 +62,17 @@ export function App() {
                         </Route>
 
                         <Route path="/posts" element={
-                            <PostsList />
+                            <PostsExplorer />
                         }>
                         </Route>
 
                         <Route path="/posts/:postId" element={
                             <PostDetails />
+                        }>
+                        </Route>
+
+                        <Route path="/posts/create" element={
+                            <CreatePost />
                         }>
                         </Route>
 
@@ -89,11 +95,7 @@ export function App() {
                             <Route index element={ <ProfileInfo /> } />
                             <Route path="personal-info" element={ <ProfileInfo /> } />
                             <Route path="account-statistics" element={null} />
-                        </Route>
-
-                        <Route path="/posts/create" element={
-                            <CreatePost />
-                        }>
+                            <Route path="account-activity" element={ <AccountActivity /> } />
                         </Route>
 
                         <Route path="/posts/:postId/edit" element={

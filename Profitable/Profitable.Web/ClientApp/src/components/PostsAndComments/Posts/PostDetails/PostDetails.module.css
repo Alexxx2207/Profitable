@@ -1,5 +1,5 @@
 .post {
-    margin: 4vw;
+    margin: 4rem;
     padding: 2rem;
     box-shadow: 0px 0px 2.7rem 0.2rem white;
     border-radius: 1rem;
@@ -15,8 +15,9 @@
 
 .ownerButtonSection {
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    gap: 5rem;
 }
 
 .button {
@@ -26,7 +27,7 @@
     border-radius: 100px;
     display: flex;
     align-items: center;
-    padding: 0.7rem 1rem;
+    padding: 0.6rem 2.2rem;
     transition: ease-out 0.3s;
 }
 
@@ -42,11 +43,11 @@
     margin-right: 0.5rem;
 }
 
-.backButton, .editButton {
+.editButton {
     border: 2px solid white;
 }
 
-.backButton:hover, .backButton:hover *, .editButton:hover, .editButton:hover *{
+.editButton:hover, .editButton:hover *{
     background-color: #1e222d;
     color: white;
     transition: ease-out 0.3s;
@@ -130,4 +131,45 @@
 
 .authorName:hover {
     cursor: pointer;
+}
+
+.commentsHeaderContainer {
+    display: flex;
+    align-items: center;
+}
+
+.commentsHeader {
+    width: 50%;
+    padding-left: 0.8rem;
+    padding-bottom: 1.2rem;
+    margin-bottom: 3rem;
+    margin-left: 4rem;
+    margin-right: 2rem;
+    border-bottom: 2px solid white;
+}
+
+.addCommentButton {
+    font-size: 1.2rem;
+    padding: 0.7rem 3.5rem;
+    border: 2px solid white;
+    border-radius: 50px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.addCommentButton, .addCommentButton *{
+    background-color: white;
+    color: black;
+    transition: 0.3s ease-in-out;
+}
+
+.addCommentButton:hover, .addCommentButton:hover *{
+    background-color: black;
+    color: white;
+    transition: 0.3s ease-in-out;
+}
+
+.iconAddComment {
+    margin-right: 1rem;
 }

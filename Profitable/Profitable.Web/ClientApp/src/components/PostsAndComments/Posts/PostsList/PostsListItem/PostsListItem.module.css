@@ -1,11 +1,12 @@
 .post {
     position: relative;
-    width: 47%;
+    width: 48%;
     padding: 2rem;
     border: 2px solid #282829;
     display: flex;
     flex-direction: column;
     transition: 0.3s;
+    border-radius: 10px;
 }
 
 .post:hover {
@@ -66,7 +67,7 @@
 }
 
 .comments {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 .iconComments {

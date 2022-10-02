@@ -49,19 +49,22 @@ export const deletePost = async (jwt, postGuid) => {
     return await result.json();
 }
 
-export const loadPostsPage = (page, postsCount) => {
+export const loadPostsPage = (page, pageCount) => {
+    return request.get(
+        `${WEB_API_BASE_URL}/posts/feed/${page}/${pageCount}`)
+        .then(response => response.json());
+};
 
-    const postBody = {
-        'PostsCount': postsCount,
-        'Page': page
-    };
-
-    return request.post(
-        `${WEB_API_BASE_URL}/posts/pages`,
-        postBody
+export const loadPostsPageByUserId = (jwt, page, pageCount) => {
+    return request.get(
+        `${WEB_API_BASE_URL}/posts/byuser/all/${page}/${pageCount}`,
+        null,
+        {
+            'Authorization': 'Bearer ' + jwt
+        }
     )
         .then(response => response.json());
-}
+};
 
 export const manageLikePost = async (jwt, postId) => {
     let result = await request.post(`${WEB_API_BASE_URL}/posts/${postId}/likes/manage`, null, {

@@ -9,9 +9,9 @@ namespace Profitable.Services.Posts.Contracts
     {
         Task<PostResponseModel> GetPostByGuidAsync(Guid guid);
 
-        Task<List<PostResponseModel>> GetPostsByPageAsync(GetPostsRequestModel getPostsRequestModel);
+        Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int pageCount);
 
-        Task<List<PostResponseModel>> GetPostsByTraderAsync(Guid traderId);
+        Task<List<PostResponseModel>> GetPostsByUserAsync(Guid userId, int page, int pageCount);
 
         Task<int> ManagePostLikeAsync(ApplicationUser author, string postGuid);
 

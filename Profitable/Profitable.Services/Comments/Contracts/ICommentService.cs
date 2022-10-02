@@ -1,4 +1,5 @@
 ﻿using Profitable.Common;
+using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Comments;
 using Profitable.Models.ResponseModels.Comments;
 
@@ -6,14 +7,16 @@ namespace Profitable.Services.Comments.Contracts
 {
     public interface ICommentService
     {
-        Task<CommentResponseModel> GetCommentAsync(Guid guid);
+        Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid, int page, int pageCount);
 
-        Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid);
+        Task<int> GetCommentsCountByPostAsync(Guid guid);
 
-        Task<Result> AddCommentAsync(AddCommentRequestModel newComment);
+        Task<List<CommentResponseModel>> GetCommentsByUserAsync(Guid userGuid, int page, int pageCount);
+
+        Task<Result> AddCommentAsync(Comment newComment);
 
         Task<Result> DeleteCommentAsync(Guid guid);
 
-        Task<Result> UpdateCommentAsync(UpdateCommentRequestModel newComment);
+        Task<Result> UpdateCommentAsync(Guid guid, UpdateCommentRequestModel newComment);
     }
 }
