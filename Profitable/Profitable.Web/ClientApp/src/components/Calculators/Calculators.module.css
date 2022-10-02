@@ -1,9 +1,12 @@
 
 .calculatorsContainer { 
     margin: 4% 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
-.futuresCalculatorContainer {
+.calculatorContainer {
     padding: 1rem 2rem;
     border: 1px solid white;
     background-color: white;
@@ -11,7 +14,7 @@
     border-radius: 10px;
 }
 
-.futuresCalculatorContainer *{
+.calculatorContainer *{
     background-color: white;
     color: black;
 }

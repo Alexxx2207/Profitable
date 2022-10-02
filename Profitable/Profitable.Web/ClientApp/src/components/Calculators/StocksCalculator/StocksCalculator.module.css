@@ -1,0 +1,202 @@
+.sharesCalculatorHeading {
+    margin-bottom: 2rem;
+}
+
+.shareTypeContainer {
+    display: flex;
+}
+
+.shareTypeContainer .shareTypeHeading {
+    margin-right: 2rem;
+}
+
+.selectContract {
+    margin-bottom: 1.2rem;
+    padding: 0.5rem;
+    transform: translateY(-0.25rem);
+    border: 2px solid black;
+    cursor: pointer;
+}
+
+.selectContractOption {
+    cursor: pointer;
+}
+
+.sharesInformation {
+    margin-left: 2%;
+}
+
+.stocksInformation {
+    display: flex;
+    gap: 4%;
+}
+
+.entryPriceHeading {
+    grid-area: 'entryPriceHeading';
+}
+
+.entryPriceChange {
+    grid-area: 'entryPriceChange';
+}
+
+.exitPriceHeading {
+    grid-area: 'exitPriceHeading';
+}
+
+.exitPriceChange {
+    grid-area: 'exitPriceChange';
+}
+
+.sharesNumberHeading {
+    grid-area: 'sharesCountHeading';
+}
+
+.sharesNumberChange {
+    grid-area: 'shareCountChange';
+}
+
+.positionInformationContainer {
+    width: 70%;
+    display: grid;
+    grid-template-areas: 
+        'entryPriceHeading entryPriceChange'
+        'exitPriceHeading exitPriceChange'
+        'sharesCountHeading shareCountChange';
+    gap: 0.2rem;
+    background-color: black !important;
+    border: 0.2rem solid black;
+    border-radius: 3px;
+}
+
+.positionInformationContainer>* {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0rem;
+}
+
+.positionInformationContainer h1,
+.positionInformationContainer h2,
+.positionInformationContainer h3,
+.positionInformationContainer h4,
+.positionInformationContainer h5,
+.positionInformationContainer h6
+{
+    margin: 0;
+}
+
+.positionInformationContainer input[type="number"] {
+    width: 90%;
+    text-align:right;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.entryPriceHeading {
+    grid-area: 'entryCommissionHeading';
+      display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.entryPriceChange {
+    grid-area: 'entryCommissionChange';
+
+}
+
+.exitPriceHeading {
+    grid-area: 'exitCommissionHeading';
+      display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.exitPriceChange {
+    grid-area: 'exitCommissionChange';
+}
+
+
+.positionInformationCommisionContainer {
+    grid-template-areas: 
+    'entryCommissionHeading entryCommissionChange'
+    'exitCommissionHeading exitCommissionChange';
+}
+
+.answerWrapper {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.resultsLabel {
+    margin-right: 3rem;
+}
+
+.dollarsHeading {
+    grid-area: dollarsHeading;
+}
+
+.dollarsValue {
+    grid-area: dollarsValue;
+}
+
+.answerContainer {
+    display: grid;
+    grid-template-areas: 
+        'ticksHeading ticksValue'
+        'dollarsHeading dollarsValue';
+        gap: 0.2rem;
+        background-color: black !important;
+        border: 0.2rem solid black;
+        border-radius: 3px;
+}
+
+.answerContainer>* {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 5rem;
+}
+.answerContainer h1,
+.answerContainer h2,
+.answerContainer h3,
+.answerContainer h4,
+.answerContainer h5,
+.answerContainer h6
+ {
+    margin: 0;
+}
+
+.redPL {
+    color: red !important;
+}
+
+.greenPL { 
+    color: green !important;
+}
+
+.calculateButtonContainer {
+    margin: 2rem 0rem;
+    text-align: center;
+}
+
+.calculateButton {
+    display: inline-block;
+    text-align: center;
+    padding: 0.5rem 1.2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background-color: white;
+    color: black;
+    border: 3.5px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+}
+
+.calculateButton:hover {
+    background-color: black;
+    color: white;
+    transition: 0.3s ease-in-out;
+}
