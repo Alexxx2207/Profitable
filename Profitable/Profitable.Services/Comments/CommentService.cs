@@ -55,9 +55,9 @@ namespace Profitable.Services.Comments
 				.GetAllAsNoTracking()
 				.Where(comment => comment.IsDeleted == false)
 				.Where(comment => comment.PostId == guid)
+				.OrderByDescending(c => c.PostedOn)
 				.Skip(page * pageCount)
 				.Take(pageCount)
-				.OrderByDescending(c => c.PostedOn)
 				.Include(c => c.Author)
 				.Select(comment => mapper.Map<CommentResponseModel>(comment))
 				.ToListAsync();
@@ -71,9 +71,9 @@ namespace Profitable.Services.Comments
 				.GetAllAsNoTracking()
 				.Where(comment => comment.IsDeleted == false)
 				.Where(comment => comment.AuthorId == userGuid)
+				.OrderByDescending(c => c.PostedOn)
 				.Skip(page * pageCount)
 				.Take(pageCount)
-				.OrderByDescending(c => c.PostedOn)
 				.Include(c => c.Author)
 				.Select(comment => mapper.Map<CommentResponseModel>(comment))
 				.ToListAsync();

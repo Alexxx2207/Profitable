@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Posts;
 using Profitable.Models.ResponseModels.Comments;
+using Profitable.Services.Comments.Contracts;
 using Profitable.Services.Posts.Contracts;
 using Profitable.Web.Controllers.BaseApiControllers;
 using System.Net.Http.Headers;
@@ -15,11 +16,15 @@ namespace Profitable.Web.Controllers
     public class PostsController : BaseApiController
     {
         private readonly IPostService postService;
+        private readonly ICommentService commentService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public PostsController(IPostService postService, UserManager<ApplicationUser> userManager)
+        public PostsController(IPostService postService,
+            ICommentService commentService,
+            UserManager<ApplicationUser> userManager)
         {
             this.postService = postService;
+            this.commentService = commentService;
             this.userManager = userManager;
         }
 
@@ -30,26 +35,14 @@ namespace Profitable.Web.Controllers
             {
                 var posts = await postService.GetPostsByPageAsync(page, pageCount);
 
-				using (var client = new HttpClient())
-				{
-					client.BaseAddress = new Uri("https://localhost:7048");
-					client.DefaultRequestHeaders.Accept.Clear();
-					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                foreach (var post in posts)
+                {
+                    var commentsCount = await commentService.GetCommentsCountByPostAsync(Guid.Parse(post.Guid));
+                    
+                    post.CommentsCount = commentsCount;
+			    }
 
-					foreach (var post in posts)
-					{
-						var response = await client.GetAsync($"api/comments/{post.Guid}/count");
-
-						if (response.IsSuccessStatusCode)
-						{
-							int commentsCount = await response.Content.ReadFromJsonAsync<int>();
-
-                            post.CommentsCount = commentsCount;
-						}
-					}
-				}
-
-                return Ok(posts);
+				return Ok(posts);
             }
             catch (Exception err)
             {

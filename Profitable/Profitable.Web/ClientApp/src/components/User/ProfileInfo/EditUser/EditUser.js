@@ -1,16 +1,16 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../../contexts/AuthContext';
-import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
-import { getUserDataByJWT } from '../../../services/users/usersService';
-import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
+import { getUserDataByJWT } from '../../../../services/users/usersService';
+import { ErrorWidget } from '../../../ErrorWidget/ErrorWidget';
 
-import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE } from '../../../common/config';
-import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH } from '../../../common/validationConstants';
-import { isEmptyOrWhiteSpaceFieldChecker, minLengthChecker, isWhiteSpaceFieldChecker } from '../../../services/common/errorValidationCheckers';
-import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
-import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
-import { editGeneralUserData } from '../../../services/users/usersService';
+import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE } from '../../../../common/config';
+import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH } from '../../../../common/validationConstants';
+import { isEmptyOrWhiteSpaceFieldChecker, minLengthChecker, isWhiteSpaceFieldChecker } from '../../../../services/common/errorValidationCheckers';
+import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
+import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
+import { editGeneralUserData } from '../../../../services/users/usersService';
 
 import styles from './EditUser.module.css';
 

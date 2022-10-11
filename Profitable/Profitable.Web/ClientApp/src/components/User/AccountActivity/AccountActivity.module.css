@@ -6,3 +6,10 @@
     cursor: pointer;
     border-radius: 10px;
 }
+.activityTypeSelectorType * {
+    color: white;
+}
+
+.optionType {
+    padding: 1rem 0rem;
+}

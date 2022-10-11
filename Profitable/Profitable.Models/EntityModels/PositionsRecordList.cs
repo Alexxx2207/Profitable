@@ -14,10 +14,13 @@ namespace Profitable.Models.EntityModels
 		public PositionsRecordList()
 		{
 			Positions = new HashSet<TradePosition>();
+			ListCreatedOn = DateTime.UtcNow;
 		}
 
 		[Required]
 		public string Name { get; set; }
+
+		public DateTime ListCreatedOn { get; set; }
 
 
 		[ForeignKey("User")]

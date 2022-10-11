@@ -28,18 +28,33 @@
     justify-content: space-between;
 }
 
+.pages {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    flex-wrap: wrap;
+}
+
 .pages>* {
     margin-left: 0.7rem;
 }
 
-.userPanel>* {
-    margin-right: 1.3rem;
+.userPanel {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    flex-wrap: wrap;
 }
 
 .authContainer {
     width: 100%;
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.authContainer>*{
+    margin-left: 1rem;
 }
 
 .navbarListItems {
@@ -77,4 +92,15 @@
 
 .newsIcon {
     --fa-animation-duration: 1.5s;
+}
+
+.logoImage {
+    width: 100px;
+}
+
+@media (max-width: 700px) {
+    .userPanel {
+        display: flex;
+        flex-direction: column;
+    }
 }

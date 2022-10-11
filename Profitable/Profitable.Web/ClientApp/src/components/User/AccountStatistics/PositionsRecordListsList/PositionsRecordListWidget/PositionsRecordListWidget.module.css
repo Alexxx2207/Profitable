@@ -1,0 +1,11 @@
+.widgetContainer {
+    width: 100%;
+    background-color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+}
+
+.widgetContainer * {
+    background-color: white;
+    color: black;
+}

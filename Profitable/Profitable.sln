@@ -26,7 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6D7810
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EF0ECFE2-8E9D-40FF-8705-AA1EE74F6C62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common", "Profitable.Common\Profitable.Common.csproj", "{9318892A-CE3A-40CB-B598-98CEA3D66743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.Enums", "Profitable.Common\Profitable.Common.Enums.csproj", "{9318892A-CE3A-40CB-B598-98CEA3D66743}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Web.Infrastructure", "Profitable.Web.Infrastructure\Profitable.Web.Infrastructure.csproj", "{A0AAF0B2-0AED-48C1-AC1C-E7DAD90A39D6}"
 EndProject

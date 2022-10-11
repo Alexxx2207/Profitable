@@ -10,7 +10,6 @@ import { MessageBoxContextProvider } from '../../contexts/MessageBoxContext';
 import { NavBar } from "../NavBar/NavBar";
 import { Home } from '../Home/Home';
 import { MarketsPage } from '../Markets/MarketsPage/MarketsPage';
-import { PostsList } from '../PostsAndComments/Posts/PostsList/PostsList';
 import { PostDetails } from '../PostsAndComments/Posts/PostDetails/PostDetails';
 import { Login } from "../Authentication/Login/Login";
 import { Register } from "../Authentication/Register/Register";
@@ -32,6 +31,7 @@ import { Calendars } from "../Calendars/Calendars";
 import styles from './App.module.css';
 import { AccountActivity } from "../User/AccountActivity/AccountActivity";
 import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExplorer";
+import { AccountStatistics } from "../User/AccountStatistics/AccountStatistics";
 
 
 export function App() {
@@ -94,7 +94,7 @@ export function App() {
                         <Route path="/users/:searchedProfileEmail" element={ <ProfilePage/> }>
                             <Route index element={ <ProfileInfo /> } />
                             <Route path="personal-info" element={ <ProfileInfo /> } />
-                            <Route path="account-statistics" element={null} />
+                            <Route path="account-statistics" element={<AccountStatistics />} />
                             <Route path="account-activity" element={ <AccountActivity /> } />
                         </Route>
 

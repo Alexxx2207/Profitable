@@ -1,18 +1,18 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classnames from "classnames";
-import { AuthContext } from '../../../contexts/AuthContext';
-import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
-import { ErrorWidget } from '../../ErrorWidget/ErrorWidget';
-import { PasswordEye } from '../../PasswordEye/PasswordEye';
+import { AuthContext } from '../../../../contexts/AuthContext';
+import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
+import { ErrorWidget } from '../../../ErrorWidget/ErrorWidget';
+import { PasswordEye } from '../../../PasswordEye/PasswordEye';
 
-import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERROR_TYPE } from '../../../common/config';
-import { PASSWORD_MIN_LENGTH } from '../../../common/validationConstants';
+import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERROR_TYPE } from '../../../../common/config';
+import { PASSWORD_MIN_LENGTH } from '../../../../common/validationConstants';
 
-import { minLengthChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
-import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
-import { createClientErrorObject } from '../../../services/common/createValidationErrorObject';
-import { editUserPasswоrd } from '../../../services/users/usersService';
+import { minLengthChecker, isPasswordValidChecker } from '../../../../services/common/errorValidationCheckers';
+import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
+import { createClientErrorObject } from '../../../../services/common/createValidationErrorObject';
+import { editUserPasswоrd } from '../../../../services/users/usersService';
 
 import styles from './EditPassword.module.css';
 

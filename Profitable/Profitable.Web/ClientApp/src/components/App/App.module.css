@@ -44,3 +44,9 @@ html, html *{
 .page {
     padding-top: 4rem;
 }
+
+@media (max-width: 899px) {
+    .page {
+        padding-top: 8rem;
+    }
+}

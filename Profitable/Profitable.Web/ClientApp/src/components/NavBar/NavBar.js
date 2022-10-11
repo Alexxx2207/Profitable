@@ -18,19 +18,37 @@ export const NavBar = () => {
 
     const { JWT } = useContext(AuthContext);
     const [email, setEmail] = useState('');
+    const [logoState, setLogoState] = useState(false);
+
+    useEffect(() => {
+        window.addEventListener('resize', () => {
+            if(window.innerWidth < 900) {
+                setLogoState(true);
+            } else {
+                setLogoState(false);
+            }
+        })
+    }, [])
 
     useEffect(() => {
         getUserEmailFromJWT(JWT)
             .then(result => setEmail(state => result))
             .catch(err => err);
-    }, [JWT])
+    }, [JWT]);
+
+
 
     return (
         <nav className={styles.navbarContainer}>
 
             <div className={styles.logoWrapper}>
                 <NavLink to="/" className={styles.navLink}>
-                    <h1 className={styles.navbarLogo}>PROFITABLE</h1>
+                    {
+                        logoState ?
+                        <img src={process.env.PUBLIC_URL + '/images/trader_logo.png'} alt="img" className={styles.logoImage} />
+                        :
+                        <h1 className={styles.navbarLogo}>PROFITABLE</h1>
+                    }
                 </NavLink>
             </div>
 

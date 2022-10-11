@@ -1,6 +1,7 @@
 ﻿using Profitable.Models.EntityModels.EntityBaseClass;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,8 @@ namespace Profitable.Models.EntityModels
 {
 	public class StocksPosition : EntityBase
 	{
-		public string StockName { get; set; }
+		[Required]
+		public string Name { get; set; }
 
 		[ForeignKey("TradePosition")]
 		public Guid TradePositionId { get; set; }

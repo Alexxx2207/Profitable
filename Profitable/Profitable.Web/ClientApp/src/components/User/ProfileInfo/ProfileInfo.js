@@ -4,8 +4,8 @@ import { createAuthorImgURL, validateImage } from '../../../services/common/imag
 import { AuthContext } from '../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../contexts/MessageBoxContext';
 import { deleteUserData, deleteUserImage, getUserDataByEmail, getUserEmailFromJWT } from '../../../services/users/usersService';
-import { EditUser } from "../EditUser/EditUser";
-import { EditPassword } from "../EditPassword/EditPassword";
+import { EditUser } from "./EditUser/EditUser";
+import { EditPassword } from "./EditPassword/EditPassword";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faUserLock, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
