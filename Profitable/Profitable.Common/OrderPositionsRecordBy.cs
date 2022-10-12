@@ -10,8 +10,8 @@ namespace Profitable.Common.Enums
 	{
 		Date = 0,
 		DateDescending = 1,
-		QuantityInAList = 2,
-		QuantityInAListDescending = 3,
+		Positions = 2,
+		PositionsDescending = 3,
 		Name = 4,
 		NameDescending = 5,
 	}

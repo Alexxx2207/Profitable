@@ -1,6 +1,6 @@
 ﻿using Profitable.Data.Repository;
 using Profitable.Data.Seeding.Seeders.Contracts;
-using Profitable.GlobalConstants;
+using Profitable.Common.GlobalConstants;
 using Profitable.Models.EntityModels;
 using System.Text.Json;
 

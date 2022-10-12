@@ -2,7 +2,7 @@
 using Profitable.Models.EntityModels;
 using Profitable.Models.ResponseModels.Markets;
 
-namespace Profitable.Automapper
+namespace Profitable.Common.Automapper
 {
     public class MarketsMapper : Profile
     {

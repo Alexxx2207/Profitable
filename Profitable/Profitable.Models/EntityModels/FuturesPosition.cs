@@ -1,4 +1,4 @@
-﻿using Profitable.GlobalConstants;
+﻿using Profitable.Common.Enums;
 using Profitable.Models.EntityModels.EntityBaseClass;
 using System.ComponentModel.DataAnnotations.Schema;
 

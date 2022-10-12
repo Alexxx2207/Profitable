@@ -12,9 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Profitable.Common.Models\Profitable.Common.Models.csproj" />
+    <ProjectReference Include="..\Profitable.Common.Services\Profitable.Common.Services.csproj" />
     <ProjectReference Include="..\Profitable.Common\Profitable.Common.Enums.csproj" />
     <ProjectReference Include="..\Profitable.Data\Profitable.Data.csproj" />
-    <ProjectReference Include="..\Profitable.Models\Profitable.Models.csproj" />
   </ItemGroup>
 
 </Project>

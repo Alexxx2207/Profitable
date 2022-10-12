@@ -3,7 +3,7 @@ using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Comments;
 using Profitable.Models.ResponseModels.Comments;
 
-namespace Profitable.Automapper
+namespace Profitable.Common.Automapper
 {
     public class CommentsMapper : Profile
     {

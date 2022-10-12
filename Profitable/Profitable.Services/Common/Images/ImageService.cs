@@ -1,11 +1,7 @@
-﻿using Profitable.GlobalConstants;
+﻿using Profitable.Common.Enums;
+using Profitable.Common.GlobalConstants;
 using Profitable.Services.Common.Images.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Profitable.Services.Common.Images
 {

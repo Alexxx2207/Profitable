@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Profitable.Common;
+using Profitable.Common.Enums;
 using Profitable.Common.Models;
 using Profitable.Data.Repository.Contract;
-using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Users;
 using Profitable.Models.ResponseModels.Users;
@@ -143,10 +142,10 @@ namespace Profitable.Services.Users
 
                 if (user != null)
                 {
-                    if(!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
+                    if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
                     {
-						imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
-					}
+                        imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+                    }
                     string newFileName = await imageService.SaveUploadedImageAsync(ImageFor.Users, editUserData.FileName, editUserData.Image);
 
                     user.ProfilePictureURL = newFileName;
@@ -171,12 +170,12 @@ namespace Profitable.Services.Users
         {
             if (!user.IsDeleted)
             {
-				if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
-				{
-					imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
-				}
+                if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
+                {
+                    imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+                }
 
-				user.ProfilePictureURL = "";
+                user.ProfilePictureURL = "";
 
                 repository.Update(user);
 
@@ -194,12 +193,12 @@ namespace Profitable.Services.Users
         {
             if (!user.IsDeleted)
             {
-				if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
-				{
-					imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
-				}
+                if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
+                {
+                    imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+                }
 
-				repository.HardDelete(user);
+                repository.HardDelete(user);
 
                 await repository.SaveChangesAsync();
 

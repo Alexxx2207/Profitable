@@ -1,11 +1,6 @@
 ﻿using Profitable.Models.EntityModels.EntityBaseClass;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Profitable.Models.EntityModels
 {
@@ -14,13 +9,13 @@ namespace Profitable.Models.EntityModels
 		public PositionsRecordList()
 		{
 			Positions = new HashSet<TradePosition>();
-			ListCreatedOn = DateTime.UtcNow;
+			LastUpdated = DateTime.UtcNow;
 		}
 
 		[Required]
 		public string Name { get; set; }
 
-		public DateTime ListCreatedOn { get; set; }
+		public DateTime LastUpdated { get; set; }
 
 
 		[ForeignKey("User")]

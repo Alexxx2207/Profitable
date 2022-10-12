@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Profitable.GlobalConstants
+namespace Profitable.Common.GlobalConstants
 {
     public class GlobalServicesConstants
     {

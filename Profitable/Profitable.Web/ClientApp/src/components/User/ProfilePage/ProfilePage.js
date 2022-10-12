@@ -17,13 +17,13 @@ export const ProfilePage = () => {
         <div className={styles.profilePageContainer}>
             <nav className={styles.profilePageNavbarContainer}>
                 <NavLink to={'personal-info'} className={(url.includes('personal-info') ? styles.active : "")}>
-                    Personal Info
+                    Personal
                 </NavLink>
                 <NavLink to={'account-statistics'} className={(url.includes('account-statistics') ? styles.active : "")}>
-                    Account Statistics
+                    Statistics
                 </NavLink>
                 <NavLink to={'account-activity'} className={(url.includes('account-activity') ? styles.active : "")}>
-                    Account Activity
+                    Activity
                 </NavLink>
             </nav>
             <Outlet />

@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Profitable.Common;
+using Profitable.Common.Models;
 using Profitable.Data.Repository.Contract;
-using Profitable.GlobalConstants;
+using Profitable.Common.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Comments;
 using Profitable.Models.ResponseModels.Comments;
 using Profitable.Services.Comments.Contracts;
-using System;
 
 namespace Profitable.Services.Comments
 {

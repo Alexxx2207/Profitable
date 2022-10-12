@@ -32,6 +32,7 @@ import styles from './App.module.css';
 import { AccountActivity } from "../User/AccountActivity/AccountActivity";
 import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExplorer";
 import { AccountStatistics } from "../User/AccountStatistics/AccountStatistics";
+import { AddPositionsRecord } from "../User/AccountStatistics/AddPositionsRecord/AddPositionsRecord";
 
 
 export function App() {
@@ -96,6 +97,11 @@ export function App() {
                             <Route path="personal-info" element={ <ProfileInfo /> } />
                             <Route path="account-statistics" element={<AccountStatistics />} />
                             <Route path="account-activity" element={ <AccountActivity /> } />
+                        </Route>
+
+                        <Route path="/:searchedProfileEmail/positions-record/create" element={
+                            <AddPositionsRecord />
+                        }>
                         </Route>
 
                         <Route path="/posts/:postId/edit" element={

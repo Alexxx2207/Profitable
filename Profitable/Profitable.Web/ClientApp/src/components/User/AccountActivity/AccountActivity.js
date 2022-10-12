@@ -163,8 +163,7 @@ export const AccountActivity = () => {
 
         if (currentHeight >= scrollHeight - 1 || currentHeight === scrollHeight) {
             setState({
-                type: 'increasePageCount',
-                action: {}
+                type: 'increasePageCount'
             });
             if(state.activityType === ACTIVITY_TYPE_POSTS) {
                 loadPosts(state.page, POSTS_LIST_POSTS_IN_PAGE_COUNT);

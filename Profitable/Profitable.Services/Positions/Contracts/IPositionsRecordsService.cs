@@ -1,10 +1,6 @@
 ﻿using Profitable.Common.Enums;
-using Profitable.Models.ResponseModels.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Profitable.Common.Models;
+using Profitable.Models.ResponseModels.Positions;
 
 namespace Profitable.Services.Positions.Contracts
 {
@@ -15,5 +11,9 @@ namespace Profitable.Services.Positions.Contracts
 			int page,
 			int pageCount,
 			OrderPositionsRecordBy orderByChoice);
+
+		IEnumerable<string> GetPositionsRecordsOrderTypes();
+
+		Task<Result> AddPositionsRecordList(Guid userGuid, string positionName);
 	}
 }

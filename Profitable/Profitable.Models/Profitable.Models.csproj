@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Profitable.Common\Profitable.Common.Enums.csproj" />
-    <ProjectReference Include="..\Profitable.GlobalConstants\Profitable.GlobalConstants.csproj" />
+    <ProjectReference Include="..\Profitable.GlobalConstants\Profitable.Common.GlobalConstants.csproj" />
   </ItemGroup>
 
 </Project>

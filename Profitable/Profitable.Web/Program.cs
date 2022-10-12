@@ -1,6 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Profitable.Automapper;
+using Profitable.Common.Automapper;
 using Profitable.Data;
 using Profitable.Data.Repository;
 using Profitable.Data.Repository.Contract;
@@ -23,6 +23,7 @@ var mapperConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new MarketsMapper());
     mc.AddProfile(new UsersMapper());
     mc.AddProfile(new FuturesContractsMapper());
+    mc.AddProfile(new PositionsMapper());
 });
 
 IMapper mapper = mapperConfig.CreateMapper();

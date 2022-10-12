@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Profitable.Common.GlobalConstants;
 using Profitable.Common.Models;
 using Profitable.Data.Seeding.Seeders.Contracts;
 using Profitable.Models.EntityModels;
@@ -12,9 +13,9 @@ namespace Profitable.Data.Seeding.Seeders
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            foreach (var trader in GlobalConstants.GlobalDatabaseConstants.DefaultUsersToSeed)
+            foreach (var trader in GlobalDatabaseConstants.DefaultUsersToSeed)
             {
-                await SeedUserAsync(userManager, trader, role: GlobalConstants.GlobalDatabaseConstants.TraderRoleName);
+                await SeedUserAsync(userManager, trader, role: GlobalDatabaseConstants.TraderRoleName);
             }
 
         }

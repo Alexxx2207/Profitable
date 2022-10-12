@@ -1,0 +1,21 @@
+.listContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0rem 2rem;
+}
+
+.orderSelectorContainer {
+    display: flex;
+    align-items: baseline;
+    align-self: flex-end;
+}
+
+.orderByHeader {
+    margin-right: 0.5rem;
+}
+
+.orderBySelector {
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+}

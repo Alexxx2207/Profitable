@@ -1,4 +1,4 @@
-﻿namespace Profitable.Common
+﻿namespace Profitable.Common.Models
 {
     public class Result
     {
