@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Posts;
-using Profitable.Models.ResponseModels.Comments;
 using Profitable.Services.Comments.Contracts;
 using Profitable.Services.Posts.Contracts;
 using Profitable.Web.Controllers.BaseApiControllers;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace Profitable.Web.Controllers
@@ -38,11 +35,11 @@ namespace Profitable.Web.Controllers
                 foreach (var post in posts)
                 {
                     var commentsCount = await commentService.GetCommentsCountByPostAsync(Guid.Parse(post.Guid));
-                    
-                    post.CommentsCount = commentsCount;
-			    }
 
-				return Ok(posts);
+                    post.CommentsCount = commentsCount;
+                }
+
+                return Ok(posts);
             }
             catch (Exception err)
             {
@@ -57,29 +54,17 @@ namespace Profitable.Web.Controllers
         {
             try
             {
-				var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+                var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
 
-				var posts = await postService.GetPostsByUserAsync(user.Id, int.Parse(page), int.Parse(pageCount));
+                var posts = await postService.GetPostsByUserAsync(user.Id, int.Parse(page), int.Parse(pageCount));
 
-				using (var client = new HttpClient())
-				{
-					client.BaseAddress = new Uri("https://localhost:7048");
-					client.DefaultRequestHeaders.Accept.Clear();
-					client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                foreach (var post in posts)
+                {
+                    var commentsCount = await commentService.GetCommentsCountByPostAsync(Guid.Parse(post.Guid));
 
-					foreach (var post in posts)
-					{
-						var response = await client.GetAsync($"api/comments/{post.Guid}/count");
+                    post.CommentsCount = commentsCount;
+                }
 
-						if (response.IsSuccessStatusCode)
-						{
-							int commentsCount = await response.Content.ReadFromJsonAsync<int>();
-
-                            post.CommentsCount = commentsCount;
-						}
-					}
-				}
-				
 
                 return Ok(posts);
             }
@@ -161,7 +146,7 @@ namespace Profitable.Web.Controllers
         {
             var post = await postService.GetPostByGuidAsync(Guid.Parse(id));
 
-			return Ok(post);
+            return Ok(post);
         }
     }
 }

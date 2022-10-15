@@ -2,6 +2,7 @@ import { NavLink, Outlet, useLocation  } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 
 import styles from './ProfilePage.module.css';
+import { GoToTop } from '../../GoToTop/GoToTop';
 
 export const ProfilePage = () => {
 
@@ -27,6 +28,7 @@ export const ProfilePage = () => {
                 </NavLink>
             </nav>
             <Outlet />
+            <GoToTop />
         </div>
     );
 }

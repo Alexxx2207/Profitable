@@ -5,6 +5,7 @@ import { NewsWidget } from "./NewsWidget/NewsWidget";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import styles from "./NewsList.module.css";
+import { GoToTop } from "../GoToTop/GoToTop";
 
 export const NewsList = () => {
     const [news, setNews] = useState([]);
@@ -18,6 +19,7 @@ export const NewsList = () => {
     const clickScrollDown = () => {
       window.scrollTo(0, myRef.current.getBoundingClientRect().y);
     };
+
 
     return (
       <div className={styles.newsListPageContainer}>
@@ -72,6 +74,7 @@ export const NewsList = () => {
               <h2 className={styles.notAvailableNews}>News are not available. Check your Internet Connection.</h2>
         }
         </div>
+        <GoToTop />
       </div>
     );
 };

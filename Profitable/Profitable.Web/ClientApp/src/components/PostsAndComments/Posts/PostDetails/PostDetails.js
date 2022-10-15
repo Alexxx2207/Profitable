@@ -28,6 +28,8 @@ import { CommentsList } from "../../Comments/CommentsList/CommentsList";
 import { CreateComment } from "../../Comments/CreateComment/CreateComment";
 import { getCommentsByPostId } from "../../../../services/comments/commentsService";
 
+import { GoToTop } from '../../../GoToTop/GoToTop';
+
 export const PostDetails = () => {
 
     const navigate = useNavigate();
@@ -253,6 +255,7 @@ export const PostDetails = () => {
                 }
                 <CommentsList postId={postId} comments={postPage.comments} />
             </section>
+            <GoToTop />
         </div>
     );
 }

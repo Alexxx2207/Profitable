@@ -133,10 +133,6 @@
     cursor: pointer;
 }
 
-.commentsSection {
-    margin: 12rem;
-}
-
 .commentsHeaderContainer {
     display: flex;
     align-items: center;

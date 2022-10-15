@@ -3,7 +3,8 @@
     background-color: white;
     padding: 1.5rem 2rem;
     border-radius: 20px;
-    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
 }
 
 .widgetContainer * {
@@ -14,4 +15,29 @@
 
 .recordNameHeader {
     text-transform: capitalize;
+}
+
+.openPositionsRecordButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5rem
+}
+
+.openPositionsRecordButton {
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 3px solid black;
+    background-color: lightgrey;
+    transition: 0.2s ease-in-out;
+}
+
+.openPositionsRecordButton:hover {
+    background-color: black;
+    color: white;
+    transition: 0.2s ease-in-out;
 }

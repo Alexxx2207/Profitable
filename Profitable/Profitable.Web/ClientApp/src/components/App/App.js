@@ -33,6 +33,7 @@ import { AccountActivity } from "../User/AccountActivity/AccountActivity";
 import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExplorer";
 import { AccountStatistics } from "../User/AccountStatistics/AccountStatistics";
 import { AddPositionsRecord } from "../User/AccountStatistics/AddPositionsRecord/AddPositionsRecord";
+import { RecordDetails } from "../User/AccountStatistics/RecordDetails/RecordDetails";
 
 
 export function App() {
@@ -99,8 +100,13 @@ export function App() {
                             <Route path="account-activity" element={ <AccountActivity /> } />
                         </Route>
 
-                        <Route path="/:searchedProfileEmail/positions-record/create" element={
+                        <Route path="/:searchedProfileEmail/positions-records/create" element={
                             <AddPositionsRecord />
+                        }>
+                        </Route>
+
+                        <Route path="/positions-records/:recordGuid" element={
+                            <RecordDetails />
                         }>
                         </Route>
 
