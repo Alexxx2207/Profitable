@@ -1,4 +1,4 @@
-﻿using Profitable.Common;
+﻿using Profitable.Common.Models;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Comments;
 using Profitable.Models.ResponseModels.Comments;

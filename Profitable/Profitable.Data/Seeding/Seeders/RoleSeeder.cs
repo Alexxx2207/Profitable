@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Profitable.Common.GlobalConstants;
 using Profitable.Data.Seeding.Seeders.Contracts;
 
 namespace Profitable.Data.Seeding.Seeders
@@ -10,7 +11,7 @@ namespace Profitable.Data.Seeding.Seeders
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
-            await SeedRoleAsync(roleManager, GlobalConstants.GlobalDatabaseConstants.TraderRoleName);
+            await SeedRoleAsync(roleManager, GlobalDatabaseConstants.TraderRoleName);
         }
 
         private static async Task SeedRoleAsync(RoleManager<IdentityRole<Guid>> roleManager, string roleName)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Profitable.GlobalConstants;
+using Profitable.Common.Enums;
+using Profitable.Common.GlobalConstants;
 
 namespace Profitable.Automapper.TypeConverters
 {

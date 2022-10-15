@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Profitable.Common;
+using Profitable.Common.Enums;
+using Profitable.Common.GlobalConstants;
+using Profitable.Common.Models;
 using Profitable.Data.Repository.Contract;
-using Profitable.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Posts;
 using Profitable.Models.ResponseModels.Posts;
@@ -32,12 +33,12 @@ namespace Profitable.Services.Posts
 
         public async Task<Result> AddPostAsync(ApplicationUser author, AddPostRequestModel newPost)
         {
-			if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
-			{
-				throw new ArgumentException($"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
-			}
+            if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
+            {
+                throw new ArgumentException($"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
+            }
 
-			try
+            try
             {
                 var postToAdd = new Post()
                 {
@@ -128,38 +129,38 @@ namespace Profitable.Services.Posts
 
         public async Task<List<PostResponseModel>> GetPostsByUserAsync(Guid userId, int page, int pageCount)
         {
-			if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
-			{
-				var posts = await postsRepository
-					.GetAllAsNoTracking()
+            if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
+            {
+                var posts = await postsRepository
+                    .GetAllAsNoTracking()
                     .Where(post => post.AuthorId == userId)
-					.Where(post => !post.IsDeleted)
-					.OrderByDescending(p => p.PostedOn)
-					.Skip(page * pageCount)
-					.Take(pageCount)
-					.Include(p => p.Tags)
-					.Include(p => p.Author)
-					.Include(p => p.Likes)
-					.Include(p => p.Comments)
-					.Select(post => mapper.Map<PostResponseModel>(post))
-					.ToListAsync();
+                    .Where(post => !post.IsDeleted)
+                    .OrderByDescending(p => p.PostedOn)
+                    .Skip(page * pageCount)
+                    .Take(pageCount)
+                    .Include(p => p.Tags)
+                    .Include(p => p.Author)
+                    .Include(p => p.Likes)
+                    .Include(p => p.Comments)
+                    .Select(post => mapper.Map<PostResponseModel>(post))
+                    .ToListAsync();
 
-				return posts;
-			}
-			else
-			{
-				throw new Exception($"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
-			}
-		}
+                return posts;
+            }
+            else
+            {
+                throw new Exception($"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
+            }
+        }
 
         public async Task<Result> UpdatePostAsync(string postToUpdateGuid, UpdatePostRequestModel newPost)
         {
-            if(newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
+            if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
             {
-				throw new ArgumentException($"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
-			}
+                throw new ArgumentException($"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
+            }
 
-			var postToUpdateGuidCasted = Guid.Parse(postToUpdateGuid);
+            var postToUpdateGuidCasted = Guid.Parse(postToUpdateGuid);
 
             var postToUpdate = await postsRepository
                 .GetAll()
@@ -169,16 +170,16 @@ namespace Profitable.Services.Posts
 
             if (postToUpdate != null)
             {
-				await imageService.DeleteUploadedImageAsync(ImageFor.Posts, postToUpdate.ImageURL);
+                await imageService.DeleteUploadedImageAsync(ImageFor.Posts, postToUpdate.ImageURL);
 
                 string newFileName = "";
 
                 if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
-				{
-				    newFileName = await imageService.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
-				}
+                {
+                    newFileName = await imageService.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
+                }
 
-				postToUpdate.Title = newPost.Title;
+                postToUpdate.Title = newPost.Title;
                 postToUpdate.Content = newPost.Content;
                 postToUpdate.ImageURL = newFileName;
 

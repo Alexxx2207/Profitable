@@ -38,6 +38,14 @@ namespace Profitable.Data
 
         public DbSet<FuturesContract> FuturesContracts { get; set; }
 
+        public DbSet<PositionsRecordList> PositionsRecordLists { get; set; }
+
+        public DbSet<TradePosition> TradePositions { get; set; }
+
+        public DbSet<FuturesPosition> FuturesPositions { get; set; }
+
+        public DbSet<StocksPosition> StocksPositions { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

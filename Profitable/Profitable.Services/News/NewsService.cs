@@ -1,9 +1,7 @@
 ﻿using AngleSharp;
-using Microsoft.Extensions.Configuration;
 using Profitable.Models.RequestModels.News;
 using Profitable.Models.ResponseModels.News;
 using Profitable.Services.News.Contract;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Profitable.Services.News
 {
@@ -23,7 +21,7 @@ namespace Profitable.Services.News
 
 			var articleText = string.Join("\\n", cell.QuerySelectorAll("div.articlePage>p")
 								.Select(el => el.TextContent));
-			
+
 			var articleImage = cell.QuerySelector("div.articlePage>div#imgCarousel>img")?
 							.GetAttribute("src");
 
@@ -81,12 +79,12 @@ namespace Profitable.Services.News
 			{
 				news.Add(new NewsOverviewResponseModel
 				{
-					Image = images[i].Trim(),
-					Title = titles[i].Trim(),
-					Sender = senders[i].Trim(),
-					PostedAgo = timesPosted[i].Split("-")[1].Trim(),
-					ArticleOverview = textOverviews[i].Trim(),
-					Link = "https://www.investing.com" + links[i].Trim(),
+					Image = images[i]?.Trim(),
+					Title = titles[i]?.Trim(),
+					Sender = senders[i]?.Trim(),
+					PostedAgo = timesPosted[i]?.Split("-")[1].Trim(),
+					ArticleOverview = textOverviews[i]?.Trim(),
+					Link = "https://www.investing.com" + links[i]?.Trim(),
 				});
 			}
 

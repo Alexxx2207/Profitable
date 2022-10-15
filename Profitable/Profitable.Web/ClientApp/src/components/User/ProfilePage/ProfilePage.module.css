@@ -19,8 +19,10 @@
 }
 
 .profilePageNavbarContainer * {
-    margin: 0rem 2rem;
-    padding: 1rem 3rem;
+    width: 200px;
+    text-align: center;
+    margin: 0rem 2vw;
+    padding: 1rem 2rem;
     text-decoration: none;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;

@@ -1,4 +1,4 @@
-﻿using Profitable.Common;
+﻿using Profitable.Common.Models;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Posts;
 using Profitable.Models.ResponseModels.Posts;

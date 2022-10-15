@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.GlobalConstants", "Profitable.GlobalConstants\Profitable.GlobalConstants.csproj", "{8533BA87-1D48-4F53-B4EE-A6C83762EF0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.GlobalConstants", "Profitable.GlobalConstants\Profitable.Common.GlobalConstants.csproj", "{8533BA87-1D48-4F53-B4EE-A6C83762EF0C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Data", "Profitable.Data\Profitable.Data.csproj", "{E4021995-ADC1-4833-87EA-711B565E7A32}"
 EndProject
@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Automapper", "Profitable.Automapper\Profitable.Automapper.csproj", "{3C846AE7-D8A7-48B7-8A42-A36A1A232379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.Automapper", "Profitable.Automapper\Profitable.Common.Automapper.csproj", "{3C846AE7-D8A7-48B7-8A42-A36A1A232379}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{4E72E65E-04F6-4098-BEDF-8C088532C496}"
 EndProject
@@ -26,13 +26,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6D7810
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EF0ECFE2-8E9D-40FF-8705-AA1EE74F6C62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common", "Profitable.Common\Profitable.Common.csproj", "{9318892A-CE3A-40CB-B598-98CEA3D66743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.Enums", "Profitable.Common\Profitable.Common.Enums.csproj", "{9318892A-CE3A-40CB-B598-98CEA3D66743}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Web.Infrastructure", "Profitable.Web.Infrastructure\Profitable.Web.Infrastructure.csproj", "{A0AAF0B2-0AED-48C1-AC1C-E7DAD90A39D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{98C26F8D-291F-42DC-AE53-35DDD9EC371B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.Models", "Profitable.Common.Models\Profitable.Common.Models.csproj", "{3B523891-B067-4E78-8EE9-8BC467FE29A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.Services", "Profitable.Common.Services\Profitable.Common.Services.csproj", "{36E3B9B0-E1FE-4E59-9816-118318BF513C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{3B523891-B067-4E78-8EE9-8BC467FE29A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B523891-B067-4E78-8EE9-8BC467FE29A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B523891-B067-4E78-8EE9-8BC467FE29A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36E3B9B0-E1FE-4E59-9816-118318BF513C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36E3B9B0-E1FE-4E59-9816-118318BF513C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36E3B9B0-E1FE-4E59-9816-118318BF513C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36E3B9B0-E1FE-4E59-9816-118318BF513C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{9318892A-CE3A-40CB-B598-98CEA3D66743} = {6D781006-3051-40C3-9EB0-B2E7761A9CA9}
 		{A0AAF0B2-0AED-48C1-AC1C-E7DAD90A39D6} = {98C26F8D-291F-42DC-AE53-35DDD9EC371B}
 		{3B523891-B067-4E78-8EE9-8BC467FE29A7} = {6D781006-3051-40C3-9EB0-B2E7761A9CA9}
+		{36E3B9B0-E1FE-4E59-9816-118318BF513C} = {6D781006-3051-40C3-9EB0-B2E7761A9CA9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E84C6D35-AC07-4313-BE33-390A9FC6E8C2}

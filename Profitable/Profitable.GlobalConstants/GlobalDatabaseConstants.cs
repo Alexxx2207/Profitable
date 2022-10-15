@@ -1,6 +1,6 @@
 ﻿using Profitable.Common.Models;
 
-namespace Profitable.GlobalConstants
+namespace Profitable.Common.GlobalConstants
 {
     public class GlobalDatabaseConstants
     {

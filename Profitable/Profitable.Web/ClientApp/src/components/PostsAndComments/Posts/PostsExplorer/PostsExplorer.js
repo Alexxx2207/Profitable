@@ -10,6 +10,8 @@ import { AuthContext } from '../../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
 import { loadPostsPage } from '../../../../services/posts/postsService';
 
+import { GoToTop } from '../../../GoToTop/GoToTop';
+
 import styles from './PostsExplorer.module.css';
 
 export const PostsExplorer = () => {
@@ -85,6 +87,7 @@ export const PostsExplorer = () => {
             <div className={styles.postsListContainer}>
                 <PostsList posts={posts} />
             </div>
+            <GoToTop />
         </div>
     );
 }

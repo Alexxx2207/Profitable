@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Profitable.GlobalConstants\Profitable.GlobalConstants.csproj" />
+    <ProjectReference Include="..\Profitable.GlobalConstants\Profitable.Common.GlobalConstants.csproj" />
     <ProjectReference Include="..\Profitable.Models\Profitable.Models.csproj" />
   </ItemGroup>
 

@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Profitable.Common;
+using Profitable.Common.Models;
 using Profitable.Data.Repository.Contract;
-using Profitable.GlobalConstants;
+using Profitable.Common.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Comments;
 using Profitable.Models.ResponseModels.Comments;
 using Profitable.Services.Comments.Contracts;
-using System;
 
 namespace Profitable.Services.Comments
 {
@@ -55,9 +54,9 @@ namespace Profitable.Services.Comments
 				.GetAllAsNoTracking()
 				.Where(comment => comment.IsDeleted == false)
 				.Where(comment => comment.PostId == guid)
+				.OrderByDescending(c => c.PostedOn)
 				.Skip(page * pageCount)
 				.Take(pageCount)
-				.OrderByDescending(c => c.PostedOn)
 				.Include(c => c.Author)
 				.Select(comment => mapper.Map<CommentResponseModel>(comment))
 				.ToListAsync();
@@ -71,9 +70,9 @@ namespace Profitable.Services.Comments
 				.GetAllAsNoTracking()
 				.Where(comment => comment.IsDeleted == false)
 				.Where(comment => comment.AuthorId == userGuid)
+				.OrderByDescending(c => c.PostedOn)
 				.Skip(page * pageCount)
 				.Take(pageCount)
-				.OrderByDescending(c => c.PostedOn)
 				.Include(c => c.Author)
 				.Select(comment => mapper.Map<CommentResponseModel>(comment))
 				.ToListAsync();

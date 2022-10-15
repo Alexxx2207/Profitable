@@ -1,4 +1,4 @@
-﻿namespace Profitable.GlobalConstants
+﻿namespace Profitable.Common.GlobalConstants
 {
     public class GlobalControllerConstants
     {

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Profitable.Automapper.TypeConverters;
-using Profitable.GlobalConstants;
+using Profitable.Common.Enums;
 using Profitable.Models.EntityModels;
 using Profitable.Models.ResponseModels.Users;
 
-namespace Profitable.Automapper
+namespace Profitable.Common.Automapper
 {
     public class UsersMapper : Profile
     {

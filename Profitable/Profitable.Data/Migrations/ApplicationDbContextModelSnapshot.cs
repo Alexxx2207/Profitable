@@ -352,6 +352,36 @@ namespace Profitable.Data.Migrations
                     b.ToTable("FuturesContracts");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.FuturesPosition", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Direction")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("FuturesContractId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("TradePositionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("FuturesContractId");
+
+                    b.HasIndex("TradePositionId");
+
+                    b.ToTable("FuturesPositions");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.Like", b =>
                 {
                     b.Property<Guid>("Guid")
@@ -453,6 +483,35 @@ namespace Profitable.Data.Migrations
                     b.ToTable("MarketTypes");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.PositionsRecordList", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PositionsRecordLists");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
                 {
                     b.Property<Guid>("Guid")
@@ -516,6 +575,38 @@ namespace Profitable.Data.Migrations
                     b.ToTable("PostTag");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.StocksPosition", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("BuyCommission")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("SellCommission")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("TradePositionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("TradePositionId");
+
+                    b.ToTable("StocksPositions");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.Tag", b =>
                 {
                     b.Property<Guid>("Guid")
@@ -535,6 +626,40 @@ namespace Profitable.Data.Migrations
                     b.HasKey("Guid");
 
                     b.ToTable("Tag");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.TradePosition", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("EntryPrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ExitPrice")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PositionAddedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PositionsRecordListId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("QuantitySize")
+                        .HasColumnType("float");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("PositionsRecordListId");
+
+                    b.ToTable("TradePositions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -626,6 +751,25 @@ namespace Profitable.Data.Migrations
                     b.Navigation("MarketType");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.FuturesPosition", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.FuturesContract", "FuturesContract")
+                        .WithMany()
+                        .HasForeignKey("FuturesContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Profitable.Models.EntityModels.TradePosition", "TradePosition")
+                        .WithMany()
+                        .HasForeignKey("TradePositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FuturesContract");
+
+                    b.Navigation("TradePosition");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.Like", b =>
                 {
                     b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Author")
@@ -675,6 +819,17 @@ namespace Profitable.Data.Migrations
                     b.Navigation("List");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.PositionsRecordList", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>
                 {
                     b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Author")
@@ -705,6 +860,28 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Tag");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.StocksPosition", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.TradePosition", "TradePosition")
+                        .WithMany()
+                        .HasForeignKey("TradePositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TradePosition");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.TradePosition", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.PositionsRecordList", "PositionsRecordList")
+                        .WithMany("Positions")
+                        .HasForeignKey("PositionsRecordListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PositionsRecordList");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.ApplicationUser", b =>
                 {
                     b.Navigation("Comments");
@@ -724,6 +901,11 @@ namespace Profitable.Data.Migrations
             modelBuilder.Entity("Profitable.Models.EntityModels.List", b =>
                 {
                     b.Navigation("FinancialInstruments");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.PositionsRecordList", b =>
+                {
+                    b.Navigation("Positions");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Post", b =>

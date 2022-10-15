@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Profitable.Common.GlobalConstants;
 using Profitable.Common.Models;
-using Profitable.GlobalConstants;
 using Profitable.Services.Users.Contracts;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

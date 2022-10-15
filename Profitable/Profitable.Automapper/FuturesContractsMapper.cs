@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Profitable.Automapper
+namespace Profitable.Common.Automapper
 {
 	public class FuturesContractsMapper : Profile
 	{
