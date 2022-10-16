@@ -21,3 +21,8 @@ export const ARTICLE_LOCAL_STORAGE_KEY = 'Article'
 
 export const ACTIVITY_TYPE_POSTS = 'posts';
 export const ACTIVITY_TYPE_COMMENTS = 'comments';
+
+export const searchedModels = {
+    Users: 'Users',
+    Posts: 'Posts'
+}

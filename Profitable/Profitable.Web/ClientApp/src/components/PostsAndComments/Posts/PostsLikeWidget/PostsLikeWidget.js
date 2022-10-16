@@ -5,13 +5,11 @@ import { MessageBoxContext } from "../../../../contexts/MessageBoxContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { manageLikePost } from '../../../../services/posts/postsService';
-import { getUserGuidFromJWT } from "../../../../services/users/usersService";
 import classnames from 'classnames';
 
 import styles from './PostsLikeWidget.module.css';
 
-export const PostsLikeWidget = ({ style, post }) => {
-
+export const PostsLikeWidget = ({ style, post, userGuid}) => {
 
     const { JWT, removeAuth } = useContext(AuthContext);
 
@@ -24,26 +22,17 @@ export const PostsLikeWidget = ({ style, post }) => {
 
 
     useEffect(() => {
-        getUserGuidFromJWT(JWT)
-            .then(userGuid => {
-                if (post.likes.some(like => like.authorId === userGuid)) {
-                    setLiked(true);
-                }
-            })
-            .catch(err => err);
+        if (post.likes.some(like => like.authorId.localeCompare(userGuid) === 0)) {
+            setLiked(true);
+        }
             // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         setLikesCountState(state => post.likes.length);
-        getUserGuidFromJWT(JWT)
-            .then(userGuid => {
-                if (post.likes.some(like => like.authorId === userGuid)) {
-                    setLiked(true);
-
-                }
-            })
-            .catch(err => err);
+        if (post.likes.some(like => like.authorId.localeCompare(userGuid) === 0)) {
+            setLiked(true);
+        }
             // eslint-disable-next-line
     }, [post]);
 

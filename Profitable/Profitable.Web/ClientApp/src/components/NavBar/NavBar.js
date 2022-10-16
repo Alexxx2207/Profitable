@@ -4,7 +4,14 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket, faUser, faCalculator, faNewspaper, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import {
+    faRightFromBracket,
+    faUser,
+    faCalculator,
+    faNewspaper,
+    faCalendarDays,
+    faMagnifyingGlass
+} from '@fortawesome/free-solid-svg-icons';
 
 import { AuthContext } from '../../contexts/AuthContext';
 
@@ -73,6 +80,10 @@ export const NavBar = () => {
                             :
                                 <FontAwesomeIcon icon={faNewspaper} className={classnames(styles.navbarIcon, styles.newsIcon)} beatFade />
                         }
+                    </NavLink>
+
+                    <NavLink to="/search" className={classNames(styles.navbarListItems, styles.navLink)}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.navbarIcon}/>
                     </NavLink>
                 </div>
                 <div className={styles.userPanel}>

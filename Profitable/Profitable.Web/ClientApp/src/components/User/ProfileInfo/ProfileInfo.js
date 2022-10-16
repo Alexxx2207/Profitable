@@ -55,7 +55,6 @@ export const ProfileInfo = () => {
     }, [JWT, searchedProfileEmail, navigate]);
 
     const changeProfileInfo = (user) => {
-        console.log(user);
         setProfileInfo(state => ({
             ...user
         }))

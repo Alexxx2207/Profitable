@@ -5,7 +5,7 @@ import { createAuthorImgURL } from '../../../../../services/common/imageService'
 import { PostsLikeWidget } from '../../PostsLikeWidget/PostsLikeWidget';
 import styles from './PostsListItem.module.css';
 
-export const PostsListItem = ({post}) => {
+export const PostsListItem = ({ post, userGuid }) => {
 
     const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ export const PostsListItem = ({post}) => {
                     Comments: <strong>{post.commentsCount}</strong>
                 </div>
                 <div className={styles.likeRowContainer}>
-                    <PostsLikeWidget post={post} />
+                    <PostsLikeWidget post={post} userGuid={userGuid} />
                 </div>
             </div>
         </div>);

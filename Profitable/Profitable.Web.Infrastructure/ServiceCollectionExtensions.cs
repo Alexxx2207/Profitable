@@ -18,6 +18,8 @@ using Profitable.Services.Positions;
 using Profitable.Services.Positions.Contracts;
 using Profitable.Services.Posts;
 using Profitable.Services.Posts.Contracts;
+using Profitable.Services.Search;
+using Profitable.Services.Search.Contracts;
 using Profitable.Services.Users;
 using Profitable.Services.Users.Contracts;
 using System.Text;
@@ -56,6 +58,8 @@ namespace Profitable.Web.Infrastructure
             services.AddScoped<IFuturesService, FuturesService>();
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<IPositionsRecordsService, PositionsRecordsService>();
+            services.AddScoped<IUserSearchService, UserSearchService>();
+            services.AddScoped<IPostSearchService, PostSearchService>();
 
             return services;
         }

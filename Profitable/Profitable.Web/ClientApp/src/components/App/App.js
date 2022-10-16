@@ -34,6 +34,7 @@ import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExpl
 import { AccountStatistics } from "../User/AccountStatistics/AccountStatistics";
 import { AddPositionsRecord } from "../User/AccountStatistics/AddPositionsRecord/AddPositionsRecord";
 import { RecordDetails } from "../User/AccountStatistics/RecordDetails/RecordDetails";
+import { SearchPage } from "../Search/SearchPage";
 
 
 export function App() {
@@ -129,6 +130,10 @@ export function App() {
 
                         <Route path="/calendars" element={
                             <Calendars />
+                        }></Route>
+
+                        <Route path="/search" element={
+                            <SearchPage />
                         }></Route>
 
                         <Route path="*" element={

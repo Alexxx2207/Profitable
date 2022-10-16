@@ -115,7 +115,6 @@ export const EditUser = ({searchedProfileEmail, changeProfileInfo}) => {
                 }
             }));
         } else if (e.target.name === 'description') {
-            console.log(e.target.value === '');
             if(e.target.value === '') {
                 setEditState(state => ({
                     ...state,
