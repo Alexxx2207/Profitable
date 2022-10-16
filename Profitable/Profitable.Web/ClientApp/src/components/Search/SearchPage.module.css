@@ -1,0 +1,73 @@
+.searchPageContainer {
+    margin: 2rem;
+}
+
+.searchPageHeader {
+    margin: 3rem 0rem 2rem 0rem;
+    padding-left: 1rem;
+    padding-bottom: 0.5rem;
+    letter-spacing: 1px;
+    border-bottom: 2px solid white;
+}
+
+.searchInputContainer {
+    margin: 0rem 2rem;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    border: 2px solid white;
+    border-radius: 15px;
+}
+
+.searchForSelectorContainer {
+    display: flex;
+    align-items: baseline;
+    margin-left: 2.5rem;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+.searchForSelectorHeader {
+    letter-spacing: 1px;
+}
+
+.searchModelSelector {
+    padding: 0.2rem 0.5rem;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+}
+
+.resultSection {
+    margin-top: 2rem;
+}
+
+.searchedResultsHeader {
+    text-align: center;
+    letter-spacing: 1px;
+    margin: 0rem 1rem;
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+    border-bottom: 2px solid white;
+}
+
+.searchedResultsContainer {
+    margin-left: 2rem;
+}
+
+.noMatchingHeader {
+    background-color: white;
+    color: black;
+    padding: 2rem 0rem;
+    text-align: center;
+    border-radius: 10px;
+    letter-spacing: 1px;
+}
+
+.userResultsContainer {
+    display: flex;
+    flex-wrap: wrap;
+}

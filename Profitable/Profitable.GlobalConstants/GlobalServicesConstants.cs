@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Profitable.Common.GlobalConstants
+﻿namespace Profitable.Common.GlobalConstants
 {
     public class GlobalServicesConstants
     {
@@ -11,6 +9,8 @@ namespace Profitable.Common.GlobalConstants
 
         public static readonly short CommentMaxLength = 1000;
 
+        public static readonly byte SearchResultsCountToTake = 15;
+
         public static readonly string EntityDoesNotExist = "Entity does not exist!";
 
         public static readonly string UploadsFolderInProject = "Profitable.Web";
@@ -20,5 +20,5 @@ namespace Profitable.Common.GlobalConstants
         public static readonly string UploadsFolderPath =
             Path.GetDirectoryName(Directory.GetCurrentDirectory())
             + $"{DirectorySeparatorChar}{UploadsFolderInProject}{DirectorySeparatorChar}Uploads";
-	}
+    }
 }
