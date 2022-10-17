@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import classnames from "classnames";
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
 import { createPost } from '../../../../services/posts/postsService';
@@ -12,9 +11,6 @@ import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../services/common/err
 import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
 import { validateImage } from '../../../../services/common/imageService';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './CreatePost.module.css';
 

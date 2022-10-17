@@ -10,7 +10,7 @@ import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, SERVER_ERRO
 import { PASSWORD_MIN_LENGTH } from '../../../../common/validationConstants';
 
 import { minLengthChecker, isPasswordValidChecker } from '../../../../services/common/errorValidationCheckers';
-import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
+import { changeStateValuesForControlledFormsByTrimming } from '../../../../services/common/createStateValues';
 import { createClientErrorObject } from '../../../../services/common/createValidationErrorObject';
 import { editUserPasswоrd } from '../../../../services/users/usersService';
 
@@ -50,7 +50,7 @@ export const EditPassword = () => {
         if (e.target.name === 'oldPassword') {
             setEditPassword(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
+                values: changeStateValuesForControlledFormsByTrimming(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     oldPasswordEmpty: createClientErrorObject(state.errors.oldPasswordEmpty, isPasswordValidChecker.bind(null, e.target.value)),
@@ -60,7 +60,7 @@ export const EditPassword = () => {
         } else if (e.target.name === 'newPassword') {
             setEditPassword(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
+                values: changeStateValuesForControlledFormsByTrimming(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     newPasswordEmpty: createClientErrorObject(state.errors.newPasswordEmpty, isPasswordValidChecker.bind(null, e.target.value)),

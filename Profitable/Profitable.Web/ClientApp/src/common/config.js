@@ -26,3 +26,7 @@ export const searchedModels = {
     Users: 'Users',
     Posts: 'Posts'
 }
+
+export const LongDirection = 'Long';
+
+export const ShortDirection = 'Short';

@@ -21,14 +21,17 @@ namespace Profitable.Services.Positions
 			this.mapper = mapper;
 		}
 
-		public async Task<Result> AddPositionsRecordList(Guid userGuid, string positionName)
+		public async Task<Result> AddPositionsRecordList(Guid userGuid, string recordName, string instrumentGroup)
 		{
 			try
 			{
+				Enum.TryParse(instrumentGroup, out InstrumentGroup parsedInstrumentGroup);
+
 				await repository.AddAsync(new PositionsRecordList
 				{
 					UserId = userGuid,
-					Name = positionName,
+					Name = recordName,
+					InstrumentGroup = parsedInstrumentGroup,
 				});
 
 				await repository.SaveChangesAsync();
@@ -40,6 +43,49 @@ namespace Profitable.Services.Positions
 				return e.Message;
 			}
 
+		}
+
+		public async Task<Result> ChangeNamePositionsRecordList(Guid recordGuid, string recordName)
+		{
+			var recordToUpdate = await repository
+				.GetAllAsNoTracking()
+				.Where(post => !post.IsDeleted)
+				.FirstAsync(entity => entity.Guid == recordGuid);
+
+			if (recordToUpdate != null)
+			{
+				recordToUpdate.Name = recordName;
+
+				repository.Update(recordToUpdate);
+
+				await repository.SaveChangesAsync();
+
+				return true;
+			}
+			else
+			{
+				return "Positions Record was not found!";
+			}
+		}
+
+		public async Task<Result> DeletePositionsRecordList(Guid recordGuid)
+		{
+			try
+			{
+				var entity = await repository
+				.GetAllAsNoTracking()
+				.FirstAsync(entity => entity.Guid == recordGuid);
+
+				repository.Delete(entity);
+
+				await repository.SaveChangesAsync();
+
+				return true;
+			}
+			catch (Exception)
+			{
+				return "Positions Record was not found!";
+			}
 		}
 
 		public IEnumerable<string> GetPositionsRecordsOrderTypes()
@@ -56,6 +102,7 @@ namespace Profitable.Services.Positions
 		{
 			var records = await repository
 				.GetAllAsNoTracking()
+				.Where(r => !r.IsDeleted)
 				.Where(r => r.UserId == userGuid)
 				.Include(r => r.Positions)
 				.ToListAsync();

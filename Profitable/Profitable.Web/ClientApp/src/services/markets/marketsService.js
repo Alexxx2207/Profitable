@@ -16,6 +16,11 @@ export const getAllMarketTypes = () => {
         .then(res => res.json());
 }
 
+export const getAllInstrumentGroups = () => {
+    return request.get(`${WEB_API_BASE_URL}/markets/instrument-groups`)
+        .then(res => res.json());
+}
+
 export const getAllInstrumentsByMarketType = (marketType) => {
     return request.get(`${WEB_API_BASE_URL}/markets/marketTypes/${marketType}/instruments`)
         .then(res => res.json());
