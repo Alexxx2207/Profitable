@@ -9,6 +9,8 @@
         public string LastUpdated { get; set; }
 
         public int PositionsCount { get; set; }
+
+        public string InstrumentGroup { get; set; }
     }
 
 }

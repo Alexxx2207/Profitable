@@ -1,36 +1,19 @@
-import { useContext, useEffect, useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../../common/config';
 import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
 import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../services/common/errorValidationCheckers';
-import { createPositionsRecord } from '../../../../services/positions/positionsService';
+import { changePositionsRecord } from '../../../../services/positions/positionsService';
 import { createClientErrorObject } from '../../../../services/common/createValidationErrorObject';
 import { ErrorWidget } from '../../../ErrorWidget/ErrorWidget';
 
 import { AuthContext } from '../../../../contexts/AuthContext'; 
 
 
-import styles from './AddPositionsRecord.module.css';
-import { getAllInstrumentGroups } from '../../../../services/markets/marketsService';
+import styles from './ChangePositionsRecord.module.css';
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case 'loadInstrumentGroups':
-            return {
-                ...state,
-                values: {
-                    ...state.values,
-                    instrumentGroups: action.payload,
-                }
-            };
-        case 'changeSelectedInstrumentGroup':
-            return {
-                ...state,
-                values: {
-                    ...state.values,
-                    instrumentGroupSelected: action.payload,
-                }
-            };
         case 'updateInput':
             return {
                 ...state,
@@ -46,19 +29,17 @@ const reducer = (state, action) => {
     }
 }
 
-export const AddPositionsRecord = () => {
+export const ChangePositionsRecord = ({record}) => {
 
     const navigate = useNavigate();
 
-    const {searchedProfileEmail} = useParams();
+    const { searchedProfileEmail, recordId} = useParams();
 
     const { JWT } = useContext(AuthContext);
 
     const [state, setState] = useReducer(reducer, {
         values: {
             recordName: '',
-            instrumentGroups: [],
-            instrumentGroupSelected: ''
         },
         errors: {
             nameValid: { text: 'Insert valid name', fulfilled: false, type: CLIENT_ERROR_TYPE },
@@ -70,14 +51,6 @@ export const AddPositionsRecord = () => {
         }
     });
 
-    useEffect(() => {
-        getAllInstrumentGroups()
-            .then(result => setState({
-                type: 'loadInstrumentGroups',
-                payload: result
-            }))
-    }, []);
-
     const onInputFieldChange = (e) => {
         if(e.target.name === 'recordName') {
             setState({
@@ -87,20 +60,13 @@ export const AddPositionsRecord = () => {
         }
     }
 
-    const onInstumentGroupChange = (e) => {
-        setState({
-            type: 'changeSelectedInstrumentGroup',
-            payload: e.target.value
-        });
-    }
-
     const onSubmit = (e) => {
         e.preventDefault();
 
         const clientErrors = Object.values(state.errors).filter(err => err.type === CLIENT_ERROR_TYPE);
 
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
-            createPositionsRecord(JWT, searchedProfileEmail, state.values.recordName, state.values.instrumentGroupSelected)
+            changePositionsRecord(JWT, recordId, state.values.recordName)
                 .then(() => {
                     navigate(`/users/${searchedProfileEmail}/account-statistics`)
                 });
@@ -109,39 +75,30 @@ export const AddPositionsRecord = () => {
 
     return (
         <div className={styles.pageContainer}>
-        <div className={styles.recordAddFormContainer}>
-            <form className={styles.recordAddForm} onSubmit={onSubmit} >
-                <div className={styles.recordAddFormLabelContainer}>
-                    <h2 className={styles.addRecordLabel}>Add Record</h2>
+        <div className={styles.recordChangeFormContainer}>
+            <form className={styles.recordChangeForm} onSubmit={onSubmit} >
+                <div className={styles.recordChangeFormLabelContainer}>
+                    <h2 className={styles.changeRecordLabel}>Change Record</h2>
                 </div>
                 <div className={styles.formGroup}>
                     <div>
-                        <h5>Record Name</h5>
+                        <h5>New Record Name</h5>
                     </div>
-                    <input 
-                    className={styles.inputField}type="text" 
-                    name='recordName' 
-                    onChange={onInputFieldChange} 
+                    <input
+                    className={styles.inputField}type="text"
+                    name='recordName'
+                    onChange={onInputFieldChange}
                     value={state.values.recordName}
-                    placeholder={'Enter record name here...'}
+                    placeholder={'Enter new name here...'}
                     />
                 </div>
-                <div className={styles.formGroup}>
-                    <div>
-                        <h5>Instrument Group</h5>
-                    </div>
-
-                <select className={styles.instrumentGroupSelector} onChange={onInstumentGroupChange} value={state.values.instrumentGroupSelected}>
-                    {state.values.instrumentGroups.map(group => <option value={group}>{group}</option>)}
-                </select>
-                    
-                </div>
+                
                 <div className={styles.submitButtonContainer}>
                     <input className={styles.submitButton} type="submit" value='Create' />
                 </div>
             </form>
         </div>
-        <aside className={styles.recordAddFormAside}>
+        <aside className={styles.recordChangeFormAside}>
             <div className={styles.errorsHeadingContainer}>
                 <h2 className={styles.errorsHeading}>Create Record State</h2>
             </div>

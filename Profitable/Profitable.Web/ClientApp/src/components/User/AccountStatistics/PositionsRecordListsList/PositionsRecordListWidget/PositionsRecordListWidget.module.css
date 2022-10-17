@@ -20,8 +20,8 @@
 .openPositionsRecordButtonContainer {
     display: flex;
     align-items: center;
+    gap: 2vw;
     justify-content: center;
-    margin-right: 5rem
 }
 
 .openPositionsRecordButton {
@@ -37,7 +37,43 @@
 }
 
 .openPositionsRecordButton:hover {
-    background-color: black;
+    background-color: green;
+    color: white;
+    transition: 0.2s ease-in-out;
+}
+
+.changeNamePositionsRecordButton {
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 3px solid black;
+    background-color: lightgrey;
+    transition: 0.2s ease-in-out;
+}
+
+.changeNamePositionsRecordButton:hover {
+    background-color: rgb(224, 146, 0);
+    color: white;
+    transition: 0.2s ease-in-out;
+}
+
+.deletePositionsRecordButton {
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 3px solid black;
+    background-color: lightgrey;
+    transition: 0.2s ease-in-out;
+}
+
+.deletePositionsRecordButton:hover {
+    background-color: rgb(200, 0, 0);
     color: white;
     transition: 0.2s ease-in-out;
 }

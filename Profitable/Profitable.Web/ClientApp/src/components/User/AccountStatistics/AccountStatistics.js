@@ -1,11 +1,14 @@
 import { PositionsRecordListsList } from './PositionsRecordListsList/PositionsRecordListsList';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
+import { useCallback, useContext, useEffect, useReducer, useState } from 'react';
+import { getPositionsOrderByOptions, getUserPositions } from '../../../services/positions/positionsService';
+import { POSITIONS_RECORDS_DEFAULT_ORDER, POSITIONS_RECORDS_PAGE_COUNT } from '../../../common/config';
+import { getUserEmailFromJWT } from '../../../services/users/usersService';
+import { AuthContext } from '../../../contexts/AuthContext';
 
 
 import styles from './AccountStatistics.module.css';
-import { useCallback, useEffect, useReducer } from 'react';
-import { getPositionsOrderByOptions, getUserPositions } from '../../../services/positions/positionsService';
-import { POSITIONS_RECORDS_DEFAULT_ORDER, POSITIONS_RECORDS_PAGE_COUNT } from '../../../common/config';
 
 const initialState = {
     lists: [],
@@ -55,14 +58,20 @@ const reducer = (state, action) => {
 
 export const AccountStatistics = () => {
 
+    const { JWT, removeAuth } = useContext(AuthContext);
+
     const navigate = useNavigate();
+
+    const location = useLocation();
 
     const {searchedProfileEmail} = useParams();
 
     const [state, setState] = useReducer(reducer, initialState);
 
+    const [loggedInUserEmail, setLoggedInUserEmail] = useState({});
+
     const handleAddRecordButtonClick = () => {
-        navigate(`/${searchedProfileEmail}/positions-records/create`);
+        navigate(`/users/${searchedProfileEmail}/positions-records/create`);
     }
 
     const loadRecords = useCallback(
@@ -103,7 +112,15 @@ export const AccountStatistics = () => {
                     type: 'loadOrderByOptions',
                     payload: result.types
                 })
-            })
+            });
+
+        getUserEmailFromJWT(JWT)
+        .then(result => setLoggedInUserEmail(email => result))
+        .catch(err => {
+            removeAuth();
+            navigate(location.pathname);
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -136,9 +153,14 @@ export const AccountStatistics = () => {
             <div className={styles.recordsListHeader}>
                 <h1>Records List</h1>
 
-                <button onClick={handleAddRecordButtonClick} className={styles.addRecordButton}>
-                    + Add Record
-                </button>
+                {searchedProfileEmail.localeCompare(loggedInUserEmail) === 0 ?
+                    <button onClick={handleAddRecordButtonClick} className={styles.addRecordButton}>
+                        + Add Record
+                    </button>
+                :
+                    ''
+                }
+                
             </div>
             <div className={styles.orderSelectorContainer}>
                 <h5 className={styles.orderByHeader}>Order By</h5>
@@ -151,7 +173,7 @@ export const AccountStatistics = () => {
                     )}
                 </select>
             </div>
-            <PositionsRecordListsList records={state.lists}/>
+            <PositionsRecordListsList records={state.lists} showOwnerActionButtons={searchedProfileEmail.localeCompare(loggedInUserEmail) === 0}/>
         </div>
     );
 };

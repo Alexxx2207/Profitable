@@ -35,6 +35,7 @@ import { AccountStatistics } from "../User/AccountStatistics/AccountStatistics";
 import { AddPositionsRecord } from "../User/AccountStatistics/AddPositionsRecord/AddPositionsRecord";
 import { RecordDetails } from "../User/AccountStatistics/RecordDetails/RecordDetails";
 import { SearchPage } from "../Search/SearchPage";
+import { ChangePositionsRecord } from "../User/AccountStatistics/ChangePositionsRecord/ChangePositionsRecord";
 
 
 export function App() {
@@ -56,90 +57,84 @@ export function App() {
                     <Routes>
                         <Route path="/" element={
                             <Home />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/markets" element={
                             <MarketsPage />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/posts" element={
                             <PostsExplorer />
-                        }>
-                        </Route>
-
+                        } />
+                        
                         <Route path="/posts/:postId" element={
                             <PostDetails />
-                        }>
-                        </Route>
-
+                        } />
+                        
                         <Route path="/posts/create" element={
                             <CreatePost />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/login" element={
                             <Login />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/register" element={
                             <Register />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/logout" element={
                             <Logout />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/users/:searchedProfileEmail" element={ <ProfilePage/> }>
                             <Route index element={ <ProfileInfo /> } />
                             <Route path="personal-info" element={ <ProfileInfo /> } />
-                            <Route path="account-statistics" element={<AccountStatistics />} />
+                            <Route path="account-statistics" element={<AccountStatistics />}>
+                            </Route>
                             <Route path="account-activity" element={ <AccountActivity /> } />
                         </Route>
 
-                        <Route path="/:searchedProfileEmail/positions-records/create" element={
+                        <Route path="/users/:searchedProfileEmail/positions-records/create" element={
                             <AddPositionsRecord />
-                        }>
-                        </Route>
+                        } />
+
+                        <Route path="/users/:searchedProfileEmail/positions-records/:recordId/change" element={
+                            <ChangePositionsRecord />
+                        } />
 
                         <Route path="/positions-records/:recordGuid" element={
                             <RecordDetails />
-                        }>
-                        </Route>
-
+                        } />
+                        
                         <Route path="/posts/:postId/edit" element={
                             <EditPost />
-                        }>
-                        </Route>
-
+                        } />
+                        
                         <Route path="/calculators" element={
                             <Calcualtors />
-                        }></Route>
+                        } />
 
                         <Route path="/news" element={
                             <NewsList />
-                        }></Route>
+                        } />
                         
                         <Route path="/news/:newsTitle" element={
                             <NewsArticle />
-                        }></Route>
+                        } />
 
                         <Route path="/calendars" element={
                             <Calendars />
-                        }></Route>
+                        } />
 
                         <Route path="/search" element={
                             <SearchPage />
-                        }></Route>
+                        } />
 
                         <Route path="*" element={
                             <NotFoundPage />
-                        }>
-                        </Route>
+                        } />
+                        
                     </Routes>
                     </div>
                 </div>

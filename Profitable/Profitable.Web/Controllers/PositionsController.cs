@@ -58,7 +58,8 @@ namespace Profitable.Web.Controllers
 
             var records = await positionsRecordsService.AddPositionsRecordList(
                 userGuid,
-                model.RecordName);
+                model.RecordName,
+                model.InstrumentGroup);
 
             if (records.Succeeded)
             {
@@ -67,6 +68,45 @@ namespace Profitable.Web.Controllers
             else
             {
                 return BadRequest(records.Error);
+            }
+        }
+
+        [Authorize]
+        [HttpPatch("records/change/{recordGuid}")]
+        public async Task<IActionResult> ChangePositionsRecord(
+            [FromRoute] string recordGuid,
+            [FromBody] ChangePositionsRecordRequestModel model)
+        {
+
+            var result = await positionsRecordsService.ChangeNamePositionsRecordList(
+                Guid.Parse(recordGuid),
+                model.RecordName);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Error);
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("records/delete/{recordGuid}")]
+        public async Task<IActionResult> DeletePositionsRecord([FromRoute] string recordGuid)
+        {
+
+            var result = await positionsRecordsService.DeletePositionsRecordList(
+                Guid.Parse(recordGuid));
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Error);
             }
         }
     }
