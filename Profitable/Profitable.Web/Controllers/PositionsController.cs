@@ -12,13 +12,16 @@ namespace Profitable.Web.Controllers
     public class PositionsController : BaseApiController
     {
         private readonly IPositionsRecordsService positionsRecordsService;
+        private readonly IPositionsService positionsService;
         private readonly IUserService userService;
 
         public PositionsController(
             IPositionsRecordsService positionsRecordsService,
+            IPositionsService positionsService,
             IUserService userService)
         {
             this.positionsRecordsService = positionsRecordsService;
+            this.positionsService = positionsService;
             this.userService = userService;
         }
 
@@ -56,18 +59,18 @@ namespace Profitable.Web.Controllers
         {
             var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(model.UserEmail)).Guid);
 
-            var records = await positionsRecordsService.AddPositionsRecordList(
+            var result = await positionsRecordsService.AddPositionsRecordList(
                 userGuid,
                 model.RecordName,
                 model.InstrumentGroup);
 
-            if (records.Succeeded)
+            if (result.Succeeded)
             {
                 return Ok();
             }
             else
             {
-                return BadRequest(records.Error);
+                return BadRequest(result.Error);
             }
         }
 
@@ -99,6 +102,39 @@ namespace Profitable.Web.Controllers
 
             var result = await positionsRecordsService.DeletePositionsRecordList(
                 Guid.Parse(recordGuid));
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Error);
+            }
+        }
+
+        [HttpGet("records/{recordId}/positions")]
+        public async Task<IActionResult> GetAllPositionsInARecord(
+            [FromRoute] string recordId,
+            [FromQuery] string afterDate)
+        {
+            if (afterDate != null)
+            {
+                var positions = await positionsService.GetFuturesPositions(Guid.Parse(recordId), DateTime.Parse(afterDate));
+                return Ok(positions);
+
+            }
+
+            return BadRequest();
+        }
+
+        [Authorize]
+        [HttpPost("records/{recordId}/positions")]
+        public async Task<IActionResult> CreatePosition(
+            [FromRoute] string recordId,
+            [FromBody] AddFuturesPositionRequestModel model)
+        {
+            var result = await positionsService.AddFuturesPositions(Guid.Parse(recordId), model);
 
             if (result.Succeeded)
             {

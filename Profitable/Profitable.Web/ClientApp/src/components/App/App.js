@@ -27,16 +27,19 @@ import { NewsList } from "../News/NewsList";
 import { NewsArticle } from "../News/NewsArticle/NewsArticle";
 import { Calendars } from "../Calendars/Calendars";
 
-// eslint-disable-next-line
-import styles from './App.module.css';
 import { AccountActivity } from "../User/AccountActivity/AccountActivity";
 import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExplorer";
 import { AccountStatistics } from "../User/AccountStatistics/AccountStatistics";
-import { AddPositionsRecord } from "../User/AccountStatistics/AddPositionsRecord/AddPositionsRecord";
-import { RecordDetails } from "../User/AccountStatistics/RecordDetails/RecordDetails";
+import { AddPositionsRecord } from "../User/AccountStatistics/PositionsRecords/AddPositionsRecord/AddPositionsRecord";
+import { FuturesRecordDetails } from "../User/AccountStatistics/FuturesPositions/FuturesRecordDetails/FuturesRecordDetails";
 import { SearchPage } from "../Search/SearchPage";
-import { ChangePositionsRecord } from "../User/AccountStatistics/ChangePositionsRecord/ChangePositionsRecord";
+import { ChangePositionsRecord } from "../User/AccountStatistics/PositionsRecords/ChangePositionsRecord/ChangePositionsRecord";
+import { CreateFuturesPosition } from "../User/AccountStatistics/FuturesPositions/CreateFuturesPosition/CreateFuturesPosition";
 
+
+
+// eslint-disable-next-line
+import styles from './App.module.css';
 
 export function App() {
 
@@ -90,8 +93,7 @@ export function App() {
                         <Route path="/users/:searchedProfileEmail" element={ <ProfilePage/> }>
                             <Route index element={ <ProfileInfo /> } />
                             <Route path="personal-info" element={ <ProfileInfo /> } />
-                            <Route path="account-statistics" element={<AccountStatistics />}>
-                            </Route>
+                            <Route path="account-statistics" element={<AccountStatistics />} />
                             <Route path="account-activity" element={ <AccountActivity /> } />
                         </Route>
 
@@ -103,8 +105,12 @@ export function App() {
                             <ChangePositionsRecord />
                         } />
 
-                        <Route path="/positions-records/:recordGuid" element={
-                            <RecordDetails />
+                        <Route path="/positions-records/futures/:recordGuid" element={
+                            <FuturesRecordDetails />
+                        } />
+
+                        <Route path="/positions-records/futures/:recordGuid/create-position" element={
+                            <CreateFuturesPosition />
                         } />
                         
                         <Route path="/posts/:postId/edit" element={

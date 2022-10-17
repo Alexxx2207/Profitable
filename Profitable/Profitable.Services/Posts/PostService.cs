@@ -94,7 +94,6 @@ namespace Profitable.Services.Posts
             var post = await postsRepository
                 .GetAllAsNoTracking()
                 .Where(post => !post.IsDeleted)
-                .Include(p => p.Tags)
                 .Include(p => p.Author)
                 .Include(p => p.Likes)
                 .FirstAsync(entity => entity.Guid == guid);
@@ -112,7 +111,6 @@ namespace Profitable.Services.Posts
                     .OrderByDescending(p => p.PostedOn)
                     .Skip(page * pageCount)
                     .Take(pageCount)
-                    .Include(p => p.Tags)
                     .Include(p => p.Author)
                     .Include(p => p.Likes)
                     .Include(p => p.Comments)
@@ -138,7 +136,6 @@ namespace Profitable.Services.Posts
                     .OrderByDescending(p => p.PostedOn)
                     .Skip(page * pageCount)
                     .Take(pageCount)
-                    .Include(p => p.Tags)
                     .Include(p => p.Author)
                     .Include(p => p.Likes)
                     .Include(p => p.Comments)

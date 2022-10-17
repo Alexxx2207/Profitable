@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteUserPositionsRecord } from '../../../../../services/positions/positionsService';
-import { AuthContext } from '../../../../../contexts/AuthContext';
+import { deleteUserPositionsRecord } from '../../../../../../services/positions/positionsService';
+import { AuthContext } from '../../../../../../contexts/AuthContext';
+import { MessageBoxContext } from '../../../../../../contexts/MessageBoxContext';
 
 
 import styles from './PositionsRecordListWidget.module.css';
@@ -15,8 +16,10 @@ export const PositionsRecordListWidget = ({list, showOwnerActionButtons}) => {
 
     const { JWT } = useContext(AuthContext);
 
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
+
     const handleOpen = () => {
-        navigate(`/positions-records/${list.guid}`);
+        navigate(`/positions-records/${list.instrumentGroup.toLowerCase()}/${list.guid}`);
     };
     
     const handleChange = () => {
@@ -26,7 +29,11 @@ export const PositionsRecordListWidget = ({list, showOwnerActionButtons}) => {
     const handleDelete = () => {
         deleteUserPositionsRecord(JWT, list.guid)
             .then(
-                window.location.reload()
+                (() => {
+                    setMessageBoxSettings('The position record was deleted successfully!', true);
+
+                    window.location.reload();
+                })()
             );
     };
 

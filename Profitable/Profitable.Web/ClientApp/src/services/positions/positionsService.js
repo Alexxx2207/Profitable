@@ -64,3 +64,34 @@ export const changePositionsRecord = async (JWT, recordGuid, recordName) => {
 
     return;
 }
+
+export const getPositionsFromRecord = async (recordId, dateAfter) => {
+    var response = await request.get(`${WEB_API_BASE_URL}/positions/records/${recordId}/positions?afterDate=${dateAfter}`);
+
+    if(response.status === 400) {
+        throw new Error('Invalid request');
+    }
+
+    return await response.json();
+}
+
+export const createPosition = async (JWT, recordId, contractName, direction, entryPrice, exitPrice, quantity, tickSize, tickValue) => {
+    var response = await request.post(`${WEB_API_BASE_URL}/positions/records/${recordId}/positions`, {
+        contractName,
+        direction,
+        entryPrice,
+        exitPrice,
+        quantity,
+        tickSize,
+        tickValue,
+    },
+    {
+        'Authorization': 'Bearer ' +  JWT
+    });
+
+    if(response.status === 400) {
+        throw new Error(await response.text());
+    }
+
+    return;
+}

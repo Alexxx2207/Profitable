@@ -1,4 +1,8 @@
 
+export const naturalNumberChecker = (value) => {
+    return value > 0;
+}
+
 export const minLengthChecker = (value, bound) => {
     return value.trim().length >= bound;
 }

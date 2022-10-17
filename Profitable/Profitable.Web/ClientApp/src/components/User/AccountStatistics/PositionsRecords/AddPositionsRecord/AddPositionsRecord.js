@@ -1,17 +1,19 @@
 import { useContext, useEffect, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../../common/config';
-import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
-import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../services/common/errorValidationCheckers';
-import { createPositionsRecord } from '../../../../services/positions/positionsService';
-import { createClientErrorObject } from '../../../../services/common/createValidationErrorObject';
-import { ErrorWidget } from '../../../ErrorWidget/ErrorWidget';
+import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../../../common/config';
+import { changeStateValuesForControlledForms } from '../../../../../services/common/createStateValues';
+import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../../services/common/errorValidationCheckers';
+import { createPositionsRecord } from '../../../../../services/positions/positionsService';
+import { createClientErrorObject } from '../../../../../services/common/createValidationErrorObject';
+import { ErrorWidget } from '../../../../ErrorWidget/ErrorWidget';
+import { getAllInstrumentGroups } from '../../../../../services/markets/marketsService';
 
-import { AuthContext } from '../../../../contexts/AuthContext'; 
+import { AuthContext } from '../../../../../contexts/AuthContext'; 
+import { MessageBoxContext } from '../../../../../contexts/MessageBoxContext';
+
 
 
 import styles from './AddPositionsRecord.module.css';
-import { getAllInstrumentGroups } from '../../../../services/markets/marketsService';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -53,6 +55,9 @@ export const AddPositionsRecord = () => {
     const {searchedProfileEmail} = useParams();
 
     const { JWT } = useContext(AuthContext);
+
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
+
 
     const [state, setState] = useReducer(reducer, {
         values: {
@@ -102,6 +107,7 @@ export const AddPositionsRecord = () => {
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
             createPositionsRecord(JWT, searchedProfileEmail, state.values.recordName, state.values.instrumentGroupSelected)
                 .then(() => {
+                    setMessageBoxSettings('The position record was created successfully!', true);
                     navigate(`/users/${searchedProfileEmail}/account-statistics`)
                 });
         }

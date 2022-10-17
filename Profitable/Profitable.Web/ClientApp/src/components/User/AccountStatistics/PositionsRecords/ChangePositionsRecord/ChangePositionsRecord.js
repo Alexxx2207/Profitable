@@ -1,13 +1,14 @@
 import { useContext, useReducer } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../../common/config';
-import { changeStateValuesForControlledForms } from '../../../../services/common/createStateValues';
-import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../services/common/errorValidationCheckers';
-import { changePositionsRecord } from '../../../../services/positions/positionsService';
-import { createClientErrorObject } from '../../../../services/common/createValidationErrorObject';
-import { ErrorWidget } from '../../../ErrorWidget/ErrorWidget';
+import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../../../common/config';
+import { changeStateValuesForControlledForms } from '../../../../../services/common/createStateValues';
+import { isEmptyOrWhiteSpaceFieldChecker } from '../../../../../services/common/errorValidationCheckers';
+import { changePositionsRecord } from '../../../../../services/positions/positionsService';
+import { createClientErrorObject } from '../../../../../services/common/createValidationErrorObject';
+import { ErrorWidget } from '../../../../ErrorWidget/ErrorWidget';
 
-import { AuthContext } from '../../../../contexts/AuthContext'; 
+import { AuthContext } from '../../../../../contexts/AuthContext'; 
+import { MessageBoxContext } from '../../../../../contexts/MessageBoxContext';
 
 
 import styles from './ChangePositionsRecord.module.css';
@@ -36,6 +37,8 @@ export const ChangePositionsRecord = ({record}) => {
     const { searchedProfileEmail, recordId} = useParams();
 
     const { JWT } = useContext(AuthContext);
+
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const [state, setState] = useReducer(reducer, {
         values: {
@@ -68,6 +71,7 @@ export const ChangePositionsRecord = ({record}) => {
         if (clientErrors.filter(err => !err.fulfilled).length === 0) {
             changePositionsRecord(JWT, recordId, state.values.recordName)
                 .then(() => {
+                    setMessageBoxSettings('The position record was changed successfully!', true);
                     navigate(`/users/${searchedProfileEmail}/account-statistics`)
                 });
         }

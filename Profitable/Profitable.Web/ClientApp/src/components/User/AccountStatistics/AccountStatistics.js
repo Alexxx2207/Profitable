@@ -1,4 +1,4 @@
-import { PositionsRecordListsList } from './PositionsRecordListsList/PositionsRecordListsList';
+import { PositionsRecordListsList } from './PositionsRecords/PositionsRecordListsList/PositionsRecordListsList';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useCallback, useContext, useEffect, useReducer, useState } from 'react';
