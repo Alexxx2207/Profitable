@@ -1,0 +1,13 @@
+.recordDetailsContainer {
+    margin: 1rem;
+}
+
+.positionsTable {
+    width: 100%;
+}
+
+.positionsTable td, th {
+    border: 1px solid white;
+    text-align: center;
+    padding: 8px;
+  }

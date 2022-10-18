@@ -180,7 +180,7 @@ export const EditPost = () => {
                             <div>
                                 <h5>Main Content</h5>
                             </div>
-                            <textarea className={styles.inputField} name="content" placeholder={'While economists are worrying about the economy...'} defaultValue={editState.values.content} onChange={changeHandler} />
+                            <textarea className={styles.inputField} rows={5} name="content" placeholder={'While economists are worrying about the economy...'} defaultValue={editState.values.content} onChange={changeHandler} />
                         </div>
                         <div className={styles.formGroup}>
                             <div>

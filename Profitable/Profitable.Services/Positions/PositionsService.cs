@@ -48,11 +48,14 @@ namespace Profitable.Services.Positions
 					.Include(fp => fp.FuturesContract)
 					.FirstAsync(p => p.TradePositionId == position.Guid);
 
-				results.Add(new PositionResponseModel
+				string parsedDirection = Enum.GetName(typeof(PositionDirection), futuresPosition.Direction);
+
+                results.Add(new PositionResponseModel
 				{
+					Guid = position.Guid.ToString(),
 					PositionAddedOn = position.PositionAddedOn.ToString("F"),
 					ContractName = futuresPosition.FuturesContract.Name,
-					Direction = futuresPosition.Direction.ToString(),
+					Direction = parsedDirection,
 					EntryPrice = position.EntryPrice.ToString(),
 					ExitPrice = position.ExitPrice.ToString(),
 					Quantity = position.QuantitySize.ToString(),

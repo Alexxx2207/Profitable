@@ -10,7 +10,7 @@ const reducer = (state, action) => {
         case 'loadPositions':
             return {
                 ...state,
-
+                positions: action.payload
             };
         case 'setDefaultDate': 
             return {
@@ -53,13 +53,13 @@ export const FuturesRecordDetails = () => {
     const addPositionButtonClickHandler = (e) => {
         navigate(`/positions-records/futures/${recordGuid}/create-position`);
     }
-
+    
     return (
         <div className={styles.recordDetailsContainer}>
             <div>
                 <button onClick={addPositionButtonClickHandler}>+Add Position</button>
             </div>
-            <table>
+            <table className={styles.positionsTable}>
                 <thead>
                     <tr>
                         <th>
@@ -87,7 +87,7 @@ export const FuturesRecordDetails = () => {
                             Tick Value
                         </th>
                         <th>
-                            P&L
+                            P/L
                         </th>
                     </tr>
                 </thead>

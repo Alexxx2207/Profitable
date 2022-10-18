@@ -1,4 +1,4 @@
-import { WEB_API_BASE_URL } from "../../common/config"
+import { LongDirectionValue, ShortDirectionValue, WEB_API_BASE_URL } from "../../common/config"
 import { request } from "../../utils/fetch/request"
 
 
@@ -78,7 +78,7 @@ export const getPositionsFromRecord = async (recordId, dateAfter) => {
 export const createPosition = async (JWT, recordId, contractName, direction, entryPrice, exitPrice, quantity, tickSize, tickValue) => {
     var response = await request.post(`${WEB_API_BASE_URL}/positions/records/${recordId}/positions`, {
         contractName,
-        direction,
+        direction: direction ? LongDirectionValue : ShortDirectionValue,
         entryPrice,
         exitPrice,
         quantity,

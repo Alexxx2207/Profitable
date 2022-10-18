@@ -27,6 +27,8 @@ export const searchedModels = {
     Posts: 'Posts'
 }
 
-export const LongDirection = 'Long';
+export const LongDirectionName = 'Long';
+export const LongDirectionValue = '0';
 
-export const ShortDirection = 'Short';
+export const ShortDirectionName = 'Short';
+export const ShortDirectionValue = '1';

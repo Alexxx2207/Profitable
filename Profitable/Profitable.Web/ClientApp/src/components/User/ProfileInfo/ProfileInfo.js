@@ -153,6 +153,7 @@ export const ProfileInfo = () => {
                     :
                     ''
                 }
+                <h6 className={styles.changeImageMessage}>* Click on the circle to change your profile picture</h6>
                 <div className={styles.imageContainer}>
                     <img className={styles.authorImage}
                         src={profileInfo.previewImage ?
