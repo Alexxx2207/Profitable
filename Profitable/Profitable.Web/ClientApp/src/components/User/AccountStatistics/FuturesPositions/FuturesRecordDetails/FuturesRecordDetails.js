@@ -56,8 +56,8 @@ export const FuturesRecordDetails = () => {
     
     return (
         <div className={styles.recordDetailsContainer}>
-            <div>
-                <button onClick={addPositionButtonClickHandler}>+Add Position</button>
+            <div className={styles.addPositionButtonContainer}>
+                <button className={styles.addPositionButton} onClick={addPositionButtonClickHandler}>+Add Position</button>
             </div>
             <table className={styles.positionsTable}>
                 <thead>

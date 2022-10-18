@@ -1,3 +1,26 @@
+.addPositionButtonContainer {
+    display: flex;
+    justify-content: center;
+    margin: 2rem;
+}
+
+.addPositionButton {
+    color: white;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid white;
+    border-radius: 15px;
+    padding: 0.5rem 2rem;
+    transition: 0.3s ease-out;
+}
+
+.addPositionButton:hover {
+    background-color: white;
+    color: black;
+    transition: 0.3s ease-out;
+}
+
 .recordDetailsContainer {
     margin: 1rem;
 }
