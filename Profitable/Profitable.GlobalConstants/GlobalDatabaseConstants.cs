@@ -14,7 +14,7 @@ namespace Profitable.Common.GlobalConstants
                 FirstName = "Alexander",
                 LastName = "Ivanov",
                 Password = "123456",
-                ProfilePictureURL = "admin.jpg",
+                ProfilePictureURL = "",
             }
         };
     }
