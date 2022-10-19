@@ -176,7 +176,7 @@
 .deleteButton {
     color: red;
     border-radius: 10px;
-    border: 4px solid rgba(128, 128, 128, 0.148);
+    border: 3px solid rgba(128, 128, 128, 0.148);
     padding: 0.6rem 2.5rem;
     font-size: 1.2rem;
     font-weight: bold;
