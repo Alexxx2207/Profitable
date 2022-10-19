@@ -2,16 +2,21 @@ import { useEffect, useReducer } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPositionsFromRecord } from "../../../../../services/positions/positionsService";
 import { GoBackButton } from "../../../../GoBackButton/GoBackButton";
-
+import { Line } from "react-chartjs-2";
+import { calculateAcculativePositions } from '../../../../../services/positions/positionsService';
+import { CategoryScale, LineElement, PointElement, LinearScale, Title, Chart } from "chart.js";
 
 import styles from './FuturesRecordDetails.module.css';
+
+
+Chart.register(CategoryScale, LineElement, PointElement, LinearScale, Title);
 
 const reducer = (state, action) => {
     switch (action.type) {
         case 'loadPositions':
             return {
                 ...state,
-                positions: action.payload
+                positions: [...action.payload]
             };
         case 'setDefaultDate': 
             return {
@@ -22,6 +27,8 @@ const reducer = (state, action) => {
             break;
     }
 }
+
+
 
 export const FuturesRecordDetails = () => {
 
@@ -43,12 +50,12 @@ export const FuturesRecordDetails = () => {
             payload: oneYearAgoFromNow
         });
         getPositionsFromRecord(recordGuid, oneYearAgoFromNow.toJSON())
-            .then(result => 
+            .then(result => {
                 setState({
                     type: 'loadPositions',
                     payload: result
                 })
-            );
+            });
     }, [recordGuid]);
 
     const addPositionButtonClickHandler = (e) => {
@@ -60,6 +67,50 @@ export const FuturesRecordDetails = () => {
             <div>
                 <GoBackButton link={`/users/${searchedProfileEmail}/account-statistics`} />
             </div>
+
+            <div className={styles.chartContainer}>
+                <Line data={
+                     {
+                        labels: [0, ...state.positions.map(position => position.positionAddedOn).reverse()],
+                        datasets: [{
+                            label: 'Performance',
+                            data:  calculateAcculativePositions([0,...state.positions.map(position => position.positionPAndL).reverse()]),
+                            backgroundColor: 'white',
+                            borderColor: 'white',
+                            pointRadius: 5,
+                            pointHoverRadius: 10
+                        }],
+                    }
+                }
+                options={
+                    {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        scales: {
+                            xAxes: {
+                                grid: {
+                                    borderColor: 'white'
+                                    
+                                },
+                                display: false
+                            },
+                            y: {
+                                grid: {
+                                    borderColor: 'white',
+                                    color: 'rgb(255,255,255, 0.2)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value;
+                                    },
+                                    color: 'white',
+                                }
+                            },
+                        }
+                    }
+                } />
+            </div>
+
             <div className={styles.addPositionButtonContainer}>
                 <button className={styles.addPositionButton} onClick={addPositionButtonClickHandler}>+Add Position</button>
             </div>
@@ -96,7 +147,7 @@ export const FuturesRecordDetails = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {state.positions.map(position => <tr>
+                    {state.positions.map((position, index) => <tr key={index}>
                         <td>
                             {position.positionAddedOn}
                         </td>

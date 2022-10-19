@@ -111,8 +111,9 @@ namespace Profitable.Services.Positions
 				var futuresPosition = new FuturesPosition
 				{
 					FuturesContractId = futuresContractGuid,
-					TradePositionId = position.Guid
-				};
+					TradePositionId = position.Guid,
+					Direction = parsedPositionDirection
+                };
 
 				await tradePositionsRepository.AddAsync(position);
 

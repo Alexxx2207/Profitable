@@ -87,7 +87,7 @@ const reducer = (state, action) => {
 
 export const CreateFuturesPosition = () => {
 
-    const { recordGuid } = useParams();
+    const { recordGuid, searchedProfileEmail } = useParams();
 
     const navigate = useNavigate();
 
@@ -157,7 +157,7 @@ export const CreateFuturesPosition = () => {
             )
                 .then(jwt => {
                     setMessageBoxSettings('The position was created successfully!', true);
-                    navigate(`/positions-records/futures/${recordGuid}`);
+                    navigate(`/users/${searchedProfileEmail}/positions-records/futures/${recordGuid}`);
                 })
                 .catch(err => {
                     if (JWT && err.message === 'Should auth first') {
@@ -269,7 +269,8 @@ export const CreateFuturesPosition = () => {
                             name="entryPrice"
                             value={state.values.content}
                             onChange={changeHandler}
-                            type="number" />
+                            type="number" 
+                            step=".001"/>
                         </div>
 
                         <div className={styles.formGroup}>
@@ -281,7 +282,8 @@ export const CreateFuturesPosition = () => {
                             name="exitPrice"
                             value={state.values.content}
                             onChange={changeHandler}
-                            type="number" />
+                            type="number" 
+                            step=".001"/>
                         </div>
 
                         <div className={styles.formGroup}>
@@ -293,7 +295,8 @@ export const CreateFuturesPosition = () => {
                             name="quantity"
                             value={state.values.quantity}
                             onChange={changeContractsCountHandler}
-                            type="number" />
+                            type="number" 
+                            step=".001"/>
                         </div>
 
                         <div className={styles.submitButtonContainer}>

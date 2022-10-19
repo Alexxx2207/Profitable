@@ -1,5 +1,10 @@
 .recordDetailsContainer {
-    margin: 2rem;
+    margin: 1rem;
+}
+
+.chartContainer {
+    margin: 1.5rem 0rem;
+    height: 75vh;
 }
 
 .addPositionButtonContainer {
@@ -24,8 +29,6 @@
     color: black;
     transition: 0.3s ease-out;
 }
-
-
 
 .positionsTable {
     width: 100%;
