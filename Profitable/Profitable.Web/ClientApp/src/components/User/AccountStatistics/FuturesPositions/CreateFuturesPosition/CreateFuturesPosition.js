@@ -1,20 +1,19 @@
-
 import { useContext, useEffect, useReducer } from 'react';
 import { useNavigate, useParams  } from "react-router-dom";
 import { AuthContext } from '../../../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../../../contexts/MessageBoxContext';
 import { ErrorWidget } from '../../../../ErrorWidget/ErrorWidget';
 
-import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, LongDirection, SERVER_ERROR_TYPE, ShortDirection } from '../../../../../common/config';
+import { CLIENT_ERROR_TYPE, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, LongDirectionName, SERVER_ERROR_TYPE, ShortDirectionName } from '../../../../../common/config';
 import { getUserEmailFromJWT } from '../../../../../services/users/usersService';
 import { isEmptyOrWhiteSpaceFieldChecker, naturalNumberChecker } from '../../../../../services/common/errorValidationCheckers';
 import { changeStateValuesForControlledForms } from '../../../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../../../services/common/createValidationErrorObject';
 
 import { createPosition } from '../../../../../services/positions/positionsService';
+import { loadFuturesContracts } from '../../../../../services/futures/futuresService';
 
 import styles from './CreateFuturesPosition.module.css';
-import { loadFuturesContracts } from '../../../../../services/futures/futuresService';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -104,7 +103,7 @@ export const CreateFuturesPosition = () => {
                 tickSize: 0,
                 tickValue: 0,
             },
-            directionSelected: LongDirection,
+            directionSelected: LongDirectionName,
             entryPrice: '',
             exitPrice: '',
             quantity: '',
@@ -188,14 +187,14 @@ export const CreateFuturesPosition = () => {
     const onBullishDirectionButtonClick = (e) => {
         setState({
             type: 'changeSelectedDirection',
-            payload: LongDirection
+            payload: LongDirectionName
         });
     };
     
     const onBearishDirectionButtonClick = (e) => {
         setState({
             type: 'changeSelectedDirection',
-            payload: ShortDirection
+            payload: ShortDirectionName
         });
     };
 
@@ -244,7 +243,7 @@ export const CreateFuturesPosition = () => {
                                     <input
                                     type="radio"
                                     onChange={(e) => onBullishDirectionButtonClick(e)}
-                                    checked={state.values.directionSelected.localeCompare(LongDirection) === 0}
+                                    checked={state.values.directionSelected.localeCompare(LongDirectionName) === 0}
                                     className={styles.directionBullish}
                                     name="directionSelected" />
                                     <span className={styles.radioLabel} onClick={(e) => onBullishDirectionButtonClick(e)}>Bullish</span>
@@ -253,7 +252,7 @@ export const CreateFuturesPosition = () => {
                                     <input
                                     type="radio"
                                     onChange={(e) => onBearishDirectionButtonClick(e)}
-                                    checked={state.values.directionSelected.localeCompare(ShortDirection) === 0}
+                                    checked={state.values.directionSelected.localeCompare(ShortDirectionName) === 0}
                                     className={styles.directionBearish}
                                     name="directionSelected" />
                                     <span className={styles.radioLabel} onClick={(e) => onBearishDirectionButtonClick(e)}>Bearish</span>

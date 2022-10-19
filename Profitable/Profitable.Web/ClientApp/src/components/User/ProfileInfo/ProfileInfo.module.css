@@ -1,4 +1,15 @@
 
+.changeImageMessage {
+    color: grey;
+    background-color: white;
+    margin-top: 1rem;
+    margin-bottom: 0px;
+    position: relative;
+    left: 18rem;
+    top: 7.5rem;
+    z-index: 2;
+}
+
 .imageContainer {
     width: 12rem;
     background-color: #1e222d;

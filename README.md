@@ -21,7 +21,19 @@ This platform helps traders to make decisions, observe the financial markets and
 2. MSSQL or other database engine (you should configure your connection string on these lines below)
 https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce2387954e2/Profitable/Profitable.Web/appsettings.json#L3
 https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce2387954e2/Profitable/Profitable.Data/appsettings.json#L3
+
 3. NodeJS
+
+
+# Configuration
+
+1. Change the WEB_API_BASE_URL in Profitable.Web/ClientApp/src/common/config.js to meet your backend web API address
+> :warning: Be careful not to forget '/api' path string after the port number! :warning:
+
+2. Add "JWT_KEY" key/value pair in user secrets
+
+3. Set '.' as decimal point for numbers with decimal part. That is configured in your OS settings.
+
 
 # How To Start The Project
     
@@ -57,8 +69,3 @@ https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce238
   
 > :warning: **Do NOT close the console windows that were opened after clicking the empty green arrow!** :warning:  
 > :warning: **Close them when you finish the web app usage!** :warning: 
-
-# Configuration
-
-1. Change the WEB_API_BASE_URL in Profitable.Web/ClientApp/src/common/config.js to meet your backend web API address
-> :warning: Be careful not to forget '/api' path string after the port number! :warning:

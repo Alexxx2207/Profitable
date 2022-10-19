@@ -95,7 +95,7 @@
 }
 
 .formGroup div h5 {
-    font-size: 1.5vw;
+    font-size: 1.5rem;
     margin: 0px;
 }
 
@@ -104,7 +104,7 @@
     display: inline-block;
     padding: 1vh 1vw;
     width: 65%;
-    font-size: 1.5vw;
+    font-size: 1.3rem;
 }
 
 .inputField:focus {
