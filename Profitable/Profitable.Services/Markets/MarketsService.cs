@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Profitable.Common.Enums;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
 using Profitable.Models.ResponseModels.Markets;
@@ -31,6 +32,11 @@ namespace Profitable.Services.Markets
                 .ToListAsync();
 
             return instrument;
+        }
+
+        public IEnumerable<string> GetAllInstrumentGroupsAsync()
+        {
+            return Enum.GetValues<InstrumentGroup>().Select(group => group.ToString());
         }
 
         public async Task<List<MarketTypeResponseModel>> GetAllMarketTypesAsync()

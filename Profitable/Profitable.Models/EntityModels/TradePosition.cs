@@ -1,11 +1,6 @@
 ﻿using Profitable.Models.EntityModels.EntityBaseClass;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Profitable.Models.EntityModels
 {
@@ -30,5 +25,7 @@ namespace Profitable.Models.EntityModels
 
 		[Required]
 		public double ExitPrice { get; set; }
+
+		public double RealizedProfitAndLoss { get; set; }
 	}
 }

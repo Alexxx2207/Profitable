@@ -4,14 +4,14 @@
     padding-top: 12vh;
 }
 
-.recordAddFormContainer {
+.recordChangeFormContainer {
     display: flex;
     justify-content: center;
     width: 40%;
     margin-right: 5vw;
 }
 
-.recordAddForm {
+.recordChangeForm {
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -24,19 +24,19 @@
     padding: 1rem 2rem;
 }
 
-.recordAddForm * {
+.recordChangeForm * {
     background-color: white;
     color: black;
 }
 
-.recordAddFormLabelContainer {
+.recordChangeFormLabelContainer {
     border-bottom: 2px solid black;
     width: 100%;
     text-align: center;
     margin-bottom: 4vh;
 }
 
-.addRecordLabel {
+.changeRecordLabel {
     margin-bottom: 1rem;
 }
 
@@ -68,8 +68,15 @@
     border: 2px solid #1e222d;
 }
 
-.passwordField {
-    padding-right: 2.2rem;
+.instrumentGroupSelector {
+    width: 71%;
+    font-weight: 600;
+    padding: 0.1rem 0.3rem;
+    border: 2px solid #aeafb3;
+}
+
+.instrumentGroupSelector:focus {
+    border: 2px solid black;
 }
 
 .submitButtonContainer {
@@ -98,7 +105,7 @@
     transition: linear 0.3s;
 }
 
-.recordAddFormAside {
+.recordChangeFormAside {
     width: 35%;
 }
 
@@ -110,6 +117,7 @@
 .errorsHeading {
     text-align: center;
     margin-bottom: 2vh;
+    letter-spacing: 1px;
 }
 
 .errorsContainer {

@@ -8,7 +8,7 @@ import { PasswordEye } from '../../PasswordEye/PasswordEye';
 
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
 import { isEmailValidChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
-import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
+import { changeStateValuesForControlledFormsByTrimming } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
 
 import styles from './Login.module.css';
@@ -74,7 +74,7 @@ export const Login = () => {
         if(e.target.name === 'email') {
             setLoginState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
+                values: changeStateValuesForControlledFormsByTrimming(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     emailValid: createClientErrorObject(state.errors.emailValid, isEmailValidChecker.bind(null, e.target.value)),
@@ -83,7 +83,7 @@ export const Login = () => {
         } else  if(e.target.name === 'password'){
             setLoginState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
+                values: changeStateValuesForControlledFormsByTrimming(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isPasswordValidChecker.bind(null, e.target.value)),

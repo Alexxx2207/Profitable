@@ -27,15 +27,19 @@ import { NewsList } from "../News/NewsList";
 import { NewsArticle } from "../News/NewsArticle/NewsArticle";
 import { Calendars } from "../Calendars/Calendars";
 
-// eslint-disable-next-line
-import styles from './App.module.css';
 import { AccountActivity } from "../User/AccountActivity/AccountActivity";
 import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExplorer";
 import { AccountStatistics } from "../User/AccountStatistics/AccountStatistics";
-import { AddPositionsRecord } from "../User/AccountStatistics/AddPositionsRecord/AddPositionsRecord";
-import { RecordDetails } from "../User/AccountStatistics/RecordDetails/RecordDetails";
+import { AddPositionsRecord } from "../User/AccountStatistics/PositionsRecords/AddPositionsRecord/AddPositionsRecord";
+import { FuturesRecordDetails } from "../User/AccountStatistics/FuturesPositions/FuturesRecordDetails/FuturesRecordDetails";
 import { SearchPage } from "../Search/SearchPage";
+import { ChangePositionsRecord } from "../User/AccountStatistics/PositionsRecords/ChangePositionsRecord/ChangePositionsRecord";
+import { CreateFuturesPosition } from "../User/AccountStatistics/FuturesPositions/CreateFuturesPosition/CreateFuturesPosition";
 
+
+
+// eslint-disable-next-line
+import styles from './App.module.css';
 
 export function App() {
 
@@ -56,43 +60,35 @@ export function App() {
                     <Routes>
                         <Route path="/" element={
                             <Home />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/markets" element={
                             <MarketsPage />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/posts" element={
                             <PostsExplorer />
-                        }>
-                        </Route>
-
+                        } />
+                        
                         <Route path="/posts/:postId" element={
                             <PostDetails />
-                        }>
-                        </Route>
-
+                        } />
+                        
                         <Route path="/posts/create" element={
                             <CreatePost />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/login" element={
                             <Login />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/register" element={
                             <Register />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/logout" element={
                             <Logout />
-                        }>
-                        </Route>
+                        } />
 
                         <Route path="/users/:searchedProfileEmail" element={ <ProfilePage/> }>
                             <Route index element={ <ProfileInfo /> } />
@@ -101,45 +97,50 @@ export function App() {
                             <Route path="account-activity" element={ <AccountActivity /> } />
                         </Route>
 
-                        <Route path="/:searchedProfileEmail/positions-records/create" element={
+                        <Route path="/users/:searchedProfileEmail/positions-records/create" element={
                             <AddPositionsRecord />
-                        }>
-                        </Route>
+                        } />
 
-                        <Route path="/positions-records/:recordGuid" element={
-                            <RecordDetails />
-                        }>
-                        </Route>
+                        <Route path="/users/:searchedProfileEmail/positions-records/:recordId/change" element={
+                            <ChangePositionsRecord />
+                        } />
 
+                        <Route path="/positions-records/futures/:recordGuid" element={
+                            <FuturesRecordDetails />
+                        } />
+
+                        <Route path="/positions-records/futures/:recordGuid/create-position" element={
+                            <CreateFuturesPosition />
+                        } />
+                        
                         <Route path="/posts/:postId/edit" element={
                             <EditPost />
-                        }>
-                        </Route>
-
+                        } />
+                        
                         <Route path="/calculators" element={
                             <Calcualtors />
-                        }></Route>
+                        } />
 
                         <Route path="/news" element={
                             <NewsList />
-                        }></Route>
+                        } />
                         
                         <Route path="/news/:newsTitle" element={
                             <NewsArticle />
-                        }></Route>
+                        } />
 
                         <Route path="/calendars" element={
                             <Calendars />
-                        }></Route>
+                        } />
 
                         <Route path="/search" element={
                             <SearchPage />
-                        }></Route>
+                        } />
 
                         <Route path="*" element={
                             <NotFoundPage />
-                        }>
-                        </Route>
+                        } />
+                        
                     </Routes>
                     </div>
                 </div>

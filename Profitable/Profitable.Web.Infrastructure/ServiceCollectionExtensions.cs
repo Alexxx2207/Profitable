@@ -60,6 +60,7 @@ namespace Profitable.Web.Infrastructure
             services.AddScoped<IPositionsRecordsService, PositionsRecordsService>();
             services.AddScoped<IUserSearchService, UserSearchService>();
             services.AddScoped<IPostSearchService, PostSearchService>();
+            services.AddScoped<IPositionsService, PositionsService>();
 
             return services;
         }

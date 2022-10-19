@@ -14,6 +14,9 @@ namespace Profitable.Services.Positions.Contracts
 
 		IEnumerable<string> GetPositionsRecordsOrderTypes();
 
-		Task<Result> AddPositionsRecordList(Guid userGuid, string positionName);
+		Task<Result> AddPositionsRecordList(Guid userGuid, string recordName, string instrumentGroup);
+
+		Task<Result> ChangeNamePositionsRecordList(Guid recordGuid, string recordName);
+		Task<Result> DeletePositionsRecordList(Guid recordGuid);
 	}
 }

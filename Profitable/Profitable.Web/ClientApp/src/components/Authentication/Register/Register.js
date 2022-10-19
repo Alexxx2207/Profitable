@@ -8,7 +8,7 @@ import { PasswordEye } from '../../PasswordEye/PasswordEye';
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from '../../../common/config';
 import { FIRST_NAME_MIN_LENGTH, LAST_NAME_MIN_LENGTH, PASSWORD_MIN_LENGTH } from '../../../common/validationConstants';
 import { isEmptyOrWhiteSpaceFieldChecker, minLengthChecker, isEmailValidChecker, isPasswordValidChecker } from '../../../services/common/errorValidationCheckers';
-import { changeStateValuesForControlledForms } from '../../../services/common/createStateValues';
+import { changeStateValuesForControlledForms, changeStateValuesForControlledFormsByTrimming } from '../../../services/common/createStateValues';
 import { createClientErrorObject, createServerErrorObject } from '../../../services/common/createValidationErrorObject';
 import { getUserEmailFromJWT, registerUser } from '../../../services/users/usersService';
 
@@ -85,7 +85,7 @@ export const Register = () => {
         if (e.target.name === 'email') {
             setRegisterState(state => ({
                 ...state,
-                values:changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
+                values:changeStateValuesForControlledFormsByTrimming(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     emailValid: createClientErrorObject(state.errors.emailValid, isEmailValidChecker.bind(null, e.target.value)),
@@ -94,7 +94,7 @@ export const Register = () => {
         } else if (e.target.name === 'password') {
             setRegisterState(state => ({
                 ...state,
-                values: changeStateValuesForControlledForms(state.values, e.target.name, e.target.value),
+                values: changeStateValuesForControlledFormsByTrimming(state.values, e.target.name, e.target.value),
                 errors: {
                     ...state.errors,
                     passwordEmpty: createClientErrorObject(state.errors.passwordEmpty, isPasswordValidChecker.bind(null, e.target.value)),
