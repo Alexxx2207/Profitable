@@ -7,9 +7,9 @@ namespace Profitable.Services.Posts.Contracts
 {
     public interface IPostService
     {
-        Task<PostResponseModel> GetPostByGuidAsync(Guid guid);
+        Task<PostResponseModel> GetPostByGuidAsync(Guid guid, string? loggedInUserEmail);
 
-        Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int pageCount);
+        Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int pageCount, string? loggedInUserEmail);
 
         Task<List<PostResponseModel>> GetPostsByUserAsync(Guid userId, int page, int pageCount);
 

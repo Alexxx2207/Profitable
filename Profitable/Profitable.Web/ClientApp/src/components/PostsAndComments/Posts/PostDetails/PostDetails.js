@@ -49,6 +49,7 @@ export const PostDetails = () => {
         authorImage: '',
         postedOn: '',
         postImage: '',
+        isLikedByTheUser: false,
         likes: [],
         comments: [],
         showCreateCommentWidget: false,
@@ -91,27 +92,26 @@ export const PostDetails = () => {
     }, [loadComments, page]);
 
     useEffect(() => {
+        getUserEmailFromJWT(JWT)
+            .then(result => {
+                setUserEmail(result)
+            });
+    }, [JWT]);
+
+    useEffect(() => {
         window.addEventListener("scroll", handleScroll);
 
         return () => window.removeEventListener('scroll', handleScroll);
     }, [handleScroll])
 
     useEffect(() => {
-        loadParticularPost(postId)
+        loadParticularPost(postId, userEmail)
             .then(result => {
                 setPostPage(result);
                 loadFirstComments();
             })
             .catch(err => navigate(`${MISSING_POST_GUID_ERROR_PAGE_PATH}`))
-    }, [postId, navigate, loadFirstComments]);
-
-    useEffect(() => {
-        getUserEmailFromJWT(JWT)
-            .then(email =>
-                setUserEmail(state => email)
-            )
-            .catch(err => err)
-    }, [JWT]);
+    }, [postId, navigate, loadFirstComments, userEmail]);
 
     const goToEditPageHandler = (e) => {
         getUserDataByJWT(JWT)
@@ -212,7 +212,7 @@ export const PostDetails = () => {
                             </div>
                         </div>
                         <div className={styles.postedOn}>
-                            {postPage.postedOn}
+                            Posted On: {postPage.postedOn}
                         </div>
                     </div>
                 </div>

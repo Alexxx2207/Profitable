@@ -2,6 +2,6 @@
 {
     public class LikeResponseModel
     {
-        public string AuthorId { get; set; }
+        public string AuthorEmail { get; set; }
     }
 }

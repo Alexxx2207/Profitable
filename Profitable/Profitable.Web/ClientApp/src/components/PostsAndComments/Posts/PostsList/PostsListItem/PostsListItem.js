@@ -20,6 +20,7 @@ export const PostsListItem = ({ post, userGuid }) => {
         navigate(`/users/${post.authorEmail}`);
     };
 
+
     return (
         <div className={styles.post} onClick={postDetailsClickHandler}>
             <div className={styles.header}>

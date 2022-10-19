@@ -66,7 +66,7 @@ export const AccountActivity = () => {
     const [state, setState] = useReducer(reducer, {
         activityType: ACTIVITY_TYPE_POSTS,
         activityList: [],
-        page: 1,
+        page: 0,
         userId: '',
     });
 
@@ -105,7 +105,7 @@ export const AccountActivity = () => {
                     navigate('/login');
                 }
             });
-    }, []);
+    }, [JWT, removeAuth, navigate, setMessageBoxSettings, state.activityType]);
 
     const handleActivityTypeChange = (e) => {
         if(e.target.value === ACTIVITY_TYPE_POSTS) {
@@ -166,9 +166,9 @@ export const AccountActivity = () => {
                 type: 'increasePageCount'
             });
             if(state.activityType === ACTIVITY_TYPE_POSTS) {
-                loadPosts(state.page, POSTS_LIST_POSTS_IN_PAGE_COUNT);
+                loadPosts(state.page + 1, POSTS_LIST_POSTS_IN_PAGE_COUNT);
             } else if(state.activityType === ACTIVITY_TYPE_COMMENTS){
-                loadComments(state.page, COMMENTS_LIST_IN_POST_PAGE_COUNT);
+                loadComments(state.page + 1, COMMENTS_LIST_IN_POST_PAGE_COUNT);
             }
         }
     }, [loadPosts, loadComments, state.page, state.activityType]);

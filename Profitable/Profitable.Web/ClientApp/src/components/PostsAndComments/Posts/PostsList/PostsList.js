@@ -19,7 +19,7 @@ export const PostsList = ({posts}) => {
 
     return (
         <div className={styles.postsList}>
-            {posts.map(post => <PostsListItem key={post.guid} post={post} userGuid={userGuid} />)}
+            {posts.map((post, index) => <PostsListItem key={index} post={post} userGuid={userGuid} />)}
         </div>
     );
 }

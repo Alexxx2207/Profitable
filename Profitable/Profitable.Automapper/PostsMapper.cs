@@ -25,7 +25,13 @@ namespace Profitable.Common.Automapper
                     opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Posts), src => src.ImageURL))
                 .ForMember(
                     dest => dest.AuthorImage,
-                    opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Users), src => src.Author.ProfilePictureURL));
+                    opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Users), src => src.Author.ProfilePictureURL))
+                .ForMember(
+                    dest => dest.LikesCount,
+                    opt => opt.MapFrom(src => src.Likes.Count))
+                .ForMember(
+                    dest => dest.IsLikedByTheUsed,
+                    opt => opt.Ignore());
         }
     }
 }

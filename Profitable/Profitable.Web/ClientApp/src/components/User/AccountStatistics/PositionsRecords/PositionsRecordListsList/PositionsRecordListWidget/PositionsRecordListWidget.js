@@ -19,7 +19,7 @@ export const PositionsRecordListWidget = ({list, showOwnerActionButtons}) => {
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const handleOpen = () => {
-        navigate(`/positions-records/${list.instrumentGroup.toLowerCase()}/${list.guid}`);
+        navigate(`/users/${searchedProfileEmail}/positions-records/${list.instrumentGroup.toLowerCase()}/${list.guid}`);
     };
     
     const handleChange = () => {

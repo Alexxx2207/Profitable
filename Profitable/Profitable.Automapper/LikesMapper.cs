@@ -8,7 +8,10 @@ namespace Profitable.Common.Automapper
     {
         public LikesMapper()
         {
-            CreateMap<Like, LikeResponseModel>();
+            CreateMap<Like, LikeResponseModel>()
+                .ForMember(
+                dest => dest.AuthorEmail,
+                opt => opt.MapFrom(src => src.Author.Email));
         }
     }
 }

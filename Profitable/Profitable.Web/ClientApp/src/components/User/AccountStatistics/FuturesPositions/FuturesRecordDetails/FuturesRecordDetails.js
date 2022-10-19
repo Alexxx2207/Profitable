@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPositionsFromRecord } from "../../../../../services/positions/positionsService";
+import { GoBackButton } from "../../../../GoBackButton/GoBackButton";
 
 
 import styles from './FuturesRecordDetails.module.css';
@@ -29,7 +30,7 @@ export const FuturesRecordDetails = () => {
         selectedAfterDateFilter: ''
     });
 
-    const { recordGuid } = useParams();
+    const { recordGuid, searchedProfileEmail } = useParams();
 
     const navigate = useNavigate();
 
@@ -51,11 +52,14 @@ export const FuturesRecordDetails = () => {
     }, [recordGuid]);
 
     const addPositionButtonClickHandler = (e) => {
-        navigate(`/positions-records/futures/${recordGuid}/create-position`);
+        navigate(`/users/${searchedProfileEmail}/positions-records/futures/${recordGuid}/create-position`);
     }
     
     return (
         <div className={styles.recordDetailsContainer}>
+            <div>
+                <GoBackButton link={`/users/${searchedProfileEmail}/account-statistics`} />
+            </div>
             <div className={styles.addPositionButtonContainer}>
                 <button className={styles.addPositionButton} onClick={addPositionButtonClickHandler}>+Add Position</button>
             </div>
@@ -87,7 +91,7 @@ export const FuturesRecordDetails = () => {
                             Tick Value
                         </th>
                         <th>
-                            P/L
+                            P/L ($)
                         </th>
                     </tr>
                 </thead>
