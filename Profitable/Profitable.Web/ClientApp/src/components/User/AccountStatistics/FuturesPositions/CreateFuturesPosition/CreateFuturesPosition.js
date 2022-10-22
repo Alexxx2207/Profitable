@@ -270,7 +270,7 @@ export const CreateFuturesPosition = () => {
                             value={state.values.content}
                             onChange={changeHandler}
                             type="number" 
-                            step=".001"/>
+                            step=".000001"/>
                         </div>
 
                         <div className={styles.formGroup}>
@@ -283,7 +283,7 @@ export const CreateFuturesPosition = () => {
                             value={state.values.content}
                             onChange={changeHandler}
                             type="number" 
-                            step=".001"/>
+                            step=".000001"/>
                         </div>
 
                         <div className={styles.formGroup}>
