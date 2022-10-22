@@ -4,7 +4,7 @@
 
 .chartContainer {
     margin: 1.5rem 0rem;
-    height: 60vh;
+    height: 30rem;
 }
 
 .addPositionButtonContainer {
@@ -38,6 +38,14 @@
     border: 1px solid white;
     text-align: center;
     padding: 8px;
+}
+
+.overallProfiltLossHeading {
+    padding-right: 1rem;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    letter-spacing: 1px;
 }
 
 .textColorGreen {

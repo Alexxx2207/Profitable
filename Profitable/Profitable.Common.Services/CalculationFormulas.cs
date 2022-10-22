@@ -12,7 +12,7 @@
 		{
 			int directionMultiplier = directionBullish ? 1 : -1;
 
-			return (exitPrice - entryPrice) / tickSize * tickValue * contractsCount * directionMultiplier;
+			return Math.Round((exitPrice - entryPrice) / tickSize * tickValue * contractsCount * directionMultiplier, 2);
 		}
 	}
 }
