@@ -4,7 +4,7 @@
 
 .chartContainer {
     margin: 1.5rem 0rem;
-    height: 75vh;
+    height: 60vh;
 }
 
 .addPositionButtonContainer {
@@ -40,3 +40,10 @@
     padding: 8px;
 }
 
+.textColorGreen {
+    color: rgb(0, 220, 0);
+}
+
+.textColorRed {
+    color: red;
+}

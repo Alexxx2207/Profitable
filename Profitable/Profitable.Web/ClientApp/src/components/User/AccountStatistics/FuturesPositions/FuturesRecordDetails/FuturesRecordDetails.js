@@ -4,12 +4,13 @@ import { getPositionsFromRecord } from "../../../../../services/positions/positi
 import { GoBackButton } from "../../../../GoBackButton/GoBackButton";
 import { Line } from "react-chartjs-2";
 import { calculateAcculativePositions } from '../../../../../services/positions/positionsService';
-import { CategoryScale, LineElement, PointElement, LinearScale, Title, Chart } from "chart.js";
+import { CategoryScale, LineElement, PointElement, LinearScale, Chart, Tooltip, Filler } from "chart.js";
 
 import styles from './FuturesRecordDetails.module.css';
+import { ShortDirectionName } from "../../../../../common/config";
 
 
-Chart.register(CategoryScale, LineElement, PointElement, LinearScale, Title);
+Chart.register([CategoryScale, LineElement, PointElement, LinearScale, Tooltip, Filler]);
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -27,8 +28,6 @@ const reducer = (state, action) => {
             break;
     }
 }
-
-
 
 export const FuturesRecordDetails = () => {
 
@@ -69,28 +68,31 @@ export const FuturesRecordDetails = () => {
             </div>
 
             <div className={styles.chartContainer}>
-                <Line data={
-                     {
+                <Line
+                data={{
                         labels: [0, ...state.positions.map(position => position.positionAddedOn).reverse()],
-                        datasets: [{
-                            label: 'Performance',
+                        datasets: [
+                        {
+                            fill: 'origin',
                             data:  calculateAcculativePositions([0,...state.positions.map(position => position.positionPAndL).reverse()]),
-                            backgroundColor: 'white',
+                            pointBackgroundColor: 'white',
                             borderColor: 'white',
                             pointRadius: 5,
-                            pointHoverRadius: 10
-                        }],
+                            pointHoverRadius: 8,
+                        },
+                    ],
                     }
                 }
+
                 options={
                     {
+                        indexAxis: 'x',
                         maintainAspectRatio: false,
                         responsive: true,
                         scales: {
-                            xAxes: {
+                            x: {
                                 grid: {
                                     borderColor: 'white'
-                                    
                                 },
                                 display: false
                             },
@@ -106,9 +108,44 @@ export const FuturesRecordDetails = () => {
                                     color: 'white',
                                 }
                             },
+                        },
+                        plugins: {
+                            filler: {
+                                propagate: true
+                            },
+                            tooltip: {
+                                backgroundColor: 'black',
+                                callbacks: {
+                                    label: (context) => {
+                                        if(context.parsed.y < 0) {
+                                            return `-$${Math.abs(context.parsed.y)}`;
+                                        }
+                                        return `$${Math.abs(context.parsed.y)}`;
+                                    }
+                                }
+                            },
                         }
                     }
-                } />
+                } 
+                
+                plugins={[{
+                    beforeRender: function (state, options) {
+                        var chart = state.$context.chart;
+                        var dataset = state.data.datasets[0];
+                        var yScale = state.scales.y;
+                        var yPos = yScale.getPixelForValue(0);
+                        
+                        console.log(yPos / chart.height);
+
+                        var gradientFill = chart.ctx.createLinearGradient(0, 0, 0, chart.height);
+                        gradientFill.addColorStop(0, 'green');
+                        gradientFill.addColorStop(yPos / chart.height, 'rgb(0, 255, 0, 0.1)');
+                        gradientFill.addColorStop(yPos / chart.height, 'rgb(255, 0, 0, 0.1)');
+                        gradientFill.addColorStop(1, 'red');
+                        
+                        dataset.backgroundColor = gradientFill;
+                    }
+                }]}/>
             </div>
 
             <div className={styles.addPositionButtonContainer}>
@@ -117,6 +154,7 @@ export const FuturesRecordDetails = () => {
             <table className={styles.positionsTable}>
                 <thead>
                     <tr>
+                        <th></th>
                         <th>
                             Date Added
                         </th>
@@ -147,16 +185,25 @@ export const FuturesRecordDetails = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {state.positions.map((position, index) => <tr key={index}>
+                    {state.positions.reverse().map((position, index) => <tr key={index}>
+                        <td>
+                            {index+1}
+                        </td>
                         <td>
                             {position.positionAddedOn}
                         </td>
                         <td>
                             {position.contractName}
                         </td>
-                        <td>
-                            {position.direction}
-                        </td>
+                            {position.direction.localeCompare(ShortDirectionName) === 0 ?
+                                <td className={styles.textColorRed}>
+                                    {position.direction}
+                                </td>
+                            :
+                                <td className={styles.textColorGreen}>
+                                    {position.direction}
+                                </td>
+                            }
                         <td>
                             {position.entryPrice}
                         </td>
@@ -172,9 +219,16 @@ export const FuturesRecordDetails = () => {
                         <td>
                             {position.tickValue}
                         </td>
-                        <td>
-                            {position.positionPAndL}
-                        </td>
+                        {position.positionPAndL < 0 ?
+                            <td className={styles.textColorRed}>
+                                {position.positionPAndL}
+                            </td>
+                        :
+                            <td className={styles.textColorGreen}>
+                                {position.positionPAndL}
+                            </td>
+                        }
+                        
                     </tr>)}
                 </tbody>
             </table>
