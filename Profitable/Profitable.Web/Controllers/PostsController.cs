@@ -26,11 +26,14 @@ namespace Profitable.Web.Controllers
         }
 
         [HttpGet("feed/{page}/{pageCount}")]
-        public async Task<IActionResult> GetPostFeedAsync(int page, int pageCount)
+        public async Task<IActionResult> GetPostFeedAsync(
+            [FromRoute] int page,
+            [FromRoute] int pageCount,
+            [FromQuery] string? loggedInUserEmail)
         {
             try
             {
-                var posts = await postService.GetPostsByPageAsync(page, pageCount);
+                var posts = await postService.GetPostsByPageAsync(page, pageCount, loggedInUserEmail);
 
                 foreach (var post in posts)
                 {
@@ -50,7 +53,7 @@ namespace Profitable.Web.Controllers
 
         [Authorize]
         [HttpGet("byuser/all/{page}/{pageCount}")]
-        public async Task<IActionResult> GetPostsByUserAsync(string page, string pageCount)
+        public async Task<IActionResult> GetPostsByUserAsync([FromRoute] string page, [FromRoute] string pageCount)
         {
             try
             {
@@ -142,9 +145,11 @@ namespace Profitable.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync([FromRoute] string id)
+        public async Task<IActionResult> GetByIdAsync(
+            [FromRoute] string id,
+            [FromQuery] string? loggedInUserEmail)
         {
-            var post = await postService.GetPostByGuidAsync(Guid.Parse(id));
+            var post = await postService.GetPostByGuidAsync(Guid.Parse(id), loggedInUserEmail);
 
             return Ok(post);
         }

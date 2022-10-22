@@ -1,16 +1,23 @@
 import { useEffect, useReducer } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPositionsFromRecord } from "../../../../../services/positions/positionsService";
-
+import { GoBackButton } from "../../../../GoBackButton/GoBackButton";
+import { Line } from "react-chartjs-2";
+import { calculateAcculativePositions } from '../../../../../services/positions/positionsService';
+import { CategoryScale, LineElement, PointElement, LinearScale, Chart, Tooltip, Filler } from "chart.js";
 
 import styles from './FuturesRecordDetails.module.css';
+import { ShortDirectionName } from "../../../../../common/config";
+
+
+Chart.register([CategoryScale, LineElement, PointElement, LinearScale, Tooltip, Filler]);
 
 const reducer = (state, action) => {
     switch (action.type) {
         case 'loadPositions':
             return {
                 ...state,
-                positions: action.payload
+                positions: [...action.payload]
             };
         case 'setDefaultDate': 
             return {
@@ -29,7 +36,7 @@ export const FuturesRecordDetails = () => {
         selectedAfterDateFilter: ''
     });
 
-    const { recordGuid } = useParams();
+    const { recordGuid, searchedProfileEmail } = useParams();
 
     const navigate = useNavigate();
 
@@ -42,26 +49,112 @@ export const FuturesRecordDetails = () => {
             payload: oneYearAgoFromNow
         });
         getPositionsFromRecord(recordGuid, oneYearAgoFromNow.toJSON())
-            .then(result => 
+            .then(result => {
                 setState({
                     type: 'loadPositions',
                     payload: result
                 })
-            );
+            });
     }, [recordGuid]);
 
     const addPositionButtonClickHandler = (e) => {
-        navigate(`/positions-records/futures/${recordGuid}/create-position`);
+        navigate(`/users/${searchedProfileEmail}/positions-records/futures/${recordGuid}/create-position`);
     }
     
     return (
         <div className={styles.recordDetailsContainer}>
+            <div>
+                <GoBackButton link={`/users/${searchedProfileEmail}/account-statistics`} />
+            </div>
+
+            <div className={styles.chartContainer}>
+                <Line
+                data={{
+                        labels: [0, ...state.positions.map(position => position.positionAddedOn).reverse()],
+                        datasets: [
+                        {
+                            fill: 'origin',
+                            data:  calculateAcculativePositions([0,...state.positions.map(position => position.positionPAndL).reverse()]),
+                            pointBackgroundColor: 'white',
+                            borderColor: 'white',
+                            pointRadius: 5,
+                            pointHoverRadius: 8,
+                        },
+                    ],
+                    }
+                }
+
+                options={
+                    {
+                        indexAxis: 'x',
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        scales: {
+                            x: {
+                                grid: {
+                                    borderColor: 'white'
+                                },
+                                display: false
+                            },
+                            y: {
+                                grid: {
+                                    borderColor: 'white',
+                                    color: 'rgb(255,255,255, 0.2)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value;
+                                    },
+                                    color: 'white',
+                                }
+                            },
+                        },
+                        plugins: {
+                            filler: {
+                                propagate: true
+                            },
+                            tooltip: {
+                                backgroundColor: 'black',
+                                callbacks: {
+                                    label: (context) => {
+                                        if(context.parsed.y < 0) {
+                                            return `-$${Math.abs(context.parsed.y)}`;
+                                        }
+                                        return `$${Math.abs(context.parsed.y)}`;
+                                    }
+                                }
+                            },
+                        }
+                    }
+                } 
+                
+                plugins={[{
+                    beforeRender: function (state, options) {
+                        var chart = state.$context.chart;
+                        var dataset = state.data.datasets[0];
+                        var yScale = state.scales.y;
+                        var yPos = yScale.getPixelForValue(0);
+                        
+                        console.log(yPos / chart.height);
+
+                        var gradientFill = chart.ctx.createLinearGradient(0, 0, 0, chart.height);
+                        gradientFill.addColorStop(0, 'green');
+                        gradientFill.addColorStop(yPos / chart.height, 'rgb(0, 255, 0, 0.1)');
+                        gradientFill.addColorStop(yPos / chart.height, 'rgb(255, 0, 0, 0.1)');
+                        gradientFill.addColorStop(1, 'red');
+                        
+                        dataset.backgroundColor = gradientFill;
+                    }
+                }]}/>
+            </div>
+
             <div className={styles.addPositionButtonContainer}>
                 <button className={styles.addPositionButton} onClick={addPositionButtonClickHandler}>+Add Position</button>
             </div>
             <table className={styles.positionsTable}>
                 <thead>
                     <tr>
+                        <th></th>
                         <th>
                             Date Added
                         </th>
@@ -87,21 +180,30 @@ export const FuturesRecordDetails = () => {
                             Tick Value
                         </th>
                         <th>
-                            P/L
+                            P/L ($)
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {state.positions.map(position => <tr>
+                    {state.positions.reverse().map((position, index) => <tr key={index}>
+                        <td>
+                            {index+1}
+                        </td>
                         <td>
                             {position.positionAddedOn}
                         </td>
                         <td>
                             {position.contractName}
                         </td>
-                        <td>
-                            {position.direction}
-                        </td>
+                            {position.direction.localeCompare(ShortDirectionName) === 0 ?
+                                <td className={styles.textColorRed}>
+                                    {position.direction}
+                                </td>
+                            :
+                                <td className={styles.textColorGreen}>
+                                    {position.direction}
+                                </td>
+                            }
                         <td>
                             {position.entryPrice}
                         </td>
@@ -117,9 +219,16 @@ export const FuturesRecordDetails = () => {
                         <td>
                             {position.tickValue}
                         </td>
-                        <td>
-                            {position.positionPAndL}
-                        </td>
+                        {position.positionPAndL < 0 ?
+                            <td className={styles.textColorRed}>
+                                {position.positionPAndL}
+                            </td>
+                        :
+                            <td className={styles.textColorGreen}>
+                                {position.positionPAndL}
+                            </td>
+                        }
+                        
                     </tr>)}
                 </tbody>
             </table>

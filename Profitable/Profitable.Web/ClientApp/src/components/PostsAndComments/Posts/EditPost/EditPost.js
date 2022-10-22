@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import classnames from "classnames";
 import { useNavigate, useParams } from "react-router-dom"
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
@@ -13,9 +12,6 @@ import { changeStateValuesForControlledForms } from '../../../../services/common
 import { createClientErrorObject, createServerErrorObject } from '../../../../services/common/createValidationErrorObject';
 import { editPost, loadParticularPost } from '../../../../services/posts/postsService';
 import { validateImage } from '../../../../services/common/imageService';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './EditPost.module.css';
 

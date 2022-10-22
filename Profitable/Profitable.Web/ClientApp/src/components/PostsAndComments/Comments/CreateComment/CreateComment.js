@@ -5,7 +5,6 @@ import { getUserDataByJWT } from '../../../../services/users/usersService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { postComment } from '../../../../services/comments/commentsService';
-import { COMMENTS_LIST_IN_POST_PAGE_COUNT } from '../../../../common/config';
 
 import styles from './CreateComment.module.css';
 import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';

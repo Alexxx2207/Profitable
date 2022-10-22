@@ -1,4 +1,4 @@
-import { LongDirectionValue, ShortDirectionValue, WEB_API_BASE_URL } from "../../common/config"
+import { LongDirectionName, LongDirectionValue, ShortDirectionValue, WEB_API_BASE_URL } from "../../common/config"
 import { request } from "../../utils/fetch/request"
 
 
@@ -78,7 +78,7 @@ export const getPositionsFromRecord = async (recordId, dateAfter) => {
 export const createPosition = async (JWT, recordId, contractName, direction, entryPrice, exitPrice, quantity, tickSize, tickValue) => {
     var response = await request.post(`${WEB_API_BASE_URL}/positions/records/${recordId}/positions`, {
         contractName,
-        direction: direction ? LongDirectionValue : ShortDirectionValue,
+        direction: direction.localeCompare(LongDirectionName) === 0 ? LongDirectionValue : ShortDirectionValue,
         entryPrice,
         exitPrice,
         quantity,
@@ -94,4 +94,17 @@ export const createPosition = async (JWT, recordId, contractName, direction, ent
     }
 
     return;
+}
+
+export const calculateAcculativePositions = (positions) => {
+
+    positions = positions.map(position => Number(position));
+
+    const result = [positions[0]];
+
+    for (let i = 1; i < positions.length; i++) {
+        result.push(result[i-1] + positions[i]);
+    }
+
+    return result;
 }

@@ -16,17 +16,20 @@ namespace Profitable.Services.Posts
     {
         private readonly IRepository<Post> postsRepository;
         private readonly IRepository<Like> likesRepository;
+        private readonly IRepository<ApplicationUser> applicationUserRepository;
         private readonly IMapper mapper;
         private readonly IImageService imageService;
 
         public PostService(
             IRepository<Post> postsRepository,
             IRepository<Like> likesRepository,
+            IRepository<ApplicationUser> applicationUserRepository,
             IMapper mapper,
             IImageService imageService)
         {
             this.postsRepository = postsRepository;
             this.likesRepository = likesRepository;
+            this.applicationUserRepository = applicationUserRepository;
             this.mapper = mapper;
             this.imageService = imageService;
         }
@@ -89,19 +92,27 @@ namespace Profitable.Services.Posts
 
         }
 
-        public async Task<PostResponseModel> GetPostByGuidAsync(Guid guid)
+        public async Task<PostResponseModel> GetPostByGuidAsync(Guid guid, string? loggedInUserEmail)
         {
             var post = await postsRepository
                 .GetAllAsNoTracking()
                 .Where(post => !post.IsDeleted)
                 .Include(p => p.Author)
                 .Include(p => p.Likes)
+                .Include("Likes.Author")
                 .FirstAsync(entity => entity.Guid == guid);
+                
+            var mappedPostResponseModel = mapper.Map<PostResponseModel>(post);
 
-            return mapper.Map<PostResponseModel>(post);
+            if (loggedInUserEmail != null && mappedPostResponseModel.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
+            {
+                mappedPostResponseModel.IsLikedByTheUsed = true;
+            }
+            
+            return mappedPostResponseModel;
         }
 
-        public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int pageCount)
+        public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int pageCount, string? loggedInUserEmail)
         {
             if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
             {
@@ -113,9 +124,18 @@ namespace Profitable.Services.Posts
                     .Take(pageCount)
                     .Include(p => p.Author)
                     .Include(p => p.Likes)
+                    .Include("Likes.Author")
                     .Include(p => p.Comments)
                     .Select(post => mapper.Map<PostResponseModel>(post))
                     .ToListAsync();
+
+                foreach (var post in posts)
+                {
+                    if(loggedInUserEmail != null && post.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
+                    {
+                        post.IsLikedByTheUsed = true;
+                    }
+                }
 
                 return posts;
             }
@@ -127,6 +147,12 @@ namespace Profitable.Services.Posts
 
         public async Task<List<PostResponseModel>> GetPostsByUserAsync(Guid userId, int page, int pageCount)
         {
+
+            var userEmail = (await applicationUserRepository
+                .GetAllAsNoTracking()
+                .FirstAsync(user => user.Id == userId)).Email;
+
+
             if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
             {
                 var posts = await postsRepository
@@ -138,9 +164,19 @@ namespace Profitable.Services.Posts
                     .Take(pageCount)
                     .Include(p => p.Author)
                     .Include(p => p.Likes)
+                    .Include("Likes.Author")
                     .Include(p => p.Comments)
                     .Select(post => mapper.Map<PostResponseModel>(post))
                     .ToListAsync();
+
+
+                foreach (var post in posts)
+                {
+                    if (userEmail != null && post.Likes.Any(like => like.AuthorEmail == userEmail))
+                    {
+                        post.IsLikedByTheUsed = true;
+                    }
+                }
 
                 return posts;
             }

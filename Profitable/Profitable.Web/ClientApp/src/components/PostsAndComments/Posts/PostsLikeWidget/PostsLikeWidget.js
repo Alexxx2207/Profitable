@@ -9,30 +9,24 @@ import classnames from 'classnames';
 
 import styles from './PostsLikeWidget.module.css';
 
-export const PostsLikeWidget = ({ style, post, userGuid}) => {
+export const PostsLikeWidget = ({ style, post }) => {
 
     const { JWT, removeAuth } = useContext(AuthContext);
 
     const navigate = useNavigate();
-
-    const [liked, setLiked] = useState(false);
-    const [likesCountState, setLikesCountState] = useState(post.likes.length);
+    const [liked, setLiked] = useState();
+    const [likesCountState, setLikesCountState] = useState(post.likesCount);
 
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
-
     useEffect(() => {
-        if (post.likes.some(like => like.authorId.localeCompare(userGuid) === 0)) {
-            setLiked(true);
-        }
+        setLiked(post.isLikedByTheUsed === true);
             // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
-        setLikesCountState(state => post.likes.length);
-        if (post.likes.some(like => like.authorId.localeCompare(userGuid) === 0)) {
-            setLiked(true);
-        }
+        setLikesCountState(state => post.likesCount);
+        setLiked(post.isLikedByTheUsed === true);
             // eslint-disable-next-line
     }, [post]);
 

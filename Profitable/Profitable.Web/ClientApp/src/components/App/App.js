@@ -105,11 +105,11 @@ export function App() {
                             <ChangePositionsRecord />
                         } />
 
-                        <Route path="/positions-records/futures/:recordGuid" element={
+                        <Route path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid" element={
                             <FuturesRecordDetails />
                         } />
 
-                        <Route path="/positions-records/futures/:recordGuid/create-position" element={
+                        <Route path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid/create-position" element={
                             <CreateFuturesPosition />
                         } />
                         

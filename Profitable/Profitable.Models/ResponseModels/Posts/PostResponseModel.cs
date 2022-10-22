@@ -23,6 +23,10 @@ namespace Profitable.Models.ResponseModels.Posts
 
         public int CommentsCount { get; set; }
 
+        public long LikesCount { get; set; }
+
+        public bool IsLikedByTheUsed { get; set; }
+
         public IEnumerable<LikeResponseModel> Likes { get; set; }
 
         public IEnumerable<CommentResponseModel> Comments { get; set; }

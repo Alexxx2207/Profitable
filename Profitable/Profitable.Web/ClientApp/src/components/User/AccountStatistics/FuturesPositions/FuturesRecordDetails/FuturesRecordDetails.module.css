@@ -1,3 +1,12 @@
+.recordDetailsContainer {
+    margin: 1rem;
+}
+
+.chartContainer {
+    margin: 1.5rem 0rem;
+    height: 60vh;
+}
+
 .addPositionButtonContainer {
     display: flex;
     justify-content: center;
@@ -21,10 +30,6 @@
     transition: 0.3s ease-out;
 }
 
-.recordDetailsContainer {
-    margin: 1rem;
-}
-
 .positionsTable {
     width: 100%;
 }
@@ -33,4 +38,12 @@
     border: 1px solid white;
     text-align: center;
     padding: 8px;
-  }
+}
+
+.textColorGreen {
+    color: rgb(0, 220, 0);
+}
+
+.textColorRed {
+    color: red;
+}

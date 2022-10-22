@@ -2,8 +2,8 @@ import { WEB_API_BASE_URL } from '../../common/config';
 import { request } from '../../utils/fetch/request';
 
 
-export const loadParticularPost = async (postId) => {
-    return await request.get(`${WEB_API_BASE_URL}/posts/${postId}`)
+export const loadParticularPost = async (postId, userEmail) => {
+    return await request.get(`${WEB_API_BASE_URL}/posts/${postId}?loggedInUserEmail=${userEmail}`)
         .then(response => response.json());
 }
 
@@ -49,9 +49,9 @@ export const deletePost = async (jwt, postGuid) => {
     return await result.json();
 }
 
-export const loadPostsPage = (page, pageCount) => {
+export const loadPostsPage = (page, pageCount, userEmail) => {
     return request.get(
-        `${WEB_API_BASE_URL}/posts/feed/${page}/${pageCount}`)
+        `${WEB_API_BASE_URL}/posts/feed/${page}/${pageCount}?loggedInUserEmail=${userEmail}`)
         .then(response => response.json());
 };
 

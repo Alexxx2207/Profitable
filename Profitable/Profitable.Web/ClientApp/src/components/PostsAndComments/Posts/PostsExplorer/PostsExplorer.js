@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { PostsList } from "../PostsList/PostsList";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
-import { getUserDataByJWT } from "../../../../services/users/usersService";
+import { getUserDataByJWT, getUserEmailFromJWT } from "../../../../services/users/usersService";
 import { JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, POSTS_LIST_POSTS_IN_PAGE_COUNT } from "../../../../common/config";
 import { AuthContext } from '../../../../contexts/AuthContext';
 import { MessageBoxContext } from '../../../../contexts/MessageBoxContext';
@@ -19,14 +19,15 @@ export const PostsExplorer = () => {
     const navigate = useNavigate();
 
     const [posts, setPosts] = useState([]);
-    let page = 0;
+    const [userEmail, setUserEmail] = useState('');
+    const [page, setPage] = useState(0);
 
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const { JWT, removeAuth } = useContext(AuthContext);
     
-    const loadPosts = useCallback((page, pageCount) => {
-        loadPostsPage(page, pageCount)
+    const loadPosts = useCallback((page, pageCount, userEmail) => {
+        loadPostsPage(page, pageCount, userEmail)
             .then(result => {
                 if (result.length > 0) {
                     setPosts(posts => [...posts, ...result])
@@ -34,19 +35,35 @@ export const PostsExplorer = () => {
             });
     }, []);
 
+    const loadFirstPosts = useCallback((pageCount, userEmail) => {
+        loadPostsPage(0, pageCount, userEmail)
+            .then(result => {
+                if (result.length > 0) {
+                    setPosts(posts => [...result])
+                }
+            });
+    }, []);
+
     useEffect(() => {
-        loadPosts(0, POSTS_LIST_POSTS_IN_PAGE_COUNT);
-    }, [loadPosts]);
+        getUserEmailFromJWT(JWT)
+            .then(result => {
+                setUserEmail(result)
+            });
+    }, [JWT]);
+
+    useEffect(() => {
+        loadFirstPosts(POSTS_LIST_POSTS_IN_PAGE_COUNT, userEmail);
+    }, [loadFirstPosts, userEmail]);
 
     const handleScroll = useCallback((e) => {
         const scrollHeight = e.target.documentElement.scrollHeight;
         const currentHeight = e.target.documentElement.scrollTop + window.innerHeight;
 
         if (currentHeight >= scrollHeight - 1 || currentHeight === scrollHeight) {
-            page++;
-            loadPosts(page, POSTS_LIST_POSTS_IN_PAGE_COUNT);
+            setPage(state => state + 1);
+            loadPosts(page + 1, POSTS_LIST_POSTS_IN_PAGE_COUNT, userEmail);
         }
-    }, [loadPosts, page]);
+    }, [loadPosts, setPage, page, userEmail]);
 
     const addPostClickHandler = () => {
 

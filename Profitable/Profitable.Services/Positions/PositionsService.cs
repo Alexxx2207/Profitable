@@ -16,27 +16,33 @@ namespace Profitable.Services.Positions
 		private readonly IRepository<FuturesPosition> futuresPositionsRepository;
 		private readonly IRepository<FuturesPosition> stocksPositionsRepository;
 		private readonly IRepository<FuturesContract> futuresContractRepository;
+		private readonly IRepository<PositionsRecordList> positionsRecordListRepository;
 
 		public PositionsService(
 			IRepository<TradePosition> tradePositionsRepository,
 			IRepository<FuturesPosition> futuresPositionsRepository,
 			IRepository<FuturesPosition> stocksPositionsRepository,
-			IRepository<FuturesContract> futuresContractRepository)
+			IRepository<FuturesContract> futuresContractRepository,
+			IRepository<PositionsRecordList> positionsRecordListRepository)
 		{
 			this.tradePositionsRepository = tradePositionsRepository;
 			this.futuresPositionsRepository = futuresPositionsRepository;
 			this.stocksPositionsRepository = stocksPositionsRepository;
 			this.futuresContractRepository = futuresContractRepository;
+			this.positionsRecordListRepository = positionsRecordListRepository;
 		}
 
 		public async Task<List<PositionResponseModel>> GetFuturesPositions(Guid recordId, DateTime afterDateFilter)
 		{
-			var tradePositions = await tradePositionsRepository
+			
+
+            var tradePositions = await tradePositionsRepository
 				.GetAllAsNoTracking()
 				.Include(p => p.PositionsRecordList)
 				.Where(p => !p.IsDeleted)
 				.Where(p => p.PositionAddedOn >= afterDateFilter)
 				.Where(p => p.PositionsRecordListId == recordId)
+				.OrderByDescending(p => p.PositionAddedOn)
 				.ToListAsync();
 
 			var results = new List<PositionResponseModel>();
@@ -72,15 +78,23 @@ namespace Profitable.Services.Positions
 		{
 			try
 			{
-				Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
+				var dateTimeOfChange = DateTime.UtcNow;
 
-				var position = new TradePosition
+                Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
+
+                var positionsRecordUpdated = await positionsRecordListRepository
+                    .GetAll()
+                    .FirstAsync(record => record.Guid == recordId);
+
+                positionsRecordUpdated.LastUpdated = dateTimeOfChange;
+
+                var position = new TradePosition
 				{
 					EntryPrice = model.EntryPrice,
 					ExitPrice = model.ExitPrice,
 					QuantitySize = model.Quantity,
 					PositionsRecordListId = recordId,
-					PositionAddedOn = DateTime.UtcNow,
+					PositionAddedOn = dateTimeOfChange,
 					RealizedProfitAndLoss = CalculationFormulas.CalculateFuturesPL(
 							parsedPositionDirection == PositionDirection.Long,
 							model.EntryPrice,
@@ -97,8 +111,9 @@ namespace Profitable.Services.Positions
 				var futuresPosition = new FuturesPosition
 				{
 					FuturesContractId = futuresContractGuid,
-					TradePositionId = position.Guid
-				};
+					TradePositionId = position.Guid,
+					Direction = parsedPositionDirection
+                };
 
 				await tradePositionsRepository.AddAsync(position);
 
@@ -109,7 +124,10 @@ namespace Profitable.Services.Positions
 
 				await futuresPositionsRepository.SaveChangesAsync();
 
-				return true;
+				await positionsRecordListRepository.SaveChangesAsync();
+
+
+                return true;
 			}
 			catch (Exception e)
 			{
