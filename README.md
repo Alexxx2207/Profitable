@@ -1,7 +1,7 @@
-# Profitable - Overview
+## Profitable - Overview
 This platform helps traders to make decisions, observe the financial markets and communicate with each other. It's perfect for investment banks, hedge funds or retail traders' communities.
 
-# Project Structure
+## Project Structure
 ### In folder Profitable there are all files for the backend and the frontend application.
 
 > :warning: **The backend is written in C# - ASP.NET CORE WEB API is used!** :warning:
@@ -9,7 +9,7 @@ This platform helps traders to make decisions, observe the financial markets and
 ### **The Client App, written in React, is in folder Profitable->Profitable.Web->ClientApp.**  
 ### **Link for the client app folder: https://github.com/Alexxx2207/Profitable/tree/main/Profitable/Profitable.Web/ClientApp** ###
 
-# Prerequisites
+## Prerequisites
 
 1. Visual Studio 2022 and its required workloads from the Visual Studio Installer (see images below):
 
@@ -25,7 +25,7 @@ https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce238
 3. NodeJS
 
 
-# Configuration
+## Configuration
 
 1. Change the WEB_API_BASE_URL in Profitable.Web/ClientApp/src/common/config.js to meet your backend web API address
 > :warning: Be careful not to forget '/api' path string after the port number! :warning:
@@ -35,7 +35,7 @@ https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce238
 3. Set '.' as decimal point for numbers with decimal part. That is configured in your OS settings.
 
 
-# How To Start The Project
+## How To Start The Project
     
 1. Open folder Profitable and click Profitable.sln from your file explorer
   
