@@ -4,7 +4,7 @@ export const naturalNumberChecker = (value) => {
 }
 
 export const minLengthChecker = (value, bound) => {
-    return value.trim().length >= bound;
+    return value?.trim().length >= bound;
 }
 
 export const isEmptyOrWhiteSpaceFieldChecker = (value) => {

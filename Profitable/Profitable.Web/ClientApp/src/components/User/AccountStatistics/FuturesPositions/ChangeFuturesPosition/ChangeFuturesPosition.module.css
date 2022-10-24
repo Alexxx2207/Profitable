@@ -1,0 +1,195 @@
+.directions {
+    display: flex;
+    justify-content: space-evenly;
+    width: 85%;
+}
+
+.radioWrapper, .radioWrapper * {
+    cursor: pointer;
+}
+
+.radioLabel {
+    font-size: 1.1rem;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+}
+
+.directionBullish, .directionBearish {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    margin-right: 0.5rem;
+    color: currentColor;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 0.1rem solid currentColor;
+    border-radius: 50%;
+    transform: translateY(0.2rem);
+}
+
+.directionBullish:checked {
+    background-color: green;
+    
+}
+
+.directionBearish:checked {
+    background-color: rgb(231, 37, 37);
+}
+
+.pageContainer {
+    padding-top: 5vh;
+}
+
+.changeSectionContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.changeContainer {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+    margin-right: 5vw;
+}
+
+.changeForm {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+
+    padding: 2vh 4vw;
+}
+
+.changeForm * {
+    background-color: white;
+    color: black;
+}
+
+.changeLabelContainer {
+    border-bottom: 2px solid black;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 4vh;
+}
+
+.changeLabel {
+    margin-bottom: 1rem;
+}
+
+.formGroup {
+    display: flex;
+    align-items: center;
+    margin: 2vh 0vw;
+    width: 100%;
+}
+
+.formGroup div {
+    width: 35%;
+
+}
+
+.formGroup div h5 {
+    font-size: 1.5rem;
+    margin: 0px;
+}
+
+.inputField {
+    border: 2px solid #1e222d5c;
+    display: inline-block;
+    padding: 1vh 1vw;
+    width: 65%;
+    font-size: 1.3rem;
+}
+
+.inputField:focus {
+    border: 2px solid #1e222d;
+}
+
+.submitButtonContainer {
+    width: 100%;
+    padding: 3vh 0vw 2vh 0vw;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 0.8vh 0.8vw;
+    font-size: 24px;
+    font-weight: 700;
+    border: none;
+    letter-spacing: 1px;
+    border-radius: 1vh;
+    border: 0.2rem solid #1e222d21;
+    transition: linear 0.5s;
+
+}
+
+.submitButton:hover {
+    cursor: pointer;
+    background-color: #1e222d;
+    color: white;
+    border-radius: 1vh;
+    transition: linear 0.3s;
+}
+
+.changeAside {
+    width: 27%;
+    position: sticky;
+    height: 70vh;
+    top: 15vh;
+}
+
+.errorsHeadingContainer {
+    border-bottom: 2px solid white;
+    margin-bottom: 3vh;
+}
+
+.errorsHeading {
+    text-align: center;
+    margin-bottom: 2vh;
+}
+
+.errorsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2vh;
+    padding-left: 4vw;
+}
+
+.button {
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    transition: ease-out 0.3s;
+}
+
+.button * {
+    font-size: 1.2rem;
+    letter-spacing: 0.7px;
+    background-color: white;
+    color: black;
+    transition: ease-out 0.3s;
+}
+
+.selectContract {
+    padding: 0.2rem;
+    transform: translateY(-0.25rem);
+    border: 2px solid black;
+    cursor: pointer;
+}

@@ -1,14 +1,5 @@
 
-.changeImageMessage {
-    color: grey;
-    background-color: white;
-    margin-top: 1rem;
-    margin-bottom: 0px;
-    position: relative;
-    left: 18rem;
-    top: 7.5rem;
-    z-index: 2;
-}
+
 
 .imageContainer {
     width: 12rem;
@@ -79,8 +70,7 @@
     background-color: white;
     border-radius: 20px;
     width: 100%;
-    padding: 2rem 3rem;
-    padding-top: 7rem;
+    padding: 2rem 1rem;
     position: relative;
     bottom: 6rem;
 }
@@ -89,6 +79,24 @@
     background-color: white;
     color: black;
     text-align: center;
+}
+
+.changeImageMessageContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.changeImageMessage {
+    color: grey;
+    background-color: white;
+    margin-bottom: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 31vw;
+}
+
+.profileOverviewTextContainer{
+    padding-top: 4rem;
 }
 
 .userName {
@@ -105,6 +113,7 @@
 
 .description>* {
     font-size: 1.2rem;
+    padding: 0rem 2rem;
 }
 
 .userPrivateZoneHeading {

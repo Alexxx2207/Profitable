@@ -153,7 +153,6 @@ export const ProfileInfo = () => {
                     :
                     ''
                 }
-                <h6 className={styles.changeImageMessage}>* Click on the circle to change your profile picture</h6>
                 <div className={styles.imageContainer}>
                     <img className={styles.authorImage}
                         src={profileInfo.previewImage ?
@@ -169,22 +168,27 @@ export const ProfileInfo = () => {
                 </div>
             </div>
             <div className={styles.profileInfo}>
-
-                <div className={styles.userNameContainer}>
-                    <h2 className={styles.userName}>{profileInfo.firstName} {profileInfo.lastName}</h2>
+                <div className={styles.changeImageMessageContainer}>
+                    <h6 className={styles.changeImageMessage}>* Click on the circle to change your profile picture</h6>
                 </div>
-                <div className={styles.emailContainer}>
-                    <h4 className={styles.email}>{profileInfo.email}</h4>
-                </div>
-                <div className={styles.descriptionContainer}>
-                    <div className={styles.description}>
-                        {profileInfo.description ?
-                            profileInfo.description.split('\\n').map((paragraph, index) =>
-                                <h4 key={index}>{paragraph}<br /></h4>
-                            )
-                            :
-                            <h4>"No user description provided!"</h4>
-                        }
+                
+                <div className={styles.profileOverviewTextContainer}>
+                    <div className={styles.userNameContainer}>
+                        <h2 className={styles.userName}>{profileInfo.firstName} {profileInfo.lastName}</h2>
+                    </div>
+                    <div className={styles.emailContainer}>
+                        <h4 className={styles.email}>{profileInfo.email}</h4>
+                    </div>
+                    <div className={styles.descriptionContainer}>
+                        <div className={styles.description}>
+                            {profileInfo.description ?
+                                profileInfo.description.split('\\n').map((paragraph, index) =>
+                                    <h4 key={index}>{paragraph}<br /></h4>
+                                )
+                                :
+                                <h4>"No user description provided!"</h4>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

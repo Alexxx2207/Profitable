@@ -9,7 +9,7 @@ export const PositionsRecordListsList = ({records, showOwnerActionButtons}) => {
     return (
         <div className={styles.listContainer}>
             {records.length > 0 ?
-                records.map((list, index) => <PositionsRecordListWidget key={index} list={list} showOwnerActionButtons={showOwnerActionButtons}/>)
+                records.map((list, index) => <PositionsRecordListWidget key={list.guid} list={list} showOwnerActionButtons={showOwnerActionButtons}/>)
             :
                 <h2 className={styles.noRecordsHeader}>No Records Made Yet</h2>
             }

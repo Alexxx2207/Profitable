@@ -55,3 +55,31 @@
 .textColorRed {
     color: red;
 }
+
+.buttonPositionDelete {
+    border: none;
+    font-size: 1.2rem;
+}
+
+.buttonPositionDelete *{
+    transition: 0.3s ease-out;
+}
+
+.buttonPositionDelete:hover *{
+    color: red;
+    transition: 0.3s ease-out;
+}
+
+.buttonPositionChange {
+    border: none;
+    font-size: 1.2rem;
+}
+
+.buttonPositionChange *{
+    transition: 0.3s ease-out;
+}
+
+.buttonPositionChange:hover *{
+    color: orange;
+    transition: 0.3s ease-out;
+}

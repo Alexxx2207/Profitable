@@ -26,6 +26,7 @@ namespace Profitable.Models.EntityModels
 
 		public ApplicationUser User { get; set; }
 
+
 		public ICollection<TradePosition> Positions { get; set; }
 	}
 }

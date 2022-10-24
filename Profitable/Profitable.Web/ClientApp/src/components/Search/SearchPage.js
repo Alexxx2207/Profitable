@@ -94,7 +94,7 @@ export const SearchPage = () => {
                     onChange={searchModelOnChange}
                     value={state.searchedModel}
                     className={styles.searchModelSelector}>
-                    {state.searchedModels.map((model, index) => <option key={index} value={model}>{model}</option>)}
+                    {state.searchedModels.map((model, index) => <option key={model.guid} value={model}>{model}</option>)}
                 </select>
             </div>
             <section className={styles.resultSection}>
