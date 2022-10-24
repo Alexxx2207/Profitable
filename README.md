@@ -1,10 +1,8 @@
 ## Profitable - Overview
-This platform helps traders to make decisions, observe the financial markets and communicate with each other. It's perfect for investment banks, hedge funds or retail traders' communities.
+This project is a platform that helps traders to make trading decisions, observe the financial markets, communicate with each other, journal their performance and never miss news or events. It is suitable for investment banks, hedge funds and retail traders' communities.
 
 ## Project Structure
-### In folder Profitable there are all files for the backend and the frontend application.
-
-> :warning: **The backend is written in C# - ASP.NET CORE WEB API is used!** :warning:
+### In folder Profitable there are all files for both the backend and the frontend application.
 
 #### **Link for the clientside application folder: https://github.com/Alexxx2207/Profitable/tree/main/Profitable/Profitable.Web/ClientApp** ####
 
