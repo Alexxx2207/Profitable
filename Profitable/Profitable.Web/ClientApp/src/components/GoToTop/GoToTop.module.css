@@ -3,7 +3,7 @@
     position: fixed;
     right: 0.5rem;
     bottom: 1rem;
-    padding: 1.2rem 1.2rem;
+    padding: 1rem 1.2rem;
     width: 4.5rem;
     display: flex;
     align-items: center;
@@ -11,7 +11,7 @@
     border: 3px solid white;
     background-color: black;
     transition: 0.3s ease-in-out;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 
 .goToTopButton:hover {

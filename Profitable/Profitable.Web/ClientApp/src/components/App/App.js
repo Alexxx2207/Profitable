@@ -40,6 +40,7 @@ import { CreateFuturesPosition } from "../User/AccountStatistics/FuturesPosition
 
 // eslint-disable-next-line
 import styles from './App.module.css';
+import { ChangeFuturesPosition } from "../User/AccountStatistics/FuturesPositions/ChangeFuturesPosition/ChangeFuturesPosition";
 
 export function App() {
 
@@ -111,6 +112,10 @@ export function App() {
 
                         <Route path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid/create-position" element={
                             <CreateFuturesPosition />
+                        } />
+
+                        <Route path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid/change-position/:positionGuid" element={
+                            <ChangeFuturesPosition />
                         } />
                         
                         <Route path="/posts/:postId/edit" element={

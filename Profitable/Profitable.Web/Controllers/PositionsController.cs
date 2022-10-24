@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Profitable.Common.Enums;
+using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Positions;
 using Profitable.Models.ResponseModels.Positions;
 using Profitable.Services.Positions.Contracts;
 using Profitable.Services.Users.Contracts;
 using Profitable.Web.Controllers.BaseApiControllers;
+using System.Security.Claims;
 
 namespace Profitable.Web.Controllers
 {
@@ -14,15 +17,18 @@ namespace Profitable.Web.Controllers
         private readonly IPositionsRecordsService positionsRecordsService;
         private readonly IPositionsService positionsService;
         private readonly IUserService userService;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public PositionsController(
             IPositionsRecordsService positionsRecordsService,
             IPositionsService positionsService,
-            IUserService userService)
+            IUserService userService,
+            UserManager<ApplicationUser> userManager)
         {
             this.positionsRecordsService = positionsRecordsService;
             this.positionsService = positionsService;
             this.userService = userService;
+            this.userManager = userManager;
         }
 
         [HttpPost("records/by-user")]
@@ -127,6 +133,16 @@ namespace Profitable.Web.Controllers
 
             return BadRequest();
         }
+        
+        [HttpGet("records/{recordId}/positions/{positionGuid}")]
+        public async Task<IActionResult> GetParticularPosition(
+            [FromRoute] string recordId,
+            [FromRoute] string positionGuid)
+        {
+            var positions = await positionsService.GetFuturesPositionByGuid(Guid.Parse(positionGuid));
+
+            return Ok(positions);
+        }
 
         [Authorize]
         [HttpPost("records/{recordId}/positions")]
@@ -135,6 +151,58 @@ namespace Profitable.Web.Controllers
             [FromBody] AddFuturesPositionRequestModel model)
         {
             var result = await positionsService.AddFuturesPositions(Guid.Parse(recordId), model);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Error);
+            }
+        }
+
+        [Authorize]
+        [HttpPatch("records/{recordGuid}/positions/{positionGuid}/change")]
+        public async Task<IActionResult> ChangePositionByGuid(
+           [FromRoute] string recordGuid,
+           [FromRoute] string positionGuid,
+           [FromBody] ChangeFuturesPositionRequestModel model)
+        {
+            var requesterGuid =
+                (
+                await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email))
+                ).Id;
+
+
+            var result = await positionsService.ChangeFuturesPosition(
+                Guid.Parse(recordGuid),
+                Guid.Parse(positionGuid),
+                requesterGuid,
+                model);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Error);
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("records/{recordId}/positions/{positionGuid}/delete")]
+        public async Task<IActionResult> DeletePosition(
+            [FromRoute] string recordId,
+            [FromRoute] string positionGuid)
+        {
+            var requesterGuid = 
+                (
+                await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email))
+                ).Id;
+
+            var result = await positionsService.DeleteFuturesPositions(Guid.Parse(recordId), Guid.Parse(positionGuid), requesterGuid);
 
             if (result.Succeeded)
             {

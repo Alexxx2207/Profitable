@@ -37,15 +37,22 @@ namespace Profitable.Services.Comments
 
 		public async Task<Result> DeleteCommentAsync(Guid guid)
 		{
-			var comment = await repository
+			try
+			{
+				var comment = await repository
 				.GetAllAsNoTracking()
 				.FirstAsync(entity => entity.Guid == guid);
 
-			repository.Delete(comment);
+				repository.Delete(comment);
 
-			await repository.SaveChangesAsync();
+				await repository.SaveChangesAsync();
 
-			return true;
+				return true;
+			}
+			catch (Exception e)
+			{
+				return e.Message;
+			}
 		}
 
 		public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid, int page, int pageCount)

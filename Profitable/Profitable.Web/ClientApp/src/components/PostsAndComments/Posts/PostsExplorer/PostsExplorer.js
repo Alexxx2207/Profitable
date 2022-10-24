@@ -48,7 +48,8 @@ export const PostsExplorer = () => {
         getUserEmailFromJWT(JWT)
             .then(result => {
                 setUserEmail(result)
-            });
+            })
+            .catch(err => err);
     }, [JWT]);
 
     useEffect(() => {

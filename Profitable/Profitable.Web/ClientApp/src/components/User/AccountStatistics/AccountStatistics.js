@@ -168,8 +168,8 @@ export const AccountStatistics = () => {
                     onChange={changeSelectedOrderOption}
                     value={state.orderPositionsRecordsBySelected}
                     className={styles.orderBySelector}>
-                    {state.positionsRecordsOrderByOptions.map(option => 
-                        <option value={option.split(' ').join('')}>{option}</option>
+                    {state.positionsRecordsOrderByOptions.map((option, index) => 
+                        <option key={index} value={option.split(' ').join('')}>{option}</option>
                     )}
                 </select>
             </div>
