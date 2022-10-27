@@ -31,22 +31,23 @@ namespace Profitable.Services.Search
 
 			var posts = await postRepository
 				.GetAllAsNoTracking()
-				.Where(p => !p.IsDeleted)
 				.Include(p => p.Author)
 				.Include(p => p.Likes)
 				.Where(p =>
-					p.Title.ToLower().Contains(searchTerm)
+					!p.IsDeleted &&
+					(p.Title.ToLower().Contains(searchTerm)
 					||
 					p.Content.ToLower().Contains(searchTerm)
 					||
-					(p.Author.FirstName + " " + p.Author.LastName).ToLower().Contains(searchTerm))
+					(p.Author.FirstName + " " + p.Author.LastName).ToLower().Contains(searchTerm)))
 				.Select(post => mapper.Map<PostResponseModel>(post))
 				.Take(GlobalServicesConstants.SearchResultsCountToTake)
 				.ToListAsync();
 
 			foreach (var post in posts)
 			{
-				var commentsCount = await commentService.GetCommentsCountByPostAsync(Guid.Parse(post.Guid));
+				var commentsCount =
+						await commentService.GetCommentsCountByPostAsync(Guid.Parse(post.Guid));
 
 				post.CommentsCount = commentsCount;
 			}

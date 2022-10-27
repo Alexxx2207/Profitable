@@ -129,7 +129,7 @@ export const FuturesRecordDetails = () => {
             <div className={styles.chartContainer}>
                 <Line
                 data={{
-                        labels: [0, ...state.positions.map(position => position.positionAddedOn)],
+                        labels: ['Start', ...state.positions.map(position => position.positionAddedOn)],
                         datasets: [
                         {
                             fill: 'origin',
@@ -220,9 +220,13 @@ export const FuturesRecordDetails = () => {
                 }]}/>
             </div>
 
-            <div className={styles.addPositionButtonContainer}>
-                <button className={styles.addPositionButton} onClick={addPositionButtonClickHandler}>+Add Position</button>
-            </div>
+            { searchedProfileEmail.localeCompare(loggedInUserEmail) === 0 ?
+                <div className={styles.addPositionButtonContainer}>
+                    <button className={styles.addPositionButton} onClick={addPositionButtonClickHandler}>+Add Position</button>
+                </div>
+            :
+                ''
+            }
 
             <div className={styles.overallProfiltLossHeading}>
                 <h3>Overall Profit/Loss: <span className={state.overallProfitLoss < 0 ? styles.textColorRed : styles.textColorGreen}>

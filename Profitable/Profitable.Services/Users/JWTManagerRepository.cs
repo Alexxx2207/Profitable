@@ -31,7 +31,9 @@ namespace Profitable.Services.Users
                     { ClaimTypes.Email, user.Email },
                 },
                 Expires = DateTime.UtcNow.AddDays(GlobalControllerConstants.JWTExpirationInDays),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(tokenKey),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

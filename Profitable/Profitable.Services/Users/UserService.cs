@@ -44,7 +44,9 @@ namespace Profitable.Services.Users
             return mapper.Map<UserDetailsResponseModel>(user);
         }
 
-        public async Task<UserDetailsResponseModel> EditUserAsync(ApplicationUser user, EditUserRequestModel editUserData)
+        public async Task<UserDetailsResponseModel> EditUserAsync(
+            ApplicationUser user,
+            EditUserRequestModel editUserData)
         {
             user.FirstName = editUserData.FirstName;
             user.LastName = editUserData.LastName;
@@ -95,7 +97,10 @@ namespace Profitable.Services.Users
                 var result = await userManager.CreateAsync(user, userRequestModel.Password);
                 if (!result.Succeeded)
                 {
-                    throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+                    throw new Exception(
+                        string.Join(
+                            Environment.NewLine,
+                            result.Errors.Select(e => e.Description)));
                 }
                 else
                 {
@@ -113,11 +118,16 @@ namespace Profitable.Services.Users
             }
         }
 
-        public async Task<UserDetailsResponseModel> EditUserPasswordAsync(ApplicationUser user, EditUserPasswordRequestModel editUserData)
+        public async Task<UserDetailsResponseModel> EditUserPasswordAsync(
+            ApplicationUser user,
+            EditUserPasswordRequestModel editUserData)
         {
             if (!user.IsDeleted)
             {
-                var result = await userManager.ChangePasswordAsync(user, editUserData.OldPassword, editUserData.newPassword);
+                var result =
+                    await userManager.ChangePasswordAsync(
+                        user, editUserData.OldPassword,
+                        editUserData.newPassword);
 
                 if (result.Succeeded)
                 {
@@ -127,7 +137,6 @@ namespace Profitable.Services.Users
                 {
                     throw new Exception("Invalid old password");
                 }
-
             }
             else
             {
@@ -135,7 +144,9 @@ namespace Profitable.Services.Users
             }
         }
 
-        public async Task<UserDetailsResponseModel> EditUserProfileImageAsync(ApplicationUser user, EditUserProfileImageRequestModel editUserData)
+        public async Task<UserDetailsResponseModel> EditUserProfileImageAsync(
+            ApplicationUser user,
+            EditUserProfileImageRequestModel editUserData)
         {
             if (!user.IsDeleted)
             {
@@ -144,9 +155,15 @@ namespace Profitable.Services.Users
                 {
                     if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
                     {
-                        imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+                        await imageService.DeleteUploadedImageAsync(
+                            ImageFor.Users,
+                            user.ProfilePictureURL);
                     }
-                    string newFileName = await imageService.SaveUploadedImageAsync(ImageFor.Users, editUserData.FileName, editUserData.Image);
+                    string newFileName =
+                            await imageService.SaveUploadedImageAsync(
+                                ImageFor.Users,
+                                editUserData.FileName,
+                                editUserData.Image);
 
                     user.ProfilePictureURL = newFileName;
 
@@ -172,7 +189,9 @@ namespace Profitable.Services.Users
             {
                 if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
                 {
-                    imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+                    await imageService.DeleteUploadedImageAsync(
+                        ImageFor.Users,
+                        user.ProfilePictureURL);
                 }
 
                 user.ProfilePictureURL = "";
@@ -195,7 +214,9 @@ namespace Profitable.Services.Users
             {
                 if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
                 {
-                    imageService.DeleteUploadedImageAsync(ImageFor.Users, user.ProfilePictureURL);
+                    await imageService.DeleteUploadedImageAsync(
+                        ImageFor.Users,
+                        user.ProfilePictureURL);
                 }
 
                 repository.HardDelete(user);

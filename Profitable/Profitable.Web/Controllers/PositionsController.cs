@@ -35,12 +35,12 @@ namespace Profitable.Web.Controllers
         public async Task<IActionResult> GetAllPositionsRecordsByUser(
             [FromBody] GetUserPositionsRecordsRequestModel query)
         {
-            var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(query.UserEmail)).Guid);
+            var userGuid = (await userService.GetUserDetailsAsync(query.UserEmail)).Guid;
 
             Enum.TryParse(query.OrderPositionsRecordBy, out OrderPositionsRecordBy orderBy);
 
             var records = await positionsRecordsService.GetUserPositionsRecordsAsync(
-                userGuid,
+                Guid.Parse(userGuid),
                 query.Page,
                 query.PageCount,
                 orderBy);
@@ -63,10 +63,10 @@ namespace Profitable.Web.Controllers
         public async Task<IActionResult> CreatePositionsRecord(
             [FromBody] AddPositionsRecordRequestModel model)
         {
-            var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(model.UserEmail)).Guid);
+            var userGuid = (await userService.GetUserDetailsAsync(model.UserEmail)).Guid;
 
             var result = await positionsRecordsService.AddPositionsRecordList(
-                userGuid,
+                Guid.Parse(userGuid),
                 model.RecordName,
                 model.InstrumentGroup);
 
@@ -126,20 +126,23 @@ namespace Profitable.Web.Controllers
         {
             if (afterDate != null)
             {
-                var positions = await positionsService.GetFuturesPositions(Guid.Parse(recordId), DateTime.Parse(afterDate));
+                var positions = await positionsService.GetFuturesPositions(
+                    Guid.Parse(recordId),
+                    DateTime.Parse(afterDate));
                 return Ok(positions);
 
             }
 
             return BadRequest();
         }
-        
+
         [HttpGet("records/{recordId}/positions/{positionGuid}")]
         public async Task<IActionResult> GetParticularPosition(
             [FromRoute] string recordId,
             [FromRoute] string positionGuid)
         {
-            var positions = await positionsService.GetFuturesPositionByGuid(Guid.Parse(positionGuid));
+            var positions =
+                await positionsService.GetFuturesPositionByGuid(Guid.Parse(positionGuid));
 
             return Ok(positions);
         }
@@ -150,7 +153,8 @@ namespace Profitable.Web.Controllers
             [FromRoute] string recordId,
             [FromBody] AddFuturesPositionRequestModel model)
         {
-            var result = await positionsService.AddFuturesPositions(Guid.Parse(recordId), model);
+            var result =
+                await positionsService.AddFuturesPositions(Guid.Parse(recordId), model);
 
             if (result.Succeeded)
             {
@@ -197,12 +201,15 @@ namespace Profitable.Web.Controllers
             [FromRoute] string recordId,
             [FromRoute] string positionGuid)
         {
-            var requesterGuid = 
+            var requesterGuid =
                 (
                 await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email))
                 ).Id;
 
-            var result = await positionsService.DeleteFuturesPositions(Guid.Parse(recordId), Guid.Parse(positionGuid), requesterGuid);
+            var result = await positionsService.DeleteFuturesPositions(
+                Guid.Parse(recordId),
+                Guid.Parse(positionGuid),
+                requesterGuid);
 
             if (result.Succeeded)
             {

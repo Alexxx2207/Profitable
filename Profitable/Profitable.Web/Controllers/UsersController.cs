@@ -14,7 +14,9 @@ namespace Profitable.Web.Controllers
         private readonly IUserService userService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public UsersController(IUserService userService, UserManager<ApplicationUser> userManager)
+        public UsersController(
+            IUserService userService,
+            UserManager<ApplicationUser> userManager)
         {
             this.userService = userService;
             this.userManager = userManager;
@@ -41,7 +43,7 @@ namespace Profitable.Web.Controllers
 
         [Authorize]
         [HttpGet("user/email")]
-        public async Task<IActionResult> GetEmailFromJWTAsync()
+        public IActionResult GetEmailFromJWT()
         {
             var userEmail = this.User.FindFirstValue(ClaimTypes.Email);
 
@@ -52,20 +54,25 @@ namespace Profitable.Web.Controllers
         [HttpGet("user/guid")]
         public async Task<IActionResult> GetGuidFromJWTAsync()
         {
-            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+            var user = await userManager.FindByEmailAsync(
+                            this.User.FindFirstValue(ClaimTypes.Email));
 
             return Ok(user.Id.ToString());
         }
 
         [Authorize]
         [HttpPatch("user/edit")]
-        public async Task<IActionResult> EditGeneralDataAsync([FromBody] EditUserRequestModel userRequestModel)
+        public async Task<IActionResult> EditGeneralDataAsync(
+            [FromBody] EditUserRequestModel userRequestModel)
         {
-            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+            var user = await userManager.FindByEmailAsync(
+                            this.User.FindFirstValue(ClaimTypes.Email));
 
             if (user.Email == userRequestModel.Email)
             {
-                var userInfo = await userService.EditUserAsync(user, userRequestModel);
+                var userInfo = await userService.EditUserAsync(
+                    user,
+                    userRequestModel);
 
                 return Ok(userInfo);
             }
@@ -77,13 +84,17 @@ namespace Profitable.Web.Controllers
 
         [Authorize]
         [HttpPatch("user/edit/password")]
-        public async Task<IActionResult> EditPasswordAsync([FromBody] EditUserPasswordRequestModel userRequestModel)
+        public async Task<IActionResult> EditPasswordAsync(
+            [FromBody] EditUserPasswordRequestModel userRequestModel)
         {
             try
             {
-                var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+                var user = await userManager.FindByEmailAsync(
+                                this.User.FindFirstValue(ClaimTypes.Email));
 
-                var userResult = await userService.EditUserPasswordAsync(user, userRequestModel);
+                var userResult = await userService.EditUserPasswordAsync(
+                    user,
+                    userRequestModel);
 
                 return Ok(user);
             }
@@ -95,17 +106,23 @@ namespace Profitable.Web.Controllers
 
         [Authorize]
         [HttpPatch("user/edit/profileImage")]
-        public async Task<IActionResult> EditProfileImageAsync([FromBody] EditUserProfileImageRequestModel userRequestModel)
+        public async Task<IActionResult> EditProfileImageAsync(
+            [FromBody] EditUserProfileImageRequestModel userRequestModel)
         {
-            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+            var user = await userManager.FindByEmailAsync(
+                            this.User.FindFirstValue(ClaimTypes.Email));
 
-            var userResult = await userService.EditUserProfileImageAsync(user, userRequestModel);
+            var userResult =
+                    await userService.EditUserProfileImageAsync(
+                        user,
+                        userRequestModel);
 
             return Ok(userResult);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] LoginUserRequestModel userRequestModel)
+        public async Task<IActionResult> LoginAsync(
+            [FromBody] LoginUserRequestModel userRequestModel)
         {
             try
             {
@@ -120,7 +137,8 @@ namespace Profitable.Web.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequestModel userRequestModel)
+        public async Task<IActionResult> RegisterAsync(
+            [FromBody] RegisterUserRequestModel userRequestModel)
         {
             try
             {
@@ -135,7 +153,8 @@ namespace Profitable.Web.Controllers
                         Environment.NewLine,
                         error.Message
                             .Split(Environment.NewLine)
-                            .Where(messages => messages != $"Username '{userRequestModel.Email}' is already taken."))
+                            .Where(messages =>
+                                messages != $"Username '{userRequestModel.Email}' is already taken."))
                );
             }
         }
@@ -144,7 +163,8 @@ namespace Profitable.Web.Controllers
         [HttpDelete("user/delete")]
         public async Task<IActionResult> DeleteAsync()
         {
-            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+            var user =
+                    await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
 
             var result = await userService.HardDeleteUserAsync(user);
 
@@ -162,7 +182,8 @@ namespace Profitable.Web.Controllers
         [HttpDelete("user/image/delete")]
         public async Task<IActionResult> DeleteUserImageAsync()
         {
-            var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+            var user =
+                    await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
 
             var result = await userService.DeleteUserImageAsync(user);
 

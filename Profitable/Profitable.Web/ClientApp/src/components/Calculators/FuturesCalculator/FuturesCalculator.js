@@ -169,11 +169,11 @@ export const FuturesCalculator = () => {
                         <div className={styles.directions}>
                             <div className={styles.radioWrapper} onClick={(e) => onBullishDirectionButtonClick(e)}>
                                 <input type="radio" onChange={(e) => onBullishDirectionButtonClick(e)} checked={futures.position.directionBullish} className={styles.directionBullish} name="directionSelected" />
-                                <span className={styles.radioLabel} onClick={(e) => onBullishDirectionButtonClick(e)}>Bullish</span>
+                                <span className={styles.radioLabel} onClick={(e) => onBullishDirectionButtonClick(e)}>Long</span>
                             </div>
                             <div className={styles.radioWrapper} onClick={(e) => onBearishDirectionButtonClick(e)}>
                                 <input type="radio" onChange={(e) => onBearishDirectionButtonClick(e)} checked={!futures.position.directionBullish} className={styles.directionBearish} name="directionSelected" />
-                                <span className={styles.radioLabel} onClick={(e) => onBearishDirectionButtonClick(e)}>Bearish</span>
+                                <span className={styles.radioLabel} onClick={(e) => onBearishDirectionButtonClick(e)}>Short</span>
                             </div>
                         </div>
 

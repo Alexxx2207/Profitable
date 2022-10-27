@@ -6,7 +6,8 @@ using Profitable.Models.EntityModels;
 
 namespace Profitable.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+    public class ApplicationDbContext :
+                    IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public ApplicationDbContext()
         {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Profitable.Web.Controllers.BaseApiControllers;
+using Profitable.Models.RequestModels.News;
 using Profitable.Models.ResponseModels.News;
 using Profitable.Services.News.Contract;
-using Profitable.Models.RequestModels.News;
+using Profitable.Web.Controllers.BaseApiControllers;
 
 namespace Profitable.Web.Controllers
 {
@@ -20,16 +20,22 @@ namespace Profitable.Web.Controllers
 		{
 			var news = new List<NewsOverviewResponseModel>();
 
-			await newsService.GetNewsOverviewFromInvestingCom("https://www.investing.com/news/economy", news);
-			await newsService.GetNewsOverviewFromInvestingCom("https://www.investing.com/news/commodities-news", news);
+			await newsService.GetNewsOverviewFromInvestingCom(
+				"https://www.investing.com/news/economy",
+				news);
+			await newsService.GetNewsOverviewFromInvestingCom(
+				"https://www.investing.com/news/commodities-news",
+				news);
 
 			return Ok(news);
 		}
-		
+
 		[HttpPost("newsArticle")]
-		public async Task<IActionResult> GetNewsArticle(NewsArticleRequestModel newsArticleRequestModel)
+		public async Task<IActionResult> GetNewsArticle(
+			NewsArticleRequestModel newsArticleRequestModel)
 		{
-			var article = await newsService.GetNewsArticlesFromInvestingCom(newsArticleRequestModel);
+			var article =
+					await newsService.GetNewsArticlesFromInvestingCom(newsArticleRequestModel);
 
 			return Ok(article);
 		}

@@ -34,7 +34,7 @@ namespace Profitable.Services.Markets
             return instrument;
         }
 
-        public IEnumerable<string> GetAllInstrumentGroupsAsync()
+        public IEnumerable<string> GetAllInstrumentGroups()
         {
             return Enum.GetValues<InstrumentGroup>().Select(group => group.ToString());
         }
@@ -49,7 +49,8 @@ namespace Profitable.Services.Markets
             return marketTypes;
         }
 
-        public async Task<FinantialInstrumentExtendedResponseModel> GetFinantialInstrumentBySymbolAsync(string symbol)
+        public async Task<FinantialInstrumentExtendedResponseModel> GetFinantialInstrumentBySymbolAsync(
+            string symbol)
         {
             var instrument = await instrumentsRepository
                 .GetAllAsNoTracking()
@@ -59,7 +60,8 @@ namespace Profitable.Services.Markets
             return mapper.Map<FinantialInstrumentExtendedResponseModel>(instrument);
         }
 
-        public async Task<List<FinantialInstrumentShortResponseModel>> GetFinantialInstrumentsByTypeAsync(string type)
+        public async Task<List<FinantialInstrumentShortResponseModel>> GetFinantialInstrumentsByTypeAsync(
+            string type)
         {
             var instruments = await instrumentsRepository
                 .GetAllAsNoTracking()

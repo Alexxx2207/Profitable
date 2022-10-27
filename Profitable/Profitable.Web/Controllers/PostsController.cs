@@ -33,11 +33,17 @@ namespace Profitable.Web.Controllers
         {
             try
             {
-                var posts = await postService.GetPostsByPageAsync(page, pageCount, loggedInUserEmail);
+                var posts =
+                        await postService.GetPostsByPageAsync(
+                            page,
+                            pageCount,
+                            loggedInUserEmail);
 
                 foreach (var post in posts)
                 {
-                    var commentsCount = await commentService.GetCommentsCountByPostAsync(Guid.Parse(post.Guid));
+                    var commentsCount =
+                            await commentService.GetCommentsCountByPostAsync(
+                                Guid.Parse(post.Guid));
 
                     post.CommentsCount = commentsCount;
                 }
@@ -53,21 +59,29 @@ namespace Profitable.Web.Controllers
 
         [Authorize]
         [HttpGet("byuser/all/{page}/{pageCount}")]
-        public async Task<IActionResult> GetPostsByUserAsync([FromRoute] string page, [FromRoute] string pageCount)
+        public async Task<IActionResult> GetPostsByUserAsync(
+            [FromRoute] string page,
+            [FromRoute] string pageCount)
         {
             try
             {
-                var user = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+                var user = await userManager.FindByEmailAsync(
+                                this.User.FindFirstValue(ClaimTypes.Email));
 
-                var posts = await postService.GetPostsByUserAsync(user.Id, int.Parse(page), int.Parse(pageCount));
+                var posts =
+                    await postService.GetPostsByUserAsync(
+                        user.Id,
+                        int.Parse(page),
+                        int.Parse(pageCount));
 
                 foreach (var post in posts)
                 {
-                    var commentsCount = await commentService.GetCommentsCountByPostAsync(Guid.Parse(post.Guid));
+                    var commentsCount =
+                        await commentService.GetCommentsCountByPostAsync(
+                            Guid.Parse(post.Guid));
 
                     post.CommentsCount = commentsCount;
                 }
-
 
                 return Ok(posts);
             }
@@ -80,13 +94,16 @@ namespace Profitable.Web.Controllers
 
         [Authorize]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateAsync([FromBody] AddPostRequestModel addPostRequestModel)
+        public async Task<IActionResult> CreateAsync(
+            [FromBody] AddPostRequestModel addPostRequestModel)
         {
             try
             {
-                var author = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+                var author = await userManager.FindByEmailAsync(
+                                this.User.FindFirstValue(ClaimTypes.Email));
 
-                var postToCreate = await postService.AddPostAsync(author, addPostRequestModel);
+                var postToCreate =
+                        await postService.AddPostAsync(author, addPostRequestModel);
 
                 return Ok(postToCreate);
             }
@@ -100,9 +117,11 @@ namespace Profitable.Web.Controllers
 
         [Authorize]
         [HttpPost("{guid}/likes/manage")]
-        public async Task<IActionResult> ManageLikeAsync([FromRoute] string guid)
+        public async Task<IActionResult> ManageLikeAsync(
+            [FromRoute] string guid)
         {
-            var author = await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+            var author = await userManager.FindByEmailAsync(
+                            this.User.FindFirstValue(ClaimTypes.Email));
 
             var likesCount = await postService.ManagePostLikeAsync(author, guid);
 
@@ -111,11 +130,14 @@ namespace Profitable.Web.Controllers
 
         [Authorize]
         [HttpPatch("{guid}/edit")]
-        public async Task<IActionResult> EditAsync([FromRoute] string guid, [FromBody] UpdatePostRequestModel editPostRequestModel)
+        public async Task<IActionResult> EditAsync(
+            [FromRoute] string guid,
+            [FromBody] UpdatePostRequestModel editPostRequestModel)
         {
             try
             {
-                var postToCreate = await postService.UpdatePostAsync(guid, editPostRequestModel);
+                var postToCreate =
+                        await postService.UpdatePostAsync(guid, editPostRequestModel);
 
                 return Ok(postToCreate);
             }
@@ -149,7 +171,9 @@ namespace Profitable.Web.Controllers
             [FromRoute] string id,
             [FromQuery] string? loggedInUserEmail)
         {
-            var post = await postService.GetPostByGuidAsync(Guid.Parse(id), loggedInUserEmail);
+            var post = await postService.GetPostByGuidAsync(
+                            Guid.Parse(id),
+                            loggedInUserEmail);
 
             return Ok(post);
         }

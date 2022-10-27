@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Profitable.Common.GlobalConstants;
 using Profitable.Common.Models;
 using Profitable.Data.Repository.Contract;
-using Profitable.Common.GlobalConstants;
 using Profitable.Models.EntityModels;
 using Profitable.Models.RequestModels.Comments;
 using Profitable.Models.ResponseModels.Comments;
@@ -25,7 +25,8 @@ namespace Profitable.Services.Comments
 		{
 			if (newComment.Content.Length > GlobalServicesConstants.CommentMaxLength)
 			{
-				return $"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
+				return
+					$"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
 			}
 
 			await repository.AddAsync(newComment);
@@ -55,12 +56,16 @@ namespace Profitable.Services.Comments
 			}
 		}
 
-		public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(Guid guid, int page, int pageCount)
+		public async Task<List<CommentResponseModel>> GetCommentsByPostAsync(
+			Guid guid,
+			int page,
+			int pageCount)
 		{
 			var comments = await repository
 				.GetAllAsNoTracking()
-				.Where(comment => comment.IsDeleted == false)
-				.Where(comment => comment.PostId == guid)
+				.Where(comment =>
+					comment.IsDeleted == false &&
+					comment.PostId == guid)
 				.OrderByDescending(c => c.PostedOn)
 				.Skip(page * pageCount)
 				.Take(pageCount)
@@ -71,12 +76,16 @@ namespace Profitable.Services.Comments
 			return comments;
 		}
 
-		public async Task<List<CommentResponseModel>> GetCommentsByUserAsync(Guid userGuid, int page, int pageCount)
+		public async Task<List<CommentResponseModel>> GetCommentsByUserAsync(
+			Guid userGuid,
+			int page,
+			int pageCount)
 		{
 			var comments = await repository
 				.GetAllAsNoTracking()
-				.Where(comment => comment.IsDeleted == false)
-				.Where(comment => comment.AuthorId == userGuid)
+				.Where(comment =>
+					comment.IsDeleted == false &&
+					comment.AuthorId == userGuid)
 				.OrderByDescending(c => c.PostedOn)
 				.Skip(page * pageCount)
 				.Take(pageCount)
@@ -91,15 +100,17 @@ namespace Profitable.Services.Comments
 		{
 			var a = (await repository
 				.GetAllAsNoTracking()
-				.Where(comment => comment.PostId == guid)
-				.Where(comment => comment.IsDeleted == false)
+				.Where(comment =>
+					comment.PostId == guid &&
+					comment.IsDeleted == false)
 				.ToListAsync()).Count;
 
 			var comments = (
 				await repository
 				.GetAllAsNoTracking()
-				.Where(comment => comment.PostId == guid)
-				.Where(comment => comment.IsDeleted == false)
+				.Where(comment =>
+					comment.PostId == guid &&
+					comment.IsDeleted == false)
 				.Select(comment => mapper.Map<CommentResponseModel>(comment))
 				.ToListAsync()
 				)
@@ -108,11 +119,15 @@ namespace Profitable.Services.Comments
 			return comments;
 		}
 
-		public async Task<Result> UpdateCommentAsync(Guid guid, UpdateCommentRequestModel newComment)
+		public async Task<Result> UpdateCommentAsync(
+			Guid guid,
+			UpdateCommentRequestModel newComment)
 		{
 			if (newComment.Content.Length > GlobalServicesConstants.CommentMaxLength)
 			{
-				return $"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
+				return
+					$"Content must be no longer than " +
+					$"{GlobalServicesConstants.CommentMaxLength} characters.";
 			}
 
 			var comment = mapper.Map<Comment>(newComment);

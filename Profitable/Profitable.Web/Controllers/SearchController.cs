@@ -18,7 +18,8 @@ namespace Profitable.Web.Controllers
 		}
 
 		[HttpGet("users/{searchTerm}")]
-		public async Task<IActionResult> Users([FromRoute] string searchTerm)
+		public async Task<IActionResult> Users(
+			[FromRoute] string searchTerm)
 		{
 			var usersFound = await userSearch.GetMatchingUsers(searchTerm);
 
@@ -26,7 +27,8 @@ namespace Profitable.Web.Controllers
 		}
 
 		[HttpGet("posts/{searchTerm}")]
-		public async Task<IActionResult> Posts([FromRoute] string searchTerm)
+		public async Task<IActionResult> Posts(
+			[FromRoute] string searchTerm)
 		{
 			var postsFound = await postSearch.GetMatchingPosts(searchTerm);
 

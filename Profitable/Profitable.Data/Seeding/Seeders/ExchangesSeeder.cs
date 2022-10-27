@@ -7,13 +7,18 @@ namespace Profitable.Data.Seeding.Seeders
 {
     public class ExchangesSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider = null)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider = null)
         {
             var exchangeRepository = new Repository<Exchange>(dbContext);
 
             IAsyncEnumerable<string> exchangesInput = null;
 
-            using (var stream = new FileStream("DataToSeed/Exchanges.json", FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream(
+                "DataToSeed/Exchanges.json",
+                FileMode.Open,
+                FileAccess.Read))
             {
                 exchangesInput = JsonSerializer.DeserializeAsyncEnumerable<string>
                     (stream, new JsonSerializerOptions()

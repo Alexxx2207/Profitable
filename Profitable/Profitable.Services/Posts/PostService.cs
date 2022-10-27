@@ -34,11 +34,15 @@ namespace Profitable.Services.Posts
             this.imageService = imageService;
         }
 
-        public async Task<Result> AddPostAsync(ApplicationUser author, AddPostRequestModel newPost)
+        public async Task<Result> AddPostAsync(
+            ApplicationUser author,
+            AddPostRequestModel newPost)
         {
             if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
             {
-                throw new ArgumentException($"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
+                throw new ArgumentException(
+                    $"Content must be no longer than " +
+                    $"{GlobalServicesConstants.PostMaxLength} characters.");
             }
 
             try
@@ -54,7 +58,11 @@ namespace Profitable.Services.Posts
 
                 if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
                 {
-                    string newFileName = await imageService.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
+                    string newFileName =
+                        await imageService.SaveUploadedImageAsync(
+                            ImageFor.Posts,
+                            newPost.ImageFileName,
+                            newPost.Image);
                     postToAdd.ImageURL = newFileName;
                 }
 
@@ -92,7 +100,9 @@ namespace Profitable.Services.Posts
 
         }
 
-        public async Task<PostResponseModel> GetPostByGuidAsync(Guid guid, string? loggedInUserEmail)
+        public async Task<PostResponseModel> GetPostByGuidAsync(
+            Guid guid,
+            string? loggedInUserEmail)
         {
             var post = await postsRepository
                 .GetAllAsNoTracking()
@@ -101,18 +111,22 @@ namespace Profitable.Services.Posts
                 .Include(p => p.Likes)
                 .Include("Likes.Author")
                 .FirstAsync(entity => entity.Guid == guid);
-                
+
             var mappedPostResponseModel = mapper.Map<PostResponseModel>(post);
 
-            if (loggedInUserEmail != null && mappedPostResponseModel.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
+            if (loggedInUserEmail != null &&
+                mappedPostResponseModel.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
             {
                 mappedPostResponseModel.IsLikedByTheUsed = true;
             }
-            
+
             return mappedPostResponseModel;
         }
 
-        public async Task<List<PostResponseModel>> GetPostsByPageAsync(int page, int pageCount, string? loggedInUserEmail)
+        public async Task<List<PostResponseModel>> GetPostsByPageAsync(
+            int page,
+            int pageCount,
+            string? loggedInUserEmail)
         {
             if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
             {
@@ -131,7 +145,8 @@ namespace Profitable.Services.Posts
 
                 foreach (var post in posts)
                 {
-                    if(loggedInUserEmail != null && post.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
+                    if (loggedInUserEmail != null &&
+                        post.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
                     {
                         post.IsLikedByTheUsed = true;
                     }
@@ -141,11 +156,15 @@ namespace Profitable.Services.Posts
             }
             else
             {
-                throw new Exception($"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
+                throw new Exception(
+                    $"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
             }
         }
 
-        public async Task<List<PostResponseModel>> GetPostsByUserAsync(Guid userId, int page, int pageCount)
+        public async Task<List<PostResponseModel>> GetPostsByUserAsync(
+            Guid userId,
+            int page,
+            int pageCount)
         {
 
             var userEmail = (await applicationUserRepository
@@ -157,8 +176,9 @@ namespace Profitable.Services.Posts
             {
                 var posts = await postsRepository
                     .GetAllAsNoTracking()
-                    .Where(post => post.AuthorId == userId)
-                    .Where(post => !post.IsDeleted)
+                    .Where(post =>
+                        post.AuthorId == userId &&
+                        !post.IsDeleted)
                     .OrderByDescending(p => p.PostedOn)
                     .Skip(page * pageCount)
                     .Take(pageCount)
@@ -182,7 +202,8 @@ namespace Profitable.Services.Posts
             }
             else
             {
-                throw new Exception($"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
+                throw new Exception(
+                    $"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
             }
         }
 
@@ -190,7 +211,8 @@ namespace Profitable.Services.Posts
         {
             if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
             {
-                throw new ArgumentException($"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
+                throw new ArgumentException(
+                    $"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
             }
 
             var postToUpdateGuidCasted = Guid.Parse(postToUpdateGuid);
@@ -209,7 +231,10 @@ namespace Profitable.Services.Posts
 
                 if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
                 {
-                    newFileName = await imageService.SaveUploadedImageAsync(ImageFor.Posts, newPost.ImageFileName, newPost.Image);
+                    newFileName =
+                        await imageService.SaveUploadedImageAsync(
+                            ImageFor.Posts, newPost.ImageFileName,
+                            newPost.Image);
                 }
 
                 postToUpdate.Title = newPost.Title;

@@ -8,7 +8,7 @@ namespace Profitable.Services.Markets.Contract
 
         Task<List<MarketTypeResponseModel>> GetAllMarketTypesAsync();
 
-        IEnumerable<string> GetAllInstrumentGroupsAsync();
+        IEnumerable<string> GetAllInstrumentGroups();
 
         Task<List<FinantialInstrumentShortResponseModel>> GetFinantialInstrumentsByTypeAsync(string type);
 

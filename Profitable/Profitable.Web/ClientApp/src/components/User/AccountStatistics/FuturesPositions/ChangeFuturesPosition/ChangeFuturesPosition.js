@@ -281,7 +281,7 @@ export const ChangeFuturesPosition = () => {
                                     checked={state.values.directionSelected.localeCompare(LongDirectionName) === 0}
                                     className={styles.directionBullish}
                                     name="directionSelected" />
-                                    <span className={styles.radioLabel} onClick={(e) => onBullishDirectionButtonClick(e)}>Bullish</span>
+                                    <span className={styles.radioLabel} onClick={(e) => onBullishDirectionButtonClick(e)}>Long</span>
                                 </div>
                                 <div className={styles.radioWrapper} onClick={(e) => onBearishDirectionButtonClick(e)}>
                                     <input
@@ -290,7 +290,7 @@ export const ChangeFuturesPosition = () => {
                                     checked={state.values.directionSelected.localeCompare(ShortDirectionName) === 0}
                                     className={styles.directionBearish}
                                     name="directionSelected" />
-                                    <span className={styles.radioLabel} onClick={(e) => onBearishDirectionButtonClick(e)}>Bearish</span>
+                                    <span className={styles.radioLabel} onClick={(e) => onBearishDirectionButtonClick(e)}>Short</span>
                                 </div>
                             </section>
                         </div>

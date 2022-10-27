@@ -168,9 +168,13 @@ export const ProfileInfo = () => {
                 </div>
             </div>
             <div className={styles.profileInfo}>
-                <div className={styles.changeImageMessageContainer}>
-                    <h6 className={styles.changeImageMessage}>* Click on the circle to change your profile picture</h6>
-                </div>
+                {searchedProfileEmail === loggedInUserEmail ?
+                    <div className={styles.changeImageMessageContainer}>
+                        <h6 className={styles.changeImageMessage}>* Click on the circle to change your profile picture</h6>
+                    </div>
+                    : 
+                    ''
+                }
                 
                 <div className={styles.profileOverviewTextContainer}>
                     <div className={styles.userNameContainer}>
