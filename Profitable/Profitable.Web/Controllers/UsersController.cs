@@ -87,7 +87,6 @@ namespace Profitable.Web.Controllers
             else
             {
                 return Unauthorized();
-
             }
         }
 
