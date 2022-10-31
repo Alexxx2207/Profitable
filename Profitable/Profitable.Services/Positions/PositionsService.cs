@@ -10,8 +10,8 @@ using Profitable.Services.Positions.Contracts;
 
 namespace Profitable.Services.Positions
 {
-	public class PositionsService : IPositionsService
-	{
+	public class PositionsService : IPositionsService, ICalculatorService
+    {
 		private readonly IRepository<TradePosition> tradePositionsRepository;
 		private readonly IRepository<FuturesPosition> futuresPositionsRepository;
 		private readonly IRepository<FuturesPosition> stocksPositionsRepository;
@@ -237,8 +237,6 @@ namespace Profitable.Services.Positions
                     return "Futures position not found";
                 }
 
-				string parsedDirection = Enum.GetName(typeof(PositionDirection), futuresPosition.Direction);
-
 				tradePosition.EntryPrice = model.EntryPrice;
 				tradePosition.ExitPrice = model.ExitPrice;
 				tradePosition.QuantitySize = model.Quantity;
@@ -313,5 +311,44 @@ namespace Profitable.Services.Positions
 				return e.Message;
 			}
 		}
+
+		public CalculateFuturesPositionResponseModel CalculateFuturesPosition(CalculateFuturesPositionRequestModel model)
+		{
+            var isConvertedSuccessfully =
+                                 Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
+
+            if (!isConvertedSuccessfully)
+            {
+				throw new Exception("Incorrect direction format");
+            }
+
+            return new CalculateFuturesPositionResponseModel {
+				ProfitLoss = CalculationFormulas.CalculateFuturesPL(
+							parsedPositionDirection == PositionDirection.Long,
+							model.EntryPrice,
+							model.ExitPrice,
+							model.Quantity,
+							model.TickSize,
+							model.TickValue),
+				Ticks = CalculationFormulas.CalculateFuturesTicks(
+							model.EntryPrice,
+                            model.ExitPrice,
+                            model.Quantity,
+                            model.TickSize)
+            };
+        }
+
+		public CalculateStocksPositionResponseModel CalculateStocksPosition(CalculateStocksPositionRequestModel model)
+		{
+            return new CalculateStocksPositionResponseModel
+            {
+                ProfitLoss = CalculationFormulas.CalculateStocksPL(
+                            model.BuyPrice,
+                            model.SellPrice,
+                            model.NumberOfShares,
+                            model.BuyCommission,
+                            model.SellCommission),
+            };
+        }
 	}
 }

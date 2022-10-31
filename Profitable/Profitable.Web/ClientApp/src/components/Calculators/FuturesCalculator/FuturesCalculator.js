@@ -1,10 +1,7 @@
 import { useEffect, useReducer } from "react";
+import { LongDirectionValue, ShortDirectionValue } from "../../../common/config";
 
-import {
-    loadFuturesContracts,
-    CalculateTicks,
-    CalculatePL,
-} from "../../../services/futures/futuresService";
+import { loadFuturesContracts, CalculatePosition } from "../../../services/futures/futuresService";
 
 import styles from "./FuturesCalculator.module.css";
 
@@ -134,23 +131,17 @@ export const FuturesCalculator = () => {
     const CalculatePLResult = (e) => {
         e.preventDefault();
 
-        const ticks = CalculateTicks(
-            Number(futures.position.entryPrice),
-            Number(futures.position.exitPrice),
-            Number(futures.position.numberOfContracts),
-            futures.chosenFutures.tickSize
-        );
-
-        const plResult = CalculatePL(
-            futures.position.directionBullish,
+        CalculatePosition(
+            futures.position.directionBullish ? LongDirectionValue : ShortDirectionValue,
             Number(futures.position.entryPrice),
             Number(futures.position.exitPrice),
             Number(futures.position.numberOfContracts),
             futures.chosenFutures.tickSize,
             futures.chosenFutures.tickValue
-        );
-
-        dispatch({ type: "setResult", ticks: ticks, USDValue: plResult });
+        ).then((result) => {
+            console.log(result);
+            dispatch({ type: "setResult", ticks: result.ticks, USDValue: result.profitLoss });
+        });
     };
 
     return (

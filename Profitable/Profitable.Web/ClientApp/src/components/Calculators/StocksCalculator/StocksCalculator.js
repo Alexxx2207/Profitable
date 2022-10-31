@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import classnames from "classnames";
 
-import { calculateStockTrade } from "../../../services/stocks/stocksService";
+import { calculateStocksTrade } from "../../../services/stocks/stocksService";
 
 import styles from "./StocksCalculator.module.css";
 
@@ -119,15 +119,15 @@ export const StocksCalculator = () => {
     const CalculatePLResult = (e) => {
         e.preventDefault();
 
-        const plResult = calculateStockTrade(
-            Number(stocks.position.numberOfShares),
-            Number(stocks.position.exitPrice),
+        calculateStocksTrade(
             Number(stocks.position.entryPrice),
-            Number(stocks.position.exitCommission),
-            Number(stocks.position.entryCommission)
-        );
-
-        dispatch({ type: "setResult", USDValue: plResult });
+            Number(stocks.position.exitPrice),
+            Number(stocks.position.numberOfShares),
+            Number(stocks.position.entryCommission),
+            Number(stocks.position.exitCommission)
+        ).then((result) => {
+            dispatch({ type: "setResult", USDValue: result.profitLoss });
+        });
     };
 
     return (

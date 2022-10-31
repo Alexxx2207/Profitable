@@ -16,17 +16,20 @@ namespace Profitable.Web.Controllers
     {
         private readonly IPositionsRecordsService positionsRecordsService;
         private readonly IPositionsService positionsService;
+        private readonly ICalculatorService calculatorService;
         private readonly IUserService userService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public PositionsController(
             IPositionsRecordsService positionsRecordsService,
             IPositionsService positionsService,
+            ICalculatorService calculatorService,
             IUserService userService,
             UserManager<ApplicationUser> userManager)
         {
             this.positionsRecordsService = positionsRecordsService;
             this.positionsService = positionsService;
+            this.calculatorService = calculatorService;
             this.userService = userService;
             this.userManager = userManager;
         }
@@ -240,6 +243,34 @@ namespace Profitable.Web.Controllers
             else
             {
                 return BadRequest(result.Error);
+            }
+        }
+
+        [HttpPost("calculate/futures")]
+        public IActionResult CalculateFuturesPosition(
+            [FromBody] CalculateFuturesPositionRequestModel model)
+        {
+            try
+            {
+                return Ok(calculatorService.CalculateFuturesPosition(model));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [HttpPost("calculate/stocks")]
+        public IActionResult CalculateStocksPosition(
+            [FromBody] CalculateStocksPositionRequestModel model)
+        {
+            try
+            {
+                return Ok(calculatorService.CalculateStocksPosition(model));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
         }
     }
