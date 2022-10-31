@@ -18,9 +18,14 @@ export const MarketsFiltrator = ({ instrument, onInstrumentChange }) => {
             let responseMarkets = await getAllMarketTypes();
             let responseInstruments = await getAllInstrumentsByMarketType(state.marketSelected);
 
+            responseMarkets = responseMarkets.map((element) => ({
+                ...element,
+                name: element.name[0].toUpperCase() + element.name.slice(1),
+            }));
+
             setState({
-                markets: responseMarkets,
-                instruments: responseInstruments,
+                markets: [...responseMarkets],
+                instruments: [...responseInstruments],
                 marketSelected: state.marketSelected,
                 instrumentSelected: state.instrumentSelected,
             });
@@ -59,7 +64,11 @@ export const MarketsFiltrator = ({ instrument, onInstrumentChange }) => {
                     value={state.marketSelected}
                 >
                     {state.markets.map((marketType) => (
-                        <option key={marketType.guid} value={marketType.name}>
+                        <option
+                            className={styles.marketOption}
+                            key={marketType.guid}
+                            value={marketType.name}
+                        >
                             {marketType.name}
                         </option>
                     ))}
