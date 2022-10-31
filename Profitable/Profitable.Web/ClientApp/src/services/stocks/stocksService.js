@@ -1,11 +1,20 @@
-export const calculateStockTrade = (
-    numberOfShares,
-    sellPrice,
+import { WEB_API_BASE_URL } from "../../common/config";
+import { request } from "../../utils/fetch/request";
+
+export const calculateStocksTrade = (
     buyPrice,
-    sellCommission,
-    buyCommission
+    sellPrice,
+    numberOfShares,
+    buyCommission,
+    sellCommission
 ) => {
-    return (
-        numberOfShares * sellPrice - sellCommission - (numberOfShares * buyPrice + buyCommission)
-    );
+    return request
+        .post(`${WEB_API_BASE_URL}/positions/calculate/stocks`, {
+            buyPrice,
+            sellPrice,
+            numberOfShares,
+            buyCommission,
+            sellCommission,
+        })
+        .then((response) => response.json());
 };

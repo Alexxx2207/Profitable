@@ -12,9 +12,12 @@ namespace Profitable.Services.Positions.Contracts
 
 		Task<Result> AddFuturesPositions(Guid recordId, AddFuturesPositionRequestModel model);
 
-        Task<Result> ChangeFuturesPosition(Guid recordId, Guid positionGuid, Guid requesterGuid, ChangeFuturesPositionRequestModel model);
+        Task<Result> ChangeFuturesPosition(
+            Guid recordId,
+            Guid positionGuid,
+            Guid requesterGuid,
+            ChangeFuturesPositionRequestModel model);
 
         Task<Result> DeleteFuturesPositions(Guid recordId, Guid positionGuid, Guid requesterGuid);
-
     }
 }
