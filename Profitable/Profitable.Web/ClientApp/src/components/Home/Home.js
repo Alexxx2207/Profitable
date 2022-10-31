@@ -1,4 +1,4 @@
-﻿import { Watchlist } from "../Watchlist/Watchlist";
+﻿import { Watchlist } from "../Common/Watchlist/Watchlist";
 import { About } from "./About/About";
 import styles from "./Home.module.css";
 

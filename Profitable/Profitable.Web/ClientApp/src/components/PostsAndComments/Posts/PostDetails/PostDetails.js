@@ -2,7 +2,6 @@ import classnames from "classnames";
 import { useEffect, useState, useContext, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../contexts/AuthContext";
-import { deletePost, loadParticularPost } from "../../../../services/posts/postsService";
 import { PostsLikeWidget } from "../PostsLikeWidget/PostsLikeWidget";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +12,7 @@ import {
     faCircleMinus,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { deletePost, loadParticularPost } from "../../../../services/posts/postsService";
 import { createImgURL, createAuthorImgURL } from "../../../../services/common/imageService";
 import { getUserDataByJWT, getUserEmailFromJWT } from "../../../../services/users/usersService";
 
@@ -22,13 +22,14 @@ import {
     COMMENTS_LIST_IN_POST_PAGE_COUNT,
 } from "../../../../common/config";
 
-import styles from "./PostDetails.module.css";
 import { MessageBoxContext } from "../../../../contexts/MessageBoxContext";
 import { CommentsList } from "../../Comments/CommentsList/CommentsList";
 import { CreateComment } from "../../Comments/CreateComment/CreateComment";
 import { getCommentsByPostId } from "../../../../services/comments/commentsService";
 
-import { GoToTop } from "../../../GoToTop/GoToTop";
+import { GoToTop } from "../../../Common/GoToTop/GoToTop";
+
+import styles from "./PostDetails.module.css";
 
 export const PostDetails = () => {
     const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../contexts/MessageBoxContext";
 import { getUserDataByJWT } from "../../../../services/users/usersService";
-import { ErrorWidget } from "../../../ErrorWidget/ErrorWidget";
+import { ErrorWidget } from "../../../Common/ErrorWidget/ErrorWidget";
 
 import {
     CLIENT_ERROR_TYPE,

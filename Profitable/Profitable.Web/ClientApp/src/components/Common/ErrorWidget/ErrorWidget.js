@@ -1,6 +1,6 @@
 import { ErrorWidgetMessage } from "./ErrorWidgetMessage/ErrorWidgetMessage";
 
-import { CLIENT_ERROR_TYPE } from "../../common/config";
+import { CLIENT_ERROR_TYPE } from "../../../common/config";
 
 import styles from "./ErrorWidget.module.css";
 

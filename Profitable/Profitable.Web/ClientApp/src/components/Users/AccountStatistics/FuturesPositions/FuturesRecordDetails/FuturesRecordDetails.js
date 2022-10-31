@@ -6,7 +6,7 @@ import {
     deletePosition,
     getPositionsFromRecord,
 } from "../../../../../services/positions/positionsService";
-import { GoBackButton } from "../../../../GoBackButton/GoBackButton";
+import { GoBackButton } from "../../../../Common/GoBackButton/GoBackButton";
 import { Line } from "react-chartjs-2";
 import { calculateAcculativePositions } from "../../../../../services/positions/positionsService";
 import {

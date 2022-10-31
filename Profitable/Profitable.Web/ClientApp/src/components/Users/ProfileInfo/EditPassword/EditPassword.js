@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../contexts/MessageBoxContext";
-import { ErrorWidget } from "../../../ErrorWidget/ErrorWidget";
-import { PasswordEye } from "../../../PasswordEye/PasswordEye";
+import { ErrorWidget } from "../../../Common/ErrorWidget/ErrorWidget";
+import { PasswordEye } from "../../../Common/PasswordEye/PasswordEye";
 
 import {
     CLIENT_ERROR_TYPE,

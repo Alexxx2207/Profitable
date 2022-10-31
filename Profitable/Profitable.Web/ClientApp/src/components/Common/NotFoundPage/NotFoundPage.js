@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { MISSING_POST_GUID_ERROR_PAGE_PATH } from "../../common/config";
+import { MISSING_POST_GUID_ERROR_PAGE_PATH } from "../../../common/config";
 
 import styles from "./NotFoundPage.module.css";
 

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { PostsList } from "../PostsList/PostsList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import { getUserDataByJWT, getUserEmailFromJWT } from "../../../../services/users/usersService";
 import {
     JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
     POSTS_LIST_POSTS_IN_PAGE_COUNT,
@@ -12,8 +11,9 @@ import {
 import { AuthContext } from "../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../contexts/MessageBoxContext";
 import { loadPostsPage } from "../../../../services/posts/postsService";
+import { getUserDataByJWT, getUserEmailFromJWT } from "../../../../services/users/usersService";
 
-import { GoToTop } from "../../../GoToTop/GoToTop";
+import { GoToTop } from "../../../Common/GoToTop/GoToTop";
 
 import styles from "./PostsExplorer.module.css";
 

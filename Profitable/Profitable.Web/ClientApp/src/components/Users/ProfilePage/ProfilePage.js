@@ -2,7 +2,7 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 import styles from "./ProfilePage.module.css";
-import { GoToTop } from "../../GoToTop/GoToTop";
+import { GoToTop } from "../../Common/GoToTop/GoToTop";
 
 export const ProfilePage = () => {
     const location = useLocation();

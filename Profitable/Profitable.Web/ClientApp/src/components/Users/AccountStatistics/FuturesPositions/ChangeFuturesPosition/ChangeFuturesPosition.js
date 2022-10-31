@@ -2,7 +2,7 @@ import { useContext, useEffect, useReducer } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../../contexts/MessageBoxContext";
-import { ErrorWidget } from "../../../../ErrorWidget/ErrorWidget";
+import { ErrorWidget } from "../../../../Common/ErrorWidget/ErrorWidget";
 
 import {
     CLIENT_ERROR_TYPE,
@@ -11,7 +11,6 @@ import {
     SERVER_ERROR_TYPE,
     ShortDirectionName,
 } from "../../../../../common/config";
-import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
 import {
     isEmptyOrWhiteSpaceFieldChecker,
     naturalNumberChecker,
@@ -22,10 +21,14 @@ import {
     createServerErrorObject,
 } from "../../../../../services/common/createValidationErrorObject";
 
-import { createPosition } from "../../../../../services/positions/positionsService";
+import {
+    changePosition,
+    getPositionByGuid,
+} from "../../../../../services/positions/positionsService";
 import { loadFuturesContracts } from "../../../../../services/futures/futuresService";
+import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
 
-import styles from "./CreateFuturesPosition.module.css";
+import styles from "./ChangeFuturesPosition.module.css";
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -43,7 +46,6 @@ const reducer = (state, action) => {
                 values: {
                     ...state.values,
                     allContracts: action.payload,
-                    chosenContract: action.payload[0],
                 },
             };
         case "selectContract":
@@ -52,6 +54,45 @@ const reducer = (state, action) => {
                 values: {
                     ...state.values,
                     chosenContract: state.values.allContracts[action.payload],
+                },
+            };
+        case "loadPosition":
+            return {
+                ...state,
+                values: {
+                    ...state.values,
+                    chosenContract: {
+                        name: action.payload.contractName,
+                        tickSize: action.payload.tickSize,
+                        tickValue: action.payload.tickValue,
+                    },
+                    directionSelected:
+                        LongDirectionName.localeCompare(action.payload.direction) === 0
+                            ? LongDirectionName
+                            : ShortDirectionName,
+                    entryPrice: action.payload.entryPrice,
+                    exitPrice: action.payload.exitPrice,
+                    quantity: action.payload.quantity,
+                },
+                errors: {
+                    ...state.errors,
+
+                    entryPriceEmpty: createClientErrorObject(
+                        state.errors.entryPriceEmpty,
+                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.entryPrice)
+                    ),
+                    exitPriceEmpty: createClientErrorObject(
+                        state.errors.exitPriceEmpty,
+                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.exitPrice)
+                    ),
+                    quantityEmpty: createClientErrorObject(
+                        state.errors.quantityEmpty,
+                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.quantity)
+                    ),
+                    quantityOverZero: createClientErrorObject(
+                        state.errors.quantityOverZero,
+                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.quantity)
+                    ),
                 },
             };
         case "setContractsCount":
@@ -116,8 +157,8 @@ const reducer = (state, action) => {
     }
 };
 
-export const CreateFuturesPosition = () => {
-    const { recordGuid, searchedProfileEmail } = useParams();
+export const ChangeFuturesPosition = () => {
+    const { recordGuid, searchedProfileEmail, positionGuid } = useParams();
 
     const navigate = useNavigate();
 
@@ -182,6 +223,13 @@ export const CreateFuturesPosition = () => {
                 payload: futuresContracts,
             })
         );
+
+        getPositionByGuid(recordGuid, positionGuid).then((position) =>
+            setState({
+                type: "loadPosition",
+                payload: position,
+            })
+        );
         // eslint-disable-next-line
     }, []);
 
@@ -193,9 +241,10 @@ export const CreateFuturesPosition = () => {
         );
 
         if (clientErrors.filter((err) => !err.fulfilled).length === 0) {
-            createPosition(
+            changePosition(
                 JWT,
                 recordGuid,
+                positionGuid,
                 state.values.chosenContract.name,
                 state.values.directionSelected,
                 state.values.entryPrice,
@@ -205,7 +254,7 @@ export const CreateFuturesPosition = () => {
                 state.values.chosenContract.tickValue
             )
                 .then((jwt) => {
-                    setMessageBoxSettings("The position was created successfully!", true);
+                    setMessageBoxSettings("The position was edited successfully!", true);
                     navigate(
                         `/users/${searchedProfileEmail}/positions-records/futures/${recordGuid}`
                     );
@@ -214,7 +263,7 @@ export const CreateFuturesPosition = () => {
                     if (JWT && err.message === "Should auth first") {
                         setMessageBoxSettings(
                             JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE +
-                                " The position was not created!",
+                                " The position was not edited!",
                             false
                         );
                         removeAuth();
@@ -269,11 +318,11 @@ export const CreateFuturesPosition = () => {
 
     return (
         <div className={styles.pageContainer}>
-            <div className={styles.createSectionContainer}>
-                <div className={styles.createContainer}>
-                    <form className={styles.createForm} onSubmit={onSubmit}>
-                        <div className={styles.createLabelContainer}>
-                            <h2 className={styles.createLabel}>Create Position</h2>
+            <div className={styles.changeSectionContainer}>
+                <div className={styles.changeContainer}>
+                    <form className={styles.changeForm} onSubmit={onSubmit}>
+                        <div className={styles.changeLabelContainer}>
+                            <h2 className={styles.changeLabel}>Change Position</h2>
                         </div>
                         <div className={styles.formGroup}>
                             <div>
@@ -283,13 +332,17 @@ export const CreateFuturesPosition = () => {
                             <select
                                 className={styles.selectContract}
                                 onChange={(e) => OnChangeContractType(e.target.value)}
-                                select={state.values.chosenContract.name}
+                                value={
+                                    state.values.allContracts.find(
+                                        (el) => el.name === state.values.chosenContract.name
+                                    )?.name
+                                }
                             >
                                 {state.values.allContracts.map((futureContract, index) => (
                                     <option
                                         className={styles.selectContractOption}
                                         key={futureContract.guid}
-                                        value={index}
+                                        value={futureContract.name}
                                     >
                                         {futureContract.name}
                                     </option>
@@ -357,7 +410,7 @@ export const CreateFuturesPosition = () => {
                             <input
                                 className={styles.inputField}
                                 name="entryPrice"
-                                value={state.values.content}
+                                value={state.values.entryPrice}
                                 onChange={changeHandler}
                                 type="number"
                                 step=".000001"
@@ -371,7 +424,7 @@ export const CreateFuturesPosition = () => {
                             <input
                                 className={styles.inputField}
                                 name="exitPrice"
-                                value={state.values.content}
+                                value={state.values.exitPrice}
                                 onChange={changeHandler}
                                 type="number"
                                 step=".000001"
@@ -393,13 +446,13 @@ export const CreateFuturesPosition = () => {
                         </div>
 
                         <div className={styles.submitButtonContainer}>
-                            <input className={styles.submitButton} type="submit" value="Create" />
+                            <input className={styles.submitButton} type="submit" value="Change" />
                         </div>
                     </form>
                 </div>
-                <aside className={styles.createAside}>
+                <aside className={styles.changeAside}>
                     <div className={styles.errorsHeadingContainer}>
-                        <h2 className={styles.errorsHeading}>Create State</h2>
+                        <h2 className={styles.errorsHeading}>Change State</h2>
                     </div>
                     <div className={styles.errorsContainer}>
                         {Object.values(state.errors).map((error, index) => (

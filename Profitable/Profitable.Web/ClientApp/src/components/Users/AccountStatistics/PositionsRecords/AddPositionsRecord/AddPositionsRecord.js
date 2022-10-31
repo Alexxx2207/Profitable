@@ -1,19 +1,36 @@
-import { useContext, useReducer } from "react";
+import { useContext, useEffect, useReducer } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from "../../../../../common/config";
 import { changeStateValuesForControlledForms } from "../../../../../services/common/createStateValues";
 import { isEmptyOrWhiteSpaceFieldChecker } from "../../../../../services/common/errorValidationCheckers";
-import { changePositionsRecord } from "../../../../../services/positions/positionsService";
+import { createPositionsRecord } from "../../../../../services/positions/positionsService";
+import { getAllInstrumentGroups } from "../../../../../services/markets/marketsService";
 import { createClientErrorObject } from "../../../../../services/common/createValidationErrorObject";
-import { ErrorWidget } from "../../../../ErrorWidget/ErrorWidget";
+import { ErrorWidget } from "../../../../Common/ErrorWidget/ErrorWidget";
 
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../../contexts/MessageBoxContext";
 
-import styles from "./ChangePositionsRecord.module.css";
+import styles from "./AddPositionsRecord.module.css";
 
 const reducer = (state, action) => {
     switch (action.type) {
+        case "loadInstrumentGroups":
+            return {
+                ...state,
+                values: {
+                    ...state.values,
+                    instrumentGroups: action.payload,
+                },
+            };
+        case "changeSelectedInstrumentGroup":
+            return {
+                ...state,
+                values: {
+                    ...state.values,
+                    instrumentGroupSelected: action.payload,
+                },
+            };
         case "updateInput":
             return {
                 ...state,
@@ -36,10 +53,10 @@ const reducer = (state, action) => {
     }
 };
 
-export const ChangePositionsRecord = ({ record }) => {
+export const AddPositionsRecord = () => {
     const navigate = useNavigate();
 
-    const { searchedProfileEmail, recordId } = useParams();
+    const { searchedProfileEmail } = useParams();
 
     const { JWT } = useContext(AuthContext);
 
@@ -48,6 +65,8 @@ export const ChangePositionsRecord = ({ record }) => {
     const [state, setState] = useReducer(reducer, {
         values: {
             recordName: "",
+            instrumentGroups: [],
+            instrumentGroupSelected: "",
         },
         errors: {
             nameValid: { text: "Insert valid name", fulfilled: false, type: CLIENT_ERROR_TYPE },
@@ -59,6 +78,15 @@ export const ChangePositionsRecord = ({ record }) => {
         },
     });
 
+    useEffect(() => {
+        getAllInstrumentGroups().then((result) =>
+            setState({
+                type: "loadInstrumentGroups",
+                payload: result,
+            })
+        );
+    }, []);
+
     const onInputFieldChange = (e) => {
         if (e.target.name === "recordName") {
             setState({
@@ -66,6 +94,13 @@ export const ChangePositionsRecord = ({ record }) => {
                 payload: e.target,
             });
         }
+    };
+
+    const onInstumentGroupChange = (e) => {
+        setState({
+            type: "changeSelectedInstrumentGroup",
+            payload: e.target.value,
+        });
     };
 
     const onSubmit = (e) => {
@@ -76,8 +111,13 @@ export const ChangePositionsRecord = ({ record }) => {
         );
 
         if (clientErrors.filter((err) => !err.fulfilled).length === 0) {
-            changePositionsRecord(JWT, recordId, state.values.recordName).then(() => {
-                setMessageBoxSettings("The position record was changed successfully!", true);
+            createPositionsRecord(
+                JWT,
+                searchedProfileEmail,
+                state.values.recordName,
+                state.values.instrumentGroupSelected
+            ).then(() => {
+                setMessageBoxSettings("The position record was created successfully!", true);
                 navigate(`/users/${searchedProfileEmail}/account-statistics`);
             });
         }
@@ -85,14 +125,14 @@ export const ChangePositionsRecord = ({ record }) => {
 
     return (
         <div className={styles.pageContainer}>
-            <div className={styles.recordChangeFormContainer}>
-                <form className={styles.recordChangeForm} onSubmit={onSubmit}>
-                    <div className={styles.recordChangeFormLabelContainer}>
-                        <h2 className={styles.changeRecordLabel}>Change Record</h2>
+            <div className={styles.recordAddFormContainer}>
+                <form className={styles.recordAddForm} onSubmit={onSubmit}>
+                    <div className={styles.recordAddFormLabelContainer}>
+                        <h2 className={styles.addRecordLabel}>Add Record</h2>
                     </div>
                     <div className={styles.formGroup}>
                         <div>
-                            <h5>New Record Name</h5>
+                            <h5>Record Name</h5>
                         </div>
                         <input
                             className={styles.inputField}
@@ -100,16 +140,30 @@ export const ChangePositionsRecord = ({ record }) => {
                             name="recordName"
                             onChange={onInputFieldChange}
                             value={state.values.recordName}
-                            placeholder={"Enter new name here..."}
+                            placeholder={"Enter record name here..."}
                         />
                     </div>
+                    <div className={styles.formGroup}>
+                        <div>
+                            <h5>Instrument Group</h5>
+                        </div>
 
+                        <select
+                            className={styles.instrumentGroupSelector}
+                            onChange={onInstumentGroupChange}
+                            value={state.values.instrumentGroupSelected}
+                        >
+                            {state.values.instrumentGroups.map((group) => (
+                                <option value={group}>{group}</option>
+                            ))}
+                        </select>
+                    </div>
                     <div className={styles.submitButtonContainer}>
                         <input className={styles.submitButton} type="submit" value="Create" />
                     </div>
                 </form>
             </div>
-            <aside className={styles.recordChangeFormAside}>
+            <aside className={styles.recordAddFormAside}>
                 <div className={styles.errorsHeadingContainer}>
                     <h2 className={styles.errorsHeading}>Create Record State</h2>
                 </div>

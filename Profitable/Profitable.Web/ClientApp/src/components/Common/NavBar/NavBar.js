@@ -13,9 +13,9 @@ import {
     faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 
-import { getUserEmailFromJWT } from "../../services/users/usersService";
+import { getUserEmailFromJWT } from "../../../services/users/usersService";
 
 import styles from "./NavBar.module.css";
 

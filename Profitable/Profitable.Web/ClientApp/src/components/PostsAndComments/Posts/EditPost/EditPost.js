@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../contexts/MessageBoxContext";
-import { ErrorWidget } from "../../../ErrorWidget/ErrorWidget";
+import { ErrorWidget } from "../../../Common/ErrorWidget/ErrorWidget";
 
 import {
     JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
