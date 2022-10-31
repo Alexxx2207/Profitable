@@ -1,10 +1,13 @@
-import { useReducer } from "react";
+import { useReducer, useCallback } from "react";
 import { searchedModels } from "../../common/config";
 import { searchByTerm } from "../../services/search/searchService";
+
 import { UserSearchResult } from "./UserSearchResult/UserSearchResult";
+import { PostsList } from "../PostsAndComments/Posts/PostsList/PostsList";
+
+import debounce from "lodash.debounce";
 
 import styles from "./SearchPage.module.css";
-import { PostsList } from "../PostsAndComments/Posts/PostsList/PostsList";
 
 const intialState = {
     searchedTerm: "",
@@ -50,6 +53,8 @@ export const SearchPage = () => {
         });
     };
 
+    const optimisedOnChange = useCallback(debounce(searchTermOnChange, 700), []);
+
     const searchModelOnChange = (e) => {
         searchByTerm(state.searchedTerm, e.target.value).then((result) => {
             setState({
@@ -83,8 +88,7 @@ export const SearchPage = () => {
                 <input
                     placeholder={"Search here..."}
                     type="text"
-                    onChange={searchTermOnChange}
-                    value={state.searchedTerm}
+                    onChange={optimisedOnChange}
                     className={styles.searchInput}
                 />
             </div>
@@ -96,7 +100,7 @@ export const SearchPage = () => {
                     className={styles.searchModelSelector}
                 >
                     {state.searchedModels.map((model, index) => (
-                        <option key={model.guid} value={model}>
+                        <option key={index} value={model}>
                             {model}
                         </option>
                     ))}
