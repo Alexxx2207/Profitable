@@ -1,15 +1,13 @@
-
-
-export const changeStateValuesForControlledForms = (values, inputName, inputValue) =>{
+export const changeStateValuesForControlledForms = (values, inputName, inputValue) => {
     return {
         ...values,
-        [inputName]: inputValue
-    }
-}
+        [inputName]: inputValue,
+    };
+};
 
-export const changeStateValuesForControlledFormsByTrimming = (values, inputName, inputValue) =>{
+export const changeStateValuesForControlledFormsByTrimming = (values, inputName, inputValue) => {
     return {
         ...values,
-        [inputName]: inputValue.trim()
-    }
-}
+        [inputName]: inputValue.trim(),
+    };
+};

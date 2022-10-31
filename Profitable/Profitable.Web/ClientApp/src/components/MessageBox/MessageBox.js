@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
-import styles from './MessageBox.module.css';
+import { useEffect } from "react";
+import styles from "./MessageBox.module.css";
 
-export const MessageBox = ({message, good, disposeMessageBoxSettings}) => {
-
+export const MessageBox = ({ message, good, disposeMessageBoxSettings }) => {
     useEffect(() => {
         disposeMessageBoxSettings();
         // eslint-disable-next-line
@@ -13,4 +12,4 @@ export const MessageBox = ({message, good, disposeMessageBoxSettings}) => {
             <h5 className={styles.message}>{message}</h5>
         </div>
     );
-}
+};

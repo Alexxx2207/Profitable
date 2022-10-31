@@ -1,6 +1,6 @@
-import { FuturesCalculator } from './FuturesCalculator/FuturesCalculator';
-import styles from './Calculators.module.css';
-import { StocksCalculator } from './StocksCalculator/StocksCalculator';
+import { FuturesCalculator } from "./FuturesCalculator/FuturesCalculator";
+import styles from "./Calculators.module.css";
+import { StocksCalculator } from "./StocksCalculator/StocksCalculator";
 
 export const Calcualtors = () => {
     return (
@@ -13,4 +13,4 @@ export const Calcualtors = () => {
             </section>
         </div>
     );
-}
+};

@@ -1,15 +1,13 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { deleteUserPositionsRecord } from '../../../../../../services/positions/positionsService';
-import { AuthContext } from '../../../../../../contexts/AuthContext';
-import { MessageBoxContext } from '../../../../../../contexts/MessageBoxContext';
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { deleteUserPositionsRecord } from "../../../../../../services/positions/positionsService";
+import { AuthContext } from "../../../../../../contexts/AuthContext";
+import { MessageBoxContext } from "../../../../../../contexts/MessageBoxContext";
 
+import styles from "./PositionsRecordListWidget.module.css";
+import { useParams } from "react-router-dom";
 
-import styles from './PositionsRecordListWidget.module.css';
-import { useParams } from 'react-router-dom';
-
-export const PositionsRecordListWidget = ({list, showOwnerActionButtons}) => {
-
+export const PositionsRecordListWidget = ({ list, showOwnerActionButtons }) => {
     const navigate = useNavigate();
 
     const { searchedProfileEmail } = useParams();
@@ -19,22 +17,25 @@ export const PositionsRecordListWidget = ({list, showOwnerActionButtons}) => {
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const handleOpen = () => {
-        navigate(`/users/${searchedProfileEmail}/positions-records/${list.instrumentGroup.toLowerCase()}/${list.guid}`);
+        navigate(
+            `/users/${searchedProfileEmail}/positions-records/${list.instrumentGroup.toLowerCase()}/${
+                list.guid
+            }`
+        );
     };
-    
+
     const handleChange = () => {
         navigate(`/users/${searchedProfileEmail}/positions-records/${list.guid}/change`);
     };
 
     const handleDelete = () => {
-        deleteUserPositionsRecord(JWT, list.guid)
-            .then(
-                (() => {
-                    setMessageBoxSettings('The position record was deleted successfully!', true);
+        deleteUserPositionsRecord(JWT, list.guid).then(
+            (() => {
+                setMessageBoxSettings("The position record was deleted successfully!", true);
 
-                    window.location.reload();
-                })()
-            );
+                window.location.reload();
+            })()
+        );
     };
 
     return (
@@ -46,16 +47,28 @@ export const PositionsRecordListWidget = ({list, showOwnerActionButtons}) => {
                 <h6>Last Updated: {list.lastUpdated}</h6>
             </div>
             <div className={styles.openPositionsRecordButtonContainer}>
-                <button className={styles.openPositionsRecordButton} onClick={() => handleOpen()}>Open</button>
-                {showOwnerActionButtons ? 
+                <button className={styles.openPositionsRecordButton} onClick={() => handleOpen()}>
+                    Open
+                </button>
+                {showOwnerActionButtons ? (
                     <>
-                        <button className={styles.changeNamePositionsRecordButton} onClick={() => handleChange()}>Change Name</button>
-                        <button className={styles.deletePositionsRecordButton} onClick={() => handleDelete()}>Delete</button>
+                        <button
+                            className={styles.changeNamePositionsRecordButton}
+                            onClick={() => handleChange()}
+                        >
+                            Change Name
+                        </button>
+                        <button
+                            className={styles.deletePositionsRecordButton}
+                            onClick={() => handleDelete()}
+                        >
+                            Delete
+                        </button>
                     </>
-                :
-                    ''
-                }
+                ) : (
+                    ""
+                )}
             </div>
         </div>
     );
-}
+};

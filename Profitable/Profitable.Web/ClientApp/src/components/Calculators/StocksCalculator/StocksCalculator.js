@@ -3,7 +3,7 @@ import classnames from "classnames";
 
 import { calculateStockTrade } from "../../../services/stocks/stocksService";
 
-import styles from './StocksCalculator.module.css';
+import styles from "./StocksCalculator.module.css";
 
 const initialState = {
     position: {
@@ -14,122 +14,121 @@ const initialState = {
         numberOfShares: 0,
     },
     answer: {
-        USDValue: 0, 
-    }
+        USDValue: 0,
+    },
 };
 
 function stocksReducer(state, action) {
     switch (action.type) {
-        case 'loadAllStocks':
+        case "loadAllStocks":
             return {
                 ...state,
                 allStocks: action.allStocks,
-                chosenStocks: action.allStocks[0]
+                chosenStocks: action.allStocks[0],
             };
-        case 'selectShareEntryPrice':
+        case "selectShareEntryPrice":
             return {
                 ...state,
                 position: {
                     ...state.position,
-                    entryPrice: action.entryPrice
-                }
+                    entryPrice: action.entryPrice,
+                },
             };
-        case 'selectShareExitPrice':
+        case "selectShareExitPrice":
             return {
                 ...state,
                 position: {
                     ...state.position,
-                    exitPrice: action.exitPrice
-                }
+                    exitPrice: action.exitPrice,
+                },
             };
-        case 'selectShareEntryCommission':
+        case "selectShareEntryCommission":
             return {
                 ...state,
                 position: {
                     ...state.position,
-                    entryCommission: action.entryCommission
-                }
+                    entryCommission: action.entryCommission,
+                },
             };
-        case 'selectShareExitCommission':
+        case "selectShareExitCommission":
             return {
                 ...state,
                 position: {
                     ...state.position,
-                    exitCommission: action.exitCommission
-                }
+                    exitCommission: action.exitCommission,
+                },
             };
-        case 'selectSharesCount':
-            if(action.numberOfShares >= 0) {
+        case "selectSharesCount":
+            if (action.numberOfShares >= 0) {
                 return {
                     ...state,
                     position: {
                         ...state.position,
-                        numberOfShares: action.numberOfShares
-                    }
+                        numberOfShares: action.numberOfShares,
+                    },
                 };
             } else {
                 return {
                     ...state,
                     position: {
                         ...state.position,
-                        numberOfShares: 0
-                    }
+                        numberOfShares: 0,
+                    },
                 };
             }
-        case 'setResult':
+        case "setResult":
             return {
                 ...state,
                 answer: {
-                    USDValue: action.USDValue
-                }
+                    USDValue: action.USDValue,
+                },
             };
         default:
             break;
     }
-};
+}
 
 export const StocksCalculator = () => {
-
     const [stocks, dispatch] = useReducer(stocksReducer, initialState);
 
     const entryPriceOnChange = (e) => {
         e.preventDefault();
-        dispatch({type: 'selectShareEntryPrice', entryPrice: e.target.value})
+        dispatch({ type: "selectShareEntryPrice", entryPrice: e.target.value });
     };
-    
+
     const exitPriceOnChange = (e) => {
         e.preventDefault();
-        dispatch({type: 'selectShareExitPrice', exitPrice: e.target.value})
+        dispatch({ type: "selectShareExitPrice", exitPrice: e.target.value });
     };
-    
+
     const entryCommissionOnChange = (e) => {
         e.preventDefault();
-        dispatch({type: 'selectShareEntryCommission', entryCommission: e.target.value})
+        dispatch({ type: "selectShareEntryCommission", entryCommission: e.target.value });
     };
-    
+
     const exitCommissionOnChange = (e) => {
         e.preventDefault();
-        dispatch({type: 'selectShareExitCommission', exitCommission: e.target.value})
+        dispatch({ type: "selectShareExitCommission", exitCommission: e.target.value });
     };
-    
+
     const sharesNumberOnChange = (e) => {
         e.preventDefault();
-        dispatch({type: 'selectSharesCount', numberOfShares: e.target.value})
+        dispatch({ type: "selectSharesCount", numberOfShares: e.target.value });
     };
 
     const CalculatePLResult = (e) => {
         e.preventDefault();
-        
+
         const plResult = calculateStockTrade(
             Number(stocks.position.numberOfShares),
             Number(stocks.position.exitPrice),
             Number(stocks.position.entryPrice),
             Number(stocks.position.exitCommission),
-            Number(stocks.position.entryCommission));
+            Number(stocks.position.entryCommission)
+        );
 
-        dispatch({type: 'setResult', USDValue: plResult})
-
-    }
+        dispatch({ type: "setResult", USDValue: plResult });
+    };
 
     return (
         <div className={styles.stocksCalculatorWrapper}>
@@ -141,30 +140,56 @@ export const StocksCalculator = () => {
                             <h5>Entry Price</h5>
                         </div>
                         <div className={styles.entryPriceChange}>
-                            <input className={styles.numberInput} type="number" onChange={(e) => entryPriceOnChange(e)} value={stocks.position.entryPrice} />
+                            <input
+                                className={styles.numberInput}
+                                type="number"
+                                onChange={(e) => entryPriceOnChange(e)}
+                                value={stocks.position.entryPrice}
+                            />
                         </div>
 
                         <div className={styles.exitPriceHeading}>
                             <h5>Exit Price</h5>
                         </div>
                         <div className={styles.exitPriceChange}>
-                            <input className={styles.numberInput} type="number" onChange={(e) => exitPriceOnChange(e)} value={stocks.position.exitPrice} />
+                            <input
+                                className={styles.numberInput}
+                                type="number"
+                                onChange={(e) => exitPriceOnChange(e)}
+                                value={stocks.position.exitPrice}
+                            />
                         </div>
 
                         <div className={styles.sharesNumberHeading}>
                             <h5>Number of Share</h5>
                         </div>
                         <div className={styles.sharesNumberChange}>
-                            <input min={0} className={styles.numberInput} type="number" onChange={(e) => sharesNumberOnChange(e)} value={stocks.position.numberOfShares} />
+                            <input
+                                min={0}
+                                className={styles.numberInput}
+                                type="number"
+                                onChange={(e) => sharesNumberOnChange(e)}
+                                value={stocks.position.numberOfShares}
+                            />
                         </div>
                     </div>
-                    <div className={classnames(styles.positionInformationContainer, styles.positionInformationCommisionContainer)}>
+                    <div
+                        className={classnames(
+                            styles.positionInformationContainer,
+                            styles.positionInformationCommisionContainer
+                        )}
+                    >
                         <div className={styles.entryPriceHeading}>
                             <h5>Buy Commission</h5>
                             <h6>In $</h6>
                         </div>
                         <div className={styles.entryPriceChange}>
-                            <input className={styles.numberInput} type="number" onChange={(e) => entryCommissionOnChange(e)} value={stocks.position.entryCommission} />
+                            <input
+                                className={styles.numberInput}
+                                type="number"
+                                onChange={(e) => entryCommissionOnChange(e)}
+                                value={stocks.position.entryCommission}
+                            />
                         </div>
 
                         <div className={styles.exitPriceHeading}>
@@ -172,34 +197,41 @@ export const StocksCalculator = () => {
                             <h6>In $</h6>
                         </div>
                         <div className={styles.exitPriceChange}>
-                            <input className={styles.numberInput} type="number" onChange={(e) => exitCommissionOnChange(e)} value={stocks.position.exitCommission} />
+                            <input
+                                className={styles.numberInput}
+                                type="number"
+                                onChange={(e) => exitCommissionOnChange(e)}
+                                value={stocks.position.exitCommission}
+                            />
                         </div>
                     </div>
                 </div>
             </form>
             <div className={styles.calculateButtonContainer}>
-                <div className={styles.calculateButton} onClick={(e) => CalculatePLResult(e)}>Calculate</div>
+                <div className={styles.calculateButton} onClick={(e) => CalculatePLResult(e)}>
+                    Calculate
+                </div>
             </div>
-            
+
             <div className={styles.answerWrapper}>
                 <h3 className={styles.resultsLabel}>Profit or Loss Results</h3>
                 <div className={styles.answerContainer}>
                     <div className={styles.dollarsHeading}>
-                        <h5>USD($)</h5>    
+                        <h5>USD($)</h5>
                     </div>
                     <div className={styles.dollarsValue}>
-                        {
-                            stocks.answer.USDValue < 0 ?
-                                <h5 className={styles.redPL}>-${Math.abs(stocks.answer.USDValue).toFixed(2)}</h5>    
-                            :
-                                stocks.answer.USDValue > 0 ?
-                                    <h5 className={styles.greenPL}>${stocks.answer.USDValue.toFixed(2)}</h5>    
-                                :
-                                <h5>${stocks.answer.USDValue.toFixed(2)}</h5>    
-                        }
+                        {stocks.answer.USDValue < 0 ? (
+                            <h5 className={styles.redPL}>
+                                -${Math.abs(stocks.answer.USDValue).toFixed(2)}
+                            </h5>
+                        ) : stocks.answer.USDValue > 0 ? (
+                            <h5 className={styles.greenPL}>${stocks.answer.USDValue.toFixed(2)}</h5>
+                        ) : (
+                            <h5>${stocks.answer.USDValue.toFixed(2)}</h5>
+                        )}
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+};

@@ -1,18 +1,21 @@
-import { PositionsRecordListWidget } from './PositionsRecordListWidget/PositionsRecordListWidget';
+import { PositionsRecordListWidget } from "./PositionsRecordListWidget/PositionsRecordListWidget";
 
-import styles from './PositionsRecordListsList.module.css';
+import styles from "./PositionsRecordListsList.module.css";
 
-
-
-export const PositionsRecordListsList = ({records, showOwnerActionButtons}) => {
-
+export const PositionsRecordListsList = ({ records, showOwnerActionButtons }) => {
     return (
         <div className={styles.listContainer}>
-            {records.length > 0 ?
-                records.map((list, index) => <PositionsRecordListWidget key={list.guid} list={list} showOwnerActionButtons={showOwnerActionButtons}/>)
-            :
+            {records.length > 0 ? (
+                records.map((list, index) => (
+                    <PositionsRecordListWidget
+                        key={list.guid}
+                        list={list}
+                        showOwnerActionButtons={showOwnerActionButtons}
+                    />
+                ))
+            ) : (
                 <h2 className={styles.noRecordsHeader}>No Records Made Yet</h2>
-            }
+            )}
         </div>
     );
-}
+};
