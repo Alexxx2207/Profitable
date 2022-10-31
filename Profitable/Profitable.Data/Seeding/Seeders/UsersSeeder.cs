@@ -9,18 +9,25 @@ namespace Profitable.Data.Seeding.Seeders
 {
     public class UsersSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             foreach (var trader in GlobalDatabaseConstants.DefaultUsersToSeed)
             {
-                await SeedUserAsync(userManager, trader, role: GlobalDatabaseConstants.TraderRoleName);
+                await SeedUserAsync(
+                    userManager,
+                    trader,
+                    role: GlobalDatabaseConstants.TraderRoleName);
             }
 
         }
 
-        private static async Task SeedUserAsync(UserManager<ApplicationUser> userManager, SeededTrader trader, string role = null)
+        private static async Task SeedUserAsync(
+            UserManager<ApplicationUser> userManager,
+            SeededTrader trader, string role = null)
         {
             var userExists = await userManager.FindByEmailAsync(trader.Email);
 
@@ -39,7 +46,8 @@ namespace Profitable.Data.Seeding.Seeders
                 var result = await userManager.CreateAsync(user, trader.Password);
                 if (!result.Succeeded)
                 {
-                    throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+                    throw new Exception(
+                        string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
                 }
                 else
                 {

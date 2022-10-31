@@ -14,19 +14,22 @@ namespace Profitable.Common.Automapper
             CreateMap<Comment, CommentResponseModel>()
                 .ForMember(
                     dest => dest.AuthorName,
-                    src => {
-                        src.MapFrom(comment => $"{comment.Author.FirstName} {comment.Author.LastName}");
+                    src =>
+                    {
+                        src.MapFrom(comment =>
+                        $"{comment.Author.FirstName} {comment.Author.LastName}");
                     }
                  )
                 .ForMember(
                     dest => dest.AuthorEmail,
-                    src => {
+                    src =>
+                    {
                         src.MapFrom(comment => comment.Author.Email);
                     }
                 )
-				.ForMember(
-					dest => dest.PostedOn,
-					opt => opt.MapFrom(source => source.PostedOn.ToString("F")));
+                .ForMember(
+                    dest => dest.PostedOn,
+                    opt => opt.MapFrom(source => source.PostedOn.ToString("F")));
         }
     }
 }

@@ -17,7 +17,9 @@ namespace Profitable.Common.Automapper
                 )
                 .ForMember(
                 dest => dest.ProfileImage,
-                opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Users), src => src.ProfilePictureURL));
+                opt => opt.ConvertUsing(
+                    new ImageByteArrayConverter(ImageFor.Users),
+                    src => src.ProfilePictureURL));
 
         }
     }

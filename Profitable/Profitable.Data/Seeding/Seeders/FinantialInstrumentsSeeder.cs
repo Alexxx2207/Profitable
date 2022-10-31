@@ -7,13 +7,18 @@ namespace Profitable.Data.Seeding.Seeders
 {
     public class FinantialInstrumentsSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider = null)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider = null)
         {
             var instrumentRepository = new Repository<FinancialInstrument>(dbContext);
 
             IAsyncEnumerable<JsonInstrument> instrumentsInput = null;
 
-            using (var stream = new FileStream("DataToSeed/TicketSymbols.json", FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream(
+                "DataToSeed/TicketSymbols.json",
+                FileMode.Open,
+                FileAccess.Read))
             {
                 instrumentsInput = JsonSerializer.DeserializeAsyncEnumerable<JsonInstrument>
                     (stream, new JsonSerializerOptions()

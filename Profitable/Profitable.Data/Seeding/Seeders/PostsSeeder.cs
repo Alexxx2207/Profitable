@@ -1,6 +1,6 @@
-﻿using Profitable.Data.Repository;
+﻿using Profitable.Common.GlobalConstants;
+using Profitable.Data.Repository;
 using Profitable.Data.Seeding.Seeders.Contracts;
-using Profitable.Common.GlobalConstants;
 using Profitable.Models.EntityModels;
 using System.Text.Json;
 
@@ -8,13 +8,18 @@ namespace Profitable.Data.Seeding.Seeders
 {
     public class PostsSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider = null)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider = null)
         {
             var postsRepository = new Repository<Post>(dbContext);
 
             IAsyncEnumerable<JsonPost> postsInput = null;
 
-            using (var stream = new FileStream("DataToSeed/TestPosts.json", FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream(
+                "DataToSeed/TestPosts.json",
+                FileMode.Open,
+                FileAccess.Read))
             {
                 postsInput = JsonSerializer.DeserializeAsyncEnumerable<JsonPost>
                     (stream, new JsonSerializerOptions()

@@ -7,13 +7,18 @@ namespace Profitable.Data.Seeding.Seeders
 {
     public class MarketTypesSeeder : ISeeder
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider = null)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider = null)
         {
             var marketTypeRepository = new Repository<MarketType>(dbContext);
 
             IAsyncEnumerable<string> typesInput = null;
 
-            using (var stream = new FileStream("DataToSeed/MarketTypes.json", FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream(
+                "DataToSeed/MarketTypes.json",
+                FileMode.Open,
+                FileAccess.Read))
             {
                 typesInput = JsonSerializer.DeserializeAsyncEnumerable<string>
                     (stream, new JsonSerializerOptions()

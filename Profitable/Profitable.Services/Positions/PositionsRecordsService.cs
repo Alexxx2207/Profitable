@@ -15,13 +15,18 @@ namespace Profitable.Services.Positions
 		private readonly IRepository<PositionsRecordList> repository;
 		private readonly IMapper mapper;
 
-		public PositionsRecordsService(IRepository<PositionsRecordList> repository, IMapper mapper)
+		public PositionsRecordsService(
+			IRepository<PositionsRecordList> repository,
+			IMapper mapper)
 		{
 			this.repository = repository;
 			this.mapper = mapper;
 		}
 
-		public async Task<Result> AddPositionsRecordList(Guid userGuid, string recordName, string instrumentGroup)
+		public async Task<Result> AddPositionsRecordList(
+			Guid userGuid,
+			string recordName,
+			string instrumentGroup)
 		{
 			try
 			{
@@ -45,7 +50,9 @@ namespace Profitable.Services.Positions
 
 		}
 
-		public async Task<Result> ChangeNamePositionsRecordList(Guid recordGuid, string recordName)
+		public async Task<Result> ChangeNamePositionsRecordList(
+			Guid recordGuid,
+			string recordName)
 		{
 			var recordToUpdate = await repository
 				.GetAllAsNoTracking()
@@ -100,8 +107,9 @@ namespace Profitable.Services.Positions
 		{
 			var records = await repository
 				.GetAllAsNoTracking()
-				.Where(r => !r.IsDeleted)
-				.Where(r => r.UserId == userGuid)
+				.Where(r =>
+					!r.IsDeleted &&
+					r.UserId == userGuid)
 				.Include(r => r.Positions)
 				.ToListAsync();
 

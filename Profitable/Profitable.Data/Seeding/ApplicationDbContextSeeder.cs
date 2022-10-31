@@ -11,7 +11,9 @@ namespace Profitable.Data.Seeding
             this.isProduction = isProduction;
         }
 
-        public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public async Task SeedAsync(
+            ApplicationDbContext dbContext,
+            IServiceProvider serviceProvider)
         {
             if (dbContext == null)
             {

@@ -25,11 +25,10 @@ namespace Profitable.Services.Search
 
 			var users = await repository
 				.GetAllAsNoTracking()
-				.Where(u => !u.IsDeleted)
-				.Where(u =>
-					(u.FirstName + " " + u.LastName).ToLower().Contains(searchTerm)
+				.Where(u => !u.IsDeleted &&
+					((u.FirstName + " " + u.LastName).ToLower().Contains(searchTerm)
 					||
-					u.Email.ToLower().Contains(searchTerm))
+					u.Email.ToLower().Contains(searchTerm)))
 				.Take(GlobalServicesConstants.SearchResultsCountToTake)
 				.Select(user => mapper.Map<UserDetailsResponseModel>(user))
 				.ToListAsync();

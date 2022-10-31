@@ -16,16 +16,21 @@ namespace Profitable.Common.Automapper
                     opt => opt.MapFrom(source => source.Author.Email))
                 .ForMember(
                     dest => dest.Author,
-                    opt => opt.MapFrom(source => $"{source.Author.FirstName} {source.Author.LastName}"))
+                    opt => opt.MapFrom(source =>
+                    $"{source.Author.FirstName} {source.Author.LastName}"))
                 .ForMember(
                     dest => dest.PostedOn,
                     opt => opt.MapFrom(source => source.PostedOn.ToString("D")))
                 .ForMember(
                     dest => dest.PostImage,
-                    opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Posts), src => src.ImageURL))
+                    opt => opt.ConvertUsing(
+                        new ImageByteArrayConverter(ImageFor.Posts),
+                        src => src.ImageURL))
                 .ForMember(
                     dest => dest.AuthorImage,
-                    opt => opt.ConvertUsing(new ImageByteArrayConverter(ImageFor.Users), src => src.Author.ProfilePictureURL))
+                    opt => opt.ConvertUsing(
+                        new ImageByteArrayConverter(ImageFor.Users),
+                        src => src.Author.ProfilePictureURL))
                 .ForMember(
                     dest => dest.LikesCount,
                     opt => opt.MapFrom(src => src.Likes.Count))

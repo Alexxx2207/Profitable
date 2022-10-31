@@ -7,7 +7,8 @@ namespace Profitable.Services.News
 {
 	public class NewsService : INewsService
 	{
-		public async Task<NewsArticleResponseModel> GetNewsArticlesFromInvestingCom(NewsArticleRequestModel articleOverview)
+		public async Task<NewsArticleResponseModel> GetNewsArticlesFromInvestingCom(
+			NewsArticleRequestModel articleOverview)
 		{
 			var config = Configuration.Default.WithDefaultLoader();
 
@@ -38,7 +39,9 @@ namespace Profitable.Services.News
 			return article;
 		}
 
-		public async Task<List<NewsOverviewResponseModel>> GetNewsOverviewFromInvestingCom(string address, List<NewsOverviewResponseModel> news)
+		public async Task<List<NewsOverviewResponseModel>> GetNewsOverviewFromInvestingCom(
+			string address,
+			List<NewsOverviewResponseModel> news)
 		{
 			var config = Configuration.Default.WithDefaultLoader();
 
@@ -59,11 +62,13 @@ namespace Profitable.Services.News
 						.ToList();
 
 			var senders = cells
-						.Select(m => m.QuerySelector("div.textDiv span.articleDetails span:nth-child(1)")?.TextContent)
+						.Select(m =>
+							m.QuerySelector("div.textDiv span.articleDetails span:nth-child(1)")?.TextContent)
 						.ToList();
 
 			var timesPosted = cells
-						.Select(m => m.QuerySelector("div.textDiv span.articleDetails span.date")?.TextContent)
+						.Select(m =>
+							m.QuerySelector("div.textDiv span.articleDetails span.date")?.TextContent)
 						.ToList();
 
 			var textOverviews = cells
