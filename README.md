@@ -76,6 +76,7 @@ https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce238
 - Entity Framework
 - SQL Server
 - Identity JWT
+- Automapper
 
 
 **Frontend**
