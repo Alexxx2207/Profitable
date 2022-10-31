@@ -123,7 +123,8 @@ namespace Profitable.Services.Positions
 		{
 			var dateTimeOfChange = DateTime.UtcNow;
 
-			var isConvertedSuccessfully = Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
+			var isConvertedSuccessfully = 
+							Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
 
 			if(!isConvertedSuccessfully)
 			{
@@ -198,7 +199,8 @@ namespace Profitable.Services.Positions
 			{
 				var dateTimeOfChange = DateTime.UtcNow;
 
-                var isConvertedSuccessfully = Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
+                var isConvertedSuccessfully = 
+								Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
 
                 if (!isConvertedSuccessfully)
                 {

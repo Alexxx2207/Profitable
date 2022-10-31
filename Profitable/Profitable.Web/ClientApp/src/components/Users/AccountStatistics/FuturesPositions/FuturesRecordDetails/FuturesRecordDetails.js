@@ -243,14 +243,18 @@ export const FuturesRecordDetails = () => {
                 />
             </div>
 
-            <div className={styles.addPositionButtonContainer}>
-                <button
-                    className={styles.addPositionButton}
-                    onClick={addPositionButtonClickHandler}
-                >
-                    +Add Position
-                </button>
-            </div>
+            {searchedProfileEmail.localeCompare(loggedInUserEmail) === 0 ? (
+                <div className={styles.addPositionButtonContainer}>
+                    <button
+                        className={styles.addPositionButton}
+                        onClick={addPositionButtonClickHandler}
+                    >
+                        +Add Position
+                    </button>
+                </div>
+            ) : (
+                ""
+            )}
 
             <div className={styles.overallProfiltLossHeading}>
                 <h3>

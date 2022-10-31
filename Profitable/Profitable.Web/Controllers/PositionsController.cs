@@ -72,9 +72,11 @@ namespace Profitable.Web.Controllers
         public async Task<IActionResult> CreatePositionsRecord(
             [FromBody] AddPositionsRecordRequestModel model)
         {
-            var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(model.UserEmail)).Guid);
+            try
+            {
+                var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(model.UserEmail)).Guid);
 
-            var result = await positionsRecordsService.AddPositionsRecordList(
+                var result = await positionsRecordsService.AddPositionsRecordList(
                 userGuid,
                 model.RecordName,
                 model.InstrumentGroup);
@@ -155,7 +157,8 @@ namespace Profitable.Web.Controllers
         public async Task<IActionResult> GetParticularPosition(
             [FromRoute] string positionGuid)
         {
-            var positions = await positionsService.GetFuturesPositionByGuid(Guid.Parse(positionGuid));
+            try { 
+                var positions = await positionsService.GetFuturesPositionByGuid(Guid.Parse(positionGuid));
 
                 return Ok(positions);
             }

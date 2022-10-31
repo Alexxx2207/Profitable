@@ -82,7 +82,8 @@ namespace Profitable.Services.Users
             }
             else
             {
-                throw new Exception("We have found you by email, but the provided password is invalid.");
+                throw new Exception(
+                    "We have found you by email, but the provided password is invalid.");
             }
         }
 
