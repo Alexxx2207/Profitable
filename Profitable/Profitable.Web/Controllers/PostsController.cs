@@ -52,7 +52,6 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception err)
             {
-
                 return BadRequest(err);
             }
         }
@@ -87,7 +86,6 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception err)
             {
-
                 return BadRequest(err.Message);
             }
         }
@@ -109,7 +107,6 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception err)
             {
-
                 return BadRequest(err.Message);
             }
 
@@ -143,7 +140,6 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception err)
             {
-
                 return BadRequest(err.Message);
             }
 
