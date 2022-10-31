@@ -16,9 +16,16 @@ namespace Profitable.Web.Controllers
         [HttpGet("instruments/{symbol}")]
         public async Task<IActionResult> GetInstrumentBySymbolAsync([FromRoute] string symbol)
         {
-            var instrument = await marketsService.GetFinantialInstrumentBySymbolAsync(symbol);
+            try
+            {
+                var instrument = await marketsService.GetFinantialInstrumentBySymbolAsync(symbol);
+                return Ok(instrument);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
-            return Ok(instrument);
         }
 
         [HttpGet("marketTypes/{marketType}/instruments")]

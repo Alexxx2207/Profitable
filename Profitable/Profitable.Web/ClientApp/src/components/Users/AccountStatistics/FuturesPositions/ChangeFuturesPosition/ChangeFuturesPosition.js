@@ -224,7 +224,7 @@ export const ChangeFuturesPosition = () => {
             })
         );
 
-        getPositionByGuid(recordGuid, positionGuid).then((position) =>
+        getPositionByGuid(positionGuid).then((position) =>
             setState({
                 type: "loadPosition",
                 payload: position,

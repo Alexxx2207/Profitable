@@ -85,10 +85,8 @@ export const getPositionsFromRecord = async (recordId, dateAfter) => {
     return await response.json();
 };
 
-export const getPositionByGuid = async (recordId, positionGuid) => {
-    var response = await request.get(
-        `${WEB_API_BASE_URL}/positions/records/${recordId}/positions/${positionGuid}`
-    );
+export const getPositionByGuid = async (positionGuid) => {
+    var response = await request.get(`${WEB_API_BASE_URL}/positions/${positionGuid}`);
 
     if (response.status === 400) {
         throw new Error("Invalid request");
