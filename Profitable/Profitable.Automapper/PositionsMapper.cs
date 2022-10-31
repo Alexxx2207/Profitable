@@ -9,8 +9,12 @@ namespace Profitable.Common.Automapper
 		public PositionsMapper()
 		{
 			CreateMap<PositionsRecordList, UserPositionsRecordResponseModel>()
-				.ForMember(dest => dest.LastUpdated, src => src.MapFrom(model => model.LastUpdated.ToString("f")))
-				.ForMember(dest => dest.InstrumentGroup, src => src.MapFrom(model => model.InstrumentGroup.ToString()));
+				.ForMember(
+					dest => dest.LastUpdated,
+					src => src.MapFrom(model => model.LastUpdated.ToString("f")))
+				.ForMember(
+					dest => dest.InstrumentGroup,
+					src => src.MapFrom(model => model.InstrumentGroup.ToString()));
 		}
 	}
 }

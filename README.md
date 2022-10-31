@@ -1,41 +1,39 @@
-# Profitable - Overview
-This platform helps traders to make decisions, observe the financial markets and communicate with each other. It's perfect for investment banks, hedge funds or retail traders' communities.
+## Profitable - Overview
+This project is a platform that helps traders to make trading decisions, observe the financial markets, communicate with each other, journal their performance and never miss news or events. It is suitable for investment banks, hedge funds and retail traders' communities.
 
-# Project Structure
-### In folder Profitable there are all files for the backend and the frontend application.
+## Project Structure
+### In folder Profitable there are all files for both the backend and the frontend application.
 
-> :warning: **The backend is written in C# - ASP.NET CORE WEB API is used!** :warning:
+#### **Link for the clientside application folder: https://github.com/Alexxx2207/Profitable/tree/main/Profitable/Profitable.Web/ClientApp** ####
 
-### **The Client App, written in React, is in folder Profitable->Profitable.Web->ClientApp.**  
-### **Link for the client app folder: https://github.com/Alexxx2207/Profitable/tree/main/Profitable/Profitable.Web/ClientApp** ###
-
-# Prerequisites
+## Prerequisites
 
 1. Visual Studio 2022 and its required workloads from the Visual Studio Installer (see images below):
 
-
-![image](https://user-images.githubusercontent.com/61185321/182320726-2e30e53e-17fb-4b30-a47b-fac21faed972.png)
+![image](https://user-images.githubusercontent.com/61185321/197560581-d7cfa221-83b9-427e-9f52-68221e854ce6.png)
 ![image](https://user-images.githubusercontent.com/61185321/182320887-25f449a1-3b03-49a8-a48f-49f098c10f14.png)
 
 
-2. MSSQL or other database engine (you should configure your connection string on these lines below)
-https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce2387954e2/Profitable/Profitable.Web/appsettings.json#L3
-https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce2387954e2/Profitable/Profitable.Data/appsettings.json#L3
+2. Database Engine for Database (Microsoft SQL Engine Developer Edition preffered)
 
-3. NodeJS
+&emsp;&emsp; https://www.microsoft.com/en-us/sql-server/sql-server-downloads
 
 
-# Configuration
+## Configuration
 
 1. Change the WEB_API_BASE_URL in Profitable.Web/ClientApp/src/common/config.js to meet your backend web API address
-> :warning: Be careful not to forget '/api' path string after the port number! :warning:
+
+&emsp;&emsp; :warning: Be careful not to forget '/api' path string after the port number! :warning:
 
 2. Add "JWT_KEY" key/value pair in user secrets
 
 3. Set '.' as decimal point for numbers with decimal part. That is configured in your OS settings.
 
+4. Set Connection String for your database on lines:
+https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce2387954e2/Profitable/Profitable.Web/appsettings.json#L3
+https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce2387954e2/Profitable/Profitable.Data/appsettings.json#L3
 
-# How To Start The Project
+## How To Start The Project
     
 1. Open folder Profitable and click Profitable.sln from your file explorer
   
@@ -69,3 +67,21 @@ https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce238
   
 > :warning: **Do NOT close the console windows that were opened after clicking the empty green arrow!** :warning:  
 > :warning: **Close them when you finish the web app usage!** :warning: 
+
+## Tech Stack
+
+**Backend**
+
+- ASP.NET Core Web API
+- Entity Framework
+- SQL Server
+- Identity JWT
+
+
+**Frontend**
+
+- React
+- HTML
+- CSS
+- chart.js
+- react-tradingview-embed

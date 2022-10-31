@@ -35,18 +35,27 @@ namespace Profitable.Web.Controllers
         public async Task<IActionResult> GetAllPositionsRecordsByUser(
             [FromBody] GetUserPositionsRecordsRequestModel query)
         {
-            var userGuid = (await userService.GetUserDetailsAsync(query.UserEmail)).Guid;
 
-            Enum.TryParse(query.OrderPositionsRecordBy, out OrderPositionsRecordBy orderBy);
+            try
+            {
+                var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(query.UserEmail)).Guid);
+
+                Enum.TryParse(query.OrderPositionsRecordBy, out OrderPositionsRecordBy orderBy);
 
             var records = await positionsRecordsService.GetUserPositionsRecordsAsync(
-                Guid.Parse(userGuid),
+                userGuid,
                 query.Page,
                 query.PageCount,
                 orderBy);
 
 
-            return Ok(records);
+                return Ok(records);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpGet("records/order-options")]
@@ -63,21 +72,29 @@ namespace Profitable.Web.Controllers
         public async Task<IActionResult> CreatePositionsRecord(
             [FromBody] AddPositionsRecordRequestModel model)
         {
-            var userGuid = (await userService.GetUserDetailsAsync(model.UserEmail)).Guid;
+            try
+            {
+                var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(model.UserEmail)).Guid);
 
-            var result = await positionsRecordsService.AddPositionsRecordList(
-                Guid.Parse(userGuid),
+                var result = await positionsRecordsService.AddPositionsRecordList(
+                userGuid,
                 model.RecordName,
                 model.InstrumentGroup);
 
-            if (result.Succeeded)
-            {
-                return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(result.Error);
+                }
             }
-            else
+            catch (Exception e)
             {
-                return BadRequest(result.Error);
+                return BadRequest(e.Message);
             }
+            
         }
 
         [Authorize]
@@ -135,16 +152,21 @@ namespace Profitable.Web.Controllers
 
             return BadRequest();
         }
-
+        
         [HttpGet("records/{recordId}/positions/{positionGuid}")]
         public async Task<IActionResult> GetParticularPosition(
-            [FromRoute] string recordId,
             [FromRoute] string positionGuid)
         {
-            var positions =
-                await positionsService.GetFuturesPositionByGuid(Guid.Parse(positionGuid));
+            try { 
+                var positions = await positionsService.GetFuturesPositionByGuid(Guid.Parse(positionGuid));
 
-            return Ok(positions);
+                return Ok(positions);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+          
         }
 
         [Authorize]

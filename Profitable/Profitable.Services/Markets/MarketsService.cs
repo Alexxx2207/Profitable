@@ -55,7 +55,12 @@ namespace Profitable.Services.Markets
             var instrument = await instrumentsRepository
                 .GetAllAsNoTracking()
                 .Include(i => i.Exchange)
-                .FirstAsync(entity => entity.TickerSymbol == symbol);
+                .FirstOrDefaultAsync(entity => entity.TickerSymbol == symbol);
+
+            if(instrument == null)
+            {
+                throw new Exception("Instrument not found");
+            }
 
             return mapper.Map<FinantialInstrumentExtendedResponseModel>(instrument);
         }

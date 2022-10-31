@@ -52,7 +52,6 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception err)
             {
-
                 return BadRequest(err);
             }
         }
@@ -87,8 +86,7 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception err)
             {
-
-                return BadRequest(err);
+                return BadRequest(err.Message);
             }
         }
 
@@ -109,7 +107,6 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception err)
             {
-
                 return BadRequest(err.Message);
             }
 
@@ -143,7 +140,6 @@ namespace Profitable.Web.Controllers
             }
             catch (Exception err)
             {
-
                 return BadRequest(err.Message);
             }
 
@@ -171,11 +167,17 @@ namespace Profitable.Web.Controllers
             [FromRoute] string id,
             [FromQuery] string? loggedInUserEmail)
         {
-            var post = await postService.GetPostByGuidAsync(
-                            Guid.Parse(id),
-                            loggedInUserEmail);
+            try
+            {
+                var post = await postService.GetPostByGuidAsync(Guid.Parse(id), loggedInUserEmail);
 
-            return Ok(post);
+                return Ok(post);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+           
         }
     }
 }

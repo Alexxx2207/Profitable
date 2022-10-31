@@ -10,14 +10,11 @@ namespace Profitable.Data
                     IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public ApplicationDbContext()
-        {
-
-        }
+        {}
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
-        }
+        {}
 
         public DbSet<ApplicationUser> Users { get; set; }
 

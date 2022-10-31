@@ -1,21 +1,21 @@
 const requester = (method, url, data, headers = {}) => {
     let options = {
         method,
-        headers
+        headers,
     };
 
     if (data) {
-        options.headers['Content-Type'] = 'application/json';
+        options.headers["Content-Type"] = "application/json";
         options.body = JSON.stringify(data);
     }
 
     return fetch(url, options);
-}
+};
 
 export const request = {
-    get: requester.bind(null, 'GET'),
-    post: requester.bind(null, 'POST'),
-    put: requester.bind(null, 'PUT'),
-    delete: requester.bind(null, 'DELETE'),
-    patch: requester.bind(null, 'PATCH'),
-}
+    get: requester.bind(null, "GET"),
+    post: requester.bind(null, "POST"),
+    put: requester.bind(null, "PUT"),
+    delete: requester.bind(null, "DELETE"),
+    patch: requester.bind(null, "PATCH"),
+};

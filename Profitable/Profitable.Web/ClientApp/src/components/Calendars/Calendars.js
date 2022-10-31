@@ -1,6 +1,6 @@
 import { EconomicCalendarPart } from "../Calendars/EconomicCalendar/EconomicCalendar";
 
-import styles from './Calendars.module.css';
+import styles from "./Calendars.module.css";
 
 export const Calendars = () => {
     return (

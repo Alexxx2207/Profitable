@@ -26,11 +26,19 @@ namespace Profitable.Web.Controllers
         [HttpGet("user")]
         public async Task<IActionResult> GetByJWTAsync()
         {
-            var userEmail = this.User.FindFirstValue(ClaimTypes.Email);
+            try
+            {
+                var userEmail = this.User.FindFirstValue(ClaimTypes.Email);
 
-            var userInfo = await userService.GetUserDetailsAsync(userEmail);
+                var userInfo = await userService.GetUserDetailsAsync(userEmail);
 
-            return Ok(userInfo);
+                return Ok(userInfo);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+           
         }
 
         [HttpGet("user/{email}")]

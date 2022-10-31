@@ -9,27 +9,24 @@ export const getCommentsByPostId = (postId, page, commentsCount) => {
 
 export const getCommentsByUserId = (jwt, page, commentsCount) => {
     return request
-        .get(`${WEB_API_BASE_URL}/comments/byuser/all/${page}/${commentsCount}`,
-        null,
-        {
-            'Authorization': 'Bearer ' + jwt
+        .get(`${WEB_API_BASE_URL}/comments/byuser/all/${page}/${commentsCount}`, null, {
+            Authorization: "Bearer " + jwt,
         })
         .then((response) => response.json());
 };
 
 export const postComment = async (jwt, postId, comment) => {
-    
-    let result = await request
-        .post(`${WEB_API_BASE_URL}/comments/${postId}/add`,
+    let result = await request.post(
+        `${WEB_API_BASE_URL}/comments/${postId}/add`,
         {
-            content: comment
+            content: comment,
         },
         {
-            'Authorization': 'Bearer ' + jwt
-        });
+            Authorization: "Bearer " + jwt,
+        }
+    );
 
-
-    if([400, 401].includes(result.status)) {
+    if ([400, 401].includes(result.status)) {
         throw new Error(result.status);
     } else {
         return await result.json();
@@ -37,35 +34,29 @@ export const postComment = async (jwt, postId, comment) => {
 };
 
 export const deleteComment = async (jwt, commentId) => {
-    
-    let result = await request
-        .delete(`${WEB_API_BASE_URL}/comments/${commentId}/delete`,
-        null,
-        {
-            'Authorization': 'Bearer ' + jwt
-        });
+    let result = await request.delete(`${WEB_API_BASE_URL}/comments/${commentId}/delete`, null, {
+        Authorization: "Bearer " + jwt,
+    });
 
-
-    if([400, 401].includes(result.status)) {
+    if ([400, 401].includes(result.status)) {
         throw new Error(result.status);
     } else {
         return await result.text();
     }
 };
 
-
 export const editComment = async (jwt, commentId, comment) => {
-    
-    let result = await request
-        .patch(`${WEB_API_BASE_URL}/comments/${commentId}/update`,
+    let result = await request.patch(
+        `${WEB_API_BASE_URL}/comments/${commentId}/update`,
         {
-            content: comment
+            content: comment,
         },
         {
-            'Authorization': 'Bearer ' + jwt
-        });
+            Authorization: "Bearer " + jwt,
+        }
+    );
 
-    if([400, 401].includes(result.status)) {
+    if ([400, 401].includes(result.status)) {
         throw new Error(result.status);
     } else {
         return await result.text();

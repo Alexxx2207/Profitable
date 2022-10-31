@@ -57,7 +57,7 @@ namespace Profitable.Services.Positions
 			var recordToUpdate = await repository
 				.GetAllAsNoTracking()
 				.Where(post => !post.IsDeleted)
-				.FirstAsync(entity => entity.Guid == recordGuid);
+				.FirstOrDefaultAsync(entity => entity.Guid == recordGuid);
 
 			if (recordToUpdate != null)
 			{
@@ -77,23 +77,21 @@ namespace Profitable.Services.Positions
 
 		public async Task<Result> DeletePositionsRecordList(Guid recordGuid)
 		{
-			try
-			{
-				var entity = await repository
-				.GetAllAsNoTracking()
-				.FirstAsync(entity => entity.Guid == recordGuid);
+            var record = await repository
+                .GetAllAsNoTracking()
+                .FirstOrDefaultAsync(entity => entity.Guid == recordGuid);
 
-				repository.Delete(entity);
+            if (record == null)
+            {
+                return "Record not found";
+            }
 
-				await repository.SaveChangesAsync();
+            repository.Delete(record);
 
-				return true;
-			}
-			catch (Exception)
-			{
-				return "Positions Record was not found!";
-			}
-		}
+            await repository.SaveChangesAsync();
+
+            return true;
+        }
 
 		public IEnumerable<string> GetPositionsRecordsOrderTypes()
 		{

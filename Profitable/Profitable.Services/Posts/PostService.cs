@@ -81,23 +81,20 @@ namespace Profitable.Services.Posts
 
         public async Task<Result> DeletePostAsync(Guid guid)
         {
-            try
+            var post = await postsRepository
+                 .GetAllAsNoTracking()
+                 .FirstOrDefaultAsync(entity => entity.Guid == guid);
+
+            if (post == null)
             {
-                var entity = await postsRepository
-                .GetAllAsNoTracking()
-                .FirstAsync(entity => entity.Guid == guid);
-
-                postsRepository.Delete(entity);
-
-                await postsRepository.SaveChangesAsync();
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return "Post was not found!";
+                return "Post not found";
             }
 
+            postsRepository.Delete(post);
+
+            await postsRepository.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<PostResponseModel> GetPostByGuidAsync(
@@ -110,8 +107,13 @@ namespace Profitable.Services.Posts
                 .Include(p => p.Author)
                 .Include(p => p.Likes)
                 .Include("Likes.Author")
-                .FirstAsync(entity => entity.Guid == guid);
+                .FirstOrDefaultAsync(entity => entity.Guid == guid);
 
+            if(post == null)
+            {
+                throw new Exception("Post not found");
+            }
+                
             var mappedPostResponseModel = mapper.Map<PostResponseModel>(post);
 
             if (loggedInUserEmail != null &&
@@ -169,8 +171,12 @@ namespace Profitable.Services.Posts
 
             var userEmail = (await applicationUserRepository
                 .GetAllAsNoTracking()
-                .FirstAsync(user => user.Id == userId)).Email;
+                .FirstOrDefaultAsync(user => user.Id == userId))?.Email;
 
+            if (userEmail == null)
+            {
+                throw new Exception("User no found");
+            }
 
             if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
             {

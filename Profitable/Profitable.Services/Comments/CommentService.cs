@@ -42,7 +42,12 @@ namespace Profitable.Services.Comments
 			{
 				var comment = await repository
 				.GetAllAsNoTracking()
-				.FirstAsync(entity => entity.Guid == guid);
+				.FirstOrDefaultAsync(entity => entity.Guid == guid);
+
+				if(comment == null)
+				{
+					return "Comment not found";
+				}
 
 				repository.Delete(comment);
 

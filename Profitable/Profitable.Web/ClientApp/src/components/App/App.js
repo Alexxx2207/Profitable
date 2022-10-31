@@ -1,49 +1,37 @@
 import { useEffect } from "react";
-import {
-    Routes,
-    Route,
-    useLocation
-} from "react-router-dom";
-
-import { AuthContextProvider } from '../../contexts/AuthContext';
-import { MessageBoxContextProvider } from '../../contexts/MessageBoxContext';
-import { NavBar } from "../NavBar/NavBar";
-import { Home } from '../Home/Home';
-import { MarketsPage } from '../Markets/MarketsPage/MarketsPage';
-import { PostDetails } from '../PostsAndComments/Posts/PostDetails/PostDetails';
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AuthContextProvider } from "../../contexts/AuthContext";
+import { MessageBoxContextProvider } from "../../contexts/MessageBoxContext";
+import { NavBar } from "../Common/NavBar/NavBar";
+import { Home } from "../Home/Home";
+import { MarketsPage } from "../Markets/MarketsPage/MarketsPage";
 import { Login } from "../Authentication/Login/Login";
 import { Register } from "../Authentication/Register/Register";
-import { ProfilePage } from "../User/ProfilePage/ProfilePage";
 import { Logout } from "../Authentication/Logout";
-import { NotFoundPage } from "../NotFoundPage/NotFoundPage";
-
+import { NotFoundPage } from "../Common/NotFoundPage/NotFoundPage";
+import { PostDetails } from "../PostsAndComments/Posts/PostDetails/PostDetails";
 import { CreatePost } from "../PostsAndComments/Posts/CreatePost/CreatePost";
 import { EditPost } from "../PostsAndComments/Posts/EditPost/EditPost";
-
-import { ProfileInfo } from "../User/ProfileInfo/ProfileInfo";
-
+import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExplorer";
 import { Calcualtors } from "../Calculators/Calculators";
+import { Calendars } from "../Calendars/Calendars";
 import { NewsList } from "../News/NewsList";
 import { NewsArticle } from "../News/NewsArticle/NewsArticle";
-import { Calendars } from "../Calendars/Calendars";
-
-import { AccountActivity } from "../User/AccountActivity/AccountActivity";
-import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExplorer";
-import { AccountStatistics } from "../User/AccountStatistics/AccountStatistics";
-import { AddPositionsRecord } from "../User/AccountStatistics/PositionsRecords/AddPositionsRecord/AddPositionsRecord";
-import { FuturesRecordDetails } from "../User/AccountStatistics/FuturesPositions/FuturesRecordDetails/FuturesRecordDetails";
+import { AccountActivity } from "../Users/AccountActivity/AccountActivity";
+import { ProfilePage } from "../Users/ProfilePage/ProfilePage";
+import { ProfileInfo } from "../Users/ProfileInfo/ProfileInfo";
+import { AccountStatistics } from "../Users/AccountStatistics/AccountStatistics";
+import { AddPositionsRecord } from "../Users/AccountStatistics/PositionsRecords/AddPositionsRecord/AddPositionsRecord";
+import { FuturesRecordDetails } from "../Users/AccountStatistics/FuturesPositions/FuturesRecordDetails/FuturesRecordDetails";
 import { SearchPage } from "../Search/SearchPage";
-import { ChangePositionsRecord } from "../User/AccountStatistics/PositionsRecords/ChangePositionsRecord/ChangePositionsRecord";
-import { CreateFuturesPosition } from "../User/AccountStatistics/FuturesPositions/CreateFuturesPosition/CreateFuturesPosition";
-
-
+import { ChangePositionsRecord } from "../Users/AccountStatistics/PositionsRecords/ChangePositionsRecord/ChangePositionsRecord";
+import { CreateFuturesPosition } from "../Users/AccountStatistics/FuturesPositions/CreateFuturesPosition/CreateFuturesPosition";
+import { ChangeFuturesPosition } from "../Users/AccountStatistics/FuturesPositions/ChangeFuturesPosition/ChangeFuturesPosition";
 
 // eslint-disable-next-line
-import styles from './App.module.css';
-import { ChangeFuturesPosition } from "../User/AccountStatistics/FuturesPositions/ChangeFuturesPosition/ChangeFuturesPosition";
+import styles from "./App.module.css";
 
 export function App() {
-
     const location = useLocation();
 
     useEffect(() => {
@@ -52,101 +40,75 @@ export function App() {
 
     return (
         <AuthContextProvider location={location}>
-           <MessageBoxContextProvider>
+            <MessageBoxContextProvider>
                 <div className={styles.content}>
                     <div className={styles.navigation}>
                         <NavBar />
                     </div>
                     <div className={styles.page}>
-                    <Routes>
-                        <Route path="/" element={
-                            <Home />
-                        } />
+                        <Routes>
+                            <Route path="/" element={<Home />} />
 
-                        <Route path="/markets" element={
-                            <MarketsPage />
-                        } />
+                            <Route path="/markets" element={<MarketsPage />} />
 
-                        <Route path="/posts" element={
-                            <PostsExplorer />
-                        } />
-                        
-                        <Route path="/posts/:postId" element={
-                            <PostDetails />
-                        } />
-                        
-                        <Route path="/posts/create" element={
-                            <CreatePost />
-                        } />
+                            <Route path="/posts" element={<PostsExplorer />} />
 
-                        <Route path="/login" element={
-                            <Login />
-                        } />
+                            <Route path="/posts/:postId" element={<PostDetails />} />
 
-                        <Route path="/register" element={
-                            <Register />
-                        } />
+                            <Route path="/posts/create" element={<CreatePost />} />
 
-                        <Route path="/logout" element={
-                            <Logout />
-                        } />
+                            <Route path="/login" element={<Login />} />
 
-                        <Route path="/users/:searchedProfileEmail" element={ <ProfilePage/> }>
-                            <Route index element={ <ProfileInfo /> } />
-                            <Route path="personal-info" element={ <ProfileInfo /> } />
-                            <Route path="account-statistics" element={<AccountStatistics />} />
-                            <Route path="account-activity" element={ <AccountActivity /> } />
-                        </Route>
+                            <Route path="/register" element={<Register />} />
 
-                        <Route path="/users/:searchedProfileEmail/positions-records/create" element={
-                            <AddPositionsRecord />
-                        } />
+                            <Route path="/logout" element={<Logout />} />
 
-                        <Route path="/users/:searchedProfileEmail/positions-records/:recordId/change" element={
-                            <ChangePositionsRecord />
-                        } />
+                            <Route path="/users/:searchedProfileEmail" element={<ProfilePage />}>
+                                <Route index element={<ProfileInfo />} />
+                                <Route path="personal-info" element={<ProfileInfo />} />
+                                <Route path="account-statistics" element={<AccountStatistics />} />
+                                <Route path="account-activity" element={<AccountActivity />} />
+                            </Route>
 
-                        <Route path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid" element={
-                            <FuturesRecordDetails />
-                        } />
+                            <Route
+                                path="/users/:searchedProfileEmail/positions-records/create"
+                                element={<AddPositionsRecord />}
+                            />
 
-                        <Route path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid/create-position" element={
-                            <CreateFuturesPosition />
-                        } />
+                            <Route
+                                path="/users/:searchedProfileEmail/positions-records/:recordId/change"
+                                element={<ChangePositionsRecord />}
+                            />
 
-                        <Route path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid/change-position/:positionGuid" element={
-                            <ChangeFuturesPosition />
-                        } />
-                        
-                        <Route path="/posts/:postId/edit" element={
-                            <EditPost />
-                        } />
-                        
-                        <Route path="/calculators" element={
-                            <Calcualtors />
-                        } />
+                            <Route
+                                path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid"
+                                element={<FuturesRecordDetails />}
+                            />
 
-                        <Route path="/news" element={
-                            <NewsList />
-                        } />
-                        
-                        <Route path="/news/:newsTitle" element={
-                            <NewsArticle />
-                        } />
+                            <Route
+                                path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid/create-position"
+                                element={<CreateFuturesPosition />}
+                            />
 
-                        <Route path="/calendars" element={
-                            <Calendars />
-                        } />
+                            <Route
+                                path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid/change-position/:positionGuid"
+                                element={<ChangeFuturesPosition />}
+                            />
 
-                        <Route path="/search" element={
-                            <SearchPage />
-                        } />
+                            <Route path="/posts/:postId/edit" element={<EditPost />} />
 
-                        <Route path="*" element={
-                            <NotFoundPage />
-                        } />
-                        
-                    </Routes>
+                            <Route path="/calculators" element={<Calcualtors />} />
+
+                            <Route path="/news" element={<NewsList />} />
+
+                            <Route path="/news/:newsTitle" element={<NewsArticle />} />
+
+                            <Route path="/calendars" element={<Calendars />} />
+
+                            <Route path="/search" element={<SearchPage />} />
+
+                            <Route path="*" element={<NotFoundPage />} />
+                        </Routes>
                     </div>
                 </div>
             </MessageBoxContextProvider>

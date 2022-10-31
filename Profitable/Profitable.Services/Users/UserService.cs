@@ -39,7 +39,12 @@ namespace Profitable.Services.Users
             var user = await repository
                 .GetAllAsNoTracking()
                 .Where(user => !user.IsDeleted)
-                .FirstAsync(user => user.Email == email);
+                .FirstOrDefaultAsync(user => user.Email == email);
+
+            if(user == null)
+            {
+                throw new Exception("User not found");
+            }
 
             return mapper.Map<UserDetailsResponseModel>(user);
         }
@@ -63,8 +68,8 @@ namespace Profitable.Services.Users
             var user = await repository
                 .GetAllAsNoTracking()
                 .Where(user => !user.IsDeleted)
-                .FirstAsync(user => user.Email == userRequestModel.Email);
-
+                .FirstOrDefaultAsync(user => user.Email == userRequestModel.Email);
+            
             if (user != null &&
                 await userManager.CheckPasswordAsync(user, userRequestModel.Password))
             {
@@ -77,7 +82,8 @@ namespace Profitable.Services.Users
             }
             else
             {
-                throw new Exception("We have found you by email, but the provided password is invalid.");
+                throw new Exception(
+                    "We have found you by email, but the provided password is invalid.");
             }
         }
 

@@ -1,6 +1,6 @@
-import { AuthContext } from '../../contexts/AuthContext';
-import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "../../contexts/AuthContext";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Logout = () => {
     const { removeAuth } = useContext(AuthContext);
@@ -8,7 +8,6 @@ export const Logout = () => {
 
     useEffect(() => {
         removeAuth();
-        navigate('/');
-    },
-    [removeAuth, navigate]);
-}
+        navigate("/");
+    }, [removeAuth, navigate]);
+};

@@ -17,7 +17,9 @@ namespace Profitable.Services.Futures
 		private readonly IRepository<FuturesContract> futuresContractRepository;
 		private readonly IMapper mapper;
 
-		public FuturesService(IRepository<FuturesContract> futuresContractRepository, IMapper mapper)
+		public FuturesService(
+			IRepository<FuturesContract> futuresContractRepository,
+			IMapper mapper)
 		{
 			this.futuresContractRepository = futuresContractRepository;
 			this.mapper = mapper;

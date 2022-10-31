@@ -1,17 +1,16 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComments } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-import { createAuthorImgURL } from '../../../../../services/common/imageService';
-import { PostsLikeWidget } from '../../PostsLikeWidget/PostsLikeWidget';
-import styles from './PostsListItem.module.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComments } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { createAuthorImgURL } from "../../../../../services/common/imageService";
+import { PostsLikeWidget } from "../../PostsLikeWidget/PostsLikeWidget";
+import styles from "./PostsListItem.module.css";
 
 export const PostsListItem = ({ post, userGuid }) => {
-
     const navigate = useNavigate();
 
     const postDetailsClickHandler = () => {
         navigate(`/posts/${post.guid}`, { replace: false });
-    }
+    };
 
     const clickUserProfileHandler = (e) => {
         e.preventDefault();
@@ -20,12 +19,10 @@ export const PostsListItem = ({ post, userGuid }) => {
         navigate(`/users/${post.authorEmail}`);
     };
 
-
     return (
         <div className={styles.post} onClick={postDetailsClickHandler}>
             <div className={styles.header}>
                 <h2 className={styles.title}>{post.title}</h2>
-                
             </div>
 
             <div className={styles.mainContent}>
@@ -34,10 +31,12 @@ export const PostsListItem = ({ post, userGuid }) => {
 
             <div className={styles.information}>
                 <div className={styles.author} onClick={clickUserProfileHandler}>
-                    <img className={styles.authorImage} src={createAuthorImgURL(post.authorImage)} alt="" />
-                    <div>
-                        {post.author}
-                    </div>
+                    <img
+                        className={styles.authorImage}
+                        src={createAuthorImgURL(post.authorImage)}
+                        alt=""
+                    />
+                    <div>{post.author}</div>
                 </div>
                 <div className={styles.comments}>
                     <FontAwesomeIcon className={styles.iconComments} icon={faComments} />
@@ -47,5 +46,6 @@ export const PostsListItem = ({ post, userGuid }) => {
                     <PostsLikeWidget post={post} userGuid={userGuid} />
                 </div>
             </div>
-        </div>);
-}
+        </div>
+    );
+};
