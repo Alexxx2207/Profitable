@@ -69,11 +69,10 @@ namespace Profitable.Services.Posts
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return "Post was not added!";
+                return e.Message;
             }
-
         }
 
         public async Task<Result> DeletePostAsync(Guid guid)
@@ -84,7 +83,7 @@ namespace Profitable.Services.Posts
 
             if (post == null)
             {
-                return "Post not found";
+                return GlobalServicesConstants.EntityDoesNotExist("Post");
             }
 
             postsRepository.Delete(post);
@@ -100,15 +99,15 @@ namespace Profitable.Services.Posts
         {
             var post = await postsRepository
                 .GetAllAsNoTracking()
-                .Where(post => !post.IsDeleted)
                 .Include(p => p.Author)
                 .Include(p => p.Likes)
                 .Include("Likes.Author")
+                .Where(post => !post.IsDeleted)
                 .FirstOrDefaultAsync(entity => entity.Guid == guid);
 
             if(post == null)
             {
-                throw new Exception("Post not found");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Post"));
             }
                 
             var mappedPostResponseModel = mapper.Map<PostResponseModel>(post);
@@ -131,14 +130,14 @@ namespace Profitable.Services.Posts
             {
                 var posts = await postsRepository
                     .GetAllAsNoTracking()
-                    .Where(post => !post.IsDeleted)
-                    .OrderByDescending(p => p.PostedOn)
-                    .Skip(page * pageCount)
-                    .Take(pageCount)
                     .Include(p => p.Author)
                     .Include(p => p.Likes)
                     .Include("Likes.Author")
                     .Include(p => p.Comments)
+                    .Where(post => !post.IsDeleted)
+                    .OrderByDescending(p => p.PostedOn)
+                    .Skip(page * pageCount)
+                    .Take(pageCount)
                     .Select(post => mapper.Map<PostResponseModel>(post))
                     .ToListAsync();
 
@@ -165,33 +164,31 @@ namespace Profitable.Services.Posts
             int page,
             int pageCount)
         {
-
             var userEmail = (await applicationUserRepository
                 .GetAllAsNoTracking()
                 .FirstOrDefaultAsync(user => user.Id == userId))?.Email;
 
             if (userEmail == null)
             {
-                throw new Exception("User no found");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User"));
             }
 
             if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
             {
                 var posts = await postsRepository
                     .GetAllAsNoTracking()
+                    .Include(p => p.Author)
+                    .Include(p => p.Likes)
+                    .Include("Likes.Author")
+                    .Include(p => p.Comments)
                     .Where(post =>
                         post.AuthorId == userId &&
                         !post.IsDeleted)
                     .OrderByDescending(p => p.PostedOn)
                     .Skip(page * pageCount)
                     .Take(pageCount)
-                    .Include(p => p.Author)
-                    .Include(p => p.Likes)
-                    .Include("Likes.Author")
-                    .Include(p => p.Comments)
                     .Select(post => mapper.Map<PostResponseModel>(post))
                     .ToListAsync();
-
 
                 foreach (var post in posts)
                 {
@@ -225,7 +222,6 @@ namespace Profitable.Services.Posts
                 .Where(post => !post.IsDeleted)
                 .FirstOrDefaultAsync(post => post.Guid == postToUpdateGuidCasted);
 
-
             if (postToUpdate != null)
             {
                 await imageService.DeleteUploadedImageAsync(ImageFor.Posts, postToUpdate.ImageURL);
@@ -252,7 +248,7 @@ namespace Profitable.Services.Posts
             }
             else
             {
-                return "Post was not found!";
+                return GlobalServicesConstants.EntityDoesNotExist("Post");
             }
         }
 

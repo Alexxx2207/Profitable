@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Profitable.Common.Enums;
+using Profitable.Common.GlobalConstants;
 using Profitable.Common.Models;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
@@ -43,7 +44,7 @@ namespace Profitable.Services.Users
 
             if(user == null)
             {
-                throw new Exception("User not found");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User"));
             }
 
             return mapper.Map<UserDetailsResponseModel>(user);
@@ -114,7 +115,7 @@ namespace Profitable.Services.Users
             ApplicationUser user,
             EditUserPasswordRequestModel editUserData)
         {
-            if (!user.IsDeleted)
+            if (user != null && !user.IsDeleted)
             {
                 var result =
                     await userManager.ChangePasswordAsync(
@@ -132,7 +133,7 @@ namespace Profitable.Services.Users
             }
             else
             {
-                throw new Exception("User was deleted");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User"));
             }
         }
 
@@ -140,44 +141,37 @@ namespace Profitable.Services.Users
             ApplicationUser user,
             EditUserProfileImageRequestModel editUserData)
         {
-            if (!user.IsDeleted)
+            if (user != null && !user.IsDeleted)
             {
-
-                if (user != null)
+                if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
                 {
-                    if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
-                    {
-                        await imageService.DeleteUploadedImageAsync(
+                    await imageService.DeleteUploadedImageAsync(
+                        ImageFor.Users,
+                        user.ProfilePictureURL);
+                }
+
+                string newFileName =
+                        await imageService.SaveUploadedImageAsync(
                             ImageFor.Users,
-                            user.ProfilePictureURL);
-                    }
-                    string newFileName =
-                            await imageService.SaveUploadedImageAsync(
-                                ImageFor.Users,
-                                editUserData.FileName,
-                                editUserData.Image);
+                            editUserData.FileName,
+                            editUserData.Image);
 
-                    user.ProfilePictureURL = newFileName;
+                user.ProfilePictureURL = newFileName;
 
-                    repository.Update(user);
-                    await repository.SaveChangesAsync();
+                repository.Update(user);
+                await repository.SaveChangesAsync();
 
-                    return mapper.Map<UserDetailsResponseModel>(user);
-                }
-                else
-                {
-                    throw new Exception("User profile image was not edited");
-                }
+                return mapper.Map<UserDetailsResponseModel>(user);
             }
             else
             {
-                throw new Exception("User was deleted");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User"));
             }
         }
 
         public async Task<Result> DeleteUserImageAsync(ApplicationUser user)
         {
-            if (!user.IsDeleted)
+            if (user != null && !user.IsDeleted)
             {
                 if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
                 {
@@ -196,13 +190,13 @@ namespace Profitable.Services.Users
             }
             else
             {
-                return "User was not found!";
+                return GlobalServicesConstants.EntityDoesNotExist("User");
             }
         }
 
         public async Task<Result> HardDeleteUserAsync(ApplicationUser user)
         {
-            if (!user.IsDeleted)
+            if (user != null && !user.IsDeleted)
             {
                 if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
                 {
@@ -219,7 +213,7 @@ namespace Profitable.Services.Users
             }
             else
             {
-                return "User was not found!";
+                return GlobalServicesConstants.EntityDoesNotExist("User");
 
             }
         }

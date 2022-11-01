@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Profitable.Common.Enums;
+using Profitable.Common.GlobalConstants;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
 using Profitable.Models.ResponseModels.Markets;
@@ -59,7 +60,7 @@ namespace Profitable.Services.Markets
 
             if(instrument == null)
             {
-                throw new Exception("Instrument not found");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Instrument"));
             }
 
             return mapper.Map<FinantialInstrumentExtendedResponseModel>(instrument);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Profitable.Common.Enums;
+using Profitable.Common.GlobalConstants;
 using Profitable.Common.Models;
 using Profitable.Common.Services;
 using Profitable.Data.Repository.Contract;
@@ -71,7 +72,7 @@ namespace Profitable.Services.Positions
 			}
 			else
 			{
-				return "Positions Record was not found!";
+				return GlobalServicesConstants.EntityDoesNotExist("Positions record");
 			}
 		}
 
@@ -83,7 +84,7 @@ namespace Profitable.Services.Positions
 
             if (record == null)
             {
-                return "Record not found";
+                return GlobalServicesConstants.EntityDoesNotExist("Positions record");
             }
 
             repository.Delete(record);

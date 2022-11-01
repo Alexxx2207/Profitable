@@ -143,7 +143,7 @@ namespace Profitable.Services.Comments
 
 			if (existingComment == null)
 			{
-				return GlobalServicesConstants.EntityDoesNotExist;
+				return GlobalServicesConstants.EntityDoesNotExist("Comment");
 			}
 
 			existingComment.Content = newComment.Content;

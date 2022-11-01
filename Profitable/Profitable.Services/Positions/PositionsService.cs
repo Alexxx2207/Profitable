@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Profitable.Common.Enums;
+using Profitable.Common.GlobalConstants;
 using Profitable.Common.Models;
 using Profitable.Common.Services;
 using Profitable.Data.Repository.Contract;
@@ -99,11 +100,11 @@ namespace Profitable.Services.Positions
 
 			if(tradePosition == null)
 			{
-				throw new Exception("Trade position not found");
+				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Trade position"));
 			}
 			else if(futuresPosition == null)
 			{
-                throw new Exception("Futures position not found");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Futures position"));
             }
 
 			string parsedDirection = Enum.GetName(typeof(PositionDirection), futuresPosition.Direction);
@@ -140,7 +141,7 @@ namespace Profitable.Services.Positions
 
 			if(positionsRecordUpdated == null)
 			{
-				return "Record not found";
+				return GlobalServicesConstants.EntityDoesNotExist("Positions record");
 			}
 
 			positionsRecordUpdated.LastUpdated = dateTimeOfChange;
@@ -167,10 +168,10 @@ namespace Profitable.Services.Positions
 
 			if(futuresContractGuid == null)
 			{
-				return "Futures Contract not found";
-			}
+                return GlobalServicesConstants.EntityDoesNotExist("Futures contract");
+            }
 
-			var futuresPosition = new FuturesPosition
+            var futuresPosition = new FuturesPosition
 			{
 				FuturesContractId = futuresContractGuid.Value,
 				TradePositionId = tradePosition.Guid,
@@ -216,10 +217,10 @@ namespace Profitable.Services.Positions
 
 				if(positionsRecordUpdated == null)
 				{
-					return "Record not found";
-				}
+                    return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+                }
 
-				positionsRecordUpdated.LastUpdated = dateTimeOfChange;
+                positionsRecordUpdated.LastUpdated = dateTimeOfChange;
 
 				var tradePosition = await tradePositionsRepository
 					.GetAll()
@@ -227,7 +228,7 @@ namespace Profitable.Services.Positions
 
                 if (tradePosition == null)
                 {
-                    return "Trade position not found";
+					return GlobalServicesConstants.EntityDoesNotExist("Trade position");
                 }
 
                 var futuresPosition = await futuresPositionsRepository
@@ -238,7 +239,7 @@ namespace Profitable.Services.Positions
 
                 if (futuresPosition == null)
                 {
-                    return "Futures position not found";
+					return GlobalServicesConstants.EntityDoesNotExist("Futures position");
                 }
 
 				tradePosition.EntryPrice = model.EntryPrice;
@@ -289,7 +290,7 @@ namespace Profitable.Services.Positions
 
                 if (deletePositionRecord == null)
                 {
-                    return "Record not found";
+                    return GlobalServicesConstants.EntityDoesNotExist("Positions record");
                 }
 
                 if (deletePositionRecord.UserId != requesterGuid)
