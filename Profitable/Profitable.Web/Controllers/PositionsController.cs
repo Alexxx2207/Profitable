@@ -156,7 +156,7 @@ namespace Profitable.Web.Controllers
             return BadRequest();
         }
         
-        [HttpGet("records/{recordId}/positions/{positionGuid}")]
+        [HttpGet("{positionGuid}")]
         public async Task<IActionResult> GetParticularPosition(
             [FromRoute] string positionGuid)
         {

@@ -1,4 +1,5 @@
 ﻿using AngleSharp;
+using AutoMapper;
 using Profitable.Models.RequestModels.News;
 using Profitable.Models.ResponseModels.News;
 using Profitable.Services.News.Contract;
@@ -7,6 +8,13 @@ namespace Profitable.Services.News
 {
 	public class NewsService : INewsService
 	{
+		private readonly IMapper mapper;
+
+		public NewsService(IMapper mapper)
+		{
+			this.mapper = mapper;
+		}
+
 		public async Task<NewsArticleResponseModel> GetNewsArticlesFromInvestingCom(
 			NewsArticleRequestModel articleOverview)
 		{
@@ -26,15 +34,12 @@ namespace Profitable.Services.News
 			var articleImage = cell.QuerySelector("div.articlePage>div#imgCarousel>img")?
 							.GetAttribute("src");
 
-			var article = new NewsArticleResponseModel()
-			{
-				Image = articleImage,
-				Title = articleOverview.Title,
-				PostedAgo = articleOverview.PostedAgo,
-				Sender = articleOverview.Sender,
-				ArticleText = articleText,
-				Link = articleOverview.Link,
-			};
+			var article = mapper.Map<NewsArticleResponseModel>(articleOverview, opt =>
+                opt.AfterMap((src, dest) => 
+				{
+					dest.Image = articleImage;
+                    dest.ArticleText = articleText;
+                }));
 
 			return article;
 		}

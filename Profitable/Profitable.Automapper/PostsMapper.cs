@@ -2,6 +2,7 @@
 using Profitable.Automapper.TypeConverters;
 using Profitable.Common.Enums;
 using Profitable.Models.EntityModels;
+using Profitable.Models.RequestModels.Posts;
 using Profitable.Models.ResponseModels.Posts;
 
 namespace Profitable.Common.Automapper
@@ -10,6 +11,7 @@ namespace Profitable.Common.Automapper
     {
         public PostsMapper()
         {
+            CreateMap<AddPostRequestModel, Post>();
             CreateMap<Post, PostResponseModel>()
                 .ForMember(
                     dest => dest.AuthorEmail,

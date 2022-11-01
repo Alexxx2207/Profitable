@@ -21,8 +21,8 @@ namespace Profitable.Services.Users
         private readonly IImageService imageService;
 
         public UserService(
-            IRepository<ApplicationUser> repository,
             IMapper mapper,
+            IRepository<ApplicationUser> repository,
             IJWTManagerRepository jWTManagerRepository,
             UserManager<ApplicationUser> userManager,
             IImageService imageService)
@@ -73,12 +73,8 @@ namespace Profitable.Services.Users
             if (user != null &&
                 await userManager.CheckPasswordAsync(user, userRequestModel.Password))
             {
-                return jWTManagerRepository.Authenticate(new AuthUserModel
-                {
-                    Guid = user.Id.ToString(),
-                    Email = user.Email,
-                    UserName = user.UserName,
-                });
+                return jWTManagerRepository
+                        .Authenticate(mapper.Map<AuthUserModel>(user));
             }
             else
             {
@@ -92,13 +88,7 @@ namespace Profitable.Services.Users
 
             if (userRequestModel.FirstName.Length >= 2 && userRequestModel.LastName.Length >= 2)
             {
-                var user = new ApplicationUser()
-                {
-                    Email = userRequestModel.Email,
-                    UserName = userRequestModel.Email,
-                    FirstName = userRequestModel.FirstName,
-                    LastName = userRequestModel.LastName,
-                };
+                var user = mapper.Map<ApplicationUser>(userRequestModel);
 
                 var result = await userManager.CreateAsync(user, userRequestModel.Password);
                 if (!result.Succeeded)
@@ -110,12 +100,8 @@ namespace Profitable.Services.Users
                 }
                 else
                 {
-                    return jWTManagerRepository.Authenticate(new AuthUserModel
-                    {
-                        Guid = user.Id.ToString(),
-                        Email = user.Email,
-                        UserName = user.UserName,
-                    });
+                    return jWTManagerRepository
+                                .Authenticate(mapper.Map<AuthUserModel>(user));
                 }
             }
             else

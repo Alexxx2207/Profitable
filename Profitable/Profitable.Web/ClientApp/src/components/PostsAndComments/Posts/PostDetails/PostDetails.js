@@ -272,7 +272,9 @@ export const PostDetails = () => {
                 ) : (
                     <></>
                 )}
-                <CommentsList postId={postId} comments={postPage.comments} />
+                <div className={styles.commentsListContainer}>
+                    <CommentsList postId={postId} comments={postPage.comments} />
+                </div>
             </section>
             <GoToTop />
         </div>

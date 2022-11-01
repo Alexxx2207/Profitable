@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Profitable.Common.Automapper;
 using Profitable.Data;
 using Profitable.Models.EntityModels;
 using Profitable.Services.Comments;
@@ -94,6 +96,26 @@ namespace Profitable.Web.Infrastructure
                 });
 
             services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureAutomapper(this IServiceCollection services)
+        {
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new PostsMapper());
+                mc.AddProfile(new LikesMapper());
+                mc.AddProfile(new CommentsMapper());
+                mc.AddProfile(new MarketsMapper());
+                mc.AddProfile(new UsersMapper());
+                mc.AddProfile(new FuturesContractsMapper());
+                mc.AddProfile(new PositionsMapper());
+                mc.AddProfile(new NewsMapper());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             return services;
         }

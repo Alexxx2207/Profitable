@@ -1,6 +1,4 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Profitable.Common.Automapper;
 using Profitable.Data;
 using Profitable.Data.Repository;
 using Profitable.Data.Repository.Contract;
@@ -15,19 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddIdentity();
 
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new PostsMapper());
-    mc.AddProfile(new LikesMapper());
-    mc.AddProfile(new CommentsMapper());
-    mc.AddProfile(new MarketsMapper());
-    mc.AddProfile(new UsersMapper());
-    mc.AddProfile(new FuturesContractsMapper());
-    mc.AddProfile(new PositionsMapper());
-});
-
-IMapper mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+builder.Services.ConfigureAutomapper();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
@@ -44,7 +30,6 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod();
                       });
 });
-
 
 builder.Services.AddControllers();
 

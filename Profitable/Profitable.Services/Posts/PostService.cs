@@ -47,14 +47,11 @@ namespace Profitable.Services.Posts
 
             try
             {
-                var postToAdd = new Post()
+                var postToAdd = mapper.Map<Post>(newPost, opt => 
+                opt.AfterMap((src, dest) => 
                 {
-                    Title = newPost.Title,
-                    Content = newPost.Content,
-                    PostedOn = DateTime.UtcNow,
-                    Author = author,
-
-                };
+                    dest.Author = author;
+                }));
 
                 if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
                 {
