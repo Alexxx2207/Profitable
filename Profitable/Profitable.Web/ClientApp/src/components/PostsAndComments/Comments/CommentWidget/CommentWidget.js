@@ -20,6 +20,8 @@ export const CommentWidget = ({ comment }) => {
         editContent: comment.content,
     });
 
+    const [showMore, setShowMore] = useState(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -122,7 +124,25 @@ export const CommentWidget = ({ comment }) => {
                             </div>
                         </>
                     ) : (
-                        <p className={styles.commentContent}>{comment.content}</p>
+                        <>
+                            <p
+                                className={
+                                    showMore
+                                        ? styles.wholeCommentContent
+                                        : styles.lessCommentContent
+                                }
+                            >
+                                {comment.content}
+                            </p>
+                            <div className={styles.showMoreLessContainer}>
+                                <button
+                                    className={styles.showMoreLess}
+                                    onClick={() => setShowMore(!showMore)}
+                                >
+                                    {showMore ? "Show less" : "Show more"}
+                                </button>
+                            </div>
+                        </>
                     )}
                     <footer className={styles.commentFooter}>
                         <h6 className={styles.postedOnContainer}>{comment.postedOn}</h6>

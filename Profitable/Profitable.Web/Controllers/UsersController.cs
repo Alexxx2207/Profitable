@@ -53,19 +53,14 @@ namespace Profitable.Web.Controllers
         [HttpGet("user/email")]
         public IActionResult GetEmailFromJWT()
         {
-            var userEmail = this.User.FindFirstValue(ClaimTypes.Email);
-
-            return Ok(userEmail);
+            return Ok(this.UserEmail);
         }
 
         [Authorize]
         [HttpGet("user/guid")]
         public async Task<IActionResult> GetGuidFromJWTAsync()
         {
-            var user = await userManager.FindByEmailAsync(
-                            this.User.FindFirstValue(ClaimTypes.Email));
-
-            return Ok(user.Id.ToString());
+            return Ok(this.UserId);
         }
 
         [Authorize]
@@ -73,20 +68,17 @@ namespace Profitable.Web.Controllers
         public async Task<IActionResult> EditGeneralDataAsync(
             [FromBody] EditUserRequestModel userRequestModel)
         {
-            var user = await userManager.FindByEmailAsync(
-                            this.User.FindFirstValue(ClaimTypes.Email));
-
-            if (user.Email == userRequestModel.Email)
+            try
             {
                 var userInfo = await userService.EditUserAsync(
-                    user,
-                    userRequestModel);
+                      this.UserId,
+                      userRequestModel);
 
                 return Ok(userInfo);
             }
-            else
+            catch (Exception e)
             {
-                return Unauthorized();
+                return BadRequest(e.Message);
             }
         }
 
@@ -97,14 +89,11 @@ namespace Profitable.Web.Controllers
         {
             try
             {
-                var user = await userManager.FindByEmailAsync(
-                                this.User.FindFirstValue(ClaimTypes.Email));
-
                 var userResult = await userService.EditUserPasswordAsync(
-                    user,
+                    this.UserId,
                     userRequestModel);
 
-                return Ok(user);
+                return Ok();
             }
             catch (Exception error)
             {
@@ -117,12 +106,9 @@ namespace Profitable.Web.Controllers
         public async Task<IActionResult> EditProfileImageAsync(
             [FromBody] EditUserProfileImageRequestModel userRequestModel)
         {
-            var user = await userManager.FindByEmailAsync(
-                            this.User.FindFirstValue(ClaimTypes.Email));
-
             var userResult =
                     await userService.EditUserProfileImageAsync(
-                        user,
+                        this.UserId,
                         userRequestModel);
 
             return Ok(userResult);
@@ -168,13 +154,10 @@ namespace Profitable.Web.Controllers
         }
 
         [Authorize]
-        [HttpDelete("user/delete")]
-        public async Task<IActionResult> DeleteAsync()
+        [HttpDelete("{userEmail}/delete")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] string userEmail)
         {
-            var user =
-                    await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
-
-            var result = await userService.HardDeleteUserAsync(user);
+            var result = await userService.HardDeleteUserAsync(this.UserId, userEmail);
 
             if (result.Succeeded)
             {
@@ -187,13 +170,10 @@ namespace Profitable.Web.Controllers
         }
 
         [Authorize]
-        [HttpDelete("user/image/delete")]
-        public async Task<IActionResult> DeleteUserImageAsync()
+        [HttpDelete("{userEmail}/image/delete")]
+        public async Task<IActionResult> DeleteUserImageAsync([FromRoute] string userEmail)
         {
-            var user =
-                    await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
-
-            var result = await userService.DeleteUserImageAsync(user);
+            var result = await userService.DeleteUserImageAsync(this.UserId, userEmail);
 
             return Ok(result);
         }

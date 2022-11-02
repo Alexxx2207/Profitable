@@ -8,10 +8,14 @@ import { ErrorWidget } from "../../../Common/ErrorWidget/ErrorWidget";
 import {
     CLIENT_ERROR_TYPE,
     JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
+    POST_CONTENT_MAX_COUNT,
     SERVER_ERROR_TYPE,
 } from "../../../../common/config";
 import { getUserEmailFromJWT } from "../../../../services/users/usersService";
-import { isEmptyOrWhiteSpaceFieldChecker } from "../../../../services/common/errorValidationCheckers";
+import {
+    isEmptyOrWhiteSpaceFieldChecker,
+    maxLengthChecker,
+} from "../../../../services/common/errorValidationCheckers";
 import { changeStateValuesForControlledForms } from "../../../../services/common/createStateValues";
 import {
     createClientErrorObject,
@@ -46,6 +50,11 @@ export const CreatePost = () => {
                 fulfilled: false,
                 type: CLIENT_ERROR_TYPE,
             },
+            contentTooBig: {
+                text: `Content less than ${POST_CONTENT_MAX_COUNT} characters`,
+                fulfilled: false,
+                type: CLIENT_ERROR_TYPE,
+            },
             serverError: {
                 text: "",
                 display: false,
@@ -74,7 +83,7 @@ export const CreatePost = () => {
 
         if (clientErrors.filter((err) => !err.fulfilled).length === 0) {
             createPost(JWT, { ...createState.values })
-                .then((jwt) => {
+                .then(() => {
                     setMessageBoxSettings("The post was created successfully!", true);
                     navigate("/posts");
                 })
@@ -129,6 +138,10 @@ export const CreatePost = () => {
                     contentEmpty: createClientErrorObject(
                         state.errors.contentEmpty,
                         isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)
+                    ),
+                    contentTooBig: createClientErrorObject(
+                        state.errors.contentTooBig,
+                        maxLengthChecker.bind(null, e.target.value, POST_CONTENT_MAX_COUNT)
                     ),
                 },
             }));

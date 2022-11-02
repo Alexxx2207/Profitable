@@ -10,15 +10,15 @@ namespace Profitable.Services.Users.Contracts
     {
         Task<UserDetailsResponseModel> GetUserDetailsAsync(string email);
 
-        Task<Result> DeleteUserImageAsync(ApplicationUser email);
+        Task<Result> DeleteUserImageAsync(Guid requesterId, string emailOfDeleteUser);
 
-        Task<Result> HardDeleteUserAsync(ApplicationUser email);
+        Task<Result> HardDeleteUserAsync(Guid requesterId, string emailOfDeleteUser);
 
-        Task<UserDetailsResponseModel> EditUserAsync(ApplicationUser user, EditUserRequestModel editUserData);
+        Task<UserDetailsResponseModel> EditUserAsync(Guid requesterId, EditUserRequestModel editUserData);
 
-        Task<UserDetailsResponseModel> EditUserPasswordAsync(ApplicationUser user, EditUserPasswordRequestModel editUserData);
+        Task<UserDetailsResponseModel> EditUserPasswordAsync(Guid requesterId, EditUserPasswordRequestModel editUserData);
 
-        Task<UserDetailsResponseModel> EditUserProfileImageAsync(ApplicationUser user, EditUserProfileImageRequestModel editUserData);
+        Task<UserDetailsResponseModel> EditUserProfileImageAsync(Guid requesterId, EditUserProfileImageRequestModel editUserData);
 
         Task<JWTToken> RegisterUserAsync(RegisterUserRequestModel user);
 

@@ -6,6 +6,10 @@ export const minLengthChecker = (value, bound) => {
     return value?.trim().length >= bound;
 };
 
+export const maxLengthChecker = (value, bound) => {
+    return value?.trim().length <= bound;
+};
+
 export const isEmptyOrWhiteSpaceFieldChecker = (value) => {
     return !!value.trim();
 };

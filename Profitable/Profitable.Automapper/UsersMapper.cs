@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Profitable.Automapper.TypeConverters;
 using Profitable.Common.Enums;
+using Profitable.Common.Models;
 using Profitable.Models.EntityModels;
+using Profitable.Models.RequestModels.Users;
 using Profitable.Models.ResponseModels.Users;
 
 namespace Profitable.Common.Automapper
@@ -13,14 +15,20 @@ namespace Profitable.Common.Automapper
             CreateMap<ApplicationUser, UserDetailsResponseModel>()
                 .ForMember(
                     dest => dest.Guid,
-                    opt => opt.MapFrom(src => src.Id)
-                )
+                    opt => opt.MapFrom(src => src.Id))
                 .ForMember(
                 dest => dest.ProfileImage,
                 opt => opt.ConvertUsing(
                     new ImageByteArrayConverter(ImageFor.Users),
                     src => src.ProfilePictureURL));
-
+            CreateMap<ApplicationUser, AuthUserModel>()
+                .ForMember(
+                    dest => dest.Guid,
+                    opt => opt.MapFrom(src => src.Id));
+            CreateMap<RegisterUserRequestModel, ApplicationUser>()
+                .ForMember(
+                    dest => dest.UserName,
+                    opt => opt.MapFrom(src => src.Email));
         }
     }
 }

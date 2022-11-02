@@ -35,7 +35,7 @@ namespace Profitable.Services.Posts
         }
 
         public async Task<Result> AddPostAsync(
-            ApplicationUser author,
+            Guid authorId,
             AddPostRequestModel newPost)
         {
             if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
@@ -47,14 +47,12 @@ namespace Profitable.Services.Posts
 
             try
             {
-                var postToAdd = new Post()
+                var postToAdd = mapper.Map<Post>(newPost, opt => 
+                opt.AfterMap((src, dest) => 
                 {
-                    Title = newPost.Title,
-                    Content = newPost.Content,
-                    PostedOn = DateTime.UtcNow,
-                    Author = author,
-
-                };
+                    dest.AuthorId = authorId;
+                    dest.PostedOn = DateTime.UtcNow;
+                }));
 
                 if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
                 {
@@ -72,29 +70,40 @@ namespace Profitable.Services.Posts
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return "Post was not added!";
+                return e.Message;
             }
-
         }
 
-        public async Task<Result> DeletePostAsync(Guid guid)
+        public async Task<Result> DeletePostAsync(Guid guid, Guid requesterGuid)
         {
-            var post = await postsRepository
+            try
+            {
+                var post = await postsRepository
                  .GetAllAsNoTracking()
                  .FirstOrDefaultAsync(entity => entity.Guid == guid);
 
-            if (post == null)
-            {
-                return "Post not found";
+                if (post == null)
+                {
+                    return GlobalServicesConstants.EntityDoesNotExist("Post");
+                }
+
+                if (post.AuthorId != requesterGuid)
+                {
+                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
+                }
+
+                postsRepository.Delete(post);
+
+                await postsRepository.SaveChangesAsync();
+
+                return true;
             }
-
-            postsRepository.Delete(post);
-
-            await postsRepository.SaveChangesAsync();
-
-            return true;
+            catch (Exception e)
+            {
+                return e.Message;
+            }
         }
 
         public async Task<PostResponseModel> GetPostByGuidAsync(
@@ -103,15 +112,15 @@ namespace Profitable.Services.Posts
         {
             var post = await postsRepository
                 .GetAllAsNoTracking()
-                .Where(post => !post.IsDeleted)
                 .Include(p => p.Author)
                 .Include(p => p.Likes)
                 .Include("Likes.Author")
+                .Where(post => !post.IsDeleted)
                 .FirstOrDefaultAsync(entity => entity.Guid == guid);
 
             if(post == null)
             {
-                throw new Exception("Post not found");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Post"));
             }
                 
             var mappedPostResponseModel = mapper.Map<PostResponseModel>(post);
@@ -134,14 +143,14 @@ namespace Profitable.Services.Posts
             {
                 var posts = await postsRepository
                     .GetAllAsNoTracking()
-                    .Where(post => !post.IsDeleted)
-                    .OrderByDescending(p => p.PostedOn)
-                    .Skip(page * pageCount)
-                    .Take(pageCount)
                     .Include(p => p.Author)
                     .Include(p => p.Likes)
                     .Include("Likes.Author")
                     .Include(p => p.Comments)
+                    .Where(post => !post.IsDeleted)
+                    .OrderByDescending(p => p.PostedOn)
+                    .Skip(page * pageCount)
+                    .Take(pageCount)
                     .Select(post => mapper.Map<PostResponseModel>(post))
                     .ToListAsync();
 
@@ -168,33 +177,31 @@ namespace Profitable.Services.Posts
             int page,
             int pageCount)
         {
-
             var userEmail = (await applicationUserRepository
                 .GetAllAsNoTracking()
                 .FirstOrDefaultAsync(user => user.Id == userId))?.Email;
 
             if (userEmail == null)
             {
-                throw new Exception("User no found");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User"));
             }
 
             if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
             {
                 var posts = await postsRepository
                     .GetAllAsNoTracking()
+                    .Include(p => p.Author)
+                    .Include(p => p.Likes)
+                    .Include("Likes.Author")
+                    .Include(p => p.Comments)
                     .Where(post =>
                         post.AuthorId == userId &&
                         !post.IsDeleted)
                     .OrderByDescending(p => p.PostedOn)
                     .Skip(page * pageCount)
                     .Take(pageCount)
-                    .Include(p => p.Author)
-                    .Include(p => p.Likes)
-                    .Include("Likes.Author")
-                    .Include(p => p.Comments)
                     .Select(post => mapper.Map<PostResponseModel>(post))
                     .ToListAsync();
-
 
                 foreach (var post in posts)
                 {
@@ -213,24 +220,31 @@ namespace Profitable.Services.Posts
             }
         }
 
-        public async Task<Result> UpdatePostAsync(string postToUpdateGuid, UpdatePostRequestModel newPost)
+        public async Task<Result> UpdatePostAsync(Guid postGuid, UpdatePostRequestModel newPost, Guid requesterGuid)
         {
-            if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
+            try
             {
-                throw new ArgumentException(
-                    $"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
-            }
+                if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
+                {
+                    throw new ArgumentException(
+                        $"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
+                }
 
-            var postToUpdateGuidCasted = Guid.Parse(postToUpdateGuid);
+                var postToUpdate = await postsRepository
+                    .GetAll()
+                    .Where(post => !post.IsDeleted)
+                    .FirstOrDefaultAsync(post => post.Guid == postGuid);
 
-            var postToUpdate = await postsRepository
-                .GetAll()
-                .Where(post => !post.IsDeleted)
-                .FirstOrDefaultAsync(post => post.Guid == postToUpdateGuidCasted);
+                if (postToUpdate == null)
+                {
+                    return GlobalServicesConstants.EntityDoesNotExist("Post");
+                }
 
+                if (postToUpdate.AuthorId != requesterGuid)
+                {
+                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
+                }
 
-            if (postToUpdate != null)
-            {
                 await imageService.DeleteUploadedImageAsync(ImageFor.Posts, postToUpdate.ImageURL);
 
                 string newFileName = "";
@@ -253,26 +267,24 @@ namespace Profitable.Services.Posts
 
                 return true;
             }
-            else
+            catch (Exception e)
             {
-                return "Post was not found!";
+                return e.Message;
             }
         }
 
-        public async Task<int> ManagePostLikeAsync(ApplicationUser author, string postGuid)
+        public async Task<int> ManagePostLikeAsync(Guid authorId, Guid postGuid)
         {
-            var postToUpdateGuidCasted = Guid.Parse(postGuid);
-
             var postToUpdate = await postsRepository
                  .GetAllAsNoTracking()
                  .Where(post => !post.IsDeleted)
                  .Include(post => post.Likes)
-                 .FirstOrDefaultAsync(post => post.Guid == postToUpdateGuidCasted);
+                 .FirstOrDefaultAsync(post => post.Guid == postGuid);
 
             var postLikeExisted = await likesRepository
                 .GetAllAsNoTracking()
                 .FirstOrDefaultAsync(postLike =>
-                    postLike.PostId == postToUpdateGuidCasted && postLike.AuthorId == author.Id);
+                    postLike.PostId == postGuid && postLike.AuthorId == authorId);
 
             int likesToShow = postToUpdate.Likes.Count;
 
@@ -280,8 +292,8 @@ namespace Profitable.Services.Posts
             {
                 var likeToAdd = new Like()
                 {
-                    PostId = postToUpdateGuidCasted,
-                    AuthorId = author.Id,
+                    PostId = postGuid,
+                    AuthorId = authorId,
                 };
 
                 await likesRepository.AddAsync(likeToAdd);

@@ -56,16 +56,15 @@ namespace Profitable.Web.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("byuser/all/{page}/{pageCount}")]
         public async Task<IActionResult> GetPostsByUserAsync(
             [FromRoute] string page,
-            [FromRoute] string pageCount)
+            [FromRoute] string pageCount,
+            [FromQuery] string userEmail)
         {
             try
             {
-                var user = await userManager.FindByEmailAsync(
-                                this.User.FindFirstValue(ClaimTypes.Email));
+                var user = await userManager.FindByEmailAsync(userEmail);
 
                 var posts =
                     await postService.GetPostsByUserAsync(
@@ -95,65 +94,60 @@ namespace Profitable.Web.Controllers
         public async Task<IActionResult> CreateAsync(
             [FromBody] AddPostRequestModel addPostRequestModel)
         {
-            try
+            var result =
+                        await postService.AddPostAsync(this.UserId, addPostRequestModel);
+
+            if (result.Succeeded)
             {
-                var author = await userManager.FindByEmailAsync(
-                                this.User.FindFirstValue(ClaimTypes.Email));
-
-                var postToCreate =
-                        await postService.AddPostAsync(author, addPostRequestModel);
-
-                return Ok(postToCreate);
+                return Ok();
             }
-            catch (Exception err)
+            else
             {
-                return BadRequest(err.Message);
+                return BadRequest(result.Error);
             }
 
         }
 
         [Authorize]
-        [HttpPost("{guid}/likes/manage")]
+        [HttpPost("{postGuid}/likes/manage")]
         public async Task<IActionResult> ManageLikeAsync(
-            [FromRoute] string guid)
+            [FromRoute] string postGuid)
         {
-            var author = await userManager.FindByEmailAsync(
-                            this.User.FindFirstValue(ClaimTypes.Email));
-
-            var likesCount = await postService.ManagePostLikeAsync(author, guid);
+            var likesCount = 
+                    await postService.ManagePostLikeAsync(this.UserId, Guid.Parse(postGuid));
 
             return Ok(likesCount);
         }
 
         [Authorize]
-        [HttpPatch("{guid}/edit")]
+        [HttpPatch("{postGuid}/edit")]
         public async Task<IActionResult> EditAsync(
-            [FromRoute] string guid,
+            [FromRoute] string postGuid,
             [FromBody] UpdatePostRequestModel editPostRequestModel)
         {
-            try
-            {
-                var postToCreate =
-                        await postService.UpdatePostAsync(guid, editPostRequestModel);
+            var result =
+                        await postService.UpdatePostAsync(Guid.Parse(postGuid), editPostRequestModel, this.UserId);
 
-                return Ok(postToCreate);
-            }
-            catch (Exception err)
+            if (result.Succeeded)
             {
-                return BadRequest(err.Message);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Error);
             }
 
         }
 
         [Authorize]
-        [HttpDelete("{guid}/delete")]
-        public async Task<IActionResult> DeleteAsync([FromRoute] Guid guid)
+        [HttpDelete("{postGuid}/delete")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid postGuid)
         {
-            var result = await postService.DeletePostAsync(guid);
+            var result = await postService.DeletePostAsync(postGuid, this.UserId);
 
             if (result.Succeeded)
             {
-                return Ok(result.Succeeded);
+                return Ok();
             }
             else
             {

@@ -21,6 +21,8 @@ namespace Profitable.Models.ResponseModels.Posts
 
         public byte[] PostImage { get; set; }
 
+        public string PostImageFileName { get; set; }
+
         public int CommentsCount { get; set; }
 
         public long LikesCount { get; set; }

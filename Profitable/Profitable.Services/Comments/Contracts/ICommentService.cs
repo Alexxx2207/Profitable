@@ -13,10 +13,10 @@ namespace Profitable.Services.Comments.Contracts
 
         Task<List<CommentResponseModel>> GetCommentsByUserAsync(Guid userGuid, int page, int pageCount);
 
-        Task<Result> AddCommentAsync(Comment newComment);
+        Task<Result> AddCommentAsync(Guid postGuid, AddCommentRequestModel postRequestModel, Guid requesterGuid);
 
-        Task<Result> DeleteCommentAsync(Guid guid);
+        Task<Result> DeleteCommentAsync(Guid guid, Guid requesterGuid);
 
-        Task<Result> UpdateCommentAsync(Guid guid, UpdateCommentRequestModel newComment);
+        Task<Result> UpdateCommentAsync(Guid guid, UpdateCommentRequestModel newComment, Guid requesterGuid);
     }
 }
