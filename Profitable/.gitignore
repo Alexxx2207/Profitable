@@ -232,5 +232,4 @@ _Pvt_Extensions
 .fake/
 
 # Uploads
-Profitable.Web/Uploads/Posts/*
 Profitable.Web/Uploads/Users/*
