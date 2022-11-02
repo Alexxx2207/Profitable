@@ -21,22 +21,41 @@ namespace Profitable.Services.Comments
 			this.mapper = mapper;
 		}
 
-		public async Task<Result> AddCommentAsync(Comment newComment)
+		public async Task<Result> AddCommentAsync(
+            Guid postGuid,
+			AddCommentRequestModel postRequestModel,
+			Guid requesterGuid)
 		{
-			if (newComment.Content.Length > GlobalServicesConstants.CommentMaxLength)
+			try
 			{
-				return
-					$"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
-			}
+                if (postRequestModel.Content.Length > GlobalServicesConstants.CommentMaxLength)
+                {
+                    return
+                        $"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
+                }
 
-			await repository.AddAsync(newComment);
+                var newComment = mapper.Map<Comment>(postRequestModel, opt =>
+                opt.AfterMap((src, dest) =>
+                {
+                    dest.PostId = postGuid;
+                    dest.AuthorId = requesterGuid;
+                    dest.PostedOn = DateTime.UtcNow;
 
-			await repository.SaveChangesAsync();
+                }));
 
-			return true;
-		}
+                await repository.AddAsync(newComment);
 
-		public async Task<Result> DeleteCommentAsync(Guid guid)
+                await repository.SaveChangesAsync();
+
+                return true;
+            }
+			catch (Exception e)
+			{
+                return e.Message;
+            }
+        }
+
+		public async Task<Result> DeleteCommentAsync(Guid guid, Guid requesterGuid)
 		{
 			try
 			{
@@ -48,6 +67,11 @@ namespace Profitable.Services.Comments
 				{
 					return "Comment not found";
 				}
+
+				if(comment.AuthorId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+                }
 
 				repository.Delete(comment);
 
@@ -126,7 +150,8 @@ namespace Profitable.Services.Comments
 
 		public async Task<Result> UpdateCommentAsync(
 			Guid guid,
-			UpdateCommentRequestModel newComment)
+			UpdateCommentRequestModel newComment,
+			Guid requesterGuid)
 		{
 			if (newComment.Content.Length > GlobalServicesConstants.CommentMaxLength)
 			{
@@ -135,22 +160,34 @@ namespace Profitable.Services.Comments
 					$"{GlobalServicesConstants.CommentMaxLength} characters.";
 			}
 
-			var comment = mapper.Map<Comment>(newComment);
-
-			var existingComment = await repository
-				.GetAll().
-				FirstAsync(entity => entity.Guid == guid);
-
-			if (existingComment == null)
+			try
 			{
-				return GlobalServicesConstants.EntityDoesNotExist("Comment");
+                var comment = mapper.Map<Comment>(newComment);
+
+                var existingComment = await repository
+                    .GetAll().
+                    FirstAsync(entity => entity.Guid == guid);
+
+                if (existingComment == null)
+                {
+                    return GlobalServicesConstants.EntityDoesNotExist("Comment");
+                }
+
+                if (existingComment.AuthorId != requesterGuid)
+                {
+                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
+                }
+
+                existingComment.Content = newComment.Content;
+
+                await repository.SaveChangesAsync();
+
+                return true;
+            }
+			catch (Exception e)
+			{
+				return e.Message;
 			}
-
-			existingComment.Content = newComment.Content;
-
-			await repository.SaveChangesAsync();
-
-			return true;
 		}
 	}
 }

@@ -8,6 +8,8 @@ import {
     CLIENT_ERROR_TYPE,
     JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
     LongDirectionName,
+    REQUESTER_NOT_OWNER_FRIENDLIER_MESSAGE,
+    REQUESTER_NOT_OWNER_MESSAGE,
     SERVER_ERROR_TYPE,
     ShortDirectionName,
 } from "../../../../../common/config";
@@ -151,9 +153,18 @@ const reducer = (state, action) => {
                     ),
                 },
             };
-
+        case "setServerError":
+            return {
+                ...state,
+                errors: {
+                    ...state.errors,
+                    serverError: createServerErrorObject(action.payload, true),
+                },
+            };
         default:
-            break;
+            return {
+                ...state,
+            };
     }
 };
 
@@ -253,7 +264,7 @@ export const ChangeFuturesPosition = () => {
                 state.values.chosenContract.tickSize,
                 state.values.chosenContract.tickValue
             )
-                .then((jwt) => {
+                .then(() => {
                     setMessageBoxSettings("The position was edited successfully!", true);
                     navigate(
                         `/users/${searchedProfileEmail}/positions-records/futures/${recordGuid}`
@@ -268,14 +279,16 @@ export const ChangeFuturesPosition = () => {
                         );
                         removeAuth();
                         navigate("/login");
+                    } else if (JWT && err.message === REQUESTER_NOT_OWNER_MESSAGE) {
+                        setState({
+                            type: "setServerError",
+                            payload: REQUESTER_NOT_OWNER_FRIENDLIER_MESSAGE,
+                        });
                     } else {
-                        setState((state) => ({
-                            ...state,
-                            errors: {
-                                ...state.errors,
-                                serverError: createServerErrorObject(err.message, true),
-                            },
-                        }));
+                        setState({
+                            type: "setServerError",
+                            payload: err.message,
+                        });
                     }
                 });
         }

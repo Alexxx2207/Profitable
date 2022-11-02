@@ -96,7 +96,12 @@ export const ProfileInfo = () => {
     };
 
     const saveClickHandler = () => {
-        editUserImage(JWT, profileInfo.previewImageFileName, profileInfo.previewImage)
+        editUserImage(
+            searchedProfileEmail,
+            JWT,
+            profileInfo.previewImageFileName,
+            profileInfo.previewImage
+        )
             .then((result) => {
                 setProfileInfo((state) => ({
                     ...state,
@@ -114,7 +119,7 @@ export const ProfileInfo = () => {
     };
 
     const deleteImageButtonClickHandler = () => {
-        deleteUserImage(JWT)
+        deleteUserImage(JWT, searchedProfileEmail)
             .then((result) => {
                 setMessageBoxSettings(`Your image was deleted successfully!`, true);
                 setProfileInfo((state) => ({
@@ -133,7 +138,7 @@ export const ProfileInfo = () => {
     };
 
     const deleteUserButtonClickHandler = () => {
-        deleteUserData(JWT)
+        deleteUserData(JWT, searchedProfileEmail)
             .then((result) => {
                 setMessageBoxSettings(`Your account was deleted successfully!`, true);
                 removeAuth();
@@ -240,7 +245,7 @@ export const ProfileInfo = () => {
                             <FontAwesomeIcon icon={faUserLock} className={styles.editIcon} />
                         </div>
                         <div className={styles.editForm}>
-                            <EditPassword />
+                            <EditPassword searchedProfileEmail={searchedProfileEmail} />
                         </div>
                     </div>
                     <div className={styles.dangerZoneContainer}>

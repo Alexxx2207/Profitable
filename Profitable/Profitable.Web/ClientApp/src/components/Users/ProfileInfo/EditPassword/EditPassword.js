@@ -23,7 +23,7 @@ import { editUserPasswоrd } from "../../../../services/users/usersService";
 
 import styles from "./EditPassword.module.css";
 
-export const EditPassword = () => {
+export const EditPassword = ({ searchedProfileEmail }) => {
     const navigate = useNavigate();
 
     const { JWT, removeAuth } = useContext(AuthContext);
@@ -120,8 +120,13 @@ export const EditPassword = () => {
         );
 
         if (clientErrors.filter((err) => !err.fulfilled).length === 0) {
-            editUserPasswоrd(JWT, editPassword.values.oldPassword, editPassword.values.newPassword)
-                .then((user) => {
+            editUserPasswоrd(
+                searchedProfileEmail,
+                JWT,
+                editPassword.values.oldPassword,
+                editPassword.values.newPassword
+            )
+                .then(() => {
                     setEditPassword({ ...initialState });
                     setMessageBoxSettings("Password was changed successfully!", true);
                     window.scrollTo(0, 0);
@@ -167,7 +172,7 @@ export const EditPassword = () => {
                                 type="text"
                                 name="oldPassword"
                                 placeholder={"Password123"}
-                                defaultValue={editPassword.values.password}
+                                value={editPassword.values.oldPassword}
                                 onChange={changeHandler}
                             />
                         ) : (
@@ -176,7 +181,7 @@ export const EditPassword = () => {
                                 type="password"
                                 name="oldPassword"
                                 placeholder={"**************"}
-                                defaultValue={editPassword.values.password}
+                                value={editPassword.values.oldPassword}
                                 onChange={changeHandler}
                             />
                         )}
@@ -195,7 +200,7 @@ export const EditPassword = () => {
                                 type="text"
                                 name="newPassword"
                                 placeholder={"Password123"}
-                                defaultValue={editPassword.values.password}
+                                value={editPassword.values.newPassword}
                                 onChange={changeHandler}
                             />
                         ) : (
@@ -204,7 +209,7 @@ export const EditPassword = () => {
                                 type="password"
                                 name="newPassword"
                                 placeholder={"**************"}
-                                defaultValue={editPassword.values.password}
+                                value={editPassword.values.newPassword}
                                 onChange={changeHandler}
                             />
                         )}

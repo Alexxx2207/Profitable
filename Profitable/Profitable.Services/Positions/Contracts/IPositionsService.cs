@@ -10,7 +10,7 @@ namespace Profitable.Services.Positions.Contracts
 
 		Task<PositionResponseModel> GetFuturesPositionByGuid(Guid positionGuid);
 
-		Task<Result> AddFuturesPositions(Guid recordId, AddFuturesPositionRequestModel model);
+		Task<Result> AddFuturesPositions(Guid recordId, AddFuturesPositionRequestModel model, Guid requesterGuid);
 
         Task<Result> ChangeFuturesPosition(
             Guid recordId,

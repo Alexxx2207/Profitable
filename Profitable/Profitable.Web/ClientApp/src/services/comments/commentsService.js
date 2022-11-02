@@ -28,9 +28,9 @@ export const postComment = async (jwt, postId, comment) => {
 
     if ([400, 401].includes(result.status)) {
         throw new Error(result.status);
-    } else {
-        return await result.json();
     }
+
+    return;
 };
 
 export const deleteComment = async (jwt, commentId) => {
@@ -41,7 +41,7 @@ export const deleteComment = async (jwt, commentId) => {
     if ([400, 401].includes(result.status)) {
         throw new Error(result.status);
     } else {
-        return await result.text();
+        return;
     }
 };
 
@@ -59,6 +59,6 @@ export const editComment = async (jwt, commentId, comment) => {
     if ([400, 401].includes(result.status)) {
         throw new Error(result.status);
     } else {
-        return await result.text();
+        return;
     }
 };

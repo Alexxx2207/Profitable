@@ -7,10 +7,16 @@ import { ErrorWidget } from "../../../Common/ErrorWidget/ErrorWidget";
 import {
     JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
     MISSING_POST_GUID_ERROR_PAGE_PATH,
+    POST_CONTENT_MAX_COUNT,
+    REQUESTER_NOT_OWNER_FRIENDLIER_MESSAGE,
+    REQUESTER_NOT_OWNER_MESSAGE,
 } from "../../../../common/config";
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from "../../../../common/config";
 import { getUserEmailFromJWT } from "../../../../services/users/usersService";
-import { isEmptyOrWhiteSpaceFieldChecker } from "../../../../services/common/errorValidationCheckers";
+import {
+    isEmptyOrWhiteSpaceFieldChecker,
+    maxLengthChecker,
+} from "../../../../services/common/errorValidationCheckers";
 import { changeStateValuesForControlledForms } from "../../../../services/common/createStateValues";
 import {
     createClientErrorObject,
@@ -31,6 +37,7 @@ export const EditPost = () => {
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const [editState, setEditState] = useState({
+        userEmail: "",
         values: {
             title: "",
             content: "",
@@ -48,6 +55,11 @@ export const EditPost = () => {
                 fulfilled: true,
                 type: CLIENT_ERROR_TYPE,
             },
+            contentTooBig: {
+                text: `Content less than ${POST_CONTENT_MAX_COUNT} characters`,
+                fulfilled: true,
+                type: CLIENT_ERROR_TYPE,
+            },
             serverError: {
                 text: "",
                 display: false,
@@ -60,7 +72,12 @@ export const EditPost = () => {
 
     useEffect(() => {
         getUserEmailFromJWT(JWT)
-            .then((result) => result)
+            .then((result) =>
+                setEditState((state) => ({
+                    ...state,
+                    userEmail: result,
+                }))
+            )
             .catch((err) => {
                 setMessageBoxSettings("You should login before editing a post!", false);
                 removeAuth();
@@ -70,7 +87,7 @@ export const EditPost = () => {
     }, []);
 
     useEffect(() => {
-        loadParticularPost(postId)
+        loadParticularPost(postId, editState.userEmail)
             .then((result) =>
                 setEditState((state) => ({
                     ...state,
@@ -78,6 +95,7 @@ export const EditPost = () => {
                         title: result.title,
                         content: result.content,
                         image: result.postImage,
+                        imageFileName: result.postImageFileName,
                     },
                 }))
             )
@@ -93,14 +111,14 @@ export const EditPost = () => {
 
         if (clientErrors.filter((err) => !err.fulfilled).length === 0) {
             let body = { ...editState.values };
-
+            console.log(body);
             if (removeImage) {
                 body.image = "";
                 body.imageFileName = "";
             }
 
             editPost(JWT, postId, body)
-                .then((jwt) => {
+                .then(() => {
                     setMessageBoxSettings("The post was edited successfully!", true);
                     navigate(`/posts/${postId}`);
                 })
@@ -112,6 +130,17 @@ export const EditPost = () => {
                         );
                         removeAuth();
                         navigate("/login");
+                    } else if (JWT && err.message === REQUESTER_NOT_OWNER_MESSAGE) {
+                        setEditState((state) => ({
+                            ...state,
+                            errors: {
+                                ...state.errors,
+                                serverError: createServerErrorObject(
+                                    REQUESTER_NOT_OWNER_FRIENDLIER_MESSAGE,
+                                    true
+                                ),
+                            },
+                        }));
                     } else {
                         setEditState((state) => ({
                             ...state,
@@ -155,6 +184,10 @@ export const EditPost = () => {
                     contentEmpty: createClientErrorObject(
                         state.errors.contentEmpty,
                         isEmptyOrWhiteSpaceFieldChecker.bind(null, e.target.value)
+                    ),
+                    contentTooBig: createClientErrorObject(
+                        state.errors.contentTooBig,
+                        maxLengthChecker.bind(null, e.target.value, POST_CONTENT_MAX_COUNT)
                     ),
                 },
             }));

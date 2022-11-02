@@ -41,17 +41,19 @@ export const PostDetails = () => {
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
     const [postPage, setPostPage] = useState({
-        guid: "",
-        title: "",
-        content: "",
-        author: "",
-        authorEmail: "",
-        authorImage: "",
-        postedOn: "",
-        postImage: "",
-        isLikedByTheUser: false,
-        likes: [],
-        comments: [],
+        post: {
+            guid: "",
+            title: "",
+            content: "",
+            author: "",
+            authorEmail: "",
+            authorImage: "",
+            postedOn: "",
+            postImage: "",
+            isLikedByTheUser: false,
+            likes: [],
+            comments: [],
+        },
         showCreateCommentWidget: false,
     });
 
@@ -64,7 +66,10 @@ export const PostDetails = () => {
             getCommentsByPostId(postId, page, pageCount).then((commentsFromAPI) => {
                 setPostPage((state) => ({
                     ...state,
-                    comments: [...state.comments, ...commentsFromAPI],
+                    post: {
+                        ...state.post,
+                        comments: [...state.post.comments, ...commentsFromAPI],
+                    },
                 }));
             });
         },
@@ -76,7 +81,10 @@ export const PostDetails = () => {
             if (commentsFromAPI.length > 0) {
                 setPostPage((state) => ({
                     ...state,
-                    comments: [...commentsFromAPI],
+                    post: {
+                        ...state.post,
+                        comments: [...commentsFromAPI],
+                    },
                 }));
             }
         });
@@ -110,7 +118,10 @@ export const PostDetails = () => {
     useEffect(() => {
         loadParticularPost(postId, userEmail)
             .then((result) => {
-                setPostPage(result);
+                setPostPage((state) => ({
+                    ...state,
+                    post: { ...result },
+                }));
                 loadFirstComments();
             })
             .catch((err) => navigate(`${MISSING_POST_GUID_ERROR_PAGE_PATH}`));
@@ -156,21 +167,21 @@ export const PostDetails = () => {
         e.preventDefault();
         e.stopPropagation();
 
-        navigate(`/users/${postPage.authorEmail}`);
+        navigate(`/users/${postPage.post.authorEmail}`);
     };
 
-    const handleAddCommentButton = () => {
+    const handleAddCommentButton = useCallback(() => {
         setPostPage((state) => ({
             ...state,
             showCreateCommentWidget: !state.showCreateCommentWidget,
         }));
-    };
+    });
 
     return (
         <div className={styles.postPage}>
             <div className={styles.post}>
                 <div className={styles.buttonContainer}>
-                    {postPage.authorEmail && postPage.authorEmail === userEmail ? (
+                    {postPage.post.authorEmail && postPage.post.authorEmail === userEmail ? (
                         <div className={styles.ownerButtonSection}>
                             <button
                                 className={classnames(styles.button, styles.editButton)}
@@ -193,18 +204,18 @@ export const PostDetails = () => {
                 </div>
                 <div className={styles.postContent}>
                     <div className={styles.text}>
-                        <h1 className={styles.title}>{postPage.title}</h1>
-                        {postPage.postImage ? (
+                        <h1 className={styles.title}>{postPage.post.title}</h1>
+                        {postPage.post.postImage ? (
                             <img
                                 className={styles.postImage}
-                                src={createImgURL(postPage.postImage)}
+                                src={createImgURL(postPage.post.postImage)}
                                 alt=""
                             />
                         ) : (
                             ""
                         )}
                         <div className={styles.content}>
-                            {postPage.content.split("\\n").map((paragraph, index) => (
+                            {postPage.post.content.split("\\n").map((paragraph, index) => (
                                 <p key={index}>
                                     {paragraph}
                                     <br />
@@ -212,7 +223,7 @@ export const PostDetails = () => {
                             ))}
                         </div>
                         <div className={styles.postsLikeWidgetContainer}>
-                            <PostsLikeWidget style={styles.postsLikeWidget} post={postPage} />
+                            <PostsLikeWidget style={styles.postsLikeWidget} post={postPage.post} />
                         </div>
                     </div>
                     <div className={styles.information}>
@@ -220,14 +231,14 @@ export const PostDetails = () => {
                             <img
                                 onClick={clickUserProfileHandler}
                                 className={styles.authorImage}
-                                src={createAuthorImgURL(postPage.authorImage)}
+                                src={createAuthorImgURL(postPage.post.authorImage)}
                                 alt=""
                             />
                             <div onClick={clickUserProfileHandler} className={styles.authorName}>
-                                {postPage.author}
+                                {postPage.post.author}
                             </div>
                         </div>
-                        <div className={styles.postedOn}>Posted On: {postPage.postedOn}</div>
+                        <div className={styles.postedOn}>Posted On: {postPage.post.postedOn}</div>
                     </div>
                 </div>
             </div>
@@ -273,7 +284,7 @@ export const PostDetails = () => {
                     <></>
                 )}
                 <div className={styles.commentsListContainer}>
-                    <CommentsList postId={postId} comments={postPage.comments} />
+                    <CommentsList postId={postId} comments={postPage.post.comments} />
                 </div>
             </section>
             <GoToTop />

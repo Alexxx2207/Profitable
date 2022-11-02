@@ -18,10 +18,11 @@ export const createPost = async (jwt, post) => {
         throw new Error("Should auth first");
     }
 
-    return await result.json();
+    return;
 };
 
 export const editPost = async (jwt, postGuid, post) => {
+    console.log(post);
     let result = await request.patch(`${WEB_API_BASE_URL}/posts/${postGuid}/edit`, post, {
         Authorization: "Bearer " + jwt,
     });
@@ -32,7 +33,7 @@ export const editPost = async (jwt, postGuid, post) => {
         throw new Error("Should auth first");
     }
 
-    return await result.json();
+    return;
 };
 
 export const deletePost = async (jwt, postGuid) => {
@@ -46,7 +47,7 @@ export const deletePost = async (jwt, postGuid) => {
         throw new Error("Should auth first");
     }
 
-    return await result.json();
+    return;
 };
 
 export const loadPostsPage = (page, pageCount, userEmail) => {

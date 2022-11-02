@@ -53,46 +53,70 @@ namespace Profitable.Services.Positions
 
 		public async Task<Result> ChangeNamePositionsRecordList(
 			Guid recordGuid,
-			string recordName)
+			string recordName,
+			Guid requesterGuid)
 		{
-			var recordToUpdate = await repository
+            try
+            {
+                var recordToUpdate = await repository
 				.GetAllAsNoTracking()
 				.Where(post => !post.IsDeleted)
 				.FirstOrDefaultAsync(entity => entity.Guid == recordGuid);
 
-			if (recordToUpdate != null)
-			{
-				recordToUpdate.Name = recordName;
+				if (recordToUpdate == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+				}
+			
+				if(recordToUpdate.UserId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
+			
+                recordToUpdate.Name = recordName;
 
-				repository.Update(recordToUpdate);
+                repository.Update(recordToUpdate);
+
+                await repository.SaveChangesAsync();
+
+                return true;
+            }
+			catch (Exception e)
+			{
+				return e.Message;
+			}
+        }
+
+		public async Task<Result> DeletePositionsRecordList(Guid recordGuid, Guid requesterGuid)
+		{
+            try
+            {
+                var record = await repository
+                .GetAllAsNoTracking()
+                .FirstOrDefaultAsync(entity => entity.Guid == recordGuid);
+
+				if (record == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+				}
+
+				if (record.UserId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
+
+				repository.Delete(record);
 
 				await repository.SaveChangesAsync();
 
 				return true;
+
 			}
-			else
+			catch (Exception e)
 			{
-				return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+				return e.Message;
 			}
 		}
-
-		public async Task<Result> DeletePositionsRecordList(Guid recordGuid)
-		{
-            var record = await repository
-                .GetAllAsNoTracking()
-                .FirstOrDefaultAsync(entity => entity.Guid == recordGuid);
-
-            if (record == null)
-            {
-                return GlobalServicesConstants.EntityDoesNotExist("Positions record");
-            }
-
-            repository.Delete(record);
-
-            await repository.SaveChangesAsync();
-
-            return true;
-        }
 
 		public IEnumerable<string> GetPositionsRecordsOrderTypes()
 		{

@@ -13,6 +13,8 @@
 
         public static readonly string UploadsFolderInProject = "Profitable.Web";
 
+        public static readonly string RequesterNotOwnerMesssage = "Requester not owner of the entity";
+
         public static readonly char DirectorySeparatorChar = Path.DirectorySeparatorChar;
 
         public static readonly string UploadsFolderPath =

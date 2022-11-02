@@ -18,27 +18,23 @@ namespace Profitable.Web.Controllers
         private readonly IPositionsService positionsService;
         private readonly ICalculatorService calculatorService;
         private readonly IUserService userService;
-        private readonly UserManager<ApplicationUser> userManager;
 
         public PositionsController(
             IPositionsRecordsService positionsRecordsService,
             IPositionsService positionsService,
             ICalculatorService calculatorService,
-            IUserService userService,
-            UserManager<ApplicationUser> userManager)
+            IUserService userService)
         {
             this.positionsRecordsService = positionsRecordsService;
             this.positionsService = positionsService;
             this.calculatorService = calculatorService;
             this.userService = userService;
-            this.userManager = userManager;
         }
 
         [HttpPost("records/by-user")]
         public async Task<IActionResult> GetAllPositionsRecordsByUser(
             [FromBody] GetUserPositionsRecordsRequestModel query)
         {
-
             try
             {
                 var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(query.UserEmail)).Guid);
@@ -77,10 +73,8 @@ namespace Profitable.Web.Controllers
         {
             try
             {
-                var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(model.UserEmail)).Guid);
-
                 var result = await positionsRecordsService.AddPositionsRecordList(
-                userGuid,
+                this.UserId,
                 model.RecordName,
                 model.InstrumentGroup);
 
@@ -109,7 +103,8 @@ namespace Profitable.Web.Controllers
 
             var result = await positionsRecordsService.ChangeNamePositionsRecordList(
                 Guid.Parse(recordGuid),
-                model.RecordName);
+                model.RecordName,
+                this.UserId);
 
             if (result.Succeeded)
             {
@@ -127,7 +122,8 @@ namespace Profitable.Web.Controllers
         {
 
             var result = await positionsRecordsService.DeletePositionsRecordList(
-                Guid.Parse(recordGuid));
+                Guid.Parse(recordGuid),
+                this.UserId);
 
             if (result.Succeeded)
             {
@@ -179,7 +175,7 @@ namespace Profitable.Web.Controllers
             [FromBody] AddFuturesPositionRequestModel model)
         {
             var result =
-                await positionsService.AddFuturesPositions(Guid.Parse(recordId), model);
+                await positionsService.AddFuturesPositions(Guid.Parse(recordId), model, this.UserId);
 
             if (result.Succeeded)
             {
@@ -198,16 +194,11 @@ namespace Profitable.Web.Controllers
            [FromRoute] string positionGuid,
            [FromBody] ChangeFuturesPositionRequestModel model)
         {
-            var requesterGuid =
-                (
-                await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email))
-                ).Id;
-
 
             var result = await positionsService.ChangeFuturesPosition(
                 Guid.Parse(recordGuid),
                 Guid.Parse(positionGuid),
-                requesterGuid,
+                this.UserId,
                 model);
 
             if (result.Succeeded)
@@ -226,15 +217,10 @@ namespace Profitable.Web.Controllers
             [FromRoute] string recordId,
             [FromRoute] string positionGuid)
         {
-            var requesterGuid =
-                (
-                await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email))
-                ).Id;
-
             var result = await positionsService.DeleteFuturesPositions(
                 Guid.Parse(recordId),
                 Guid.Parse(positionGuid),
-                requesterGuid);
+                this.UserId);
 
             if (result.Succeeded)
             {

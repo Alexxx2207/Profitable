@@ -29,6 +29,9 @@ namespace Profitable.Common.Automapper
                         new ImageByteArrayConverter(ImageFor.Posts),
                         src => src.ImageURL))
                 .ForMember(
+                    dest => dest.PostImageFileName,
+                    opt => opt.MapFrom(source => source.ImageURL))
+                .ForMember(
                     dest => dest.AuthorImage,
                     opt => opt.ConvertUsing(
                         new ImageByteArrayConverter(ImageFor.Users),
