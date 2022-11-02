@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Profitable.Common.Enums;
+using Profitable.Common.GlobalConstants;
 using Profitable.Common.Models;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
@@ -21,8 +22,8 @@ namespace Profitable.Services.Users
         private readonly IImageService imageService;
 
         public UserService(
-            IRepository<ApplicationUser> repository,
             IMapper mapper,
+            IRepository<ApplicationUser> repository,
             IJWTManagerRepository jWTManagerRepository,
             UserManager<ApplicationUser> userManager,
             IImageService imageService)
@@ -43,24 +44,50 @@ namespace Profitable.Services.Users
 
             if(user == null)
             {
-                throw new Exception("User not found");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User"));
             }
 
             return mapper.Map<UserDetailsResponseModel>(user);
         }
 
         public async Task<UserDetailsResponseModel> EditUserAsync(
-            ApplicationUser user,
+            Guid requesterId,
             EditUserRequestModel editUserData)
         {
-            user.FirstName = editUserData.FirstName;
-            user.LastName = editUserData.LastName;
-            user.Description = editUserData.Description;
+            var requester = await repository
+                .GetAll()
+                .Where(user => !user.IsDeleted)
+                .FirstOrDefaultAsync(user => user.Id == requesterId);
 
-            repository.Update(user);
+            var userToEdit = await repository
+               .GetAll()
+               .Where(user => !user.IsDeleted)
+               .FirstOrDefaultAsync(user => user.Email == editUserData.Email);
+
+            if (requester == null)
+            {
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Requester"));
+            }
+            
+            if (userToEdit == null)
+            {
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
+            }
+
+            if(requester.Id != userToEdit.Id)
+            {
+                throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+            }
+
+            requester.FirstName = editUserData.FirstName;
+            requester.LastName = editUserData.LastName;
+            requester.Description = editUserData.Description;
+
+            repository.Update(requester);
+
             await repository.SaveChangesAsync();
 
-            return mapper.Map<UserDetailsResponseModel>(user);
+            return mapper.Map<UserDetailsResponseModel>(requester);
         }
 
         public async Task<JWTToken> LoginUserAsync(LoginUserRequestModel userRequestModel)
@@ -73,12 +100,8 @@ namespace Profitable.Services.Users
             if (user != null &&
                 await userManager.CheckPasswordAsync(user, userRequestModel.Password))
             {
-                return jWTManagerRepository.Authenticate(new AuthUserModel
-                {
-                    Guid = user.Id.ToString(),
-                    Email = user.Email,
-                    UserName = user.UserName,
-                });
+                return jWTManagerRepository
+                        .Authenticate(mapper.Map<AuthUserModel>(user));
             }
             else
             {
@@ -92,13 +115,7 @@ namespace Profitable.Services.Users
 
             if (userRequestModel.FirstName.Length >= 2 && userRequestModel.LastName.Length >= 2)
             {
-                var user = new ApplicationUser()
-                {
-                    Email = userRequestModel.Email,
-                    UserName = userRequestModel.Email,
-                    FirstName = userRequestModel.FirstName,
-                    LastName = userRequestModel.LastName,
-                };
+                var user = mapper.Map<ApplicationUser>(userRequestModel);
 
                 var result = await userManager.CreateAsync(user, userRequestModel.Password);
                 if (!result.Succeeded)
@@ -110,12 +127,8 @@ namespace Profitable.Services.Users
                 }
                 else
                 {
-                    return jWTManagerRepository.Authenticate(new AuthUserModel
-                    {
-                        Guid = user.Id.ToString(),
-                        Email = user.Email,
-                        UserName = user.UserName,
-                    });
+                    return jWTManagerRepository
+                                .Authenticate(mapper.Map<AuthUserModel>(user));
                 }
             }
             else
@@ -125,117 +138,183 @@ namespace Profitable.Services.Users
         }
 
         public async Task<UserDetailsResponseModel> EditUserPasswordAsync(
-            ApplicationUser user,
+            Guid requesterId,
             EditUserPasswordRequestModel editUserData)
         {
-            if (!user.IsDeleted)
-            {
-                var result =
-                    await userManager.ChangePasswordAsync(
-                        user, editUserData.OldPassword,
-                        editUserData.newPassword);
+            var requester = await repository
+                .GetAll()
+                .Where(user => !user.IsDeleted)
+                .FirstOrDefaultAsync(user => user.Id == requesterId);
 
-                if (result.Succeeded)
-                {
-                    return mapper.Map<UserDetailsResponseModel>(user);
-                }
-                else
-                {
-                    throw new Exception("Invalid old password");
-                }
+            var userToEdit = await repository
+               .GetAll()
+               .Where(user => !user.IsDeleted)
+               .FirstOrDefaultAsync(user => user.Email == editUserData.Email);
+
+            if (requester == null)
+            {
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Requester"));
+            }
+
+            if (userToEdit == null)
+            {
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
+            }
+
+            if (requester.Id != userToEdit.Id)
+            {
+                throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+            }
+
+            var result =
+                     await userManager.ChangePasswordAsync(
+                         requester, editUserData.OldPassword,
+                         editUserData.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return mapper.Map<UserDetailsResponseModel>(requester);
             }
             else
             {
-                throw new Exception("User was deleted");
+                throw new Exception("Invalid old password");
             }
         }
 
         public async Task<UserDetailsResponseModel> EditUserProfileImageAsync(
-            ApplicationUser user,
+            Guid requesterId,
             EditUserProfileImageRequestModel editUserData)
         {
-            if (!user.IsDeleted)
+
+            var requester = await repository
+                 .GetAll()
+                 .Where(user => !user.IsDeleted)
+                 .FirstOrDefaultAsync(user => user.Id == requesterId);
+
+            var userToEdit = await repository
+               .GetAll()
+               .Where(user => !user.IsDeleted)
+               .FirstOrDefaultAsync(user => user.Email == editUserData.Email);
+
+            if (requester == null)
             {
-
-                if (user != null)
-                {
-                    if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
-                    {
-                        await imageService.DeleteUploadedImageAsync(
-                            ImageFor.Users,
-                            user.ProfilePictureURL);
-                    }
-                    string newFileName =
-                            await imageService.SaveUploadedImageAsync(
-                                ImageFor.Users,
-                                editUserData.FileName,
-                                editUserData.Image);
-
-                    user.ProfilePictureURL = newFileName;
-
-                    repository.Update(user);
-                    await repository.SaveChangesAsync();
-
-                    return mapper.Map<UserDetailsResponseModel>(user);
-                }
-                else
-                {
-                    throw new Exception("User profile image was not edited");
-                }
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Requester"));
             }
-            else
+
+            if (userToEdit == null)
             {
-                throw new Exception("User was deleted");
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
             }
+
+            if (requester.Id != userToEdit.Id)
+            {
+                throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+            }
+
+            if (!string.IsNullOrWhiteSpace(requester.ProfilePictureURL))
+            {
+                await imageService.DeleteUploadedImageAsync(
+                    ImageFor.Users,
+                    requester.ProfilePictureURL);
+            }
+
+            string newFileName =
+                    await imageService.SaveUploadedImageAsync(
+                        ImageFor.Users,
+                        editUserData.FileName,
+                        editUserData.Image);
+
+            requester.ProfilePictureURL = newFileName;
+
+            repository.Update(requester);
+
+            await repository.SaveChangesAsync();
+
+            return mapper.Map<UserDetailsResponseModel>(requester);
         }
 
-        public async Task<Result> DeleteUserImageAsync(ApplicationUser user)
+        public async Task<Result> DeleteUserImageAsync(Guid requesterId, string emailOfDeleteUser)
         {
-            if (!user.IsDeleted)
+            var requester = await repository
+                 .GetAll()
+                 .Where(user => !user.IsDeleted)
+                 .FirstOrDefaultAsync(user => user.Id == requesterId);
+
+            var userToEdit = await repository
+               .GetAll()
+               .Where(user => !user.IsDeleted)
+               .FirstOrDefaultAsync(user => user.Email == emailOfDeleteUser);
+
+            if (requester == null)
             {
-                if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
-                {
-                    await imageService.DeleteUploadedImageAsync(
-                        ImageFor.Users,
-                        user.ProfilePictureURL);
-                }
-
-                user.ProfilePictureURL = "";
-
-                repository.Update(user);
-
-                await repository.SaveChangesAsync();
-
-                return true;
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Requester"));
             }
-            else
+
+            if (userToEdit == null)
             {
-                return "User was not found!";
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
             }
+
+            if (requester.Id != userToEdit.Id)
+            {
+                throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+            }
+            
+            if (!string.IsNullOrWhiteSpace(requester.ProfilePictureURL))
+            {
+                await imageService.DeleteUploadedImageAsync(
+                    ImageFor.Users,
+                    requester.ProfilePictureURL);
+            }
+
+            requester.ProfilePictureURL = "";
+
+            repository.Update(requester);
+
+            await repository.SaveChangesAsync();
+
+            return true;
         }
 
-        public async Task<Result> HardDeleteUserAsync(ApplicationUser user)
+        public async Task<Result> HardDeleteUserAsync(Guid requesterId, string emailOfDeleteUser)
         {
-            if (!user.IsDeleted)
+            var requester = await repository
+                 .GetAll()
+                 .Where(user => !user.IsDeleted)
+                 .FirstOrDefaultAsync(user => user.Id == requesterId);
+
+            var userToEdit = await repository
+               .GetAll()
+               .Where(user => !user.IsDeleted)
+               .FirstOrDefaultAsync(user => user.Email == emailOfDeleteUser);
+
+            if (requester == null)
             {
-                if (!string.IsNullOrWhiteSpace(user.ProfilePictureURL))
-                {
-                    await imageService.DeleteUploadedImageAsync(
-                        ImageFor.Users,
-                        user.ProfilePictureURL);
-                }
-
-                repository.HardDelete(user);
-
-                await repository.SaveChangesAsync();
-
-                return true;
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Requester"));
             }
-            else
+
+            if (userToEdit == null)
             {
-                return "User was not found!";
-
+                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
             }
+
+            if (requester.Id != userToEdit.Id)
+            {
+                throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+            }
+
+            if (!string.IsNullOrWhiteSpace(requester.ProfilePictureURL))
+            {
+                await imageService.DeleteUploadedImageAsync(
+                    ImageFor.Users,
+                    requester.ProfilePictureURL);
+            }
+
+            repository.HardDelete(requester);
+
+            await repository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

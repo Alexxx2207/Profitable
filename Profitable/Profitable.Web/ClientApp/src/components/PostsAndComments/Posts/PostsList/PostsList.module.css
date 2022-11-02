@@ -1,7 +1,18 @@
-
 .postsList {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 1rem;
+}
+
+
+.noPostsYetMessage {
+    text-align: center;
+    width: 100%;
+    background-color: white;
+    color: black;
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    text-transform: capitalize;
+    letter-spacing: 1px;
 }

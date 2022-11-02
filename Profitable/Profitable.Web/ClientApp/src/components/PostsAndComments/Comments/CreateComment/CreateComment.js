@@ -14,13 +14,13 @@ const reducer = (state, action) => {
         case "changeCommentContent":
             return {
                 ...state,
-                content: action.CommentContent,
+                content: action.payload,
             };
         case "changeCommentAuthor":
             return {
                 ...state,
-                authorName: action.authorName,
-                authorEmail: action.authorEmail,
+                authorName: action.payload.authorName,
+                authorEmail: action.payload.authorEmail,
             };
         default:
             break;
@@ -43,8 +43,10 @@ export const CreateComment = ({ postId, loadFirstComments, handleAddCommentButto
         getUserDataByJWT(JWT).then((result) => {
             setCommentInfo({
                 type: "changeCommentAuthor",
-                authorName: result.firstName + " " + result.lastName,
-                authorEmail: result.email,
+                payload: {
+                    authorName: result.firstName + " " + result.lastName,
+                    authorEmail: result.email,
+                },
             });
         });
     }, [JWT]);
@@ -56,18 +58,18 @@ export const CreateComment = ({ postId, loadFirstComments, handleAddCommentButto
     const handleChange = (e) => {
         setCommentInfo({
             type: "changeCommentContent",
-            CommentContent: e.target.value,
+            payload: e.target.value,
         });
     };
     const sendCommentHandler = (e) => {
         postComment(JWT, postId, commentInfo.content)
-            .then((response) => {
+            .then(() => {
                 setMessageBoxSettings("You posted a comment", true);
                 loadFirstComments();
                 handleAddCommentButton();
                 setCommentInfo({
                     type: "changeCommentContent",
-                    CommentContent: "",
+                    payload: "",
                 });
             })
             .catch((err) => {

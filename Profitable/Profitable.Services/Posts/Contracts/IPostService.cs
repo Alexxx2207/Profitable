@@ -13,12 +13,12 @@ namespace Profitable.Services.Posts.Contracts
 
         Task<List<PostResponseModel>> GetPostsByUserAsync(Guid userId, int page, int pageCount);
 
-        Task<int> ManagePostLikeAsync(ApplicationUser author, string postGuid);
+        Task<int> ManagePostLikeAsync(Guid authorId, Guid postGuid);
 
-        Task<Result> AddPostAsync(ApplicationUser author, AddPostRequestModel newPost);
+        Task<Result> AddPostAsync(Guid authorId, AddPostRequestModel newPost);
 
-        Task<Result> DeletePostAsync(Guid guid);
+        Task<Result> DeletePostAsync(Guid guid, Guid requesterGuid);
 
-        Task<Result> UpdatePostAsync(string postToUpdateGuid, UpdatePostRequestModel newPost);
+        Task<Result> UpdatePostAsync(Guid postGuid, UpdatePostRequestModel newPost, Guid requesterGuid);
     }
 }

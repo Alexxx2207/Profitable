@@ -126,7 +126,7 @@ export const createPosition = async (
     );
 
     if ([400, 401].includes(response.status)) {
-        throw new Error(response.status);
+        throw new Error(await response.text());
     }
 
     return;
@@ -162,9 +162,8 @@ export const changePosition = async (
             Authorization: "Bearer " + JWT,
         }
     );
-
     if ([400, 401].includes(response.status)) {
-        throw new Error(response.status);
+        throw new Error(await response.text());
     }
     return;
 };
@@ -178,8 +177,11 @@ export const deletePosition = async (JWT, recordId, positionGuid) => {
         }
     );
 
-    if ([400, 401].includes(response.status)) {
+    if (response.status === 401) {
         throw new Error(response.status);
+    }
+    if (response.status === 400) {
+        throw new Error(await response.text());
     }
 
     return;

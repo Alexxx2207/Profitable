@@ -57,10 +57,11 @@ export const editGeneralUserData = async (email, firstName, lastName, descriptio
     return await response.json();
 };
 
-export const editUserPasswоrd = async (jwt, oldPassword, newPassword) => {
+export const editUserPasswоrd = async (email, jwt, oldPassword, newPassword) => {
     let response = await request.patch(
         `${WEB_API_BASE_URL}/users/user/edit/password`,
         {
+            email,
             oldPassword,
             newPassword,
         },
@@ -75,13 +76,14 @@ export const editUserPasswоrd = async (jwt, oldPassword, newPassword) => {
         throw new Error(INVALID_OLD_PASSWORD_PROVIDED_ERROR_MESSAGE);
     }
 
-    return await response.json();
+    return;
 };
 
-export const editUserImage = async (jwt, fileName, image) => {
+export const editUserImage = async (email, jwt, fileName, image) => {
     let response = await request.patch(
         `${WEB_API_BASE_URL}/users/user/edit/profileImage`,
         {
+            email,
             fileName,
             image,
         },
@@ -109,8 +111,8 @@ export const getUserDataByJWT = async (jwt) => {
     return await response.json();
 };
 
-export const deleteUserData = async (jwt) => {
-    let response = await request.delete(`${WEB_API_BASE_URL}/users/user/delete`, null, {
+export const deleteUserData = async (jwt, email) => {
+    let response = await request.delete(`${WEB_API_BASE_URL}/users/${email}/delete`, null, {
         Authorization: "Bearer " + jwt,
     });
 
@@ -121,8 +123,8 @@ export const deleteUserData = async (jwt) => {
     return await response.json();
 };
 
-export const deleteUserImage = async (jwt) => {
-    let response = await request.delete(`${WEB_API_BASE_URL}/users/user/image/delete`, null, {
+export const deleteUserImage = async (jwt, email) => {
+    let response = await request.delete(`${WEB_API_BASE_URL}/users/${email}/image/delete`, null, {
         Authorization: "Bearer " + jwt,
     });
 

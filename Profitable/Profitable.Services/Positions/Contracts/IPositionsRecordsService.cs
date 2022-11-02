@@ -16,7 +16,8 @@ namespace Profitable.Services.Positions.Contracts
 
 		Task<Result> AddPositionsRecordList(Guid userGuid, string recordName, string instrumentGroup);
 
-		Task<Result> ChangeNamePositionsRecordList(Guid recordGuid, string recordName);
-		Task<Result> DeletePositionsRecordList(Guid recordGuid);
+		Task<Result> ChangeNamePositionsRecordList(Guid recordGuid, string recordName, Guid requesterGuid);
+
+		Task<Result> DeletePositionsRecordList(Guid recordGuid, Guid requesterGuid);
 	}
 }

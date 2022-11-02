@@ -174,3 +174,7 @@
 .iconAddComment {
     margin-right: 1rem;
 }
+
+.commentsListContainer {
+    margin: 2rem 6rem;
+}
