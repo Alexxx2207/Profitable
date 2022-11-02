@@ -7,11 +7,11 @@ export const getCommentsByPostId = (postId, page, commentsCount) => {
         .then((response) => response.json());
 };
 
-export const getCommentsByUserId = (jwt, page, commentsCount) => {
+export const getCommentsByUserId = (userEmail, page, commentsCount) => {
     return request
-        .get(`${WEB_API_BASE_URL}/comments/byuser/all/${page}/${commentsCount}`, null, {
-            Authorization: "Bearer " + jwt,
-        })
+        .get(
+            `${WEB_API_BASE_URL}/comments/byuser/all/${page}/${commentsCount}?userEmail=${userEmail}`
+        )
         .then((response) => response.json());
 };
 

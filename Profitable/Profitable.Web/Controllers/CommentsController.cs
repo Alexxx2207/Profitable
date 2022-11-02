@@ -49,10 +49,12 @@ namespace Profitable.Web.Controllers
 		}
 
 		[HttpGet("byuser/all/{page}/{pageCount}")]
-		public async Task<IActionResult> GetAllByUser(string page, string pageCount)
+		public async Task<IActionResult> GetAllByUser(
+			[FromRoute] string page,
+            [FromRoute] string pageCount,
+            [FromQuery] string userEmail)
 		{
-			var user =
-					await userManager.FindByEmailAsync(this.User.FindFirstValue(ClaimTypes.Email));
+			var user = await userManager.FindByEmailAsync(userEmail);
 
 			var comments =
 				await commentService.GetCommentsByUserAsync(

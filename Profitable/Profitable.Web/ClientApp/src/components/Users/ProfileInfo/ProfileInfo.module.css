@@ -155,7 +155,7 @@
 .dangerZoneHeadingContainer {
     display: flex;
     align-items: center;
-    margin: 5vh 4vw;
+    margin: 2rem 2rem;
 }
 
 .dangerZoneHeadingContainer *{
@@ -172,8 +172,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 8vh 4vw;
-    padding: 3vh 2vw;
+    margin: 2rem 3rem;
+    padding: 1rem 2rem;
     border: 1px solid rgba(128, 128, 128, 0.427);
     border-radius: 10px;
 }

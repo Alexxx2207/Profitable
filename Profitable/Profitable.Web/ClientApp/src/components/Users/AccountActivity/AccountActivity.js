@@ -1,21 +1,17 @@
-import { useEffect, useReducer, useContext, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useReducer, useCallback } from "react";
 import {
     ACTIVITY_TYPE_COMMENTS,
     ACTIVITY_TYPE_POSTS,
     COMMENTS_LIST_IN_POST_PAGE_COUNT,
-    JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
     POSTS_LIST_POSTS_IN_PAGE_COUNT,
 } from "../../../common/config";
 import { loadPostsPageByUserId } from "../../../services/posts/postsService";
 import { CommentsList } from "../../PostsAndComments/Comments/CommentsList/CommentsList";
 import { PostsList } from "../../PostsAndComments/Posts/PostsList/PostsList";
 import { getCommentsByUserId } from "../../../services/comments/commentsService";
-import { AuthContext } from "../../../contexts/AuthContext";
-import { MessageBoxContext } from "../../../contexts/MessageBoxContext";
-import { getUserDataByJWT } from "../../../services/users/usersService";
 
 import styles from "./AccountActivity.module.css";
+import { useParams } from "react-router-dom";
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -47,11 +43,6 @@ const reducer = (state, action) => {
                 };
             }
             break;
-        case "updateUserId":
-            return {
-                ...state,
-                userId: action.payload.userId,
-            };
         case "increasePageCount":
             return {
                 ...state,
@@ -63,77 +54,60 @@ const reducer = (state, action) => {
 };
 
 export const AccountActivity = () => {
-    const navigate = useNavigate();
-
     const [state, setState] = useReducer(reducer, {
         activityType: ACTIVITY_TYPE_POSTS,
         activityList: [],
         page: 0,
-        userId: "",
     });
 
-    const { JWT, removeAuth } = useContext(AuthContext);
-
-    const { setMessageBoxSettings } = useContext(MessageBoxContext);
+    const { searchedProfileEmail } = useParams();
 
     useEffect(() => {
-        getUserDataByJWT(JWT)
-            .then((result) => {
+        loadPostsPageByUserId(searchedProfileEmail, 0, POSTS_LIST_POSTS_IN_PAGE_COUNT).then(
+            (result) => {
+                console.log("a");
                 setState({
-                    type: "updateUserId",
+                    type: "changeActivityType",
                     payload: {
-                        userId: result.guid,
+                        activityType: state.activityType,
+                        activityList: result,
                     },
                 });
-                loadPostsPageByUserId(JWT, 0, POSTS_LIST_POSTS_IN_PAGE_COUNT).then((result) => {
-                    setState({
-                        type: "changeActivityType",
-                        payload: {
-                            activityType: state.activityType,
-                            activityList: result,
-                        },
-                    });
-                });
-            })
-            .catch((err) => {
-                if (JWT && err.message === JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE) {
-                    setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
-                    removeAuth();
-                    navigate("/login");
-                } else {
-                    setMessageBoxSettings("You should login before creating a post!", false);
-                    navigate("/login");
-                }
-            });
-    }, [JWT, removeAuth, navigate, setMessageBoxSettings, state.activityType]);
+            }
+        );
+    }, []);
 
     const handleActivityTypeChange = (e) => {
         if (e.target.value === ACTIVITY_TYPE_POSTS) {
-            loadPostsPageByUserId(JWT, 0, POSTS_LIST_POSTS_IN_PAGE_COUNT).then((result) => {
-                setState({
-                    type: "changeActivityType",
-                    payload: {
-                        activityType: ACTIVITY_TYPE_POSTS,
-                        activityList: result,
-                    },
-                });
-            });
+            loadPostsPageByUserId(searchedProfileEmail, 0, POSTS_LIST_POSTS_IN_PAGE_COUNT).then(
+                (result) => {
+                    setState({
+                        type: "changeActivityType",
+                        payload: {
+                            activityType: ACTIVITY_TYPE_POSTS,
+                            activityList: result,
+                        },
+                    });
+                }
+            );
         } else if (e.target.value === ACTIVITY_TYPE_COMMENTS) {
-            getCommentsByUserId(JWT, 0, COMMENTS_LIST_IN_POST_PAGE_COUNT).then((result) => {
-                setState({
-                    type: "changeActivityType",
-                    payload: {
-                        activityType: ACTIVITY_TYPE_COMMENTS,
-                        activityList: result,
-                    },
-                });
-            });
+            getCommentsByUserId(searchedProfileEmail, 0, COMMENTS_LIST_IN_POST_PAGE_COUNT).then(
+                (result) => {
+                    setState({
+                        type: "changeActivityType",
+                        payload: {
+                            activityType: ACTIVITY_TYPE_COMMENTS,
+                            activityList: result,
+                        },
+                    });
+                }
+            );
         }
     };
 
     const loadComments = useCallback(
         (page, pageCount) => {
-            getCommentsByUserId(JWT, page, pageCount).then((result) => {
+            getCommentsByUserId(searchedProfileEmail, page, pageCount).then((result) => {
                 setState({
                     type: "addActivityByScroll",
                     payload: {
@@ -142,12 +116,12 @@ export const AccountActivity = () => {
                 });
             });
         },
-        [JWT]
+        [searchedProfileEmail]
     );
 
     const loadPosts = useCallback(
         (page, pageCount) => {
-            loadPostsPageByUserId(JWT, page, pageCount).then((result) => {
+            loadPostsPageByUserId(searchedProfileEmail, page, pageCount).then((result) => {
                 setState({
                     type: "addActivityByScroll",
                     payload: {
@@ -156,7 +130,7 @@ export const AccountActivity = () => {
                 });
             });
         },
-        [JWT]
+        [searchedProfileEmail]
     );
 
     const handleScroll = useCallback(
@@ -187,13 +161,9 @@ export const AccountActivity = () => {
     return (
         <div className={styles.ActivityContainer}>
             <div className={styles.gotoTopButtonContainer}></div>
-            <select
-                onChange={handleActivityTypeChange}
-                value={state.activityType}
-                className={styles.activityTypeSelectorType}
-            >
-                <option value="posts">Posts</option>
-                <option value="comments">Comments</option>
+            <select onChange={handleActivityTypeChange} className={styles.activityTypeSelectorType}>
+                <option value={ACTIVITY_TYPE_POSTS}>Posts</option>
+                <option value={ACTIVITY_TYPE_COMMENTS}>Comments</option>
             </select>
 
             <section className={styles.listContainer}>

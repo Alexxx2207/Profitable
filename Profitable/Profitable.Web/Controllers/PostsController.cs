@@ -56,16 +56,15 @@ namespace Profitable.Web.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("byuser/all/{page}/{pageCount}")]
         public async Task<IActionResult> GetPostsByUserAsync(
             [FromRoute] string page,
-            [FromRoute] string pageCount)
+            [FromRoute] string pageCount,
+            [FromQuery] string userEmail)
         {
             try
             {
-                var user = await userManager.FindByEmailAsync(
-                                this.User.FindFirstValue(ClaimTypes.Email));
+                var user = await userManager.FindByEmailAsync(userEmail);
 
                 var posts =
                     await postService.GetPostsByUserAsync(

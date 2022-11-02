@@ -55,11 +55,9 @@ export const loadPostsPage = (page, pageCount, userEmail) => {
         .then((response) => response.json());
 };
 
-export const loadPostsPageByUserId = (jwt, page, pageCount) => {
+export const loadPostsPageByUserId = (userEmail, page, pageCount) => {
     return request
-        .get(`${WEB_API_BASE_URL}/posts/byuser/all/${page}/${pageCount}`, null, {
-            Authorization: "Bearer " + jwt,
-        })
+        .get(`${WEB_API_BASE_URL}/posts/byuser/all/${page}/${pageCount}?userEmail=${userEmail}`)
         .then((response) => response.json());
 };
 
