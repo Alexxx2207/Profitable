@@ -1,5 +1,5 @@
 .pageContainer {
-    padding-top: 5vh;
+    padding-top: 2rem;
 }
 
 .createSectionContainer {
@@ -11,9 +11,9 @@
     display: flex;
     justify-content: center;
     width: 50%;
-    margin-right: 5vw;
+    margin-right: 3rem;
     position: sticky;
-    height: 91vh;
+    height: 41rem;
     top: 12rem;
 }
 
@@ -25,7 +25,7 @@
     width: 100%;
     background-color: white;
     border-radius: 20px;
-    padding: 2vh 4vw;
+    padding: 1rem 3rem;
 }
 
 .createForm * {
@@ -37,7 +37,7 @@
     border-bottom: 2px solid black;
     width: 100%;
     text-align: center;
-    margin-bottom: 4vh;
+    margin-bottom: 2rem;
 }
 
 .createLabel {
@@ -47,7 +47,7 @@
 .formGroup {
     display: flex;
     align-items: center;
-    margin: 0.5rem 0vw;
+    margin: 0.5rem 0rem;
     width: 100%;
 }
 
@@ -64,7 +64,7 @@
     border: 2px solid #1e222d5c;
     border-radius: 10px;
     display: inline-block;
-    padding: 1vh 1vw;
+    padding: 0.5rem 1rem;
     width: 65%;
     font-size: 1.3rem;
 }
@@ -75,7 +75,7 @@
 
 .submitButtonContainer {
     width: 100%;
-    padding: 3vh 0vw 2vh 0vw;
+    padding: 2rem 0rem 1rem 0rem;
 }
 
 .submitButton {
@@ -85,7 +85,7 @@
     font-weight: 700;
     border: none;
     letter-spacing: 1px;
-    border-radius: 1vh;
+    border-radius: 10px;
     border: 0.2rem solid #1e222d21;
     transition: linear 0.5s;
 
@@ -95,7 +95,7 @@
     cursor: pointer;
     background-color: #1e222d;
     color: white;
-    border-radius: 1vh;
+    border-radius: 10px;
     transition: linear 0.3s;
 }
 
@@ -105,12 +105,12 @@
 
 .errorsHeadingContainer {
     border-bottom: 2px solid white;
-    margin-bottom: 3vh;
+    margin-bottom: 1.5rem;
 }
 
 .errorsHeading {
     text-align: center;
-    margin-bottom: 2vh;
+    margin-bottom: 1rem;
 }
 
 .errorsContainer {
@@ -123,8 +123,6 @@
 .buttonContainer {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2vh;
-    padding-left: 4vw;
 }
 
 .button {
