@@ -1,14 +1,14 @@
 ﻿using Profitable.Common.Models;
-using Profitable.Models.RequestModels.Positions;
-using Profitable.Models.ResponseModels.Positions;
+using Profitable.Models.RequestModels.Positions.Futures;
+using Profitable.Models.ResponseModels.Positions.Futures;
 
 namespace Profitable.Services.Positions.Contracts
 {
-	public interface IPositionsService
-	{
-        Task<List<PositionResponseModel>> GetFuturesPositions(Guid recordId, DateTime afterDateFilter);
+    public interface IFuturesPositionsService
+    {
+        Task<List<FuturesPositionResponseModel>> GetFuturesPositions(Guid recordId, DateTime afterDateFilter);
 
-		Task<PositionResponseModel> GetFuturesPositionByGuid(Guid positionGuid);
+		Task<FuturesPositionResponseModel> GetFuturesPositionByGuid(Guid positionGuid);
 
 		Task<Result> AddFuturesPositions(Guid recordId, AddFuturesPositionRequestModel model, Guid requesterGuid);
 
@@ -19,5 +19,7 @@ namespace Profitable.Services.Positions.Contracts
             ChangeFuturesPositionRequestModel model);
 
         Task<Result> DeleteFuturesPositions(Guid recordId, Guid positionGuid, Guid requesterGuid);
+
+        CalculateFuturesPositionResponseModel CalculateFuturesPosition(CalculateFuturesPositionRequestModel model);
     }
 }

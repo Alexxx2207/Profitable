@@ -22,7 +22,7 @@ import {
     createServerErrorObject,
 } from "../../../../../services/common/createValidationErrorObject";
 
-import { createPosition } from "../../../../../services/positions/positionsService";
+import { createPosition } from "../../../../../services/positions/futuresPositionsService";
 import { loadFuturesContracts } from "../../../../../services/futures/futuresService";
 
 import styles from "./CreateFuturesPosition.module.css";

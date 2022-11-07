@@ -62,9 +62,9 @@ namespace Profitable.Web.Infrastructure
             services.AddScoped<IPositionsRecordsService, PositionsRecordsService>();
             services.AddScoped<IUserSearchService, UserSearchService>();
             services.AddScoped<IPostSearchService, PostSearchService>();
-            services.AddScoped<IPositionsService, PositionsService>();
-            services.AddScoped<ICalculatorService, PositionsService>();
-
+            services.AddScoped<IFuturesPositionsService, FuturesPositionsService>();
+            services.AddScoped<IStocksPositionsService, StocksPositionsService>();
+            
             return services;
         }
 
@@ -110,7 +110,9 @@ namespace Profitable.Web.Infrastructure
                 mc.AddProfile(new MarketsMapper());
                 mc.AddProfile(new UsersMapper());
                 mc.AddProfile(new FuturesContractsMapper());
-                mc.AddProfile(new PositionsMapper());
+                mc.AddProfile(new FuturesPositionsMapper());
+                mc.AddProfile(new StocksPositionsMapper());
+                mc.AddProfile(new PositionsRecordsMapper());
                 mc.AddProfile(new NewsMapper());
             });
 

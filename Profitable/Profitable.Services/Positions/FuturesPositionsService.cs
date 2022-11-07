@@ -6,38 +6,35 @@ using Profitable.Common.Models;
 using Profitable.Common.Services;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
-using Profitable.Models.RequestModels.Positions;
-using Profitable.Models.ResponseModels.Positions;
+using Profitable.Models.RequestModels.Positions.Futures;
+using Profitable.Models.ResponseModels.Positions.Futures;
 using Profitable.Services.Positions.Contracts;
 
 namespace Profitable.Services.Positions
 {
-	public class PositionsService : IPositionsService, ICalculatorService
+	public class FuturesPositionsService : IFuturesPositionsService
     {
 		private readonly IRepository<TradePosition> tradePositionsRepository;
 		private readonly IRepository<FuturesPosition> futuresPositionsRepository;
-		private readonly IRepository<FuturesPosition> stocksPositionsRepository;
 		private readonly IRepository<FuturesContract> futuresContractRepository;
 		private readonly IRepository<PositionsRecordList> positionsRecordListRepository;
 		private readonly IMapper mapper;
 
-		public PositionsService(
+		public FuturesPositionsService(
 			IRepository<TradePosition> tradePositionsRepository,
 			IRepository<FuturesPosition> futuresPositionsRepository,
-			IRepository<FuturesPosition> stocksPositionsRepository,
 			IRepository<FuturesContract> futuresContractRepository,
 			IRepository<PositionsRecordList> positionsRecordListRepository,
 			IMapper mapper)
 		{
 			this.tradePositionsRepository = tradePositionsRepository;
 			this.futuresPositionsRepository = futuresPositionsRepository;
-			this.stocksPositionsRepository = stocksPositionsRepository;
 			this.futuresContractRepository = futuresContractRepository;
 			this.positionsRecordListRepository = positionsRecordListRepository;
 			this.mapper = mapper;
 		}
 
-		public async Task<List<PositionResponseModel>> GetFuturesPositions(
+		public async Task<List<FuturesPositionResponseModel>> GetFuturesPositions(
 			Guid recordId,
 			DateTime afterDateFilter)
 		{
@@ -48,10 +45,10 @@ namespace Profitable.Services.Positions
 					!p.IsDeleted &&
 					p.PositionAddedOn >= afterDateFilter &&
 					p.PositionsRecordListId == recordId)
-				.OrderByDescending(p => p.PositionAddedOn)
+				.OrderBy(p => p.PositionAddedOn)
 				.ToListAsync();
 
-			var results = new List<PositionResponseModel>();
+			var results = new List<FuturesPositionResponseModel>();
 
 			foreach (var position in tradePositions)
 			{
@@ -70,7 +67,7 @@ namespace Profitable.Services.Positions
 
 				var responseModel = mapper.Map(
 					futuresPosition.FuturesContract, 
-					mapper.Map<PositionResponseModel>(
+					mapper.Map<FuturesPositionResponseModel>(
 						position,
 						opt => opt.AfterMap((src, dest) =>
 						{
@@ -85,7 +82,7 @@ namespace Profitable.Services.Positions
 			return results;
 		}
 
-		public async Task<PositionResponseModel> GetFuturesPositionByGuid(Guid positionGuid)
+		public async Task<FuturesPositionResponseModel> GetFuturesPositionByGuid(Guid positionGuid)
 		{
 			var tradePosition = await tradePositionsRepository
 				.GetAllAsNoTracking()
@@ -111,7 +108,7 @@ namespace Profitable.Services.Positions
 
             var responseModel = mapper.Map(
                     futuresPosition.FuturesContract,
-                    mapper.Map<PositionResponseModel>(
+                    mapper.Map<FuturesPositionResponseModel>(
                         tradePosition,
                         opt => opt.AfterMap((src, dest) =>
                         {
@@ -321,9 +318,14 @@ namespace Profitable.Services.Positions
 				var tradePosition = await tradePositionsRepository
                         .GetAllAsNoTracking()
 						.Where(position => !position.IsDeleted)
-                        .FirstAsync(p => p.Guid == positionGuid);
+                        .FirstOrDefaultAsync(p => p.Guid == positionGuid);
 
-				tradePositionsRepository.Delete(tradePosition);
+				if(tradePosition == null)
+				{
+                    return GlobalServicesConstants.EntityDoesNotExist("Trade position");
+                }
+
+                tradePositionsRepository.Delete(tradePosition);
 
 				await tradePositionsRepository.SaveChangesAsync();
 
@@ -362,19 +364,6 @@ namespace Profitable.Services.Positions
                             model.ExitPrice,
                             model.Quantity,
                             model.TickSize)
-            };
-        }
-
-		public CalculateStocksPositionResponseModel CalculateStocksPosition(CalculateStocksPositionRequestModel model)
-		{
-            return new CalculateStocksPositionResponseModel
-            {
-                ProfitLoss = CalculationFormulas.CalculateStocksPL(
-                            model.BuyPrice,
-                            model.SellPrice,
-                            model.NumberOfShares,
-                            model.BuyCommission,
-                            model.SellCommission),
             };
         }
 	}

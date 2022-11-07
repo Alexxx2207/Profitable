@@ -26,59 +26,31 @@ import {
 import {
     changePosition,
     getPositionByGuid,
-} from "../../../../../services/positions/futuresPositionsService";
-import { loadFuturesContracts } from "../../../../../services/futures/futuresService";
+} from "../../../../../services/positions/stocksPositionsService";
 import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
 
-import styles from "./ChangeFuturesPosition.module.css";
+import styles from "./ChangeStocksPosition.module.css";
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case "changeSelectedDirection":
-            return {
-                ...state,
-                values: {
-                    ...state.values,
-                    directionSelected: action.payload,
-                },
-            };
-        case "loadAllFuturesContracts":
-            return {
-                ...state,
-                values: {
-                    ...state.values,
-                    allContracts: action.payload,
-                },
-            };
-        case "selectContract":
-            return {
-                ...state,
-                values: {
-                    ...state.values,
-                    chosenContract: state.values.allContracts[action.payload],
-                },
-            };
         case "loadPosition":
             return {
                 ...state,
                 values: {
                     ...state.values,
-                    chosenContract: {
-                        name: action.payload.contractName,
-                        tickSize: action.payload.tickSize,
-                        tickValue: action.payload.tickValue,
-                    },
-                    directionSelected:
-                        LongDirectionName.localeCompare(action.payload.direction) === 0
-                            ? LongDirectionName
-                            : ShortDirectionName,
+                    name: action.payload.name,
                     entryPrice: action.payload.entryPrice,
                     exitPrice: action.payload.exitPrice,
-                    quantity: action.payload.quantitySize,
+                    quantitySize: action.payload.quantitySize,
+                    buyCommission: action.payload.buyCommission,
+                    sellCommission: action.payload.sellCommission,
                 },
                 errors: {
                     ...state.errors,
-
+                    nameEmpty: createClientErrorObject(
+                        state.errors.nameEmpty,
+                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.name)
+                    ),
                     entryPriceEmpty: createClientErrorObject(
                         state.errors.entryPriceEmpty,
                         isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.entryPrice)
@@ -95,15 +67,23 @@ const reducer = (state, action) => {
                         state.errors.quantityOverZero,
                         isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.quantitySize)
                     ),
+                    buyCommissionEmpty: createClientErrorObject(
+                        state.errors.nameEmpty,
+                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.buyCommission)
+                    ),
+                    sellCommissionEmpty: createClientErrorObject(
+                        state.errors.nameEmpty,
+                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.sellCommission)
+                    ),
                 },
             };
-        case "setContractsCount":
+        case "setSharesCount":
             if (action.payload >= 0) {
                 return {
                     ...state,
                     values: {
                         ...state.values,
-                        quantity: action.payload,
+                        quantitySize: action.payload,
                     },
                     errors: {
                         ...state.errors,
@@ -122,7 +102,7 @@ const reducer = (state, action) => {
                     ...state,
                     values: {
                         ...state.values,
-                        quantity: 0,
+                        quantitySize: 0,
                     },
                     errors: {
                         ...state.errors,
@@ -168,7 +148,7 @@ const reducer = (state, action) => {
     }
 };
 
-export const ChangeFuturesPosition = () => {
+export const ChangeStocksPosition = () => {
     const { recordGuid, searchedProfileEmail, positionGuid } = useParams();
 
     const navigate = useNavigate();
@@ -179,18 +159,17 @@ export const ChangeFuturesPosition = () => {
 
     const [state, setState] = useReducer(reducer, {
         values: {
-            allContracts: [],
-            chosenContract: {
-                name: "",
-                tickSize: 0,
-                tickValue: 0,
-            },
-            directionSelected: LongDirectionName,
+            name: "",
             entryPrice: "",
             exitPrice: "",
-            quantity: "",
+            quantitySize: "",
         },
         errors: {
+            nameEmpty: {
+                text: "Insert Name",
+                fulfilled: false,
+                type: CLIENT_ERROR_TYPE,
+            },
             entryPriceEmpty: {
                 text: "Insert Entry Price",
                 fulfilled: false,
@@ -202,12 +181,22 @@ export const ChangeFuturesPosition = () => {
                 type: CLIENT_ERROR_TYPE,
             },
             quantityEmpty: {
-                text: "Insert Contracts Quantity",
+                text: "Insert Shares Quantity",
                 fulfilled: false,
                 type: CLIENT_ERROR_TYPE,
             },
             quantityOverZero: {
-                text: "Contracts Quantity > 0",
+                text: "Shares Quantity > 0",
+                fulfilled: false,
+                type: CLIENT_ERROR_TYPE,
+            },
+            buyCommissionEmpty: {
+                text: "Insert Buy Commission",
+                fulfilled: false,
+                type: CLIENT_ERROR_TYPE,
+            },
+            sellCommissionEmpty: {
+                text: "Insert Sell Commission",
                 fulfilled: false,
                 type: CLIENT_ERROR_TYPE,
             },
@@ -227,13 +216,6 @@ export const ChangeFuturesPosition = () => {
                 removeAuth();
                 navigate("/login");
             });
-
-        loadFuturesContracts().then((futuresContracts) =>
-            setState({
-                type: "loadAllFuturesContracts",
-                payload: futuresContracts,
-            })
-        );
 
         getPositionByGuid(positionGuid).then((position) =>
             setState({
@@ -256,18 +238,15 @@ export const ChangeFuturesPosition = () => {
                 JWT,
                 recordGuid,
                 positionGuid,
-                state.values.chosenContract.name,
-                state.values.directionSelected,
+                state.values.name,
                 state.values.entryPrice,
                 state.values.exitPrice,
-                state.values.quantitySize,
-                state.values.chosenContract.tickSize,
-                state.values.chosenContract.tickValue
+                state.values.quantitySize
             )
                 .then(() => {
                     setMessageBoxSettings("The position was edited successfully!", true);
                     navigate(
-                        `/users/${searchedProfileEmail}/positions-records/futures/${recordGuid}`
+                        `/users/${searchedProfileEmail}/positions-records/stocks/${recordGuid}`
                     );
                 })
                 .catch((err) => {
@@ -294,30 +273,9 @@ export const ChangeFuturesPosition = () => {
         }
     };
 
-    const OnChangeContractType = (value) => {
+    const changeSharesCountHandler = (e) => {
         setState({
-            type: "selectContract",
-            payload: value,
-        });
-    };
-
-    const onBullishDirectionButtonClick = (e) => {
-        setState({
-            type: "changeSelectedDirection",
-            payload: LongDirectionName,
-        });
-    };
-
-    const onBearishDirectionButtonClick = (e) => {
-        setState({
-            type: "changeSelectedDirection",
-            payload: ShortDirectionName,
-        });
-    };
-
-    const changeContractsCountHandler = (e) => {
-        setState({
-            type: "setContractsCount",
+            type: "setSharesCount",
             payload: e.target.value,
         });
     };
@@ -339,81 +297,17 @@ export const ChangeFuturesPosition = () => {
                         </div>
                         <div className={styles.formGroup}>
                             <div>
-                                <h5>Select Contract</h5>
+                                <h5>Stock Name</h5>
                             </div>
 
-                            <select
-                                className={styles.selectContract}
-                                onChange={(e) => OnChangeContractType(e.target.value)}
-                                value={
-                                    state.values.allContracts.find(
-                                        (el) => el.name === state.values.chosenContract.name
-                                    )?.name
-                                }
-                            >
-                                {state.values.allContracts.map((futureContract, index) => (
-                                    <option
-                                        className={styles.selectContractOption}
-                                        key={futureContract.guid}
-                                        value={futureContract.name}
-                                    >
-                                        {futureContract.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className={styles.formGroup}>
-                            <div>
-                                <h5>Position Direction</h5>
-                            </div>
-
-                            <section className={styles.directions}>
-                                <div
-                                    className={styles.radioWrapper}
-                                    onClick={(e) => onBullishDirectionButtonClick(e)}
-                                >
-                                    <input
-                                        type="radio"
-                                        onChange={(e) => onBullishDirectionButtonClick(e)}
-                                        checked={
-                                            state.values.directionSelected.localeCompare(
-                                                LongDirectionName
-                                            ) === 0
-                                        }
-                                        className={styles.directionBullish}
-                                        name="directionSelected"
-                                    />
-                                    <span
-                                        className={styles.radioLabel}
-                                        onClick={(e) => onBullishDirectionButtonClick(e)}
-                                    >
-                                        Bullish
-                                    </span>
-                                </div>
-                                <div
-                                    className={styles.radioWrapper}
-                                    onClick={(e) => onBearishDirectionButtonClick(e)}
-                                >
-                                    <input
-                                        type="radio"
-                                        onChange={(e) => onBearishDirectionButtonClick(e)}
-                                        checked={
-                                            state.values.directionSelected.localeCompare(
-                                                ShortDirectionName
-                                            ) === 0
-                                        }
-                                        className={styles.directionBearish}
-                                        name="directionSelected"
-                                    />
-                                    <span
-                                        className={styles.radioLabel}
-                                        onClick={(e) => onBearishDirectionButtonClick(e)}
-                                    >
-                                        Bearish
-                                    </span>
-                                </div>
-                            </section>
+                            <input
+                                className={styles.inputField}
+                                type="text"
+                                name="name"
+                                placeholder={"AAPL/GOOG/NVDA..."}
+                                value={state.values.name}
+                                onChange={changeHandler}
+                            />
                         </div>
 
                         <div className={styles.formGroup}>
@@ -450,11 +344,39 @@ export const ChangeFuturesPosition = () => {
                             </div>
                             <input
                                 className={styles.inputField}
-                                name="quantity"
+                                name="quantitySize"
                                 value={state.values.quantitySize}
-                                onChange={changeContractsCountHandler}
+                                onChange={changeSharesCountHandler}
                                 type="number"
                                 step=".001"
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <div>
+                                <h5>Buy Commission</h5>
+                            </div>
+                            <input
+                                className={styles.inputField}
+                                name="buyCommission"
+                                value={state.values.buyCommission}
+                                onChange={changeHandler}
+                                type="number"
+                                step=".000001"
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <div>
+                                <h5>Sell Commission</h5>
+                            </div>
+                            <input
+                                className={styles.inputField}
+                                name="sellCommission"
+                                value={state.values.sellCommission}
+                                onChange={changeHandler}
+                                type="number"
+                                step=".000001"
                             />
                         </div>
 

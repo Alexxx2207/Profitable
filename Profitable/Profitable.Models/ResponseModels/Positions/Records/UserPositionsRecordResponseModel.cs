@@ -1,4 +1,4 @@
-﻿namespace Profitable.Models.ResponseModels.Positions
+﻿namespace Profitable.Models.ResponseModels.Positions.Records
 {
     public class UserPositionsRecordResponseModel
     {

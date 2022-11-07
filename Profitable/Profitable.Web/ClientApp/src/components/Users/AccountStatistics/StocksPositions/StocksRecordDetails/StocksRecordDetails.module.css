@@ -1,0 +1,85 @@
+.recordDetailsContainer {
+    margin: 1rem;
+}
+
+.chartContainer {
+    margin: 1.5rem 0rem;
+    height: 30rem;
+}
+
+.addPositionButtonContainer {
+    display: flex;
+    justify-content: center;
+    margin: 2rem;
+}
+
+.addPositionButton {
+    color: white;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid white;
+    border-radius: 15px;
+    padding: 0.5rem 2rem;
+    transition: 0.3s ease-out;
+}
+
+.addPositionButton:hover {
+    background-color: white;
+    color: black;
+    transition: 0.3s ease-out;
+}
+
+.positionsTable {
+    width: 100%;
+}
+
+.positionsTable td, th {
+    border: 1px solid white;
+    text-align: center;
+    padding: 8px;
+}
+
+.overallProfiltLossHeading {
+    padding-right: 1rem;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    letter-spacing: 1px;
+}
+
+.textColorGreen {
+    color: rgb(0, 220, 0);
+}
+
+.textColorRed {
+    color: red;
+}
+
+.buttonPositionDelete {
+    border: none;
+    font-size: 1.2rem;
+}
+
+.buttonPositionDelete *{
+    transition: 0.3s ease-out;
+}
+
+.buttonPositionDelete:hover *{
+    color: red;
+    transition: 0.3s ease-out;
+}
+
+.buttonPositionChange {
+    border: none;
+    font-size: 1.2rem;
+}
+
+.buttonPositionChange *{
+    transition: 0.3s ease-out;
+}
+
+.buttonPositionChange:hover *{
+    color: orange;
+    transition: 0.3s ease-out;
+}

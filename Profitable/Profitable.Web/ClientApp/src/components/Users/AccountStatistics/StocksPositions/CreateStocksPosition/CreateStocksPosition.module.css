@@ -1,17 +1,23 @@
-.editPasswordContainer {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
+.pageContainer {
+    padding-top: 5vh;
 }
 
-.passwordFormContainer {
+.createSectionContainer {
     display: flex;
     justify-content: center;
-    width: 55%;
+}
+
+.createContainer {
+    display: flex;
+    justify-content: center;
+    width: 50%;
     margin-right: 5vw;
+    position: sticky;
+    height: 91vh;
+    top: 12rem;
 }
 
-.changePasswordForm {
+.createForm {
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -19,47 +25,47 @@
     width: 100%;
     background-color: white;
     border-radius: 20px;
-    padding: 2rem 2rem;
+    padding: 2vh 4vw;
 }
 
-.changePasswordForm * {
+.createForm * {
     background-color: white;
     color: black;
 }
 
-.changePasswordLabelContainer {
+.createLabelContainer {
     border-bottom: 2px solid black;
     width: 100%;
     text-align: center;
     margin-bottom: 4vh;
 }
 
-.changePasswordLabel {
+.createLabel {
     margin-bottom: 1rem;
 }
 
 .formGroup {
     display: flex;
     align-items: center;
-    margin: 1rem 0vw;
+    margin: 0.5rem 0vw;
     width: 100%;
 }
 
-.formHeading h5 {
+.formGroup div {
+    width: 35%;
+}
+
+.formGroup div h5 {
     font-size: 1.3rem;
     margin: 0px;
 }
 
-.formHeading {
-    width: 30%;
-}
-
 .inputField {
-    border: 2px solid #1e222d3d;
+    border: 2px solid #1e222d5c;
     border-radius: 10px;
     display: inline-block;
-    padding: 0.5rem 1rem;
-    width: 70%;
+    padding: 1vh 1vw;
+    width: 65%;
     font-size: 1.3rem;
 }
 
@@ -67,33 +73,9 @@
     border: 2px solid #1e222d;
 }
 
-.passwordField {
-    padding-right: 2.2rem;
-}
-
-.chooseFileText{
-    margin: 0px;
-}
-
-.fileInput::-webkit-file-upload-button {
-    cursor: pointer; 
-}
-
-.fileInput {
-    position: absolute;
-    z-index: 1000;
-    opacity: 0;
-    cursor: pointer;
-    right: 0;
-    top: 0;
-    height: 100%;
-    font-size: 24px;
-    width: 100%;
-}
-
 .submitButtonContainer {
     width: 100%;
-    padding: 7vh 0vw 2vh 0vw;
+    padding: 3vh 0vw 2vh 0vw;
 }
 
 .submitButton {
@@ -117,10 +99,8 @@
     transition: linear 0.3s;
 }
 
-.changePasswordAside {
-    width: 34%;
-    position: sticky;
-    top: 8vh;
+.createAside {
+    width: 35%;
 }
 
 .errorsHeadingContainer {
@@ -131,11 +111,37 @@
 .errorsHeading {
     text-align: center;
     margin-bottom: 2vh;
-    font-size: 2rem;
 }
 
 .errorsContainer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    flex-wrap: wrap;
+    width: 100%;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2vh;
+    padding-left: 4vw;
+}
+
+.button {
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    transition: ease-out 0.3s;
+}
+
+.button * {
+    font-size: 1.2rem;
+    letter-spacing: 0.7px;
+    background-color: white;
+    color: black;
+    transition: ease-out 0.3s;
 }

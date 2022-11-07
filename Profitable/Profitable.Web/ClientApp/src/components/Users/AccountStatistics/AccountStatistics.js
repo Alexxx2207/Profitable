@@ -3,9 +3,9 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { useCallback, useContext, useEffect, useReducer, useState } from "react";
 import {
-    getPositionsOrderByOptions,
+    getPositionsRecordsOrderByOptions,
     getUserPositions,
-} from "../../../services/positions/positionsService";
+} from "../../../services/positions/positionsRecordsService";
 import {
     POSITIONS_RECORDS_DEFAULT_ORDER,
     POSITIONS_RECORDS_PAGE_COUNT,
@@ -123,7 +123,7 @@ export const AccountStatistics = () => {
     }, [handleScroll]);
 
     useEffect(() => {
-        getPositionsOrderByOptions().then((result) => {
+        getPositionsRecordsOrderByOptions().then((result) => {
             setState({
                 type: "loadOrderByOptions",
                 payload: result.types,
