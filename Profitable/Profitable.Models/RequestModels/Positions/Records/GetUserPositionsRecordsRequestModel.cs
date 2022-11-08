@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Profitable.Models.RequestModels.Positions
+namespace Profitable.Models.RequestModels.Positions.Records
 {
     public class GetUserPositionsRecordsRequestModel
     {

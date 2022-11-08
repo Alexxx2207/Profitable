@@ -65,7 +65,6 @@ export const AccountActivity = () => {
     useEffect(() => {
         loadPostsPageByUserId(searchedProfileEmail, 0, POSTS_LIST_POSTS_IN_PAGE_COUNT).then(
             (result) => {
-                console.log("a");
                 setState({
                     type: "changeActivityType",
                     payload: {

@@ -26,7 +26,7 @@ import {
 import {
     changePosition,
     getPositionByGuid,
-} from "../../../../../services/positions/positionsService";
+} from "../../../../../services/positions/futuresPositionsService";
 import { loadFuturesContracts } from "../../../../../services/futures/futuresService";
 import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
 
@@ -74,7 +74,7 @@ const reducer = (state, action) => {
                             : ShortDirectionName,
                     entryPrice: action.payload.entryPrice,
                     exitPrice: action.payload.exitPrice,
-                    quantity: action.payload.quantity,
+                    quantity: action.payload.quantitySize,
                 },
                 errors: {
                     ...state.errors,
@@ -89,11 +89,11 @@ const reducer = (state, action) => {
                     ),
                     quantityEmpty: createClientErrorObject(
                         state.errors.quantityEmpty,
-                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.quantity)
+                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.quantitySize)
                     ),
                     quantityOverZero: createClientErrorObject(
                         state.errors.quantityOverZero,
-                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.quantity)
+                        isEmptyOrWhiteSpaceFieldChecker.bind(null, action.payload.quantitySize)
                     ),
                 },
             };
@@ -260,7 +260,7 @@ export const ChangeFuturesPosition = () => {
                 state.values.directionSelected,
                 state.values.entryPrice,
                 state.values.exitPrice,
-                state.values.quantity,
+                state.values.quantitySize,
                 state.values.chosenContract.tickSize,
                 state.values.chosenContract.tickValue
             )
@@ -451,7 +451,7 @@ export const ChangeFuturesPosition = () => {
                             <input
                                 className={styles.inputField}
                                 name="quantity"
-                                value={state.values.quantity}
+                                value={state.values.quantitySize}
                                 onChange={changeContractsCountHandler}
                                 type="number"
                                 step=".001"

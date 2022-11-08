@@ -27,9 +27,12 @@ import { SearchPage } from "../Search/SearchPage";
 import { ChangePositionsRecord } from "../Users/AccountStatistics/PositionsRecords/ChangePositionsRecord/ChangePositionsRecord";
 import { CreateFuturesPosition } from "../Users/AccountStatistics/FuturesPositions/CreateFuturesPosition/CreateFuturesPosition";
 import { ChangeFuturesPosition } from "../Users/AccountStatistics/FuturesPositions/ChangeFuturesPosition/ChangeFuturesPosition";
+import { StocksRecordDetails } from "../Users/AccountStatistics/StocksPositions/StocksRecordDetails/StocksRecordDetails";
 
 // eslint-disable-next-line
 import styles from "./App.module.css";
+import { CreateStocksPosition } from "../Users/AccountStatistics/StocksPositions/CreateStocksPosition/CreateStocksPosition";
+import { ChangeStocksPosition } from "../Users/AccountStatistics/StocksPositions/ChangeStocksPosition/ChangeStocksPosition";
 
 export function App() {
     const location = useLocation();
@@ -93,6 +96,21 @@ export function App() {
                             <Route
                                 path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid/change-position/:positionGuid"
                                 element={<ChangeFuturesPosition />}
+                            />
+
+                            <Route
+                                path="/users/:searchedProfileEmail/positions-records/stocks/:recordGuid"
+                                element={<StocksRecordDetails />}
+                            />
+
+                            <Route
+                                path="/users/:searchedProfileEmail/positions-records/stocks/:recordGuid/create-position"
+                                element={<CreateStocksPosition />}
+                            />
+
+                            <Route
+                                path="/users/:searchedProfileEmail/positions-records/stocks/:recordGuid/change-position/:positionGuid"
+                                element={<ChangeStocksPosition />}
                             />
 
                             <Route path="/posts/:postId/edit" element={<EditPost />} />

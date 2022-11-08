@@ -14,7 +14,7 @@ export const CalculatePosition = (
     tickValue
 ) => {
     return request
-        .post(`${WEB_API_BASE_URL}/positions/calculate/futures`, {
+        .post(`${WEB_API_BASE_URL}/futurespositions/calculate-position`, {
             direction,
             entryPrice,
             exitPrice,

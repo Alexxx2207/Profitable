@@ -6,12 +6,12 @@ using Profitable.Common.Models;
 using Profitable.Common.Services;
 using Profitable.Data.Repository.Contract;
 using Profitable.Models.EntityModels;
-using Profitable.Models.ResponseModels.Positions;
+using Profitable.Models.ResponseModels.Positions.Records;
 using Profitable.Services.Positions.Contracts;
 
 namespace Profitable.Services.Positions
 {
-	public class PositionsRecordsService : IPositionsRecordsService
+    public class PositionsRecordsService : IPositionsRecordsService
 	{
 		private readonly IRepository<PositionsRecordList> repository;
 		private readonly IMapper mapper;
@@ -135,7 +135,7 @@ namespace Profitable.Services.Positions
 				.Where(r =>
 					!r.IsDeleted &&
 					r.UserId == userGuid)
-				.Include(r => r.Positions)
+				.Include(r => r.Positions.Where(position => !position.IsDeleted))
 				.ToListAsync();
 
 			if (OrderPositionsRecordBy == OrderPositionsRecordBy.Date)
