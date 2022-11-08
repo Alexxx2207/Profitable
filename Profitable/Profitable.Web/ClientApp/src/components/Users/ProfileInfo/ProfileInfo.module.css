@@ -149,7 +149,7 @@
 .dangerZoneContainer {
     margin-top: 3rem;
     border-radius: 10px;
-    border: 3px solid red;
+    border: 1px solid red;
 }
 
 .dangerZoneHeadingContainer {
@@ -185,12 +185,13 @@
 .deleteButton {
     color: red;
     border-radius: 10px;
-    border: 3px solid rgba(128, 128, 128, 0.148);
-    padding: 0.6rem 2.5rem;
-    font-size: 1.2rem;
+    border: 3.5px solid rgba(128, 128, 128, 0.148);
+    padding: 0.6rem 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
     letter-spacing: 1px;
     transition: 0.3s ease-out;
+    width: 18vw;
 }
 
 .deleteButton:hover {

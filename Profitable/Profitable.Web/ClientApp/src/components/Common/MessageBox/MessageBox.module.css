@@ -8,13 +8,14 @@
 
 .messageBoxRed, .messageBoxGreen {
     color: white;
+    letter-spacing: 1px;
     position: fixed;
     top: 5rem;
     right: 1rem;
     padding: 1rem 2rem;
     border-radius: 30px;
-    animation: FadeAnimation 4.5s ease-in forwards;
-    z-index: 1000000000000000;
+    animation: FadeAnimation 2.5s ease-in forwards;
+    z-index: 1000000000;
 }
 
 .message {

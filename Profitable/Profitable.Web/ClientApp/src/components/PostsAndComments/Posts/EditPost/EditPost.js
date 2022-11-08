@@ -100,7 +100,7 @@ export const EditPost = () => {
                 }))
             )
             .catch((err) => navigate(`${MISSING_POST_GUID_ERROR_PAGE_PATH}`));
-    }, [postId, navigate]);
+    }, [postId, navigate, editState.userEmail]);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -234,7 +234,7 @@ export const EditPost = () => {
                 <div className={styles.editContainer}>
                     <form className={styles.editForm} onSubmit={onSubmit}>
                         <div className={styles.editLabelContainer}>
-                            <h1 className={styles.editLabel}>Edit Post</h1>
+                            <h2 className={styles.editLabel}>Edit Post</h2>
                         </div>
                         <div className={styles.formGroup}>
                             <div>
@@ -293,7 +293,7 @@ export const EditPost = () => {
                 </div>
                 <aside className={styles.editAside}>
                     <div className={styles.errorsHeadingContainer}>
-                        <h1 className={styles.errorsHeading}>Edit State</h1>
+                        <h2 className={styles.errorsHeading}>Edit State</h2>
                     </div>
                     <div className={styles.errorsContainer}>
                         {Object.values(editState.errors).map((error, index) => (

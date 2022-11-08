@@ -49,8 +49,8 @@
 .changeContainer {
     display: flex;
     justify-content: center;
-    width: 60%;
-    margin-right: 5vw;
+    width: 55%;
+    margin-right: 3rem;
 }
 
 .changeForm {
@@ -58,12 +58,10 @@
     flex-direction: column;
     align-self: center;
     align-items: center;
-
     width: 100%;
     background-color: white;
     border-radius: 20px;
-
-    padding: 2vh 4vw;
+    padding: 1rem 3rem;
 }
 
 .changeForm * {
@@ -75,7 +73,7 @@
     border-bottom: 2px solid black;
     width: 100%;
     text-align: center;
-    margin-bottom: 4vh;
+    margin-bottom: 2rem;
 }
 
 .changeLabel {
@@ -85,24 +83,24 @@
 .formGroup {
     display: flex;
     align-items: center;
-    margin: 2vh 0vw;
+    margin: 1rem 0rem;
     width: 100%;
 }
 
 .formGroup div {
     width: 35%;
-
 }
 
 .formGroup div h5 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin: 0px;
 }
 
 .inputField {
     border: 2px solid #1e222d5c;
+    border-radius: 10px;
     display: inline-block;
-    padding: 1vh 1vw;
+    padding: 0.5rem 1rem;
     width: 65%;
     font-size: 1.3rem;
 }
@@ -113,7 +111,7 @@
 
 .submitButtonContainer {
     width: 100%;
-    padding: 3vh 0vw 2vh 0vw;
+    padding: 2rem 0rem 1rem 0rem;
 }
 
 .submitButton {
@@ -138,7 +136,7 @@
 }
 
 .changeAside {
-    width: 27%;
+    width: 30%;
     position: sticky;
     height: 70vh;
     top: 15vh;
@@ -146,12 +144,12 @@
 
 .errorsHeadingContainer {
     border-bottom: 2px solid white;
-    margin-bottom: 3vh;
+    margin-bottom: 2rem;
 }
 
 .errorsHeading {
     text-align: center;
-    margin-bottom: 2vh;
+    margin-bottom: 1rem;
 }
 
 .errorsContainer {
@@ -164,8 +162,6 @@
 .buttonContainer {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2vh;
-    padding-left: 4vw;
 }
 
 .button {
@@ -188,7 +184,9 @@
 }
 
 .selectContract {
-    padding: 0.2rem;
+    border-radius: 10px;
+    width: 65%;
+    padding: 0.4rem;
     transform: translateY(-0.25rem);
     border: 2px solid black;
     cursor: pointer;

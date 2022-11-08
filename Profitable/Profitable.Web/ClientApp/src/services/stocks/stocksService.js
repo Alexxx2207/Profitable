@@ -9,7 +9,7 @@ export const calculateStocksTrade = (
     sellCommission
 ) => {
     return request
-        .post(`${WEB_API_BASE_URL}/positions/calculate/stocks`, {
+        .post(`${WEB_API_BASE_URL}/stockspositions/calculate-position`, {
             buyPrice,
             sellPrice,
             numberOfShares,

@@ -1,10 +1,10 @@
 ﻿using Profitable.Common.Enums;
 using Profitable.Common.Models;
-using Profitable.Models.ResponseModels.Positions;
+using Profitable.Models.ResponseModels.Positions.Records;
 
 namespace Profitable.Services.Positions.Contracts
 {
-	public interface IPositionsRecordsService
+    public interface IPositionsRecordsService
 	{
 		Task<List<UserPositionsRecordResponseModel>> GetUserPositionsRecordsAsync(
 			Guid userGuid,

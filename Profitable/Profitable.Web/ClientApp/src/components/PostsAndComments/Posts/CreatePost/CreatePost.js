@@ -186,7 +186,7 @@ export const CreatePost = () => {
                 <div className={styles.createContainer}>
                     <form className={styles.createForm} onSubmit={onSubmit}>
                         <div className={styles.createLabelContainer}>
-                            <h1 className={styles.createLabel}>Create Post</h1>
+                            <h2 className={styles.createLabel}>Create Post</h2>
                         </div>
                         <div className={styles.formGroup}>
                             <div>
@@ -232,7 +232,7 @@ export const CreatePost = () => {
                 </div>
                 <aside className={styles.createAside}>
                     <div className={styles.errorsHeadingContainer}>
-                        <h1 className={styles.errorsHeading}>Create State</h1>
+                        <h2 className={styles.errorsHeading}>Create State</h2>
                     </div>
                     <div className={styles.errorsContainer}>
                         {Object.values(createState.errors).map((error, index) => (

@@ -52,12 +52,13 @@
 }
 
 .formGroup div h5 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin: 0px;
 }
 
 .inputField {
     border: 2px solid #1e222d5c;
+    border-radius: 10px;
     display: inline-block;
     padding: 1vh 1vw;
     width: 70%;
@@ -74,7 +75,7 @@
 
 .submitButtonContainer {
     width: 100%;
-    padding: 7vh 0vw 2vh 0vw;
+    padding: 2rem 0rem 1rem 0rem;
 }
 
 .submitButton {
@@ -109,7 +110,7 @@
 
 .errorsHeading {
     text-align: center;
-    margin-bottom: 2vh;
+    margin-bottom: 1rem;
 }
 
 .errorsContainer {

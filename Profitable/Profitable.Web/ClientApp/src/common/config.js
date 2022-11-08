@@ -2,9 +2,10 @@ export const JWT_LOCAL_STORAGE_KEY = "JWT";
 
 export const WEB_API_BASE_URL = "https://localhost:7048/api";
 
-export const POSTS_LIST_POSTS_IN_PAGE_COUNT = 4;
-export const COMMENTS_LIST_IN_POST_PAGE_COUNT = 6;
-export const POSITIONS_RECORDS_PAGE_COUNT = 5;
+export const SEARCH_ENTITY_IN_PAGE_COUNT = 5;
+export const POSTS_LIST_POSTS_IN_PAGE_COUNT = 6;
+export const COMMENTS_LIST_IN_POST_PAGE_COUNT = 4;
+export const POSITIONS_RECORDS_PAGE_COUNT = 10;
 export const POSITIONS_RECORDS_DEFAULT_ORDER = "Date";
 
 export const MISSING_POST_GUID_ERROR_PAGE_PATH = "/the-post-does-not-exist";

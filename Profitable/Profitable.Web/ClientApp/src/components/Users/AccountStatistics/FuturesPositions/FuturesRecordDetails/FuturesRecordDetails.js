@@ -1,14 +1,19 @@
 import { useEffect, useReducer, useContext, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { MessageBoxContext } from "../../../../../contexts/MessageBoxContext";
 import { AuthContext } from "../../../../../contexts/AuthContext";
+import { TimeContext } from "../../../../../contexts/TimeContext";
+import { ShortDirectionName } from "../../../../../common/config";
 import {
     deletePosition,
     getPositionsFromRecord,
-} from "../../../../../services/positions/positionsService";
+    calculateAcculativePositions,
+} from "../../../../../services/positions/futuresPositionsService";
+import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
+import { convertFullDateTime } from "../../../../../utils/Formatters/timeFormatter";
+
 import { GoBackButton } from "../../../../Common/GoBackButton/GoBackButton";
 import { Line } from "react-chartjs-2";
-import { calculateAcculativePositions } from "../../../../../services/positions/positionsService";
 import {
     CategoryScale,
     LineElement,
@@ -22,8 +27,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faWrench } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./FuturesRecordDetails.module.css";
-import { ShortDirectionName } from "../../../../../common/config";
-import { getUserDataByJWT, getUserEmailFromJWT } from "../../../../../services/users/usersService";
 
 Chart.register([CategoryScale, LineElement, PointElement, LinearScale, Tooltip, Filler]);
 
@@ -33,7 +36,7 @@ const reducer = (state, action) => {
             var accumulatedPositions = [
                 ...calculateAcculativePositions([
                     0,
-                    ...[...action.payload].map((position) => position.positionPAndL),
+                    ...[...action.payload].map((position) => position.realizedProfitAndLoss),
                 ]),
             ];
 
@@ -63,11 +66,15 @@ export const FuturesRecordDetails = () => {
         selectedAfterDateFilter: "",
     });
 
+    const { timeOffset } = useContext(TimeContext);
+
     const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
 
     const { recordGuid, searchedProfileEmail } = useParams();
 
     const navigate = useNavigate();
+
+    const location = useLocation();
 
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
@@ -78,20 +85,33 @@ export const FuturesRecordDetails = () => {
             setState({ type: "refresh" });
         }, 150);
         getUserEmailFromJWT(JWT).then((email) => setLoggedInUserEmail(email));
-    }, []);
+    }, [JWT]);
 
     useEffect(() => {
         var oneYearAgoFromNow = new Date();
         oneYearAgoFromNow.setFullYear(oneYearAgoFromNow.getFullYear() - 1);
+        var pathnameArray = location.pathname.split("/");
 
         setState({
             type: "setDefaultDate",
             payload: oneYearAgoFromNow,
         });
-        getPositionsFromRecord(recordGuid, oneYearAgoFromNow.toJSON()).then((result) => {
+        getPositionsFromRecord(
+            recordGuid,
+            pathnameArray[pathnameArray.length - 2],
+            oneYearAgoFromNow.toJSON()
+        ).then((result) => {
+            var positionWithOffsetedTime = [
+                ...result.map((position) => ({
+                    ...position,
+                    positionAddedOn: convertFullDateTime(
+                        new Date(new Date(position.positionAddedOn).getTime() - timeOffset * 60000)
+                    ),
+                })),
+            ];
             setState({
                 type: "loadPositions",
-                payload: result,
+                payload: [...positionWithOffsetedTime],
             });
         });
     }, [recordGuid]);
@@ -100,17 +120,9 @@ export const FuturesRecordDetails = () => {
         deletePosition(JWT, recordGuid, positionGuid)
             .then(() => {
                 setMessageBoxSettings("The position was deleted successfully!", true);
-
-                var oneYearAgoFromNow = new Date();
-                oneYearAgoFromNow.setFullYear(oneYearAgoFromNow.getFullYear() - 1);
-
-                getPositionsFromRecord(recordGuid, oneYearAgoFromNow.toJSON()).then((result) => {
-                    setState({
-                        type: "loadPositions",
-                        payload: result,
-                    });
-                });
-                setState({ type: "refresh" });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             })
             .catch((error) => {
                 if (error.message === "401") {
@@ -275,7 +287,7 @@ export const FuturesRecordDetails = () => {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Date Added</th>
+                        <th>Realization Date</th>
                         <th>Contract/Instrument</th>
                         <th>Direction</th>
                         <th>Entry Price</th>
@@ -308,16 +320,16 @@ export const FuturesRecordDetails = () => {
                             )}
                             <td>{position.entryPrice}</td>
                             <td>{position.exitPrice}</td>
-                            <td>{position.quantity}</td>
+                            <td>{position.quantitySize}</td>
                             <td>{position.tickSize}</td>
                             <td>{position.tickValue}</td>
-                            {position.positionPAndL < 0 ? (
+                            {position.realizedProfitAndLoss < 0 ? (
                                 <td className={styles.textColorRed}>
-                                    {Number(position.positionPAndL).toFixed(2)}
+                                    {Number(position.realizedProfitAndLoss).toFixed(2)}
                                 </td>
                             ) : (
                                 <td className={styles.textColorGreen}>
-                                    {Number(position.positionPAndL).toFixed(2)}
+                                    {Number(position.realizedProfitAndLoss).toFixed(2)}
                                 </td>
                             )}
                             {searchedProfileEmail.localeCompare(loggedInUserEmail) === 0 ? (

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { CLIENT_ERROR_TYPE, SERVER_ERROR_TYPE } from "../../../../../common/config";
 import { changeStateValuesForControlledForms } from "../../../../../services/common/createStateValues";
 import { isEmptyOrWhiteSpaceFieldChecker } from "../../../../../services/common/errorValidationCheckers";
-import { changePositionsRecord } from "../../../../../services/positions/positionsService";
+import { changePositionsRecord } from "../../../../../services/positions/positionsRecordsService";
 import { createClientErrorObject } from "../../../../../services/common/createValidationErrorObject";
 import { ErrorWidget } from "../../../../Common/ErrorWidget/ErrorWidget";
 

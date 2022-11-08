@@ -1,5 +1,5 @@
-import { useReducer, useCallback } from "react";
-import { searchedModels } from "../../common/config";
+import { useCallback, useContext, useReducer } from "react";
+import { searchedModels, SEARCH_ENTITY_IN_PAGE_COUNT } from "../../common/config";
 import { searchByTerm } from "../../services/search/searchService";
 
 import { UserSearchResult } from "./UserSearchResult/UserSearchResult";
@@ -8,26 +8,49 @@ import { PostsList } from "../PostsAndComments/Posts/PostsList/PostsList";
 import debounce from "lodash.debounce";
 
 import styles from "./SearchPage.module.css";
+import { MessageBoxContext } from "../../contexts/MessageBoxContext";
 
 const intialState = {
     searchedTerm: "",
     searchedModel: Object.getOwnPropertyNames(searchedModels)[0],
     searchedModels: Object.getOwnPropertyNames(searchedModels),
     searchResults: [],
+    page: 0,
+    showShowMore: true,
 };
 
 const reducer = (state, action) => {
     switch (action.type) {
+        case "loadEntities":
+            return {
+                ...state,
+                page: state.page + 1,
+                searchResults: [...state.searchResults, ...action.payload],
+            };
         case "changeSearchResults":
             return {
                 ...state,
-                searchResults: action.payload.newResults,
+                searchResults: [...action.payload],
+            };
+        case "changeSearchModel":
+            return {
+                ...state,
+                page: 0,
+                showShowMore: true,
+                searchResults: action.payload.list,
                 searchedModel: action.payload.newModel,
             };
         case "changeSearchTerm":
             return {
                 ...state,
+                page: 0,
+                showShowMore: true,
                 searchedTerm: action.payload,
+            };
+        case "hideShowMoreButton":
+            return {
+                ...state,
+                showShowMore: action.payload,
             };
         default:
             return state;
@@ -37,42 +60,58 @@ const reducer = (state, action) => {
 export const SearchPage = () => {
     const [state, setState] = useReducer(reducer, intialState);
 
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
+
     const searchTermOnChange = (e) => {
         setState({
             type: "changeSearchTerm",
             payload: e.target.value,
         });
-        searchByTerm(e.target.value, state.searchedModel).then((result) => {
-            setState({
-                type: "changeSearchResults",
-                payload: {
-                    newResults: result.list,
-                    newModel: result.searchedModel,
-                },
-            });
-        });
+        searchByTerm(e.target.value, state.searchedModel, 0, SEARCH_ENTITY_IN_PAGE_COUNT).then(
+            (result) => {
+                setState({
+                    type: "changeSearchResults",
+                    payload: [...result.list],
+                });
+
+                if (result.list.length <= 0) {
+                    setState({
+                        type: "hideShowMoreButton",
+                        payload: false,
+                    });
+                }
+            }
+        );
     };
 
-    const optimisedOnChange = useCallback(debounce(searchTermOnChange, 700), []);
+    const optimisedOnChange = debounce(searchTermOnChange, 700);
 
     const searchModelOnChange = (e) => {
-        searchByTerm(state.searchedTerm, e.target.value).then((result) => {
-            setState({
-                type: "changeSearchResults",
-                payload: {
-                    newResults: result.list,
-                    newModel: result.searchedModel,
-                },
-            });
-        });
+        searchByTerm(state.searchedTerm, e.target.value, 0, SEARCH_ENTITY_IN_PAGE_COUNT).then(
+            (result) => {
+                setState({
+                    type: "changeSearchModel",
+                    payload: {
+                        list: [...result.list],
+                        newModel: result.searchedModel,
+                    },
+                });
+                if (result.list.length <= 0) {
+                    setState({
+                        type: "hideShowMoreButton",
+                        payload: false,
+                    });
+                }
+            }
+        );
     };
 
     const assessWhatModelToDisplay = () => {
         if (state.searchedModel.localeCompare(searchedModels.Users) === 0) {
             return (
                 <div className={styles.userResultsContainer}>
-                    {state.searchResults.map((resultItem) => (
-                        <UserSearchResult user={resultItem} />
+                    {state.searchResults.map((resultItem, index) => (
+                        <UserSearchResult key={index} user={resultItem} />
                     ))}
                 </div>
             );
@@ -80,6 +119,34 @@ export const SearchPage = () => {
             return <PostsList posts={state.searchResults} />;
         }
     };
+
+    const searchOnShowMoreClick = useCallback((page, pageCount) => {
+        searchByTerm(state.searchedTerm, state.searchedModel, page, pageCount).then((result) => {
+            if (result.list.length > 0) {
+                setState({
+                    type: "loadEntities",
+                    payload: [...result.list],
+                });
+            } else {
+                setMessageBoxSettings(
+                    `There are no more ${state.searchedModel.toLowerCase()}`,
+                    false
+                );
+                setState({
+                    type: "hideShowMoreButton",
+                    payload: false,
+                });
+            }
+        });
+    });
+
+    const handleShowMoreClick = useCallback(
+        (e) => {
+            e.preventDefault();
+            searchOnShowMoreClick(state.page + 1, SEARCH_ENTITY_IN_PAGE_COUNT);
+        },
+        [searchOnShowMoreClick, state.page]
+    );
 
     return (
         <div className={styles.searchPageContainer}>
@@ -120,6 +187,16 @@ export const SearchPage = () => {
                     ""
                 )}
             </section>
+
+            {state.showShowMore && state.searchedTerm ? (
+                <div className={styles.loadMoreContainer}>
+                    <h4 className={styles.loadMoreButton} onClick={handleShowMoreClick}>
+                        Show More {state.searchedModel}
+                    </h4>
+                </div>
+            ) : (
+                <></>
+            )}
         </div>
     );
 };

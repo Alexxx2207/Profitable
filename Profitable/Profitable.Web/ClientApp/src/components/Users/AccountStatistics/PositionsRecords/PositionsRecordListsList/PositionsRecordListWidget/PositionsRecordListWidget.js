@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteUserPositionsRecord } from "../../../../../../services/positions/positionsService";
+import { deleteUserPositionsRecord } from "../../../../../../services/positions/positionsRecordsService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../../../contexts/MessageBoxContext";
 

@@ -3,15 +3,26 @@
     padding: 1rem;
 }
 
+.explorerSection {
+    position: relative;
+    top: -4rem;
+}
+
 .discoverHeading {
     width: 100%;
-    border-bottom: 5px solid white;
     text-align: center;
     letter-spacing: 2px;
     font-size: 3rem;
-    text-transform: uppercase;
+}
+
+.discoverSubHeading {
+    width: 100%;
+    text-align: center;
+    border-bottom: 4px solid white;
     margin-bottom: 3rem;
-    padding-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    letter-spacing: 1px;
+    text-transform: capitalize;
 }
 
 
@@ -30,8 +41,8 @@
     display: flex;
     align-items: center;
     transition: ease-out 0.3s;
-    font-size: 2.5rem;
-    padding: 0.7rem 0.7rem;
+    font-size: 3rem;
+    padding: 0.5rem 0.5rem;
 }
 
 .addPostButton:hover {
@@ -41,12 +52,12 @@
 .addPostButton * {
     background-color: white;
     color: #1e222d;
-    border-radius: 100px;
+    border-radius: 50%;
 }
 
 .addPostText {
     color: black;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: bold;
     letter-spacing: 1px;
     background-color: transparent;
@@ -64,4 +75,27 @@
 
 .postsListContainer {
     margin: 0rem 2rem;
+}
+
+.loadMoreContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.loadMoreButton {
+    color: grey;
+    border: 2px solid grey;
+    border-radius: 15px;
+    transition: 0.3s ease-out;
+    letter-spacing: 1px;
+    padding: 0.5rem 1rem;
+}
+
+.loadMoreButton:hover {
+    color: white;
+    border: 2px solid white;
+    cursor: pointer;
+    transition: 0.3s ease-out;
 }

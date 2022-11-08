@@ -1,29 +1,26 @@
 .pageContainer {
     display: flex;
     justify-content: center;
-    padding-top: 3vh;
+    padding-top: 3rem;
 }
 
 .registerContainer {
     display: flex;
     justify-content: center;
     width: 40%;
-    margin-right: 5vw;
+    margin-right: 3rem;
 }
 
 .registerForm {
     position: sticky;
     top: 8vh;
-
     display: flex;
     flex-direction: column;
     align-self: center;
     align-items: center;
-
     width: 100%;
     background-color: white;
     border-radius: 20px;
-
     padding: 1rem 2rem;
 }
 
@@ -36,7 +33,7 @@
     border-bottom: 2px solid black;
     width: 100%;
     text-align: center;
-    margin-bottom: 4vh;
+    margin-bottom: 1rem;
 }
 
 .registerLabel {
@@ -46,24 +43,24 @@
 .formGroup {
     display: flex;
     align-items: center;
-    margin: 2vh 0vw;
+    margin: 0.8rem 0rem;
     width: 100%;
 }
 
 .formGroup div {
     width: 30%;
-
 }
 
 .formGroup div h5 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin: 0px;
 }
 
 .inputField {
     border: 2px solid #1e222d3d;
+    border-radius: 10px;
     display: inline-block;
-    padding: 1vh 1vw;
+    padding: 0.5rem 1rem;
     width: 70%;
     font-size: 1.3rem;
 }
@@ -78,7 +75,7 @@
 
 .submitButtonContainer {
     width: 100%;
-    padding: 5vh 0vw 2vh 0vw;
+    padding: 2rem 0rem 1rem 0rem;
 }
 
 .submitButton {
@@ -88,7 +85,7 @@
     font-weight: 700;
     border: none;
     letter-spacing: 1px;
-    border-radius: 1vh;
+    border-radius: 10px;
     border: 0.2rem solid #1e222d21;
     transition: linear 0.5s;
 
@@ -98,7 +95,7 @@
     cursor: pointer;
     background-color: #1e222d;
     color: white;
-    border-radius: 1vh;
+    border-radius: 10px;
     transition: linear 0.3s;
 }
 
@@ -109,12 +106,12 @@
 
 .errorsHeadingContainer {
     border-bottom: 2px solid white;
-    margin-bottom: 3vh;
+    margin-bottom: 2rem;
 }
 
 .errorsHeading {
     text-align: center;
-    margin-bottom: 2vh;
+    margin-bottom: 1rem;
 }
 
 .errorsContainer {

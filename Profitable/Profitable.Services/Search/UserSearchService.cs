@@ -19,7 +19,7 @@ namespace Profitable.Services.Search
 			this.mapper = mapper;
 		}
 
-		public async Task<List<UserDetailsResponseModel>> GetMatchingUsers(string searchTerm)
+		public async Task<List<UserDetailsResponseModel>> GetMatchingUsers(string searchTerm, int page, int pageCount)
 		{
 			searchTerm = searchTerm.ToLower();
 
@@ -29,8 +29,9 @@ namespace Profitable.Services.Search
 					((u.FirstName + " " + u.LastName).ToLower().Contains(searchTerm)
 					||
 					u.Email.ToLower().Contains(searchTerm)))
-				.Take(GlobalServicesConstants.SearchResultsCountToTake)
-				.Select(user => mapper.Map<UserDetailsResponseModel>(user))
+                .Skip(page * pageCount)
+                .Take(pageCount)
+                .Select(user => mapper.Map<UserDetailsResponseModel>(user))
 				.ToListAsync();
 
 			return users;
