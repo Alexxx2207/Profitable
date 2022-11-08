@@ -21,9 +21,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faWrench } from "@fortawesome/free-solid-svg-icons";
 
-import styles from "./FuturesRecordDetails.module.css";
 import { ShortDirectionName } from "../../../../../common/config";
-import { getUserDataByJWT, getUserEmailFromJWT } from "../../../../../services/users/usersService";
+import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
+
+import styles from "./FuturesRecordDetails.module.css";
 
 Chart.register([CategoryScale, LineElement, PointElement, LinearScale, Tooltip, Filler]);
 
@@ -78,7 +79,7 @@ export const FuturesRecordDetails = () => {
             setState({ type: "refresh" });
         }, 150);
         getUserEmailFromJWT(JWT).then((email) => setLoggedInUserEmail(email));
-    }, []);
+    }, [JWT]);
 
     useEffect(() => {
         var oneYearAgoFromNow = new Date();

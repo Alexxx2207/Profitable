@@ -100,7 +100,7 @@ export const EditPost = () => {
                 }))
             )
             .catch((err) => navigate(`${MISSING_POST_GUID_ERROR_PAGE_PATH}`));
-    }, [postId, navigate]);
+    }, [postId, navigate, editState.userEmail]);
 
     const onSubmit = (e) => {
         e.preventDefault();

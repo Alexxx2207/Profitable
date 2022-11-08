@@ -1,4 +1,4 @@
-import { useReducer, useCallback } from "react";
+import { useReducer } from "react";
 import { searchedModels } from "../../common/config";
 import { searchByTerm } from "../../services/search/searchService";
 
@@ -53,7 +53,7 @@ export const SearchPage = () => {
         });
     };
 
-    const optimisedOnChange = useCallback(debounce(searchTermOnChange, 700), []);
+    const optimisedOnChange = debounce(searchTermOnChange, 700);
 
     const searchModelOnChange = (e) => {
         searchByTerm(state.searchedTerm, e.target.value).then((result) => {

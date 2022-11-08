@@ -75,7 +75,7 @@ export const AccountActivity = () => {
                 });
             }
         );
-    }, []);
+    }, [state.activityType, searchedProfileEmail]);
 
     const handleActivityTypeChange = (e) => {
         if (e.target.value === ACTIVITY_TYPE_POSTS) {

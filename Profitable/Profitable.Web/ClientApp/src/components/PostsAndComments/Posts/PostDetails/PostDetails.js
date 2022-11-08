@@ -175,7 +175,7 @@ export const PostDetails = () => {
             ...state,
             showCreateCommentWidget: !state.showCreateCommentWidget,
         }));
-    });
+    }, []);
 
     return (
         <div className={styles.postPage}>
