@@ -2,6 +2,7 @@ import { useEffect, useReducer, useContext, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { MessageBoxContext } from "../../../../../contexts/MessageBoxContext";
 import { AuthContext } from "../../../../../contexts/AuthContext";
+import { TimeContext } from "../../../../../contexts/TimeContext";
 
 import {
     deletePosition,
@@ -9,6 +10,7 @@ import {
     calculateAcculativePositions,
 } from "../../../../../services/positions/stocksPositionsService";
 import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
+import { convertFullDateTime } from "../../../../../utils/Formatters/timeFormatter";
 
 import { GoBackButton } from "../../../../Common/GoBackButton/GoBackButton";
 import { Line } from "react-chartjs-2";
@@ -74,6 +76,8 @@ export const StocksRecordDetails = () => {
 
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
+    const { timeOffset } = useContext(TimeContext);
+
     const { JWT } = useContext(AuthContext);
 
     useEffect(() => {
@@ -97,9 +101,17 @@ export const StocksRecordDetails = () => {
             pathnameArray[pathnameArray.length - 2],
             oneYearAgoFromNow.toJSON()
         ).then((result) => {
+            var positionWithOffsetedTime = [
+                ...result.map((position) => ({
+                    ...position,
+                    positionAddedOn: convertFullDateTime(
+                        new Date(new Date(position.positionAddedOn).getTime() - timeOffset * 60000)
+                    ),
+                })),
+            ];
             setState({
                 type: "loadPositions",
-                payload: result,
+                payload: [...positionWithOffsetedTime],
             });
         });
     }, [recordGuid]);
@@ -276,7 +288,7 @@ export const StocksRecordDetails = () => {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Date Added</th>
+                        <th>Realization Date</th>
                         <th>Stock Name</th>
                         <th>Entry Price</th>
                         <th>Exit Price</th>

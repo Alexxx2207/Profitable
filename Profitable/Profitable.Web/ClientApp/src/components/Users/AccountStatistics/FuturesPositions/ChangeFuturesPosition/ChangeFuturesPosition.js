@@ -74,7 +74,7 @@ const reducer = (state, action) => {
                             : ShortDirectionName,
                     entryPrice: action.payload.entryPrice,
                     exitPrice: action.payload.exitPrice,
-                    quantity: action.payload.quantitySize,
+                    quantitySize: action.payload.quantitySize,
                 },
                 errors: {
                     ...state.errors,
@@ -103,7 +103,7 @@ const reducer = (state, action) => {
                     ...state,
                     values: {
                         ...state.values,
-                        quantity: action.payload,
+                        quantitySize: action.payload,
                     },
                     errors: {
                         ...state.errors,
@@ -122,7 +122,7 @@ const reducer = (state, action) => {
                     ...state,
                     values: {
                         ...state.values,
-                        quantity: 0,
+                        quantitySize: 0,
                     },
                     errors: {
                         ...state.errors,
@@ -188,7 +188,7 @@ export const ChangeFuturesPosition = () => {
             directionSelected: LongDirectionName,
             entryPrice: "",
             exitPrice: "",
-            quantity: "",
+            quantitySize: "",
         },
         errors: {
             entryPriceEmpty: {
@@ -450,7 +450,7 @@ export const ChangeFuturesPosition = () => {
                             </div>
                             <input
                                 className={styles.inputField}
-                                name="quantity"
+                                name="quantitySize"
                                 value={state.values.quantitySize}
                                 onChange={changeContractsCountHandler}
                                 type="number"

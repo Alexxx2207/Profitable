@@ -1,4 +1,5 @@
-import { useEffect, useReducer, useCallback } from "react";
+import { useEffect, useReducer, useCallback, useContext } from "react";
+import { useParams } from "react-router-dom";
 import {
     ACTIVITY_TYPE_COMMENTS,
     ACTIVITY_TYPE_POSTS,
@@ -11,7 +12,6 @@ import { PostsList } from "../../PostsAndComments/Posts/PostsList/PostsList";
 import { getCommentsByUserId } from "../../../services/comments/commentsService";
 
 import styles from "./AccountActivity.module.css";
-import { useParams } from "react-router-dom";
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -74,7 +74,7 @@ export const AccountActivity = () => {
                 });
             }
         );
-    }, [state.activityType, searchedProfileEmail]);
+    }, [searchedProfileEmail]);
 
     const handleActivityTypeChange = (e) => {
         if (e.target.value === ACTIVITY_TYPE_POSTS) {
@@ -107,6 +107,7 @@ export const AccountActivity = () => {
     const loadComments = useCallback(
         (page, pageCount) => {
             getCommentsByUserId(searchedProfileEmail, page, pageCount).then((result) => {
+                console.log(result);
                 setState({
                     type: "addActivityByScroll",
                     payload: {

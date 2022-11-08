@@ -1,17 +1,19 @@
-import { PositionsRecordListsList } from "./PositionsRecords/PositionsRecordListsList/PositionsRecordListsList";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-
 import { useCallback, useContext, useEffect, useReducer, useState } from "react";
+
 import {
     getPositionsRecordsOrderByOptions,
-    getUserPositions,
+    getUserPositionsRecords,
 } from "../../../services/positions/positionsRecordsService";
+import { convertFullDateTime } from "../../../utils/Formatters/timeFormatter";
+import { PositionsRecordListsList } from "./PositionsRecords/PositionsRecordListsList/PositionsRecordListsList";
 import {
     POSITIONS_RECORDS_DEFAULT_ORDER,
     POSITIONS_RECORDS_PAGE_COUNT,
 } from "../../../common/config";
 import { getUserEmailFromJWT } from "../../../services/users/usersService";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { TimeContext } from "../../../contexts/TimeContext";
 
 import styles from "./AccountStatistics.module.css";
 
@@ -63,6 +65,7 @@ const reducer = (state, action) => {
 
 export const AccountStatistics = () => {
     const { JWT, removeAuth } = useContext(AuthContext);
+    const { timeOffset } = useContext(TimeContext);
 
     const navigate = useNavigate();
 
@@ -80,15 +83,23 @@ export const AccountStatistics = () => {
 
     const loadRecords = useCallback(
         (page, pageCount, orderPositionsRecordsBySelected) => {
-            getUserPositions(
+            getUserPositionsRecords(
                 searchedProfileEmail,
                 page,
                 pageCount,
                 orderPositionsRecordsBySelected
             ).then((result) => {
+                var recordsWithOffsetedTime = [
+                    ...result.map((record) => ({
+                        ...record,
+                        lastUpdated: convertFullDateTime(
+                            new Date(new Date(record.lastUpdated).getTime() - timeOffset * 60000)
+                        ),
+                    })),
+                ];
                 setState({
                     type: "loadRecords",
-                    payload: result,
+                    payload: [...recordsWithOffsetedTime],
                 });
             });
         },
@@ -140,15 +151,23 @@ export const AccountStatistics = () => {
     }, []);
 
     useEffect(() => {
-        getUserPositions(
+        getUserPositionsRecords(
             searchedProfileEmail,
             0,
             POSITIONS_RECORDS_PAGE_COUNT,
             POSITIONS_RECORDS_DEFAULT_ORDER
         ).then((result) => {
+            var recordsWithOffsetedTime = [
+                ...result.map((record) => ({
+                    ...record,
+                    lastUpdated: convertFullDateTime(
+                        new Date(new Date(record.lastUpdated).getTime() - timeOffset * 60000)
+                    ),
+                })),
+            ];
             setState({
                 type: "loadFirstRecords",
-                payload: result,
+                payload: [...recordsWithOffsetedTime],
             });
         });
     }, [searchedProfileEmail]);
@@ -159,15 +178,23 @@ export const AccountStatistics = () => {
             payload: e.target.value,
         });
 
-        getUserPositions(
+        getUserPositionsRecords(
             searchedProfileEmail,
             0,
             POSITIONS_RECORDS_PAGE_COUNT,
             e.target.value
         ).then((result) => {
+            var recordsWithOffsetedTime = [
+                ...result.map((record) => ({
+                    ...record,
+                    lastUpdated: convertFullDateTime(
+                        new Date(new Date(record.lastUpdated).getTime() - timeOffset * 60000)
+                    ),
+                })),
+            ];
             setState({
                 type: "loadFirstRecords",
-                payload: result,
+                payload: [...recordsWithOffsetedTime],
             });
         });
     };

@@ -13,7 +13,7 @@ namespace Profitable.Models.ResponseModels.Positions.Stocks
 
         public string Name { get; set; }
 
-        public string PositionAddedOn { get; set; }
+        public DateTime PositionAddedOn { get; set; }
 
         public string Direction { get; set; }
 

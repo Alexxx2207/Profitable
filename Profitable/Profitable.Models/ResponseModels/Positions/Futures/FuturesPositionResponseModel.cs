@@ -6,7 +6,7 @@ namespace Profitable.Models.ResponseModels.Positions.Futures
     {
         public string Guid { get; set; }
 
-        public string PositionAddedOn { get; set; }
+        public DateTime PositionAddedOn { get; set; }
 
         public string ContractName { get; set; }
 

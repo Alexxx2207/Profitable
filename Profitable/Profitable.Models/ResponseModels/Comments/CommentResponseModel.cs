@@ -10,6 +10,6 @@
 
         public string Content { get; set; }
 
-        public string PostedOn { get; set; }
+        public DateTime PostedOn { get; set; }
     }
 }

@@ -14,10 +14,7 @@ namespace Profitable.Common.Automapper
 					dest => dest.QuantitySize,
 					src => src.MapFrom(model => model.Quantity));
 
-			CreateMap<TradePosition, FuturesPositionResponseModel>()
-				.ForMember(
-					dest => dest.PositionAddedOn,
-					opt => opt.MapFrom(model => model.PositionAddedOn.ToString("F")));
+			CreateMap<TradePosition, FuturesPositionResponseModel>();
 
             CreateMap<FuturesContract, FuturesPositionResponseModel>()
                  .ForMember(

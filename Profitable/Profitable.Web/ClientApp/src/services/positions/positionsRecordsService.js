@@ -11,7 +11,7 @@ export const getPositionsRecordsOrderByOptions = async () => {
     return await response.json();
 };
 
-export const getUserPositions = (email, page, pageCount, orderPositionsRecordBy) => {
+export const getUserPositionsRecords = (email, page, pageCount, orderPositionsRecordBy) => {
     return request
         .post(`${WEB_API_BASE_URL}/positionrecords/by-user`, {
             userEmail: email,

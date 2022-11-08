@@ -2,6 +2,7 @@ import classnames from "classnames";
 import { useEffect, useState, useContext, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../../../contexts/AuthContext";
+import { TimeContext } from "../../../../contexts/TimeContext";
 import { PostsLikeWidget } from "../PostsLikeWidget/PostsLikeWidget";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,11 +31,14 @@ import { getCommentsByPostId } from "../../../../services/comments/commentsServi
 import { GoToTop } from "../../../Common/GoToTop/GoToTop";
 
 import styles from "./PostDetails.module.css";
+import { convertFullDateTime } from "../../../../utils/Formatters/timeFormatter";
 
 export const PostDetails = () => {
     const navigate = useNavigate();
 
     const { JWT, removeAuth } = useContext(AuthContext);
+
+    const { timeOffset } = useContext(TimeContext);
 
     const { postId } = useParams();
 
@@ -73,7 +77,7 @@ export const PostDetails = () => {
                 }));
             });
         },
-        [postId]
+        [postId, timeOffset]
     );
 
     const loadFirstComments = useCallback(() => {
@@ -88,14 +92,14 @@ export const PostDetails = () => {
                 }));
             }
         });
-    }, [postId]);
+    }, [postId, timeOffset]);
 
     const handleScroll = useCallback(
         (e) => {
             const scrollHeight = e.target.documentElement.scrollHeight;
             const currentHeight = e.target.documentElement.scrollTop + window.innerHeight;
 
-            if (currentHeight >= scrollHeight - 300 || currentHeight === scrollHeight) {
+            if (currentHeight >= scrollHeight - 1 || currentHeight === scrollHeight) {
                 page++;
                 loadComments(page, COMMENTS_LIST_IN_POST_PAGE_COUNT);
             }
@@ -118,9 +122,15 @@ export const PostDetails = () => {
     useEffect(() => {
         loadParticularPost(postId, userEmail)
             .then((result) => {
+                var offsetedTime = new Date(
+                    new Date(result.postedOn).getTime() - timeOffset * 60000
+                );
                 setPostPage((state) => ({
                     ...state,
-                    post: { ...result },
+                    post: {
+                        ...result,
+                        postedOn: convertFullDateTime(offsetedTime),
+                    },
                 }));
                 loadFirstComments();
             })
@@ -238,7 +248,7 @@ export const PostDetails = () => {
                                 {postPage.post.author}
                             </div>
                         </div>
-                        <div className={styles.postedOn}>Posted On: {postPage.post.postedOn}</div>
+                        <div className={styles.postedOn}>{postPage.post.postedOn}</div>
                     </div>
                 </div>
             </div>

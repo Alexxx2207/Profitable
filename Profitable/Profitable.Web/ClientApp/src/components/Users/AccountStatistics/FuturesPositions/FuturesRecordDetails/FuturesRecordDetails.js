@@ -2,6 +2,7 @@ import { useEffect, useReducer, useContext, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { MessageBoxContext } from "../../../../../contexts/MessageBoxContext";
 import { AuthContext } from "../../../../../contexts/AuthContext";
+import { TimeContext } from "../../../../../contexts/TimeContext";
 import { ShortDirectionName } from "../../../../../common/config";
 import {
     deletePosition,
@@ -9,6 +10,7 @@ import {
     calculateAcculativePositions,
 } from "../../../../../services/positions/futuresPositionsService";
 import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
+import { convertFullDateTime } from "../../../../../utils/Formatters/timeFormatter";
 
 import { GoBackButton } from "../../../../Common/GoBackButton/GoBackButton";
 import { Line } from "react-chartjs-2";
@@ -64,6 +66,8 @@ export const FuturesRecordDetails = () => {
         selectedAfterDateFilter: "",
     });
 
+    const { timeOffset } = useContext(TimeContext);
+
     const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
 
     const { recordGuid, searchedProfileEmail } = useParams();
@@ -97,9 +101,17 @@ export const FuturesRecordDetails = () => {
             pathnameArray[pathnameArray.length - 2],
             oneYearAgoFromNow.toJSON()
         ).then((result) => {
+            var positionWithOffsetedTime = [
+                ...result.map((position) => ({
+                    ...position,
+                    positionAddedOn: convertFullDateTime(
+                        new Date(new Date(position.positionAddedOn).getTime() - timeOffset * 60000)
+                    ),
+                })),
+            ];
             setState({
                 type: "loadPositions",
-                payload: result,
+                payload: [...positionWithOffsetedTime],
             });
         });
     }, [recordGuid]);
@@ -275,7 +287,7 @@ export const FuturesRecordDetails = () => {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Date Added</th>
+                        <th>Realization Date</th>
                         <th>Contract/Instrument</th>
                         <th>Direction</th>
                         <th>Entry Price</th>

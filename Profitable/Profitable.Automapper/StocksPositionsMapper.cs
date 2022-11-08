@@ -16,11 +16,11 @@ namespace Profitable.Common.Automapper
         public StocksPositionsMapper()
         {
             CreateMap<AddStocksPositionRequestModel, TradePosition>();
+
             CreateMap<AddStocksPositionRequestModel, StocksPosition>();
-            CreateMap<TradePosition, StocksPositionResponseModel>()
-                .ForMember(
-                    dest => dest.PositionAddedOn,
-                    opt => opt.MapFrom(model => model.PositionAddedOn.ToString("F")));
+
+            CreateMap<TradePosition, StocksPositionResponseModel>();
+
             CreateMap<StocksPosition, StocksPositionResponseModel>()
                .ForMember(
                    dest => dest.Guid,

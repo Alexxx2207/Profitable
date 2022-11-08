@@ -11,7 +11,7 @@ namespace Profitable.Models.ResponseModels.Posts
 
         public string Content { get; set; }
 
-        public string PostedOn { get; set; }
+        public DateTime PostedOn { get; set; }
 
         public string AuthorEmail { get; set; }
 
