@@ -20,9 +20,12 @@ import styles from "./PostsExplorer.module.css";
 export const PostsExplorer = () => {
     const navigate = useNavigate();
 
-    const [posts, setPosts] = useState([]);
-    const [userEmail, setUserEmail] = useState("");
-    const [page, setPage] = useState(0);
+    const [state, setState] = useState({
+        posts: [],
+        userEmail: "",
+        page: 0,
+        showShowMore: true,
+    });
 
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
@@ -31,7 +34,17 @@ export const PostsExplorer = () => {
     const loadPosts = useCallback((page, pageCount, userEmail) => {
         loadPostsPage(page, pageCount, userEmail).then((result) => {
             if (result.length > 0) {
-                setPosts((posts) => [...posts, ...result]);
+                setState((oldState) => ({
+                    ...oldState,
+                    page: oldState.page + 1,
+                    posts: [...oldState.posts, ...result],
+                }));
+            } else {
+                setMessageBoxSettings("There are no more posts", false);
+                setState((state) => ({
+                    ...state,
+                    showShowMore: false,
+                }));
             }
         });
     }, []);
@@ -39,7 +52,15 @@ export const PostsExplorer = () => {
     const loadFirstPosts = useCallback((pageCount, userEmail) => {
         loadPostsPage(0, pageCount, userEmail).then((result) => {
             if (result.length > 0) {
-                setPosts((posts) => [...result]);
+                setState((oldState) => ({
+                    ...oldState,
+                    posts: [...result],
+                }));
+            } else {
+                setState((state) => ({
+                    ...state,
+                    showShowMore: false,
+                }));
             }
         });
     }, []);
@@ -47,32 +68,32 @@ export const PostsExplorer = () => {
     useEffect(() => {
         getUserEmailFromJWT(JWT)
             .then((result) => {
-                setUserEmail(result);
+                setState((oldState) => ({
+                    ...oldState,
+                    userEmail: result,
+                }));
             })
             .catch((err) => err);
     }, [JWT]);
 
     useEffect(() => {
-        loadFirstPosts(POSTS_LIST_POSTS_IN_PAGE_COUNT, userEmail);
-    }, [loadFirstPosts, userEmail]);
+        loadFirstPosts(POSTS_LIST_POSTS_IN_PAGE_COUNT, state.userEmail);
+    }, [loadFirstPosts, state.userEmail]);
 
-    const handleScroll = useCallback(
+    const handleShowMorePostsClick = useCallback(
         (e) => {
-            const scrollHeight = e.target.documentElement.scrollHeight;
-            const currentHeight = e.target.documentElement.scrollTop + window.innerHeight;
-
-            if (currentHeight >= scrollHeight - 1 || currentHeight === scrollHeight) {
-                setPage((state) => state + 1);
-                loadPosts(page + 1, POSTS_LIST_POSTS_IN_PAGE_COUNT, userEmail);
-            }
+            e.preventDefault();
+            setState((oldState) => ({
+                ...oldState,
+            }));
+            loadPosts(state.page + 1, POSTS_LIST_POSTS_IN_PAGE_COUNT, state.userEmail);
         },
-        [loadPosts, setPage, page, userEmail]
+        [loadPosts, state.page]
     );
 
     const addPostClickHandler = () => {
         getUserDataByJWT(JWT)
             .then((result) => {
-                setPosts([]);
                 navigate("/posts/create");
             })
             .catch((err) => {
@@ -87,12 +108,6 @@ export const PostsExplorer = () => {
             });
     };
 
-    useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [handleScroll]);
-
     return (
         <div className={styles.wrapper}>
             <div className={styles.createPostContainer}>
@@ -101,10 +116,25 @@ export const PostsExplorer = () => {
                     <div className={styles.addPostText}>Create Post</div>
                 </button>
             </div>
-            <h1 className={styles.discoverHeading}>Discover</h1>
-            <div className={styles.postsListContainer}>
-                <PostsList posts={posts} />
+            <div className={styles.explorerSection}>
+                <h1 className={styles.discoverHeading}>Discover</h1>
+                <h5 className={styles.discoverSubHeading}>
+                    Check what other people have researched and want to say
+                </h5>
+                <div className={styles.postsListContainer}>
+                    <PostsList posts={state.posts} />
+                </div>
+                {state.showShowMore ? (
+                    <div className={styles.loadMoreContainer}>
+                        <h4 className={styles.loadMoreButton} onClick={handleShowMorePostsClick}>
+                            Show More Posts
+                        </h4>
+                    </div>
+                ) : (
+                    <></>
+                )}
             </div>
+
             <GoToTop />
         </div>
     );

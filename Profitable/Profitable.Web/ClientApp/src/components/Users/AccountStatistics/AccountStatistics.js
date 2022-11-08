@@ -13,15 +13,17 @@ import {
 } from "../../../common/config";
 import { getUserEmailFromJWT } from "../../../services/users/usersService";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { MessageBoxContext } from "../../../contexts/MessageBoxContext";
 import { TimeContext } from "../../../contexts/TimeContext";
 
 import styles from "./AccountStatistics.module.css";
 
 const initialState = {
     lists: [],
-    page: 1,
+    page: 0,
     orderPositionsRecordsBySelected: POSITIONS_RECORDS_DEFAULT_ORDER,
     positionsRecordsOrderByOptions: [],
+    showShowMore: true,
 };
 
 const reducer = (state, action) => {
@@ -56,6 +58,12 @@ const reducer = (state, action) => {
                 orderPositionsRecordsBySelected: action.payload,
             };
         }
+        case "hideShowMoreButton": {
+            return {
+                ...state,
+                showShowMore: action.payload,
+            };
+        }
         default:
             return {
                 ...state,
@@ -65,6 +73,9 @@ const reducer = (state, action) => {
 
 export const AccountStatistics = () => {
     const { JWT, removeAuth } = useContext(AuthContext);
+
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
+
     const { timeOffset } = useContext(TimeContext);
 
     const navigate = useNavigate();
@@ -89,49 +100,47 @@ export const AccountStatistics = () => {
                 pageCount,
                 orderPositionsRecordsBySelected
             ).then((result) => {
-                var recordsWithOffsetedTime = [
-                    ...result.map((record) => ({
-                        ...record,
-                        lastUpdated: convertFullDateTime(
-                            new Date(new Date(record.lastUpdated).getTime() - timeOffset * 60000)
-                        ),
-                    })),
-                ];
-                setState({
-                    type: "loadRecords",
-                    payload: [...recordsWithOffsetedTime],
-                });
+                if (result.length > 0) {
+                    var recordsWithOffsetedTime = [
+                        ...result.map((record) => ({
+                            ...record,
+                            lastUpdated: convertFullDateTime(
+                                new Date(
+                                    new Date(record.lastUpdated).getTime() - timeOffset * 60000
+                                )
+                            ),
+                        })),
+                    ];
+                    setState({
+                        type: "loadRecords",
+                        payload: [...recordsWithOffsetedTime],
+                    });
+                } else {
+                    setMessageBoxSettings("There are no more records", false);
+                    setState({
+                        type: "hideShowMoreButton",
+                        payload: false,
+                    });
+                }
             });
         },
         [searchedProfileEmail]
     );
 
-    const handleScroll = useCallback(
+    const handleShowMoreRecordClick = useCallback(
         (e) => {
-            const scrollHeight = e.target.documentElement.scrollHeight;
-            const currentHeight = e.target.documentElement.scrollTop + window.innerHeight;
-
-            if (currentHeight >= scrollHeight - 1 || currentHeight === scrollHeight) {
-                setState({
-                    type: "increasePageCount",
-                });
-                loadRecords(
-                    state.page,
-                    POSITIONS_RECORDS_PAGE_COUNT,
-                    state.orderPositionsRecordsBySelected
-                );
-            }
+            e.preventDefault();
+            setState({
+                type: "increasePageCount",
+            });
+            loadRecords(
+                state.page + 1,
+                POSITIONS_RECORDS_PAGE_COUNT,
+                state.orderPositionsRecordsBySelected
+            );
         },
         [loadRecords, state.page, state.orderPositionsRecordsBySelected]
     );
-
-    useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, [handleScroll]);
 
     useEffect(() => {
         getPositionsRecordsOrderByOptions().then((result) => {
@@ -157,18 +166,25 @@ export const AccountStatistics = () => {
             POSITIONS_RECORDS_PAGE_COUNT,
             POSITIONS_RECORDS_DEFAULT_ORDER
         ).then((result) => {
-            var recordsWithOffsetedTime = [
-                ...result.map((record) => ({
-                    ...record,
-                    lastUpdated: convertFullDateTime(
-                        new Date(new Date(record.lastUpdated).getTime() - timeOffset * 60000)
-                    ),
-                })),
-            ];
-            setState({
-                type: "loadFirstRecords",
-                payload: [...recordsWithOffsetedTime],
-            });
+            if (result.length > 0) {
+                var recordsWithOffsetedTime = [
+                    ...result.map((record) => ({
+                        ...record,
+                        lastUpdated: convertFullDateTime(
+                            new Date(new Date(record.lastUpdated).getTime() - timeOffset * 60000)
+                        ),
+                    })),
+                ];
+                setState({
+                    type: "loadFirstRecords",
+                    payload: [...recordsWithOffsetedTime],
+                });
+            } else {
+                setState({
+                    type: "hideShowMoreButton",
+                    payload: false,
+                });
+            }
         });
     }, [searchedProfileEmail]);
 
@@ -230,6 +246,15 @@ export const AccountStatistics = () => {
                 records={state.lists}
                 showOwnerActionButtons={searchedProfileEmail.localeCompare(loggedInUserEmail) === 0}
             />
+            {state.showShowMore ? (
+                <div className={styles.loadMoreContainer}>
+                    <h4 className={styles.loadMoreButton} onClick={handleShowMoreRecordClick}>
+                        Show More Records
+                    </h4>
+                </div>
+            ) : (
+                <></>
+            )}
         </div>
     );
 };

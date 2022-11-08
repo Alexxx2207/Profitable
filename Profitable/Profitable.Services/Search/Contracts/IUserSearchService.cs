@@ -4,6 +4,6 @@ namespace Profitable.Services.Search.Contracts
 {
 	public interface IUserSearchService
 	{
-		Task<List<UserDetailsResponseModel>> GetMatchingUsers(string searchTerm);
+		Task<List<UserDetailsResponseModel>> GetMatchingUsers(string searchTerm, int page, int pageCount);
 	}
 }

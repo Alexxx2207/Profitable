@@ -44,7 +44,7 @@ export const PostDetails = () => {
 
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
-    const [postPage, setPostPage] = useState({
+    const [state, setState] = useState({
         post: {
             guid: "",
             title: "",
@@ -59,22 +59,31 @@ export const PostDetails = () => {
             comments: [],
         },
         showCreateCommentWidget: false,
+        page: 0,
+        showShowMore: true,
     });
 
     const [userEmail, setUserEmail] = useState("");
 
-    let page = 0;
-
     const loadComments = useCallback(
         (page, pageCount) => {
             getCommentsByPostId(postId, page, pageCount).then((commentsFromAPI) => {
-                setPostPage((state) => ({
-                    ...state,
-                    post: {
-                        ...state.post,
-                        comments: [...state.post.comments, ...commentsFromAPI],
-                    },
-                }));
+                if (commentsFromAPI.length > 0) {
+                    setState((oldState) => ({
+                        ...oldState,
+                        page: oldState.page + 1,
+                        post: {
+                            ...oldState.post,
+                            comments: [...oldState.post.comments, ...commentsFromAPI],
+                        },
+                    }));
+                } else {
+                    setMessageBoxSettings("There are no more comments", false);
+                    setState((state) => ({
+                        ...state,
+                        showShowMore: false,
+                    }));
+                }
             });
         },
         [postId, timeOffset]
@@ -83,28 +92,31 @@ export const PostDetails = () => {
     const loadFirstComments = useCallback(() => {
         getCommentsByPostId(postId, 0, COMMENTS_LIST_IN_POST_PAGE_COUNT).then((commentsFromAPI) => {
             if (commentsFromAPI.length > 0) {
-                setPostPage((state) => ({
+                setState((state) => ({
                     ...state,
                     post: {
                         ...state.post,
                         comments: [...commentsFromAPI],
                     },
                 }));
+            } else {
+                setState((state) => ({
+                    ...state,
+                    showShowMore: false,
+                }));
             }
         });
     }, [postId, timeOffset]);
 
-    const handleScroll = useCallback(
+    const handleShowMoreCommentsClick = useCallback(
         (e) => {
-            const scrollHeight = e.target.documentElement.scrollHeight;
-            const currentHeight = e.target.documentElement.scrollTop + window.innerHeight;
-
-            if (currentHeight >= scrollHeight - 1 || currentHeight === scrollHeight) {
-                page++;
-                loadComments(page, COMMENTS_LIST_IN_POST_PAGE_COUNT);
-            }
+            e.preventDefault();
+            setState((oldState) => ({
+                ...oldState,
+            }));
+            loadComments(state.page + 1, COMMENTS_LIST_IN_POST_PAGE_COUNT);
         },
-        [loadComments, page]
+        [loadComments, state.page]
     );
 
     useEffect(() => {
@@ -114,18 +126,12 @@ export const PostDetails = () => {
     }, [JWT]);
 
     useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [handleScroll]);
-
-    useEffect(() => {
         loadParticularPost(postId, userEmail)
             .then((result) => {
                 var offsetedTime = new Date(
                     new Date(result.postedOn).getTime() - timeOffset * 60000
                 );
-                setPostPage((state) => ({
+                setState((state) => ({
                     ...state,
                     post: {
                         ...result,
@@ -177,21 +183,21 @@ export const PostDetails = () => {
         e.preventDefault();
         e.stopPropagation();
 
-        navigate(`/users/${postPage.post.authorEmail}`);
+        navigate(`/users/${state.post.authorEmail}`);
     };
 
     const handleAddCommentButton = useCallback(() => {
-        setPostPage((state) => ({
+        setState((state) => ({
             ...state,
             showCreateCommentWidget: !state.showCreateCommentWidget,
         }));
     }, []);
 
     return (
-        <div className={styles.postPage}>
+        <div className={styles.state}>
             <div className={styles.post}>
                 <div className={styles.buttonContainer}>
-                    {postPage.post.authorEmail && postPage.post.authorEmail === userEmail ? (
+                    {state.post.authorEmail && state.post.authorEmail === userEmail ? (
                         <div className={styles.ownerButtonSection}>
                             <button
                                 className={classnames(styles.button, styles.editButton)}
@@ -214,18 +220,18 @@ export const PostDetails = () => {
                 </div>
                 <div className={styles.postContent}>
                     <div className={styles.text}>
-                        <h1 className={styles.title}>{postPage.post.title}</h1>
-                        {postPage.post.postImage ? (
+                        <h1 className={styles.title}>{state.post.title}</h1>
+                        {state.post.postImage ? (
                             <img
                                 className={styles.postImage}
-                                src={createImgURL(postPage.post.postImage)}
+                                src={createImgURL(state.post.postImage)}
                                 alt=""
                             />
                         ) : (
                             ""
                         )}
                         <div className={styles.content}>
-                            {postPage.post.content.split("\\n").map((paragraph, index) => (
+                            {state.post.content.split("\\n").map((paragraph, index) => (
                                 <p key={index}>
                                     {paragraph}
                                     <br />
@@ -233,7 +239,7 @@ export const PostDetails = () => {
                             ))}
                         </div>
                         <div className={styles.postsLikeWidgetContainer}>
-                            <PostsLikeWidget style={styles.postsLikeWidget} post={postPage.post} />
+                            <PostsLikeWidget style={styles.postsLikeWidget} post={state.post} />
                         </div>
                     </div>
                     <div className={styles.information}>
@@ -241,14 +247,14 @@ export const PostDetails = () => {
                             <img
                                 onClick={clickUserProfileHandler}
                                 className={styles.authorImage}
-                                src={createAuthorImgURL(postPage.post.authorImage)}
+                                src={createAuthorImgURL(state.post.authorImage)}
                                 alt=""
                             />
                             <div onClick={clickUserProfileHandler} className={styles.authorName}>
-                                {postPage.post.author}
+                                {state.post.author}
                             </div>
                         </div>
-                        <div className={styles.postedOn}>{postPage.post.postedOn}</div>
+                        <div className={styles.postedOn}>{state.post.postedOn}</div>
                     </div>
                 </div>
             </div>
@@ -261,7 +267,7 @@ export const PostDetails = () => {
                                 className={styles.addCommentButton}
                                 onClick={handleAddCommentButton}
                             >
-                                {postPage.showCreateCommentWidget ? (
+                                {state.showCreateCommentWidget ? (
                                     <>
                                         <FontAwesomeIcon
                                             className={styles.iconAddComment}
@@ -284,7 +290,7 @@ export const PostDetails = () => {
                         ""
                     )}
                 </div>
-                {postPage.showCreateCommentWidget ? (
+                {state.showCreateCommentWidget ? (
                     <CreateComment
                         postId={postId}
                         loadFirstComments={loadFirstComments}
@@ -294,9 +300,19 @@ export const PostDetails = () => {
                     <></>
                 )}
                 <div className={styles.commentsListContainer}>
-                    <CommentsList postId={postId} comments={postPage.post.comments} />
+                    <CommentsList postId={postId} comments={state.post.comments} />
                 </div>
             </section>
+            {state.showShowMore ? (
+                <div className={styles.loadMoreContainer}>
+                    <h4 className={styles.loadMoreButton} onClick={handleShowMoreCommentsClick}>
+                        Show More Comments
+                    </h4>
+                </div>
+            ) : (
+                <></>
+            )}
+
             <GoToTop />
         </div>
     );

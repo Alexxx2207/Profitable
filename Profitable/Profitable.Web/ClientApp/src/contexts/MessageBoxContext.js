@@ -24,7 +24,7 @@ export const MessageBoxContextProvider = ({ children }) => {
     const disposeMessageBoxSettings = () => {
         setTimeout(() => {
             setMessageBox({ ...messageBoxInitialState });
-        }, 5000);
+        }, 2600);
     };
     return (
         <MessageBoxContext.Provider value={{ setMessageBoxSettings }}>

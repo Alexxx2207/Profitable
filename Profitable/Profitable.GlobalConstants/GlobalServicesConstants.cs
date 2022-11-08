@@ -9,8 +9,6 @@
 
         public static readonly short CommentMaxLength = 1000;
 
-        public static readonly byte SearchResultsCountToTake = 15;
-
         public static readonly string UploadsFolderInProject = "Profitable.Web";
 
         public static readonly string RequesterNotOwnerMesssage = "Requester not owner of the entity";

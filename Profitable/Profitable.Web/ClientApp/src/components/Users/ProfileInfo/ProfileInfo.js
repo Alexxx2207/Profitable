@@ -259,10 +259,10 @@ export const ProfileInfo = () => {
                         <div className={styles.dangerZone}>
                             <div className={styles.deleteSection}>
                                 <div className={styles.deleteHeadingContainer}>
-                                    <h3 className={styles.deleteHeading}>Delete Account</h3>
-                                    <h5 className={styles.deleteHeading}>
+                                    <h4 className={styles.deleteHeading}>Delete Account</h4>
+                                    <h6 className={styles.deleteHeading}>
                                         Your posts will also be deleted!
-                                    </h5>
+                                    </h6>
                                 </div>
                                 <button
                                     onClick={deleteUserButtonClickHandler}
@@ -273,10 +273,10 @@ export const ProfileInfo = () => {
                             </div>
                             <div className={styles.deleteSection}>
                                 <div className={styles.deleteHeadingContainer}>
-                                    <h3 className={styles.deleteHeading}>Remove Profile Image</h3>
-                                    <h5 className={styles.deleteHeading}>
-                                        Your profile picture will be the default one!
-                                    </h5>
+                                    <h4 className={styles.deleteHeading}>Remove Profile Image</h4>
+                                    <h6 className={styles.deleteHeading}>
+                                        Your profile picture will be a default one!
+                                    </h6>
                                 </div>
                                 <button
                                     onClick={deleteImageButtonClickHandler}

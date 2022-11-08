@@ -25,7 +25,7 @@ namespace Profitable.Services.Search
 			this.mapper = mapper;
 		}
 
-		public async Task<List<PostResponseModel>> GetMatchingPosts(string searchTerm)
+		public async Task<List<PostResponseModel>> GetMatchingPosts(string searchTerm, int page, int pageCount)
 		{
 			searchTerm = searchTerm.ToLower();
 
@@ -41,7 +41,8 @@ namespace Profitable.Services.Search
 					||
 					(p.Author.FirstName + " " + p.Author.LastName).ToLower().Contains(searchTerm)))
 				.Select(post => mapper.Map<PostResponseModel>(post))
-				.Take(GlobalServicesConstants.SearchResultsCountToTake)
+                .Skip(page * pageCount)
+                .Take(pageCount)
 				.ToListAsync();
 
 			foreach (var post in posts)
