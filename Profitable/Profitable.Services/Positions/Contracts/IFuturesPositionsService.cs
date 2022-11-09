@@ -6,7 +6,7 @@ namespace Profitable.Services.Positions.Contracts
 {
     public interface IFuturesPositionsService
     {
-        Task<List<FuturesPositionResponseModel>> GetFuturesPositions(Guid recordId, DateTime afterDateFilter);
+        Task<List<FuturesPositionResponseModel>> GetFuturesPositions(Guid recordId, DateTime afterDateFilter, DateTime beforeDateFilter);
 
 		Task<FuturesPositionResponseModel> GetFuturesPositionByGuid(Guid positionGuid);
 

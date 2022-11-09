@@ -7,11 +7,9 @@ import { ErrorWidget } from "../../../../Common/ErrorWidget/ErrorWidget";
 import {
     CLIENT_ERROR_TYPE,
     JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
-    LongDirectionName,
     REQUESTER_NOT_OWNER_FRIENDLIER_MESSAGE,
     REQUESTER_NOT_OWNER_MESSAGE,
     SERVER_ERROR_TYPE,
-    ShortDirectionName,
 } from "../../../../../common/config";
 import {
     isEmptyOrWhiteSpaceFieldChecker,

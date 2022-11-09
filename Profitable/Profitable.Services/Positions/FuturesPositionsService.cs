@@ -36,14 +36,16 @@ namespace Profitable.Services.Positions
 
 		public async Task<List<FuturesPositionResponseModel>> GetFuturesPositions(
 			Guid recordId,
-			DateTime afterDateFilter)
+			DateTime afterDateFilter,
+			DateTime beforeDateFilter)
 		{
-			var tradePositions = await tradePositionsRepository
+            var tradePositions = await tradePositionsRepository
 				.GetAllAsNoTracking()
 				.Include(p => p.PositionsRecordList)
 				.Where(p =>
 					!p.IsDeleted &&
-					p.PositionAddedOn >= afterDateFilter &&
+                    DateTime.Compare(p.PositionAddedOn.Date, afterDateFilter.Date) >= 0 &&
+                    DateTime.Compare(p.PositionAddedOn.Date, beforeDateFilter.Date) <= 0 &&
 					p.PositionsRecordListId == recordId)
 				.OrderBy(p => p.PositionAddedOn)
 				.ToListAsync();

@@ -16,9 +16,9 @@ export const getPositionsRecordsOrderByOptions = async () => {
     return await response.json();
 };
 
-export const getPositionsFromRecord = async (recordId, instrumentGroup, dateAfter) => {
+export const getPositionsFromRecord = async (recordId, dateAfter, dateBefore) => {
     var response = await request.get(
-        `${WEB_API_BASE_URL}/futurespositions/records/${recordId}/positions?afterDate=${dateAfter}`
+        `${WEB_API_BASE_URL}/futurespositions/records/${recordId}/positions?afterDate=${dateAfter}&beforeDate=${dateBefore}`
     );
 
     if (response.status === 400) {

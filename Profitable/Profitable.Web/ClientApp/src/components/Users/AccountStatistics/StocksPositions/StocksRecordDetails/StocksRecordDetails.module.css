@@ -87,3 +87,14 @@
 .positionsTable th {
     letter-spacing: 1px;
 }
+
+.filterDateContainer {
+    display: flex;
+    margin: 2rem 0rem 2rem 2rem;
+    gap: 1rem;
+    align-items: baseline;
+}
+
+.filterDateContainer h4 {
+    letter-spacing: 1px;
+}
