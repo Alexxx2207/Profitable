@@ -22,7 +22,7 @@ import {
     createServerErrorObject,
 } from "../../../../../services/common/createValidationErrorObject";
 
-import { createPosition } from "../../../../../services/positions/futuresPositionsService";
+import { createFuturesPosition } from "../../../../../services/positions/futuresPositionsService";
 import { loadFuturesContracts } from "../../../../../services/futures/futuresService";
 
 import styles from "./CreateFuturesPosition.module.css";
@@ -193,7 +193,7 @@ export const CreateFuturesPosition = () => {
         );
 
         if (clientErrors.filter((err) => !err.fulfilled).length === 0) {
-            createPosition(
+            createFuturesPosition(
                 JWT,
                 recordGuid,
                 state.values.chosenContract.name,

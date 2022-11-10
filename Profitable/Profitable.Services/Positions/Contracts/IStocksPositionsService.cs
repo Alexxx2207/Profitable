@@ -11,7 +11,7 @@ namespace Profitable.Services.Positions.Contracts
 {
     public interface IStocksPositionsService
     {
-        Task<List<StocksPositionResponseModel>> GetStocksPositions(Guid recordId, DateTime afterDateFilter);
+        Task<List<StocksPositionResponseModel>> GetStocksPositions(Guid recordId, DateTime afterDateFilter, DateTime beforeDateFilter);
 
         Task<StocksPositionResponseModel> GetStocksPositionByGuid(Guid positionGuid);
 

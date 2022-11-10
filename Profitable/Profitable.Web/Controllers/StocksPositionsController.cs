@@ -20,14 +20,16 @@ namespace Profitable.Web.Controllers
 
         [HttpGet("records/{recordId}/positions")]
         public async Task<IActionResult> GetAllPositionsInARecord(
-    [FromRoute] string recordId,
-    [FromQuery] string afterDate)
+            [FromRoute] string recordId,
+            [FromQuery] string afterDate,
+            [FromQuery] string beforeDate)
         {
-            if (afterDate != null)
+            if (afterDate != null && beforeDate != null)
             {
                 var futuresPositions = await stocksPositionsService.GetStocksPositions(
                           Guid.Parse(recordId),
-                          DateTime.Parse(afterDate));
+                          DateTime.Parse(afterDate),
+                          DateTime.Parse(beforeDate));
 
                 return Ok(futuresPositions);
             }

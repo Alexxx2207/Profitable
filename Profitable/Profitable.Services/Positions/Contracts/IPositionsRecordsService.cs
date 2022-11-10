@@ -4,13 +4,19 @@ using Profitable.Models.ResponseModels.Positions.Records;
 
 namespace Profitable.Services.Positions.Contracts
 {
-    public interface IPositionsRecordsService
+	public interface IPositionsRecordsService
 	{
-		Task<List<UserPositionsRecordResponseModel>> GetUserPositionsRecordsAsync(
+		Task<List<UserPositionsRecordResponseModel>> GetUserRecordsAsync(
 			Guid userGuid,
 			int page,
 			int pageCount,
 			OrderPositionsRecordBy orderByChoice);
+
+		Task<List<UserPositionsRecordResponseModel>> GetUserRecordsByInstrumentGroupAsync(
+			Guid userGuid,
+			int page,
+			int pageCount,
+			InstrumentGroup instrumentGroup);
 
 		IEnumerable<string> GetPositionsRecordsOrderTypes();
 

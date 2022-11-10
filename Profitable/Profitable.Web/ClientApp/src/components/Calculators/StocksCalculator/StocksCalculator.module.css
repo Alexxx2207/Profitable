@@ -126,6 +126,7 @@
     margin-top: 2rem;
     display: flex;
     align-items: center;
+    gap: 2rem;
 }
 
 .resultsLabel {
@@ -195,6 +196,31 @@
 }
 
 .calculateButton:hover {
+    background-color: black;
+    color: white;
+    transition: 0.3s ease-in-out;
+}
+
+.saveToPositionsContainer {
+    display: flex;
+    justify-content: center;
+}
+.saveToRecordButton {
+    display: inline-block;
+    text-align: center;
+    padding: 0.5rem 1.2rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+}
+
+.saveToRecordButton:hover {
     background-color: black;
     color: white;
     transition: 0.3s ease-in-out;

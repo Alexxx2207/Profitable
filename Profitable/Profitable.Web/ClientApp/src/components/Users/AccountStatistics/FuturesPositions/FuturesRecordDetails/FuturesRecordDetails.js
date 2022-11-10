@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useContext, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MessageBoxContext } from "../../../../../contexts/MessageBoxContext";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import { TimeContext } from "../../../../../contexts/TimeContext";
@@ -26,9 +26,84 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faWrench } from "@fortawesome/free-solid-svg-icons";
 
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import TextField from "@mui/material/TextField";
+import { styled } from "@mui/material/styles";
+
 import styles from "./FuturesRecordDetails.module.css";
 
 Chart.register([CategoryScale, LineElement, PointElement, LinearScale, Tooltip, Filler]);
+
+const popperSx = {
+    "& .PrivatePickersSlideTransition-root": {
+        minHeight: "200px",
+    },
+    "& .MuiCalendarPicker-root, & .MuiCalendarPicker-root *": {
+        backgroundColor: "white",
+        color: "black",
+    },
+    "& .PrivatePickersYear-yearButton.Mui-selected": {
+        color: "white",
+    },
+    "& .PrivatePickersMonth-root.Mui-selected": {
+        color: "white",
+    },
+    "& .MuiPickersDay-dayWithMargin.Mui-selected": {
+        color: "white",
+    },
+    "& .MuiTouchRipple-root": {
+        background: "transparent",
+    },
+};
+
+const CssTextField = styled(TextField)({
+    "& .MuiFormHelperText-root": {
+        color: "white",
+        letterSpacing: "1px",
+    },
+    "& .MuiInputBase-formControl": {
+        color: "white",
+        background: "transparent",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+        color: "white",
+        background: "transparent",
+    },
+    "& .MuiTouchRipple-root": {
+        background: "transparent",
+    },
+    "& .MuiSvgIcon-root": {
+        color: "white",
+    },
+    "& label": {
+        color: "white",
+        fontSize: "1.3rem",
+        letterSpacing: "1px",
+    },
+    "& label.Mui-focused": {
+        color: "white",
+    },
+    "& .MuiInput-underline:after": {
+        borderBottomColor: "white",
+    },
+    "& .MuiOutlinedInput-root": {
+        "& fieldset": {
+            color: "white",
+            borderColor: "white",
+        },
+        "&:hover fieldset": {
+            color: "white",
+            borderColor: "white",
+        },
+        "&.Mui-focused fieldset": {
+            color: "white",
+            borderColor: "white",
+        },
+    },
+});
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -46,10 +121,15 @@ const reducer = (state, action) => {
                 accumulatedPandLPositions: accumulatedPositions,
                 overallProfitLoss: Number(accumulatedPositions[accumulatedPositions.length - 1]),
             };
-        case "setDefaultDate":
+        case "setAfterDate":
             return {
                 ...state,
                 selectedAfterDateFilter: action.payload,
+            };
+        case "setBeforeDate":
+            return {
+                ...state,
+                selectedBeforeDateFilter: action.payload,
             };
         default:
             return {
@@ -64,6 +144,7 @@ export const FuturesRecordDetails = () => {
         accumulatedPandLPositions: [],
         overallProfitLoss: 0,
         selectedAfterDateFilter: "",
+        selectedBeforeDateFilter: "",
     });
 
     const { timeOffset } = useContext(TimeContext);
@@ -73,8 +154,6 @@ export const FuturesRecordDetails = () => {
     const { recordGuid, searchedProfileEmail } = useParams();
 
     const navigate = useNavigate();
-
-    const location = useLocation();
 
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
 
@@ -90,31 +169,34 @@ export const FuturesRecordDetails = () => {
     useEffect(() => {
         var oneYearAgoFromNow = new Date();
         oneYearAgoFromNow.setFullYear(oneYearAgoFromNow.getFullYear() - 1);
-        var pathnameArray = location.pathname.split("/");
 
         setState({
-            type: "setDefaultDate",
-            payload: oneYearAgoFromNow,
+            type: "setAfterDate",
+            payload: dayjs(oneYearAgoFromNow),
         });
-        getPositionsFromRecord(
-            recordGuid,
-            pathnameArray[pathnameArray.length - 2],
-            oneYearAgoFromNow.toJSON()
-        ).then((result) => {
-            var positionWithOffsetedTime = [
-                ...result.map((position) => ({
-                    ...position,
-                    positionAddedOn: convertFullDateTime(
-                        new Date(new Date(position.positionAddedOn).getTime() - timeOffset * 60000)
-                    ),
-                })),
-            ];
-            setState({
-                type: "loadPositions",
-                payload: [...positionWithOffsetedTime],
-            });
+        setState({
+            type: "setBeforeDate",
+            payload: dayjs(new Date()),
         });
-    }, [recordGuid]);
+        getPositionsFromRecord(recordGuid, oneYearAgoFromNow.toJSON(), new Date().toJSON()).then(
+            (result) => {
+                var positionWithOffsetedTime = [
+                    ...result.map((position) => ({
+                        ...position,
+                        positionAddedOn: convertFullDateTime(
+                            new Date(
+                                new Date(position.positionAddedOn).getTime() - timeOffset * 60000
+                            )
+                        ),
+                    })),
+                ];
+                setState({
+                    type: "loadPositions",
+                    payload: [...positionWithOffsetedTime],
+                });
+            }
+        );
+    }, [recordGuid, timeOffset]);
 
     const deletePositionOnClickHandler = (positionGuid) => {
         deletePosition(JWT, recordGuid, positionGuid)
@@ -142,6 +224,64 @@ export const FuturesRecordDetails = () => {
         navigate(
             `/users/${searchedProfileEmail}/positions-records/futures/${recordGuid}/change-position/${positionGuid}`
         );
+    };
+
+    const onDateAfterChange = (newValue) => {
+        newValue = newValue.hour(0);
+        setState({
+            type: "setAfterDate",
+            payload: newValue,
+        });
+
+        if (newValue.diff(state.selectedBeforeDateFilter) <= 0) {
+            getPositionsFromRecord(
+                recordGuid,
+                newValue.toJSON(),
+                state.selectedBeforeDateFilter.toJSON()
+            ).then((result) => {
+                var positionWithOffsetedTime = [
+                    ...result.map((position) => ({
+                        ...position,
+                        positionAddedOn: convertFullDateTime(
+                            new Date(
+                                new Date(position.positionAddedOn).getTime() - timeOffset * 60000
+                            )
+                        ),
+                    })),
+                ];
+                setState({
+                    type: "loadPositions",
+                    payload: [...positionWithOffsetedTime],
+                });
+            });
+        }
+    };
+
+    const onDateBeforeChange = (newValue) => {
+        newValue = newValue.hour(0);
+        setState({
+            type: "setBeforeDate",
+            payload: newValue,
+        });
+
+        getPositionsFromRecord(
+            recordGuid,
+            state.selectedAfterDateFilter.toJSON(),
+            newValue.toJSON()
+        ).then((result) => {
+            var positionWithOffsetedTime = [
+                ...result.map((position) => ({
+                    ...position,
+                    positionAddedOn: convertFullDateTime(
+                        new Date(new Date(position.positionAddedOn).getTime() - timeOffset * 60000)
+                    ),
+                })),
+            ];
+            setState({
+                type: "loadPositions",
+                payload: [...positionWithOffsetedTime],
+            });
+        });
     };
 
     return (
@@ -177,6 +317,12 @@ export const FuturesRecordDetails = () => {
                                 display: false,
                             },
                             y: {
+                                suggestedMin: -Math.max(
+                                    ...state.accumulatedPandLPositions.map((el) => Math.abs(el))
+                                ),
+                                suggestedMax: Math.max(
+                                    ...state.accumulatedPandLPositions.map((el) => Math.abs(el))
+                                ),
                                 grid: {
                                     borderColor: "white",
                                     color: "rgb(255,255,255, 0.2)",
@@ -267,6 +413,46 @@ export const FuturesRecordDetails = () => {
             ) : (
                 ""
             )}
+
+            <div className={styles.filterDateContainer}>
+                <h4>From</h4>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        value={state.selectedAfterDateFilter}
+                        onChange={onDateAfterChange}
+                        PopperProps={{
+                            sx: popperSx,
+                        }}
+                        renderInput={(params) => (
+                            <CssTextField
+                                {...params}
+                                helperText={params?.inputProps?.placeholder}
+                            />
+                        )}
+                        views={["year", "month", "day"]}
+                        showDaysOutsideCurrentMonth={true}
+                    />
+                </LocalizationProvider>
+                <h4> To </h4>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        value={state.selectedBeforeDateFilter}
+                        onChange={onDateBeforeChange}
+                        PopperProps={{
+                            sx: popperSx,
+                        }}
+                        renderInput={(params) => (
+                            <CssTextField
+                                {...params}
+                                helperText={params?.inputProps?.placeholder}
+                            />
+                        )}
+                        views={["year", "month", "day"]}
+                        showDaysOutsideCurrentMonth={true}
+                        minDate={state.selectedAfterDateFilter}
+                    />
+                </LocalizationProvider>
+            </div>
 
             <div className={styles.overallProfiltLossHeading}>
                 <h3>

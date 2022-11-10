@@ -1,9 +1,4 @@
-import {
-    LongDirectionName,
-    LongDirectionValue,
-    ShortDirectionValue,
-    WEB_API_BASE_URL,
-} from "../../common/config";
+import { WEB_API_BASE_URL } from "../../common/config";
 import { request } from "../../utils/fetch/request";
 
 export const getPositionsRecordsOrderByOptions = async () => {
@@ -16,9 +11,9 @@ export const getPositionsRecordsOrderByOptions = async () => {
     return await response.json();
 };
 
-export const getPositionsFromRecord = async (recordId, instrumentGroup, dateAfter) => {
+export const getPositionsFromRecord = async (recordId, dateAfter, beforeDate) => {
     var response = await request.get(
-        `${WEB_API_BASE_URL}/stockspositions/records/${recordId}/positions?afterDate=${dateAfter}`
+        `${WEB_API_BASE_URL}/stockspositions/records/${recordId}/positions?afterDate=${dateAfter}&beforeDate=${beforeDate}`
     );
 
     if (response.status === 400) {
@@ -38,7 +33,7 @@ export const getPositionByGuid = async (positionGuid) => {
     return await response.json();
 };
 
-export const createPosition = async (
+export const createStocksPosition = async (
     JWT,
     recordId,
     name,

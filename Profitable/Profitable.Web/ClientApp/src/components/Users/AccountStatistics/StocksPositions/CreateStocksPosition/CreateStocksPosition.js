@@ -7,11 +7,9 @@ import { ErrorWidget } from "../../../../Common/ErrorWidget/ErrorWidget";
 import {
     CLIENT_ERROR_TYPE,
     JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE,
-    LongDirectionName,
     REQUESTER_NOT_OWNER_FRIENDLIER_MESSAGE,
     REQUESTER_NOT_OWNER_MESSAGE,
     SERVER_ERROR_TYPE,
-    ShortDirectionName,
 } from "../../../../../common/config";
 import {
     isEmptyOrWhiteSpaceFieldChecker,
@@ -23,7 +21,7 @@ import {
     createServerErrorObject,
 } from "../../../../../services/common/createValidationErrorObject";
 
-import { createPosition } from "../../../../../services/positions/stocksPositionsService";
+import { createStocksPosition } from "../../../../../services/positions/stocksPositionsService";
 import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
 
 import styles from "./CreateStocksPosition.module.css";
@@ -102,7 +100,7 @@ const reducer = (state, action) => {
 };
 
 export const CreateStocksPosition = () => {
-    const { recordGuid, searchedProfileEmail, positionGuid } = useParams();
+    const { recordGuid, searchedProfileEmail } = useParams();
 
     const navigate = useNavigate();
 
@@ -182,7 +180,7 @@ export const CreateStocksPosition = () => {
         );
 
         if (clientErrors.filter((err) => !err.fulfilled).length === 0) {
-            createPosition(
+            createStocksPosition(
                 JWT,
                 recordGuid,
                 state.values.name,
@@ -193,7 +191,7 @@ export const CreateStocksPosition = () => {
                 state.values.sellCommission
             )
                 .then(() => {
-                    setMessageBoxSettings("The position was edited successfully!", true);
+                    setMessageBoxSettings("The position was created successfully!", true);
                     navigate(
                         `/users/${searchedProfileEmail}/positions-records/stocks/${recordGuid}`
                     );
@@ -254,7 +252,7 @@ export const CreateStocksPosition = () => {
                                 type="text"
                                 name="name"
                                 placeholder={"AAPL/GOOG/NVDA..."}
-                                value={state.values.title}
+                                value={state.values.name}
                                 onChange={changeHandler}
                             />
                         </div>

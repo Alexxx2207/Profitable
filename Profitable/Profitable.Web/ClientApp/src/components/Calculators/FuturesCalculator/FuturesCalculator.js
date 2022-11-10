@@ -1,11 +1,17 @@
-import { useEffect, useReducer } from "react";
-import { LongDirectionValue, ShortDirectionValue } from "../../../common/config";
+import { useContext, useEffect, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
+import { InstrumentTypes, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, LongDirectionValue, ShortDirectionValue } from "../../../common/config";
+
+import { AuthContext } from "../../../contexts/AuthContext";
+import { MessageBoxContext } from "../../../contexts/MessageBoxContext";
 
 import { loadFuturesContracts, CalculatePosition } from "../../../services/futures/futuresService";
+import { getUserEmailFromJWT } from "../../../services/users/usersService";
 
 import styles from "./FuturesCalculator.module.css";
 
 const initialState = {
+    userEmail: "",
     allFutures: [],
     chosenFutures: {
         name: "",
@@ -26,6 +32,11 @@ const initialState = {
 
 function futuresReducer(state, action) {
     switch (action.type) {
+        case "setUserEmail":
+            return {
+                ...state,
+                userEmail: action.payload,
+            };
         case "loadAllFutures":
             return {
                 ...state,
@@ -93,56 +104,87 @@ function futuresReducer(state, action) {
 }
 
 export const FuturesCalculator = () => {
-    const [futures, dispatch] = useReducer(futuresReducer, initialState);
+
+    const { JWT, removeAuth } = useContext(AuthContext);
+
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
+
+    const [state, setState] = useReducer(futuresReducer, initialState);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if(JWT) {
+            getUserEmailFromJWT(JWT)
+            .then(userEmail => {
+                setState({type: "setUserEmail", payload: userEmail});
+            })
+            .catch(err => {
+                setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
+                removeAuth();
+                navigate("/login");
+            })
+        }
+        
         loadFuturesContracts().then((futuresContracts) =>
-            dispatch({ type: "loadAllFutures", allFutures: futuresContracts })
+            setState({ type: "loadAllFutures", allFutures: futuresContracts })
         );
     }, []);
 
     const OnChangeContractType = (value) => {
-        dispatch({ type: "selectContractType", index: value });
+        setState({ type: "selectContractType", index: value });
     };
 
     const onBullishDirectionButtonClick = (e) => {
-        dispatch({ type: "selectContractDirection", directionBullish: true });
+        setState({ type: "selectContractDirection", directionBullish: true });
     };
 
     const onBearishDirectionButtonClick = (e) => {
-        dispatch({ type: "selectContractDirection", directionBullish: false });
+        setState({ type: "selectContractDirection", directionBullish: false });
     };
 
     const entryPriceOnChange = (e) => {
         e.preventDefault();
-        dispatch({ type: "selectContractEntryPrice", entryPrice: e.target.value });
+        setState({ type: "selectContractEntryPrice", entryPrice: e.target.value });
     };
 
     const exitPriceOnChange = (e) => {
         e.preventDefault();
-        dispatch({ type: "selectContractExitPrice", exitPrice: e.target.value });
+        setState({ type: "selectContractExitPrice", exitPrice: e.target.value });
     };
 
     const contractsNumberOnChange = (e) => {
         e.preventDefault();
-        dispatch({ type: "selectContractsCount", numberOfContracts: e.target.value });
+        setState({ type: "selectContractsCount", numberOfContracts: e.target.value });
     };
 
     const CalculatePLResult = (e) => {
         e.preventDefault();
 
         CalculatePosition(
-            futures.position.directionBullish ? LongDirectionValue : ShortDirectionValue,
-            Number(futures.position.entryPrice),
-            Number(futures.position.exitPrice),
-            Number(futures.position.numberOfContracts),
-            futures.chosenFutures.tickSize,
-            futures.chosenFutures.tickValue
+            state.position.directionBullish ? LongDirectionValue : ShortDirectionValue,
+            Number(state.position.entryPrice),
+            Number(state.position.exitPrice),
+            Number(state.position.numberOfContracts),
+            state.chosenFutures.tickSize,
+            state.chosenFutures.tickValue
         ).then((result) => {
-            console.log(result);
-            dispatch({ type: "setResult", ticks: result.ticks, USDValue: result.profitLoss });
+            setState({ type: "setResult", ticks: result.ticks, USDValue: result.profitLoss });
         });
     };
+
+    const handleSaveClick = (e) => {
+        e.preventDefault();
+
+        navigate("/positions/save",
+        {
+          state: {
+            userEmail : state.userEmail,
+            position: {...state.position, ...state.chosenFutures},
+            instrumentGroup: InstrumentTypes.futures
+          }
+        });
+    }
 
     return (
         <div className={styles.futuresCalculatorWrapper}>
@@ -153,9 +195,9 @@ export const FuturesCalculator = () => {
                     <select
                         className={styles.selectContract}
                         onChange={(e) => OnChangeContractType(e.target.value)}
-                        select={futures.chosenFutures.name}
+                        select={state.chosenFutures.name}
                     >
-                        {futures.allFutures.map((futureContract, index) => (
+                        {state.allFutures.map((futureContract, index) => (
                             <option
                                 className={styles.selectContractOption}
                                 key={futureContract.guid}
@@ -179,7 +221,7 @@ export const FuturesCalculator = () => {
                                 <input
                                     type="radio"
                                     onChange={(e) => onBullishDirectionButtonClick(e)}
-                                    checked={futures.position.directionBullish}
+                                    checked={state.position.directionBullish}
                                     className={styles.directionBullish}
                                     name="directionSelected"
                                 />
@@ -197,7 +239,7 @@ export const FuturesCalculator = () => {
                                 <input
                                     type="radio"
                                     onChange={(e) => onBearishDirectionButtonClick(e)}
-                                    checked={!futures.position.directionBullish}
+                                    checked={!state.position.directionBullish}
                                     className={styles.directionBearish}
                                     name="directionSelected"
                                 />
@@ -218,7 +260,7 @@ export const FuturesCalculator = () => {
                                 className={styles.numberInput}
                                 type="number"
                                 onChange={(e) => entryPriceOnChange(e)}
-                                value={futures.position.entryPrice}
+                                value={state.position.entryPrice}
                             />
                         </div>
 
@@ -230,7 +272,7 @@ export const FuturesCalculator = () => {
                                 className={styles.numberInput}
                                 type="number"
                                 onChange={(e) => exitPriceOnChange(e)}
-                                value={futures.position.exitPrice}
+                                value={state.position.exitPrice}
                             />
                         </div>
 
@@ -243,25 +285,25 @@ export const FuturesCalculator = () => {
                                 className={styles.numberInput}
                                 type="number"
                                 onChange={(e) => contractsNumberOnChange(e)}
-                                value={futures.position.numberOfContracts}
+                                value={state.position.numberOfContracts}
                             />
                         </div>
                     </div>
                     <aside className={styles.contractInformationContainer}>
                         <div className={styles.contractNameContainer}>
-                            <h5>{futures.chosenFutures.name}</h5>
+                            <h5>{state.chosenFutures.name}</h5>
                         </div>
                         <div className={styles.tickSizeHeadingContainer}>
                             <h5>Tick Size</h5>
                         </div>
                         <div className={styles.tickSizeValueContainer}>
-                            <h5>{futures.chosenFutures.tickSize}</h5>
+                            <h5>{state.chosenFutures.tickSize}</h5>
                         </div>
                         <div className={styles.tickValueHeadingContainer}>
                             <h5>Tick Value</h5>
                         </div>
                         <div className={styles.tickValueContainer}>
-                            <h5>${futures.chosenFutures.tickValue}</h5>
+                            <h5>${state.chosenFutures.tickValue}</h5>
                         </div>
                     </aside>
                 </div>
@@ -279,16 +321,16 @@ export const FuturesCalculator = () => {
                         <h5>Ticks</h5>
                     </div>
                     <div className={styles.ticksValue}>
-                        {futures.answer.USDValue < 0 ? (
+                        {state.answer.USDValue < 0 ? (
                             <h5 className={styles.redPL}>
-                                {Math.abs(futures.answer.ticks).toFixed(2)}
+                                {Math.abs(state.answer.ticks).toFixed(2)}
                             </h5>
-                        ) : futures.answer.USDValue > 0 ? (
+                        ) : state.answer.USDValue > 0 ? (
                             <h5 className={styles.greenPL}>
-                                {Math.abs(futures.answer.ticks).toFixed(2)}
+                                {Math.abs(state.answer.ticks).toFixed(2)}
                             </h5>
                         ) : (
-                            <h5>{Math.abs(futures.answer.ticks).toFixed(2)}</h5>
+                            <h5>{Math.abs(state.answer.ticks).toFixed(2)}</h5>
                         )}
                     </div>
 
@@ -296,19 +338,27 @@ export const FuturesCalculator = () => {
                         <h5>USD($)</h5>
                     </div>
                     <div className={styles.dollarsValue}>
-                        {futures.answer.USDValue < 0 ? (
+                        {state.answer.USDValue < 0 ? (
                             <h5 className={styles.redPL}>
-                                -${Math.abs(futures.answer.USDValue).toFixed(2)}
+                                -${Math.abs(state.answer.USDValue).toFixed(2)}
                             </h5>
-                        ) : futures.answer.USDValue > 0 ? (
+                        ) : state.answer.USDValue > 0 ? (
                             <h5 className={styles.greenPL}>
-                                ${futures.answer.USDValue.toFixed(2)}
+                                ${state.answer.USDValue.toFixed(2)}
                             </h5>
                         ) : (
-                            <h5>${futures.answer.USDValue.toFixed(2)}</h5>
+                            <h5>${state.answer.USDValue.toFixed(2)}</h5>
                         )}
                     </div>
                 </div>
+                {
+                    state.userEmail ?
+                    <div className={styles.saveToPositionsContainer}>
+                        <button onClick={handleSaveClick} className={styles.saveToRecordButton}>Save To Record</button>
+                    </div>
+                    :
+                    <></>
+                }
             </div>
         </div>
     );
