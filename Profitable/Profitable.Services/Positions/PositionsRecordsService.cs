@@ -11,7 +11,7 @@ using Profitable.Services.Positions.Contracts;
 
 namespace Profitable.Services.Positions
 {
-    public class PositionsRecordsService : IPositionsRecordsService
+	public class PositionsRecordsService : IPositionsRecordsService
 	{
 		private readonly IRepository<PositionsRecordList> repository;
 		private readonly IMapper mapper;
@@ -56,9 +56,9 @@ namespace Profitable.Services.Positions
 			string recordName,
 			Guid requesterGuid)
 		{
-            try
-            {
-                var recordToUpdate = await repository
+			try
+			{
+				var recordToUpdate = await repository
 				.GetAllAsNoTracking()
 				.Where(post => !post.IsDeleted)
 				.FirstOrDefaultAsync(entity => entity.Guid == recordGuid);
@@ -67,33 +67,33 @@ namespace Profitable.Services.Positions
 				{
 					return GlobalServicesConstants.EntityDoesNotExist("Positions record");
 				}
-			
-				if(recordToUpdate.UserId != requesterGuid)
+
+				if (recordToUpdate.UserId != requesterGuid)
 				{
 					return GlobalServicesConstants.RequesterNotOwnerMesssage;
 				}
-			
-                recordToUpdate.Name = recordName;
 
-                repository.Update(recordToUpdate);
+				recordToUpdate.Name = recordName;
 
-                await repository.SaveChangesAsync();
+				repository.Update(recordToUpdate);
 
-                return true;
-            }
+				await repository.SaveChangesAsync();
+
+				return true;
+			}
 			catch (Exception e)
 			{
 				return e.Message;
 			}
-        }
+		}
 
 		public async Task<Result> DeletePositionsRecordList(Guid recordGuid, Guid requesterGuid)
 		{
-            try
-            {
-                var record = await repository
-                .GetAllAsNoTracking()
-                .FirstOrDefaultAsync(entity => entity.Guid == recordGuid);
+			try
+			{
+				var record = await repository
+				.GetAllAsNoTracking()
+				.FirstOrDefaultAsync(entity => entity.Guid == recordGuid);
 
 				if (record == null)
 				{
@@ -124,7 +124,7 @@ namespace Profitable.Services.Positions
 					.Select(type => StringManipulations.DivideCapitalizedStringToWords(type.ToString()));
 		}
 
-		public async Task<List<UserPositionsRecordResponseModel>> GetUserPositionsRecordsAsync(
+		public async Task<List<UserPositionsRecordResponseModel>> GetUserRecordsAsync(
 			Guid userGuid,
 			int page,
 			int pageCount,
@@ -132,10 +132,10 @@ namespace Profitable.Services.Positions
 		{
 			var records = await repository
 				.GetAllAsNoTracking()
+				.Include(r => r.Positions.Where(position => !position.IsDeleted))
 				.Where(r =>
 					!r.IsDeleted &&
 					r.UserId == userGuid)
-				.Include(r => r.Positions.Where(position => !position.IsDeleted))
 				.ToListAsync();
 
 			if (OrderPositionsRecordBy == OrderPositionsRecordBy.Date)
@@ -162,6 +162,31 @@ namespace Profitable.Services.Positions
 			{
 				records = records.OrderByDescending(r => r.Positions.Count).ToList();
 			}
+
+			var result = records
+				.Skip(page * pageCount)
+				.Take(pageCount)
+				.Select(comment => mapper.Map<UserPositionsRecordResponseModel>(comment))
+				.ToList();
+
+			return result;
+		}
+
+		public async Task<List<UserPositionsRecordResponseModel>> GetUserRecordsByInstrumentGroupAsync(
+			Guid userGuid,
+			int page,
+			int pageCount,
+			InstrumentGroup instrumentGroup)
+		{
+			var records = await repository
+				.GetAllAsNoTracking()
+				.Include(r => r.Positions.Where(position => !position.IsDeleted))
+				.Where(r =>
+					!r.IsDeleted &&
+					r.InstrumentGroup == instrumentGroup &&
+					r.UserId == userGuid)
+				.OrderByDescending(r => r.LastUpdated)
+				.ToListAsync();
 
 			var result = records
 				.Skip(page * pageCount)

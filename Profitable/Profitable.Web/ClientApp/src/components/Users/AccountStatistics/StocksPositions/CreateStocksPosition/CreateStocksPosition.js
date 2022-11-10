@@ -21,7 +21,7 @@ import {
     createServerErrorObject,
 } from "../../../../../services/common/createValidationErrorObject";
 
-import { createPosition } from "../../../../../services/positions/stocksPositionsService";
+import { createStocksPosition } from "../../../../../services/positions/stocksPositionsService";
 import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
 
 import styles from "./CreateStocksPosition.module.css";
@@ -180,7 +180,7 @@ export const CreateStocksPosition = () => {
         );
 
         if (clientErrors.filter((err) => !err.fulfilled).length === 0) {
-            createPosition(
+            createStocksPosition(
                 JWT,
                 recordGuid,
                 state.values.name,
@@ -191,7 +191,7 @@ export const CreateStocksPosition = () => {
                 state.values.sellCommission
             )
                 .then(() => {
-                    setMessageBoxSettings("The position was edited successfully!", true);
+                    setMessageBoxSettings("The position was created successfully!", true);
                     navigate(
                         `/users/${searchedProfileEmail}/positions-records/stocks/${recordGuid}`
                     );
@@ -252,7 +252,7 @@ export const CreateStocksPosition = () => {
                                 type="text"
                                 name="name"
                                 placeholder={"AAPL/GOOG/NVDA..."}
-                                value={state.values.title}
+                                value={state.values.name}
                                 onChange={changeHandler}
                             />
                         </div>

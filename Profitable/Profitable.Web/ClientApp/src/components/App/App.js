@@ -35,6 +35,7 @@ import { ChangeStocksPosition } from "../Users/AccountStatistics/StocksPositions
 import { TimeContextProvider } from "../../contexts/TimeContext";
 
 import styles from "./App.module.css";
+import { AddPositionToRecord } from "../Users/AccountStatistics/PositionsRecords/AddPositionToRecord/AddPositionToRecord";
 
 export function App() {
     const location = useLocation();
@@ -95,6 +96,11 @@ export function App() {
                                 <Route
                                     path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid"
                                     element={<FuturesRecordDetails />}
+                                />
+                                
+                                <Route
+                                    path="/positions/save"
+                                    element={<AddPositionToRecord />}
                                 />
 
                                 <Route

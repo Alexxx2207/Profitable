@@ -1,11 +1,18 @@
-import { useReducer } from "react";
+import { useReducer, useContext, useEffect } from "react";
 import classnames from "classnames";
+
+import { AuthContext } from "../../../contexts/AuthContext";
+import { MessageBoxContext } from "../../../contexts/MessageBoxContext";
 
 import { calculateStocksTrade } from "../../../services/stocks/stocksService";
 
 import styles from "./StocksCalculator.module.css";
+import { useNavigate } from "react-router-dom";
+import { InstrumentTypes, JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE } from "../../../common/config";
+import { getUserEmailFromJWT } from "../../../services/users/usersService";
 
 const initialState = {
+    userEmail: "",
     position: {
         entryPrice: 0,
         exitPrice: 0,
@@ -20,6 +27,11 @@ const initialState = {
 
 function stocksReducer(state, action) {
     switch (action.type) {
+        case "setUserEmail":
+            return {
+                ...state,
+                userEmail: action.payload,
+            };
         case "loadAllStocks":
             return {
                 ...state,
@@ -89,46 +101,80 @@ function stocksReducer(state, action) {
 }
 
 export const StocksCalculator = () => {
-    const [stocks, dispatch] = useReducer(stocksReducer, initialState);
+
+    const { JWT, removeAuth } = useContext(AuthContext);
+
+    const { setMessageBoxSettings } = useContext(MessageBoxContext);
+
+    const [state, setState] = useReducer(stocksReducer, initialState);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(JWT) {
+            getUserEmailFromJWT(JWT)
+            .then(userEmail => {
+                setState({type: "setUserEmail", payload: userEmail});
+            })
+            .catch(err => {
+                setMessageBoxSettings(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE, false);
+                removeAuth();
+                navigate("/login");
+            })
+        }
+    }, []);
 
     const entryPriceOnChange = (e) => {
         e.preventDefault();
-        dispatch({ type: "selectShareEntryPrice", entryPrice: e.target.value });
+        setState({ type: "selectShareEntryPrice", entryPrice: e.target.value });
     };
 
     const exitPriceOnChange = (e) => {
         e.preventDefault();
-        dispatch({ type: "selectShareExitPrice", exitPrice: e.target.value });
+        setState({ type: "selectShareExitPrice", exitPrice: e.target.value });
     };
 
     const entryCommissionOnChange = (e) => {
         e.preventDefault();
-        dispatch({ type: "selectShareEntryCommission", entryCommission: e.target.value });
+        setState({ type: "selectShareEntryCommission", entryCommission: e.target.value });
     };
 
     const exitCommissionOnChange = (e) => {
         e.preventDefault();
-        dispatch({ type: "selectShareExitCommission", exitCommission: e.target.value });
+        setState({ type: "selectShareExitCommission", exitCommission: e.target.value });
     };
 
     const sharesNumberOnChange = (e) => {
         e.preventDefault();
-        dispatch({ type: "selectSharesCount", numberOfShares: e.target.value });
+        setState({ type: "selectSharesCount", numberOfShares: e.target.value });
     };
 
     const CalculatePLResult = (e) => {
         e.preventDefault();
 
         calculateStocksTrade(
-            Number(stocks.position.entryPrice),
-            Number(stocks.position.exitPrice),
-            Number(stocks.position.numberOfShares),
-            Number(stocks.position.entryCommission),
-            Number(stocks.position.exitCommission)
+            Number(state.position.entryPrice),
+            Number(state.position.exitPrice),
+            Number(state.position.numberOfShares),
+            Number(state.position.entryCommission),
+            Number(state.position.exitCommission)
         ).then((result) => {
-            dispatch({ type: "setResult", USDValue: result.profitLoss });
+            setState({ type: "setResult", USDValue: result.profitLoss });
         });
     };
+
+    const handleSaveClick = (e) => {
+        e.preventDefault();
+
+        navigate("/positions/save",
+        {
+          state: {
+            userEmail : state.userEmail,
+            position: {...state.position, ...state.chosenFutures},
+            instrumentGroup: InstrumentTypes.stocks
+          }
+        });
+    }
 
     return (
         <div className={styles.stocksCalculatorWrapper}>
@@ -144,7 +190,7 @@ export const StocksCalculator = () => {
                                 className={styles.numberInput}
                                 type="number"
                                 onChange={(e) => entryPriceOnChange(e)}
-                                value={stocks.position.entryPrice}
+                                value={state.position.entryPrice}
                             />
                         </div>
 
@@ -156,7 +202,7 @@ export const StocksCalculator = () => {
                                 className={styles.numberInput}
                                 type="number"
                                 onChange={(e) => exitPriceOnChange(e)}
-                                value={stocks.position.exitPrice}
+                                value={state.position.exitPrice}
                             />
                         </div>
 
@@ -169,7 +215,7 @@ export const StocksCalculator = () => {
                                 className={styles.numberInput}
                                 type="number"
                                 onChange={(e) => sharesNumberOnChange(e)}
-                                value={stocks.position.numberOfShares}
+                                value={state.position.numberOfShares}
                             />
                         </div>
                     </div>
@@ -188,7 +234,7 @@ export const StocksCalculator = () => {
                                 className={styles.numberInput}
                                 type="number"
                                 onChange={(e) => entryCommissionOnChange(e)}
-                                value={stocks.position.entryCommission}
+                                value={state.position.entryCommission}
                             />
                         </div>
 
@@ -201,7 +247,7 @@ export const StocksCalculator = () => {
                                 className={styles.numberInput}
                                 type="number"
                                 onChange={(e) => exitCommissionOnChange(e)}
-                                value={stocks.position.exitCommission}
+                                value={state.position.exitCommission}
                             />
                         </div>
                     </div>
@@ -220,17 +266,25 @@ export const StocksCalculator = () => {
                         <h5>USD($)</h5>
                     </div>
                     <div className={styles.dollarsValue}>
-                        {stocks.answer.USDValue < 0 ? (
+                        {state.answer.USDValue < 0 ? (
                             <h5 className={styles.redPL}>
-                                -${Math.abs(stocks.answer.USDValue).toFixed(2)}
+                                -${Math.abs(state.answer.USDValue).toFixed(2)}
                             </h5>
-                        ) : stocks.answer.USDValue > 0 ? (
-                            <h5 className={styles.greenPL}>${stocks.answer.USDValue.toFixed(2)}</h5>
+                        ) : state.answer.USDValue > 0 ? (
+                            <h5 className={styles.greenPL}>${state.answer.USDValue.toFixed(2)}</h5>
                         ) : (
-                            <h5>${stocks.answer.USDValue.toFixed(2)}</h5>
+                            <h5>${state.answer.USDValue.toFixed(2)}</h5>
                         )}
                     </div>
                 </div>
+                {
+                    state.userEmail ?
+                    <div className={styles.saveToPositionsContainer}>
+                        <button onClick={handleSaveClick} className={styles.saveToRecordButton}>Save To Record</button>
+                    </div>
+                    :
+                    <></>
+                }
             </div>
         </div>
     );

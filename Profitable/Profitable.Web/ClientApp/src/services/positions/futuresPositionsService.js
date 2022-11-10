@@ -38,7 +38,7 @@ export const getPositionByGuid = async (positionGuid) => {
     return await response.json();
 };
 
-export const createPosition = async (
+export const createFuturesPosition = async (
     JWT,
     recordId,
     contractName,

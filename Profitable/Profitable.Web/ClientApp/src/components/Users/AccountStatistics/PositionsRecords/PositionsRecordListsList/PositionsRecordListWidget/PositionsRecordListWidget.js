@@ -1,11 +1,10 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { deleteUserPositionsRecord } from "../../../../../../services/positions/positionsRecordsService";
 import { AuthContext } from "../../../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../../../contexts/MessageBoxContext";
 
 import styles from "./PositionsRecordListWidget.module.css";
-import { useParams } from "react-router-dom";
 
 export const PositionsRecordListWidget = ({ list, showOwnerActionButtons }) => {
     const navigate = useNavigate();
@@ -43,7 +42,7 @@ export const PositionsRecordListWidget = ({ list, showOwnerActionButtons }) => {
             <div>
                 <h2 className={styles.recordNameHeader}>{list.name}</h2>
                 <h5>Recorded Positions: {list.positionsCount}</h5>
-                <h5>Finantial Instruments: {list.instrumentGroup}</h5>
+                <h5>Financial Instruments: {list.instrumentGroup}</h5>
                 <h6>Last Updated: {list.lastUpdated}</h6>
             </div>
             <div className={styles.openPositionsRecordButtonContainer}>

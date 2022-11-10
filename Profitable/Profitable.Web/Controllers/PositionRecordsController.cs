@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Profitable.Common.Enums;
 using Profitable.Models.RequestModels.Positions.Records;
-using Profitable.Models.ResponseModels.Positions;
 using Profitable.Models.ResponseModels.Positions.Records;
-using Profitable.Services.Positions;
 using Profitable.Services.Positions.Contracts;
-using Profitable.Services.Users;
 using Profitable.Services.Users.Contracts;
 using Profitable.Web.Controllers.BaseApiControllers;
 
@@ -35,11 +32,37 @@ namespace Profitable.Web.Controllers
 
                 Enum.TryParse(query.OrderPositionsRecordBy, out OrderPositionsRecordBy orderBy);
 
-                var records = await positionsRecordsService.GetUserPositionsRecordsAsync(
+                var records = await positionsRecordsService.GetUserRecordsAsync(
                     userGuid,
                     query.Page,
                     query.PageCount,
                     orderBy);
+
+
+                return Ok(records);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
+
+        [HttpPost("by-user/by-instrument-group")]
+        public async Task<IActionResult> GetAllPositionsRecordsByUser(
+            [FromBody] GetUserPositionsRecordsByInstrumentGroupRequestModel query)
+        {
+            try
+            {
+                var userGuid = Guid.Parse((await userService.GetUserDetailsAsync(query.UserEmail)).Guid);
+
+                Enum.TryParse(query.InstrumentGroup, out InstrumentGroup instrumentGroup);
+
+                var records = await positionsRecordsService.GetUserRecordsByInstrumentGroupAsync(
+                    userGuid,
+                    query.Page,
+                    query.PageCount,
+                    instrumentGroup);
 
 
                 return Ok(records);

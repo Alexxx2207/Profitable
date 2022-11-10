@@ -22,6 +22,17 @@ export const getUserPositionsRecords = (email, page, pageCount, orderPositionsRe
         .then((response) => response.json());
 };
 
+export const getUserPositionsRecordsByInstrumentType = (email, page, pageCount, instrumentGroup) => {
+    return request
+        .post(`${WEB_API_BASE_URL}/positionrecords/by-user/by-instrument-group`, {
+            userEmail: email,
+            page,
+            pageCount,
+            instrumentGroup,
+        })
+        .then((response) => response.json());
+};
+
 export const deleteUserPositionsRecord = (JWT, recordGuid) => {
     return request
         .delete(`${WEB_API_BASE_URL}/positionrecords/delete/${recordGuid}`, null, {
