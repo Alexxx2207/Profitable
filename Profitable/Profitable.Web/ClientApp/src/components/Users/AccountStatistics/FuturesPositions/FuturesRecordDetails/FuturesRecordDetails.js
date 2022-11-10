@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useContext, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MessageBoxContext } from "../../../../../contexts/MessageBoxContext";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import { TimeContext } from "../../../../../contexts/TimeContext";
@@ -26,6 +26,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faWrench } from "@fortawesome/free-solid-svg-icons";
 
+import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -171,11 +172,11 @@ export const FuturesRecordDetails = () => {
 
         setState({
             type: "setAfterDate",
-            payload: oneYearAgoFromNow,
+            payload: dayjs(oneYearAgoFromNow),
         });
         setState({
             type: "setBeforeDate",
-            payload: new Date(),
+            payload: dayjs(new Date()),
         });
         getPositionsFromRecord(recordGuid, oneYearAgoFromNow.toJSON(), new Date().toJSON()).then(
             (result) => {
@@ -195,7 +196,7 @@ export const FuturesRecordDetails = () => {
                 });
             }
         );
-    }, [recordGuid]);
+    }, [recordGuid, timeOffset]);
 
     const deletePositionOnClickHandler = (positionGuid) => {
         deletePosition(JWT, recordGuid, positionGuid)
@@ -226,35 +227,43 @@ export const FuturesRecordDetails = () => {
     };
 
     const onDateAfterChange = (newValue) => {
+        newValue = newValue.hour(0);
         setState({
             type: "setAfterDate",
             payload: newValue,
         });
-        getPositionsFromRecord(
-            recordGuid,
-            newValue.toJSON(),
-            state.selectedBeforeDateFilter.toJSON()
-        ).then((result) => {
-            var positionWithOffsetedTime = [
-                ...result.map((position) => ({
-                    ...position,
-                    positionAddedOn: convertFullDateTime(
-                        new Date(new Date(position.positionAddedOn).getTime() - timeOffset * 60000)
-                    ),
-                })),
-            ];
-            setState({
-                type: "loadPositions",
-                payload: [...positionWithOffsetedTime],
+
+        if (newValue.diff(state.selectedBeforeDateFilter) <= 0) {
+            getPositionsFromRecord(
+                recordGuid,
+                newValue.toJSON(),
+                state.selectedBeforeDateFilter.toJSON()
+            ).then((result) => {
+                var positionWithOffsetedTime = [
+                    ...result.map((position) => ({
+                        ...position,
+                        positionAddedOn: convertFullDateTime(
+                            new Date(
+                                new Date(position.positionAddedOn).getTime() - timeOffset * 60000
+                            )
+                        ),
+                    })),
+                ];
+                setState({
+                    type: "loadPositions",
+                    payload: [...positionWithOffsetedTime],
+                });
             });
-        });
+        }
     };
 
     const onDateBeforeChange = (newValue) => {
+        newValue = newValue.hour(0);
         setState({
             type: "setBeforeDate",
             payload: newValue,
         });
+
         getPositionsFromRecord(
             recordGuid,
             state.selectedAfterDateFilter.toJSON(),
@@ -440,6 +449,7 @@ export const FuturesRecordDetails = () => {
                         )}
                         views={["year", "month", "day"]}
                         showDaysOutsideCurrentMonth={true}
+                        minDate={state.selectedAfterDateFilter}
                     />
                 </LocalizationProvider>
             </div>

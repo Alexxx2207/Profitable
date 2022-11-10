@@ -308,6 +308,10 @@ export const FuturesCalculator = () => {
                             <h5>${futures.answer.USDValue.toFixed(2)}</h5>
                         )}
                     </div>
+
+                    <div className={styles.saveToPositionsContainer}>
+                            
+                    </div>
                 </div>
             </div>
         </div>
