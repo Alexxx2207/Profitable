@@ -3,6 +3,7 @@
 	using Profitable.Common.Models;
 	using Profitable.Models.RequestModels.Positions.Futures;
 	using Profitable.Models.ResponseModels.Positions.Futures;
+
 	public interface IFuturesPositionsService
 	{
 		Task<List<FuturesPositionResponseModel>> GetFuturesPositions(Guid recordId, DateTime afterDateFilter, DateTime beforeDateFilter);

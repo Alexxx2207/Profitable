@@ -284,6 +284,39 @@ export const StocksRecordDetails = () => {
         });
     };
 
+    const exportCVSClick = (e) => {
+        e.preventDefault();
+
+        const data = [
+            ["Stock Name",
+            "Realization Date",
+            "Entry Price",
+            "Exit Price",
+            "Position Size",
+            "Realized P/L ($)"],
+           ...state.positions.map(position => [
+            `${position.name}`, 
+            `${position.positionAddedOn.replace(',', ' ')}`, 
+            `$${position.entryPrice}`,
+            `$${position.exitPrice}`, 
+            `${position.quantitySize}`,
+            `$${position.realizedProfitAndLoss}`,
+          ])
+        ];
+
+        let csvContent = "data:text/csv;charset=utf-8," 
+            + data.map(e => e.join(",")).join("\n");
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "my_positions.csv");
+        document.body.appendChild(link);
+
+        link.click();
+        document.body.removeChild(link);
+    }
+
     return (
         <div className={styles.recordDetailsContainer}>
             <div>
@@ -454,19 +487,24 @@ export const StocksRecordDetails = () => {
                 </LocalizationProvider>
             </div>
 
-            <div className={styles.overallProfiltLossHeading}>
-                <h3>
-                    Overall Profit/Loss:{" "}
-                    <span
-                        className={
-                            state.overallProfitLoss < 0
-                                ? styles.textColorRed
-                                : styles.textColorGreen
-                        }
-                    >
-                        ${state.overallProfitLoss.toFixed(2)}
-                    </span>
-                </h3>
+            <div className={styles.positionsTableOptions}>
+                <div className={styles.downloadCSVContainer}>
+                    <button onClick={exportCVSClick} className={styles.exportButton}>Export To CSV</button>
+                </div>
+                <div className={styles.overallProfiltLossHeading}>
+                    <h3>
+                        Overall Profit/Loss:{" "}
+                        <span
+                            className={
+                                state.overallProfitLoss < 0
+                                    ? styles.textColorRed
+                                    : styles.textColorGreen
+                            }
+                        >
+                            ${state.overallProfitLoss.toFixed(2)}
+                        </span>
+                    </h3>
+                </div>
             </div>
 
             <table className={styles.positionsTable}>
