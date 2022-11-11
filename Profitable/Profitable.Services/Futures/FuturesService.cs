@@ -1,17 +1,12 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.EntityModels;
-using Profitable.Models.ResponseModels.Futures;
-using Profitable.Services.Futures.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Profitable.Services.Futures
+﻿namespace Profitable.Services.Futures
 {
+	using AutoMapper;
+	using Microsoft.EntityFrameworkCore;
+	using Profitable.Data.Repository.Contract;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.ResponseModels.Futures;
+	using Profitable.Services.Futures.Contracts;
+
 	public class FuturesService : IFuturesService
 	{
 		private readonly IRepository<FuturesContract> futuresContractRepository;

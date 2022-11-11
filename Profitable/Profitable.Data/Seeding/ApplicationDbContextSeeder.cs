@@ -1,51 +1,51 @@
-﻿using Profitable.Data.Seeding.Seeders;
-using Profitable.Data.Seeding.Seeders.Contracts;
-
-namespace Profitable.Data.Seeding
+﻿namespace Profitable.Data.Seeding
 {
-    public class ApplicationDbContextSeeder : ISeeder
-    {
-        private readonly bool isProduction;
-        public ApplicationDbContextSeeder(bool isProduction)
-        {
-            this.isProduction = isProduction;
-        }
+	using Profitable.Data.Seeding.Seeders;
+	using Profitable.Data.Seeding.Seeders.Contracts;
 
-        public async Task SeedAsync(
-            ApplicationDbContext dbContext,
-            IServiceProvider serviceProvider)
-        {
-            if (dbContext == null)
-            {
-                throw new ArgumentNullException(nameof(dbContext));
-            }
+	public class ApplicationDbContextSeeder : ISeeder
+	{
+		private readonly bool isProduction;
+		public ApplicationDbContextSeeder(bool isProduction)
+		{
+			this.isProduction = isProduction;
+		}
 
-            if (serviceProvider == null)
-            {
-                throw new ArgumentNullException(nameof(serviceProvider));
-            }
+		public async Task SeedAsync(
+			ApplicationDbContext dbContext,
+			IServiceProvider serviceProvider)
+		{
+			if (dbContext == null)
+			{
+				throw new ArgumentNullException(nameof(dbContext));
+			}
 
-            var seeders = new List<ISeeder>()
-            {
-                new RoleSeeder(),
-                new UsersSeeder(),
-                new MarketTypesSeeder(),
-                new ExchangesSeeder(),
-                new FinantialInstrumentsSeeder(),
-                new FuturesSeeder(),
-            };
+			if (serviceProvider == null)
+			{
+				throw new ArgumentNullException(nameof(serviceProvider));
+			}
 
-            if (!isProduction)
-            {
-                seeders.Add(new PostsSeeder());
-            }
+			var seeders = new List<ISeeder>()
+			{
+				new RoleSeeder(),
+				new UsersSeeder(),
+				new MarketTypesSeeder(),
+				new ExchangesSeeder(),
+				new FinantialInstrumentsSeeder(),
+				new FuturesSeeder(),
+			};
+
+			if (!isProduction)
+			{
+				seeders.Add(new PostsSeeder());
+			}
 
 
-            foreach (var seeder in seeders)
-            {
-                await seeder.SeedAsync(dbContext, serviceProvider);
-                await dbContext.SaveChangesAsync();
-            }
-        }
-    }
+			foreach (var seeder in seeders)
+			{
+				await seeder.SeedAsync(dbContext, serviceProvider);
+				await dbContext.SaveChangesAsync();
+			}
+		}
+	}
 }

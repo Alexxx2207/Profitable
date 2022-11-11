@@ -1,10 +1,9 @@
-﻿using Profitable.Data.Repository;
-using Profitable.Data.Seeding.Seeders.Contracts;
-using Profitable.Models.EntityModels;
-using System.Text.Json;
-
-namespace Profitable.Data.Seeding.Seeders
+﻿namespace Profitable.Data.Seeding.Seeders
 {
+	using Profitable.Data.Repository;
+	using Profitable.Data.Seeding.Seeders.Contracts;
+	using Profitable.Models.EntityModels;
+	using System.Text.Json;
 	public class FuturesSeeder : ISeeder
 	{
 		public async Task SeedAsync(

@@ -1,38 +1,38 @@
-﻿using System.Security.Claims;
-using System.Security.Principal;
-
-namespace Profitable.Common.Extensions
+﻿namespace Profitable.Common.Extensions
 {
-    public static class IIdentityExtensions
-    {
-        public static Guid GetUserId(this IIdentity source)
-        {
-            var IdentityClaims = (ClaimsIdentity)source;
-            var claimId = IdentityClaims.FindFirst(ClaimTypes.NameIdentifier);
+	using System.Security.Claims;
+	using System.Security.Principal;
 
-            if (claimId == null)
-            {
-                return Guid.Empty;
-            }
-            else
-            {
-                return new Guid(claimId.Value);
-            }
-        }
-        
-        public static string GetUserEmail(this IIdentity source)
-        {
-            var IdentityClaims = (ClaimsIdentity)source;
-            var claimEmail = IdentityClaims.FindFirst(ClaimTypes.Email);
+	public static class IIdentityExtensions
+	{
+		public static Guid GetUserId(this IIdentity source)
+		{
+			var IdentityClaims = (ClaimsIdentity)source;
+			var claimId = IdentityClaims.FindFirst(ClaimTypes.NameIdentifier);
 
-            if (claimEmail == null)
-            {
-                return string.Empty;
-            }
-            else
-            {
-                return claimEmail.Value;
-            }
-        }
-    }
+			if (claimId == null)
+			{
+				return Guid.Empty;
+			}
+			else
+			{
+				return new Guid(claimId.Value);
+			}
+		}
+
+		public static string GetUserEmail(this IIdentity source)
+		{
+			var IdentityClaims = (ClaimsIdentity)source;
+			var claimEmail = IdentityClaims.FindFirst(ClaimTypes.Email);
+
+			if (claimEmail == null)
+			{
+				return string.Empty;
+			}
+			else
+			{
+				return claimEmail.Value;
+			}
+		}
+	}
 }

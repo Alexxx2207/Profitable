@@ -1,65 +1,65 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Profitable.Services.Markets.Contract;
-using Profitable.Web.Controllers.BaseApiControllers;
-
-namespace Profitable.Web.Controllers
+﻿namespace Profitable.Web.Controllers
 {
-    public class MarketsController : BaseApiController
-    {
-        private readonly IMarketsService marketsService;
+	using Microsoft.AspNetCore.Mvc;
+	using Profitable.Services.Markets.Contract;
+	using Profitable.Web.Controllers.BaseApiControllers;
 
-        public MarketsController(IMarketsService marketsService)
-        {
-            this.marketsService = marketsService;
-        }
+	public class MarketsController : BaseApiController
+	{
+		private readonly IMarketsService marketsService;
 
-        [HttpGet("instruments/{symbol}")]
-        public async Task<IActionResult> GetInstrumentBySymbolAsync([FromRoute] string symbol)
-        {
-            try
-            {
-                var instrument = await marketsService.GetFinantialInstrumentBySymbolAsync(symbol);
-                return Ok(instrument);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+		public MarketsController(IMarketsService marketsService)
+		{
+			this.marketsService = marketsService;
+		}
 
-        }
+		[HttpGet("instruments/{symbol}")]
+		public async Task<IActionResult> GetInstrumentBySymbolAsync([FromRoute] string symbol)
+		{
+			try
+			{
+				var instrument = await marketsService.GetFinantialInstrumentBySymbolAsync(symbol);
+				return Ok(instrument);
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
 
-        [HttpGet("marketTypes/{marketType}/instruments")]
-        public async Task<IActionResult> GetFinantialInstrumentsByMarketTypeAsync(
-            [FromRoute] string marketType)
-        {
-            var instruments =
-                    await marketsService.GetFinantialInstrumentsByTypeAsync(marketType);
+		}
 
-            return Ok(instruments);
-        }
+		[HttpGet("marketTypes/{marketType}/instruments")]
+		public async Task<IActionResult> GetFinantialInstrumentsByMarketTypeAsync(
+			[FromRoute] string marketType)
+		{
+			var instruments =
+					await marketsService.GetFinantialInstrumentsByTypeAsync(marketType);
 
-        [HttpGet("instruments")]
-        public async Task<IActionResult> GetAllInstrumentsAsync()
-        {
-            var instruments = await marketsService.GetAllFinantialInstrumentsAsync();
+			return Ok(instruments);
+		}
 
-            return Ok(instruments);
-        }
+		[HttpGet("instruments")]
+		public async Task<IActionResult> GetAllInstrumentsAsync()
+		{
+			var instruments = await marketsService.GetAllFinantialInstrumentsAsync();
 
-        [HttpGet("marketTypes")]
-        public async Task<IActionResult> GetAllMarketTypesAsync()
-        {
-            var marketTypes = await marketsService.GetAllMarketTypesAsync();
+			return Ok(instruments);
+		}
 
-            return Ok(marketTypes);
-        }
+		[HttpGet("marketTypes")]
+		public async Task<IActionResult> GetAllMarketTypesAsync()
+		{
+			var marketTypes = await marketsService.GetAllMarketTypesAsync();
 
-        [HttpGet("instrument-groups")]
-        public IActionResult GetAllInstrumentGroupsAsync()
-        {
-            var instrumentGroups = marketsService.GetAllInstrumentGroups();
+			return Ok(marketTypes);
+		}
 
-            return Ok(instrumentGroups);
-        }
-    }
+		[HttpGet("instrument-groups")]
+		public IActionResult GetAllInstrumentGroupsAsync()
+		{
+			var instrumentGroups = marketsService.GetAllInstrumentGroups();
+
+			return Ok(instrumentGroups);
+		}
+	}
 }

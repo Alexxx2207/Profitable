@@ -1,10 +1,9 @@
-﻿using Profitable.Models.EntityModels.EntityBaseClass;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-
-namespace Profitable.Models.EntityModels
+﻿namespace Profitable.Models.EntityModels
 {
+    using Profitable.Models.EntityModels.EntityBaseClass;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public class Comment : EntityBase
     {
 

@@ -1,13 +1,8 @@
-﻿using Profitable.Models.RequestModels.News;
-using Profitable.Models.ResponseModels.News;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Profitable.Services.News.Contract
+﻿namespace Profitable.Services.News.Contract
 {
+	using Profitable.Models.RequestModels.News;
+	using Profitable.Models.ResponseModels.News;
+
 	public interface INewsService
 	{
 		Task<List<NewsOverviewResponseModel>> GetNewsOverviewFromInvestingCom(string address, List<NewsOverviewResponseModel> news);

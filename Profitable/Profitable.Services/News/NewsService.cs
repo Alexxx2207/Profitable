@@ -1,11 +1,11 @@
-﻿using AngleSharp;
-using AutoMapper;
-using Profitable.Models.RequestModels.News;
-using Profitable.Models.ResponseModels.News;
-using Profitable.Services.News.Contract;
-
-namespace Profitable.Services.News
+﻿namespace Profitable.Services.News
 {
+	using AngleSharp;
+	using AutoMapper;
+	using Profitable.Models.RequestModels.News;
+	using Profitable.Models.ResponseModels.News;
+	using Profitable.Services.News.Contract;
+
 	public class NewsService : INewsService
 	{
 		private readonly IMapper mapper;
@@ -35,11 +35,11 @@ namespace Profitable.Services.News
 							.GetAttribute("src");
 
 			var article = mapper.Map<NewsArticleResponseModel>(articleOverview, opt =>
-                opt.AfterMap((src, dest) => 
+				opt.AfterMap((src, dest) =>
 				{
 					dest.Image = articleImage;
-                    dest.ArticleText = articleText;
-                }));
+					dest.ArticleText = articleText;
+				}));
 
 			return article;
 		}

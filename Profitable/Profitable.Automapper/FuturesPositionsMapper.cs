@@ -1,11 +1,11 @@
-﻿using AutoMapper;
-using Profitable.Models.EntityModels;
-using Profitable.Models.RequestModels.Positions.Futures;
-using Profitable.Models.ResponseModels.Positions.Futures;
-
-namespace Profitable.Common.Automapper
+﻿namespace Profitable.Common.Automapper
 {
-    public class FuturesPositionsMapper : Profile
+	using AutoMapper;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.RequestModels.Positions.Futures;
+	using Profitable.Models.ResponseModels.Positions.Futures;
+
+	public class FuturesPositionsMapper : Profile
 	{
 		public FuturesPositionsMapper()
 		{
@@ -16,14 +16,14 @@ namespace Profitable.Common.Automapper
 
 			CreateMap<TradePosition, FuturesPositionResponseModel>();
 
-            CreateMap<FuturesContract, FuturesPositionResponseModel>()
-                 .ForMember(
-                    dest => dest.ContractName,
-                    opt => opt.MapFrom(model => model.Name))
+			CreateMap<FuturesContract, FuturesPositionResponseModel>()
 				 .ForMember(
-                    dest => dest.Guid,
-                    opt => opt.Ignore());
+					dest => dest.ContractName,
+					opt => opt.MapFrom(model => model.Name))
+				 .ForMember(
+					dest => dest.Guid,
+					opt => opt.Ignore());
 
-        }
+		}
 	}
 }

@@ -1,177 +1,176 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Profitable.Models.EntityModels;
-using Profitable.Models.RequestModels.Posts;
-using Profitable.Services.Comments.Contracts;
-using Profitable.Services.Posts.Contracts;
-using Profitable.Web.Controllers.BaseApiControllers;
-using System.Security.Claims;
-
-namespace Profitable.Web.Controllers
+﻿namespace Profitable.Web.Controllers
 {
-    public class PostsController : BaseApiController
-    {
-        private readonly IPostService postService;
-        private readonly ICommentService commentService;
-        private readonly UserManager<ApplicationUser> userManager;
+	using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Identity;
+	using Microsoft.AspNetCore.Mvc;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.RequestModels.Posts;
+	using Profitable.Services.Comments.Contracts;
+	using Profitable.Services.Posts.Contracts;
+	using Profitable.Web.Controllers.BaseApiControllers;
 
-        public PostsController(IPostService postService,
-            ICommentService commentService,
-            UserManager<ApplicationUser> userManager)
-        {
-            this.postService = postService;
-            this.commentService = commentService;
-            this.userManager = userManager;
-        }
+	public class PostsController : BaseApiController
+	{
+		private readonly IPostService postService;
+		private readonly ICommentService commentService;
+		private readonly UserManager<ApplicationUser> userManager;
 
-        [HttpGet("feed/{page}/{pageCount}")]
-        public async Task<IActionResult> GetPostFeedAsync(
-            [FromRoute] int page,
-            [FromRoute] int pageCount,
-            [FromQuery] string? loggedInUserEmail)
-        {
-            try
-            {
-                var posts =
-                        await postService.GetPostsByPageAsync(
-                            page,
-                            pageCount,
-                            loggedInUserEmail);
+		public PostsController(IPostService postService,
+			ICommentService commentService,
+			UserManager<ApplicationUser> userManager)
+		{
+			this.postService = postService;
+			this.commentService = commentService;
+			this.userManager = userManager;
+		}
 
-                foreach (var post in posts)
-                {
-                    var commentsCount =
-                            await commentService.GetCommentsCountByPostAsync(
-                                Guid.Parse(post.Guid));
+		[HttpGet("feed/{page}/{pageCount}")]
+		public async Task<IActionResult> GetPostFeedAsync(
+			[FromRoute] int page,
+			[FromRoute] int pageCount,
+			[FromQuery] string? loggedInUserEmail)
+		{
+			try
+			{
+				var posts =
+						await postService.GetPostsByPageAsync(
+							page,
+							pageCount,
+							loggedInUserEmail);
 
-                    post.CommentsCount = commentsCount;
-                }
+				foreach (var post in posts)
+				{
+					var commentsCount =
+							await commentService.GetCommentsCountByPostAsync(
+								Guid.Parse(post.Guid));
 
-                return Ok(posts);
-            }
-            catch (Exception err)
-            {
-                return BadRequest(err);
-            }
-        }
+					post.CommentsCount = commentsCount;
+				}
 
-        [HttpGet("byuser/all/{page}/{pageCount}")]
-        public async Task<IActionResult> GetPostsByUserAsync(
-            [FromRoute] string page,
-            [FromRoute] string pageCount,
-            [FromQuery] string userEmail)
-        {
-            try
-            {
-                var user = await userManager.FindByEmailAsync(userEmail);
+				return Ok(posts);
+			}
+			catch (Exception err)
+			{
+				return BadRequest(err);
+			}
+		}
 
-                var posts =
-                    await postService.GetPostsByUserAsync(
-                        user.Id,
-                        int.Parse(page),
-                        int.Parse(pageCount));
+		[HttpGet("byuser/all/{page}/{pageCount}")]
+		public async Task<IActionResult> GetPostsByUserAsync(
+			[FromRoute] string page,
+			[FromRoute] string pageCount,
+			[FromQuery] string userEmail)
+		{
+			try
+			{
+				var user = await userManager.FindByEmailAsync(userEmail);
 
-                foreach (var post in posts)
-                {
-                    var commentsCount =
-                        await commentService.GetCommentsCountByPostAsync(
-                            Guid.Parse(post.Guid));
+				var posts =
+					await postService.GetPostsByUserAsync(
+						user.Id,
+						int.Parse(page),
+						int.Parse(pageCount));
 
-                    post.CommentsCount = commentsCount;
-                }
+				foreach (var post in posts)
+				{
+					var commentsCount =
+						await commentService.GetCommentsCountByPostAsync(
+							Guid.Parse(post.Guid));
 
-                return Ok(posts);
-            }
-            catch (Exception err)
-            {
-                return BadRequest(err.Message);
-            }
-        }
+					post.CommentsCount = commentsCount;
+				}
 
-        [Authorize]
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateAsync(
-            [FromBody] AddPostRequestModel addPostRequestModel)
-        {
-            var result =
-                        await postService.AddPostAsync(this.UserId, addPostRequestModel);
+				return Ok(posts);
+			}
+			catch (Exception err)
+			{
+				return BadRequest(err.Message);
+			}
+		}
 
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(result.Error);
-            }
+		[Authorize]
+		[HttpPost("create")]
+		public async Task<IActionResult> CreateAsync(
+			[FromBody] AddPostRequestModel addPostRequestModel)
+		{
+			var result =
+						await postService.AddPostAsync(this.UserId, addPostRequestModel);
 
-        }
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
+			else
+			{
+				return BadRequest(result.Error);
+			}
 
-        [Authorize]
-        [HttpPost("{postGuid}/likes/manage")]
-        public async Task<IActionResult> ManageLikeAsync(
-            [FromRoute] string postGuid)
-        {
-            var likesCount = 
-                    await postService.ManagePostLikeAsync(this.UserId, Guid.Parse(postGuid));
+		}
 
-            return Ok(likesCount);
-        }
+		[Authorize]
+		[HttpPost("{postGuid}/likes/manage")]
+		public async Task<IActionResult> ManageLikeAsync(
+			[FromRoute] string postGuid)
+		{
+			var likesCount =
+					await postService.ManagePostLikeAsync(this.UserId, Guid.Parse(postGuid));
 
-        [Authorize]
-        [HttpPatch("{postGuid}/edit")]
-        public async Task<IActionResult> EditAsync(
-            [FromRoute] string postGuid,
-            [FromBody] UpdatePostRequestModel editPostRequestModel)
-        {
-            var result =
-                        await postService.UpdatePostAsync(Guid.Parse(postGuid), editPostRequestModel, this.UserId);
+			return Ok(likesCount);
+		}
 
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(result.Error);
-            }
+		[Authorize]
+		[HttpPatch("{postGuid}/edit")]
+		public async Task<IActionResult> EditAsync(
+			[FromRoute] string postGuid,
+			[FromBody] UpdatePostRequestModel editPostRequestModel)
+		{
+			var result =
+						await postService.UpdatePostAsync(Guid.Parse(postGuid), editPostRequestModel, this.UserId);
 
-        }
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
+			else
+			{
+				return BadRequest(result.Error);
+			}
 
-        [Authorize]
-        [HttpDelete("{postGuid}/delete")]
-        public async Task<IActionResult> DeleteAsync([FromRoute] Guid postGuid)
-        {
-            var result = await postService.DeletePostAsync(postGuid, this.UserId);
+		}
 
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(result.Error);
-            }
+		[Authorize]
+		[HttpDelete("{postGuid}/delete")]
+		public async Task<IActionResult> DeleteAsync([FromRoute] Guid postGuid)
+		{
+			var result = await postService.DeletePostAsync(postGuid, this.UserId);
 
-        }
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
+			else
+			{
+				return BadRequest(result.Error);
+			}
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(
-            [FromRoute] string id,
-            [FromQuery] string? loggedInUserEmail)
-        {
-            try
-            {
-                var post = await postService.GetPostByGuidAsync(Guid.Parse(id), loggedInUserEmail);
+		}
 
-                return Ok(post);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-           
-        }
-    }
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetByIdAsync(
+			[FromRoute] string id,
+			[FromQuery] string? loggedInUserEmail)
+		{
+			try
+			{
+				var post = await postService.GetPostByGuidAsync(Guid.Parse(id), loggedInUserEmail);
+
+				return Ok(post);
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+
+		}
+	}
 }

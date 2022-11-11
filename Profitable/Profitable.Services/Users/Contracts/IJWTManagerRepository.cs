@@ -1,7 +1,6 @@
-﻿using Profitable.Common.Models;
-
-namespace Profitable.Services.Users.Contracts
+﻿namespace Profitable.Services.Users.Contracts
 {
+    using Profitable.Common.Models;
     public interface IJWTManagerRepository
     {
         JWTToken Authenticate(AuthUserModel users);

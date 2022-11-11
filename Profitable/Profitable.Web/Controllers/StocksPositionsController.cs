@@ -1,135 +1,133 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Profitable.Models.RequestModels.Positions.Futures;
-using Profitable.Models.RequestModels.Positions.Stocks;
-using Profitable.Services.Positions;
-using Profitable.Services.Positions.Contracts;
-using Profitable.Web.Controllers.BaseApiControllers;
-
-namespace Profitable.Web.Controllers
+﻿namespace Profitable.Web.Controllers
 {
-    public class StocksPositionsController : BaseApiController
-    {
-        private readonly IStocksPositionsService stocksPositionsService;
+	using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Mvc;
+	using Profitable.Models.RequestModels.Positions.Stocks;
+	using Profitable.Services.Positions.Contracts;
+	using Profitable.Web.Controllers.BaseApiControllers;
 
-        public StocksPositionsController(
-            IStocksPositionsService stocksPositionsService)
-        {
-            this.stocksPositionsService = stocksPositionsService;
-        }
+	public class StocksPositionsController : BaseApiController
+	{
+		private readonly IStocksPositionsService stocksPositionsService;
 
-        [HttpGet("records/{recordId}/positions")]
-        public async Task<IActionResult> GetAllPositionsInARecord(
-            [FromRoute] string recordId,
-            [FromQuery] string afterDate,
-            [FromQuery] string beforeDate)
-        {
-            if (afterDate != null && beforeDate != null)
-            {
-                var futuresPositions = await stocksPositionsService.GetStocksPositions(
-                          Guid.Parse(recordId),
-                          DateTime.Parse(afterDate),
-                          DateTime.Parse(beforeDate));
+		public StocksPositionsController(
+			IStocksPositionsService stocksPositionsService)
+		{
+			this.stocksPositionsService = stocksPositionsService;
+		}
 
-                return Ok(futuresPositions);
-            }
+		[HttpGet("records/{recordId}/positions")]
+		public async Task<IActionResult> GetAllPositionsInARecord(
+			[FromRoute] string recordId,
+			[FromQuery] string afterDate,
+			[FromQuery] string beforeDate)
+		{
+			if (afterDate != null && beforeDate != null)
+			{
+				var futuresPositions = await stocksPositionsService.GetStocksPositions(
+						  Guid.Parse(recordId),
+						  DateTime.Parse(afterDate),
+						  DateTime.Parse(beforeDate));
 
-            return BadRequest();
-        }
+				return Ok(futuresPositions);
+			}
 
-        [HttpGet("{positionGuid}")]
-        public async Task<IActionResult> GetParticularPosition(
-            [FromRoute] string positionGuid)
-        {
-            try
-            {
-                var positions = await stocksPositionsService.GetStocksPositionByGuid(Guid.Parse(positionGuid));
+			return BadRequest();
+		}
 
-                return Ok(positions);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+		[HttpGet("{positionGuid}")]
+		public async Task<IActionResult> GetParticularPosition(
+			[FromRoute] string positionGuid)
+		{
+			try
+			{
+				var positions = await stocksPositionsService.GetStocksPositionByGuid(Guid.Parse(positionGuid));
 
-        }
+				return Ok(positions);
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
 
-        [Authorize]
-        [HttpPost("records/{recordId}/positions")]
-        public async Task<IActionResult> CreatePosition(
-            [FromRoute] string recordId,
-            [FromBody] AddStocksPositionRequestModel model)
-        {
-            var result =
-                await stocksPositionsService.AddStocksPositions(Guid.Parse(recordId), model, this.UserId);
+		}
 
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(result.Error);
-            }
-        }
+		[Authorize]
+		[HttpPost("records/{recordId}/positions")]
+		public async Task<IActionResult> CreatePosition(
+			[FromRoute] string recordId,
+			[FromBody] AddStocksPositionRequestModel model)
+		{
+			var result =
+				await stocksPositionsService.AddStocksPositions(Guid.Parse(recordId), model, this.UserId);
 
-        [Authorize]
-        [HttpPatch("records/{recordGuid}/positions/{positionGuid}/change")]
-        public async Task<IActionResult> ChangePositionByGuid(
-           [FromRoute] string recordGuid,
-           [FromRoute] string positionGuid,
-        [FromBody] ChangeStocksPositionRequestModel model)
-        {
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
+			else
+			{
+				return BadRequest(result.Error);
+			}
+		}
 
-            var result = await stocksPositionsService.ChangeStocksPosition(
-                Guid.Parse(recordGuid),
-                Guid.Parse(positionGuid),
-                this.UserId,
-                model);
+		[Authorize]
+		[HttpPatch("records/{recordGuid}/positions/{positionGuid}/change")]
+		public async Task<IActionResult> ChangePositionByGuid(
+		   [FromRoute] string recordGuid,
+		   [FromRoute] string positionGuid,
+		[FromBody] ChangeStocksPositionRequestModel model)
+		{
 
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(result.Error);
-            }
-        }
+			var result = await stocksPositionsService.ChangeStocksPosition(
+				Guid.Parse(recordGuid),
+				Guid.Parse(positionGuid),
+				this.UserId,
+				model);
 
-        [Authorize]
-        [HttpDelete("records/{recordId}/positions/{positionGuid}/delete")]
-        public async Task<IActionResult> DeletePosition(
-            [FromRoute] string recordId,
-            [FromRoute] string positionGuid)
-        {
-            var result = await stocksPositionsService.DeleteStocksPositions(
-                Guid.Parse(recordId),
-                Guid.Parse(positionGuid),
-                this.UserId);
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
+			else
+			{
+				return BadRequest(result.Error);
+			}
+		}
 
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest(result.Error);
-            }
-        }
+		[Authorize]
+		[HttpDelete("records/{recordId}/positions/{positionGuid}/delete")]
+		public async Task<IActionResult> DeletePosition(
+			[FromRoute] string recordId,
+			[FromRoute] string positionGuid)
+		{
+			var result = await stocksPositionsService.DeleteStocksPositions(
+				Guid.Parse(recordId),
+				Guid.Parse(positionGuid),
+				this.UserId);
 
-        [HttpPost("calculate-position")]
-        public IActionResult CalculateFuturesPosition(
-            [FromBody] CalculateStocksPositionRequestModel model)
-        {
-            try
-            {
-                return Ok(stocksPositionsService.CalculateStocksPosition(model));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-    }
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
+			else
+			{
+				return BadRequest(result.Error);
+			}
+		}
+
+		[HttpPost("calculate-position")]
+		public IActionResult CalculateFuturesPosition(
+			[FromBody] CalculateStocksPositionRequestModel model)
+		{
+			try
+			{
+				return Ok(stocksPositionsService.CalculateStocksPosition(model));
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+		}
+	}
 }

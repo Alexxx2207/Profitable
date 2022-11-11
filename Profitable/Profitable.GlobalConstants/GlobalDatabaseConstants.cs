@@ -1,7 +1,7 @@
-﻿using Profitable.Common.Models;
-
-namespace Profitable.Common.GlobalConstants
+﻿namespace Profitable.Common.GlobalConstants
 {
+    using Profitable.Common.Models;
+
     public class GlobalDatabaseConstants
     {
         public const string TraderRoleName = "Trader";

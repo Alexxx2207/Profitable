@@ -1,16 +1,16 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Profitable.Common.Enums;
-using Profitable.Common.GlobalConstants;
-using Profitable.Common.Models;
-using Profitable.Common.Services;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.EntityModels;
-using Profitable.Models.ResponseModels.Positions.Records;
-using Profitable.Services.Positions.Contracts;
-
-namespace Profitable.Services.Positions
+﻿namespace Profitable.Services.Positions
 {
+	using AutoMapper;
+	using Microsoft.EntityFrameworkCore;
+	using Profitable.Common.Enums;
+	using Profitable.Common.GlobalConstants;
+	using Profitable.Common.Models;
+	using Profitable.Common.Services;
+	using Profitable.Data.Repository.Contract;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.ResponseModels.Positions.Records;
+	using Profitable.Services.Positions.Contracts;
+
 	public class PositionsRecordsService : IPositionsRecordsService
 	{
 		private readonly IRepository<PositionsRecordList> repository;
