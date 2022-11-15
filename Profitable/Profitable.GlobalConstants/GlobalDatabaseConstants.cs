@@ -19,7 +19,7 @@
             }
         };
 
-        public static readonly int WeeksOfCOTReportsToSeed = 10;
+        public static readonly int WeeksOfCOTReportsForFirstSeed = 10;
 
         public static readonly Dictionary<string, string> CotReportSourcesLinks = new Dictionary<string, string>
         {

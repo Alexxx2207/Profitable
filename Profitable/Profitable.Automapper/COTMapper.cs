@@ -1,19 +1,14 @@
-﻿using AutoMapper;
-using Profitable.Data.Seeding.Seeders;
-using Profitable.Models.EntityModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Profitable.Common.Automapper
+﻿namespace Profitable.Common.Automapper
 {
+    using AutoMapper;
+    using Profitable.Common.Models.ScrapersModels;
+    using Profitable.Models.EntityModels;
+
     public class COTMapper : Profile
     {
         public COTMapper()
         {
-            CreateMap<ScrapeModel, COTReport>();
+            CreateMap<ScrapeBigMoneyPositionsModel, COTReport>();
         }
     }
 }
