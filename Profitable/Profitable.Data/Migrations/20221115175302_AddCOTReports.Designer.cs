@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Profitable.Data;
 
@@ -11,9 +12,10 @@ using Profitable.Data;
 namespace Profitable.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221115175302_AddCOTReports")]
+    partial class AddCOTReports
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,13 +284,7 @@ namespace Profitable.Data.Migrations
                     b.Property<long>("AssetManagersLong")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("AssetManagersLongChange")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("AssetManagersShort")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("AssetManagersShortChange")
                         .HasColumnType("bigint");
 
                     b.Property<Guid>("COTReportedInstrumentId")
@@ -306,13 +302,7 @@ namespace Profitable.Data.Migrations
                     b.Property<long>("LeveragedFundsLong")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("LeveragedFundsLongChange")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("LeveragedFundsShort")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("LeveragedFundsShortChange")
                         .HasColumnType("bigint");
 
                     b.HasKey("Guid");

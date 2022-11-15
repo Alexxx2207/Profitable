@@ -114,6 +114,7 @@ namespace Profitable.Web.Infrastructure
                 mc.AddProfile(new StocksPositionsMapper());
                 mc.AddProfile(new PositionsRecordsMapper());
                 mc.AddProfile(new NewsMapper());
+                mc.AddProfile(new COTMapper());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

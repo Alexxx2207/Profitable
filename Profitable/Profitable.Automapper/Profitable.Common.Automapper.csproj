@@ -7,10 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Profitable.Data\Profitable.Data.csproj" />
     <ProjectReference Include="..\Profitable.Models\Profitable.Models.csproj" />
   </ItemGroup>
 

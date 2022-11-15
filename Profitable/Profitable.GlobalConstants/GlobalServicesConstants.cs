@@ -1,6 +1,6 @@
 ﻿namespace Profitable.Common.GlobalConstants
 {
-    public class GlobalServicesConstants
+    public static class GlobalServicesConstants
     {
 
         public static readonly int PostsMaxCountInPage = 100;

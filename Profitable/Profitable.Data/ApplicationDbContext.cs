@@ -44,6 +44,10 @@
 
 		public DbSet<StocksPosition> StocksPositions { get; set; }
 
+		public DbSet<COTReportedInstrument> COTReportedInstruments { get; set; }
+
+		public DbSet<COTReport> COTReports { get; set; }
+
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

@@ -33,6 +33,7 @@
 				new ExchangesSeeder(),
 				new FinantialInstrumentsSeeder(),
 				new FuturesSeeder(),
+				new COTReportsSeeder(),
 			};
 
 			if (!isProduction)

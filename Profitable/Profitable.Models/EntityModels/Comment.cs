@@ -6,7 +6,6 @@
 
     public class Comment : EntityBase
     {
-
         [ForeignKey("Author")]
         public Guid AuthorId { get; set; }
         public ApplicationUser Author { get; set; }

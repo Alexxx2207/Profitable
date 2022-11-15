@@ -1,8 +1,8 @@
 ﻿namespace Profitable.Common.GlobalConstants
 {
-    public class GlobalControllerConstants
+    public static class GlobalControllerConstants
     {
-        public const string JWT = "JWT";
-        public const int JWTExpirationInDays = 1;
+        public static readonly string JWT = "JWT";
+        public static readonly int JWTExpirationInDays = 1;
     }
 }
