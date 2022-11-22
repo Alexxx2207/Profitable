@@ -10,7 +10,8 @@
         public COTMapper()
         {
             CreateMap<ScrapeBigMoneyPositionsModel, COTReport>();
-            CreateMap<COTReport, GetCOTResponseModel>();
+            CreateMap<COTReport, COTReportResponseModel>();
+            CreateMap<COTReportedInstrument, COTReportedInstrumentResponseModel>();
         }
     }
 }

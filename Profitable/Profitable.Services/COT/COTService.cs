@@ -16,31 +16,87 @@
 	{
 		private readonly IMapper mapper;
 		private readonly IRepository<COTReport> cotReportRepository;
+		private readonly IRepository<COTReportedInstrument> cotReportedInstrumentRepository;
 
 		public COTService(
 			IMapper mapper,
-			IRepository<COTReport> cotReportRepository)
+			IRepository<COTReport> cotReportRepository,
+			IRepository<COTReportedInstrument> cotReportedInstrumentRepository)
 		{
 			this.mapper = mapper;
 			this.cotReportRepository = cotReportRepository;
+			this.cotReportedInstrumentRepository = cotReportedInstrumentRepository;
 		}
 
-		public async Task<GetCOTResponseModel> GetReport(
+		public async Task<COTReportResponseModel> GetReport(
 			GetCOTRequestModel getCOTRequestModel)
 		{
-			var latestCOT = await cotReportRepository
-				.GetAllAsNoTracking()
-				.FirstOrDefaultAsync(report =>
-					report.COTReportedInstrumentId == getCOTRequestModel.InstrumentGuid &&
-					report.DatePublished == getCOTRequestModel.FromDate);
+			try
+			{
+                if (getCOTRequestModel.FromDate.Date > DateTime.UtcNow.Date)
+                {
+                    getCOTRequestModel.FromDate = UtilityMethods.GetTheLastDayOfWeekFromDate(
+                        DayOfWeek.Tuesday,
+                        DateTime.UtcNow.Date);
+                }
+                else
+                {
+                    getCOTRequestModel.FromDate = UtilityMethods.GetTheLastDayOfWeekFromDate(
+                        DayOfWeek.Tuesday,
+                        getCOTRequestModel.FromDate);
+                }
 
-			latestCOT ??= await PrepareNewReport(getCOTRequestModel);
+                var latestCOT = await GetFromDB(getCOTRequestModel)
+                                ??
+                                await PrepareNewReport(getCOTRequestModel);
 
-			///Issue - Potential Error - Scraping - GitHub
-			// latestCOT ??= 
+                if (latestCOT == null)
+                {
+                    do
+                    {
+                        getCOTRequestModel.FromDate = getCOTRequestModel.FromDate.AddDays(-7);
+                        latestCOT = await GetFromDB(getCOTRequestModel)
+                                    ??
+                                    await PrepareNewReport(getCOTRequestModel);
 
-			return mapper.Map<GetCOTResponseModel>(latestCOT);
+                    } while (latestCOT == null);
+                }
+
+                return mapper.Map<COTReportResponseModel>(latestCOT);
+            }
+			catch (Exception)
+			{
+				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Finantial Instrument"));
+			}
+			
 		}
+
+		public async Task<IEnumerable<COTReportedInstrumentResponseModel>> GetReportedInstruments()
+		{
+			try
+			{
+				var instruments = (await cotReportedInstrumentRepository
+					.GetAllAsNoTracking()
+					.ToListAsync())
+					.Select(instrument =>
+							mapper.Map<COTReportedInstrumentResponseModel>(instrument));
+
+				return instruments;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+        }
+
+		private async Task<COTReport> GetFromDB(GetCOTRequestModel getCOTRequestModel)
+		{
+            return await cotReportRepository
+                .GetAllAsNoTracking()
+                .FirstOrDefaultAsync(report =>
+                    report.COTReportedInstrumentId == getCOTRequestModel.InstrumentGuid &&
+                    report.DatePublished == getCOTRequestModel.FromDate);
+        }
 
 		private async Task<COTReport> PrepareNewReport(
 			GetCOTRequestModel getCOTRequestModel)
@@ -48,6 +104,11 @@
 			var newReport = await ScrapeNewReport(
 					GlobalServicesConstants.CotReportSourcesLinks[getCOTRequestModel.InstrumentName],
 					getCOTRequestModel.FromDate);
+
+			if(newReport == null)
+			{
+				return null;
+			}
 
 			var latestCOT = mapper.Map<COTReport>(
 					   newReport,
@@ -69,10 +130,12 @@
 		{
 			var tuesday = new List<DateTime>()
 			{
-				UtilityMethods.GetTheLastDayOfWeekFromDate(DayOfWeek.Tuesday, cotDate)
+                cotDate
 			};
 
-			return (await TradingsterScraper.ScrapeBigMoneyPositions(link, tuesday))[0];
+			var reports =  await TradingsterScraper.ScrapeBigMoneyPositions(link, tuesday);
+
+            return reports.Count > 0 ? reports[0] : null;
 		}
 	}
 }

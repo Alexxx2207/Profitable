@@ -5,6 +5,8 @@
 
 	public interface ICOTService
 	{
-		Task<GetCOTResponseModel> GetReport(GetCOTRequestModel getCOTRequestModel);
+		Task<COTReportResponseModel> GetReport(GetCOTRequestModel getCOTRequestModel);
+
+		Task<IEnumerable<COTReportedInstrumentResponseModel>> GetReportedInstruments();
 	}
 }

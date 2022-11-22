@@ -14,12 +14,34 @@
 			this.cotService = cotService;
 		}
 
-		[HttpGet("get")]
-		public async Task<IActionResult> Get([FromQuery] GetCOTRequestModel getCOTRequestModel)
+		[HttpGet("get/all-reports")]
+		public async Task<IActionResult> GetAllReports()
 		{
-			var report = await cotService.GetReport(getCOTRequestModel);
+			try
+			{
+                var instruments = await cotService.GetReportedInstruments();
 
-			return Ok(report);
+                return Ok(instruments);
+            }
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+		}
+		
+		[HttpGet("get/report")]
+		public async Task<IActionResult> GetReport([FromQuery] GetCOTRequestModel getCOTRequestModel)
+		{
+			try
+			{
+                var report = await cotService.GetReport(getCOTRequestModel);
+
+                return Ok(report);
+            }
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
 		}
 	}
 }

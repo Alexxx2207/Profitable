@@ -63,7 +63,7 @@
     letter-spacing: 2px;
     display: inline-block;
     border: 2px solid #4a4b4e;
-    border-radius: 0.5rem;
+    border-radius: 15px;
     padding: 0.5rem 0.8rem;
     transition: 0.3s ease-in-out;
 }
@@ -96,6 +96,28 @@
 
 .logoImage {
     width: 100px;
+}
+
+.chartImageContainer {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    display: inline-block;
+    border: 2px solid #4a4b4e;
+    border-radius: 15px;
+    padding: 0.3rem 0.5rem;
+    transition: 0.3s ease-in-out;
+}
+
+.chartImageContainer:hover {
+    border: 2px solid white;
+    border-radius: 0.5rem;
+    transition: 0.3s ease-in-out;
+}
+
+.chartImage {
+    width: 30px;
+    height: 30px;
 }
 
 @media (max-width: 700px) {

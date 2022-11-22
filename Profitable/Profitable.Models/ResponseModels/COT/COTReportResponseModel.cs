@@ -1,6 +1,6 @@
 ﻿namespace Profitable.Models.ResponseModels.COT
 {
-	public class GetCOTResponseModel
+	public class COTReportResponseModel
 	{
 		public string DatePublished { get; set; }
 

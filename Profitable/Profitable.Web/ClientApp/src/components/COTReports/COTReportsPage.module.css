@@ -1,0 +1,115 @@
+.pageContainer {
+    margin: 2rem 3rem;
+}
+
+.headerContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 4px solid white;
+    margin-bottom: 3rem;
+}
+
+.filtersContainer {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+}
+
+.assetTypeContainer {
+    display: flex;
+}
+
+.assetTypeContainer .assetTypeHeading {
+    margin-right: 1rem;
+    letter-spacing: 1px;
+}
+
+.selectAsset {
+    margin-bottom: 1.2rem;
+    padding: 0.3rem;
+    transform: translateY(-0.75rem);
+    border: 1px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.datePickerContainer {
+    display: flex;
+    gap: 1rem;
+}
+
+.datePicker {
+    transform: translateY(-0.75rem);
+}
+
+.cotPositionsContainer {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.assetManagersContainer, .leveragedFundsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 50%;
+}
+
+
+.assetManagersContainer *, .leveragedFundsContainer  * {
+    letter-spacing: 3px;
+}
+
+.assetManagersContainer {
+    border-right: 2px solid white;
+}
+
+.leveragedFundsContainer {
+    border-left: 2px solid white;
+}
+
+.participantsHeader {
+    text-align: center;
+    letter-spacing: 2px;
+    width: 100%;
+    padding-bottom: 0.5rem;
+    border-bottom: 4px solid white;
+    margin-bottom: 1rem;
+}
+
+.longShortContainer {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.assetManagersLongs,
+.assetManagersShorts,
+.leveragedFundsLongs,
+.leveragedFundsShorts {
+    font-family: monospace;
+    font-weight: 500;
+}
+
+.assetManagersLongsChange,
+.assetManagersShortsChange,
+.leveragedFundsLongsChange,
+.leveragedFundsShortsChange {
+    margin-top: -1rem;
+    font-family: monospace;
+    font-weight: 600;
+    border-radius: 50px;
+    font-size: 1.7rem;
+    padding: 1rem;
+}
+
+.backgroundColorGreen {
+    background-color: green;
+}
+
+.backgroundColorRed {
+    background-color: rgb(195, 1, 1);
+}

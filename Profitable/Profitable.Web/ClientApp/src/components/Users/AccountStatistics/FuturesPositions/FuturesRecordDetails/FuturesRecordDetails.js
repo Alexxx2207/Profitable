@@ -34,7 +34,6 @@ import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 
 import styles from "./FuturesRecordDetails.module.css";
-import { style } from "@mui/system";
 
 Chart.register([CategoryScale, LineElement, PointElement, LinearScale, Tooltip, Filler]);
 
@@ -289,26 +288,27 @@ export const FuturesRecordDetails = () => {
         e.preventDefault();
 
         const data = [
-            ["Contract",
-            "Realization Date",
-            "Direction",
-            "Entry Price",
-            "Exit Price",
-            "Position Size",
-            "Realized P/L ($)"],
-           ...state.positions.map(position => [
-            `${position.contractName}`, 
-            `${position.positionAddedOn.replace(',', ' ')}`, 
-            `${position.direction}`, 
-            `$${position.entryPrice}`,
-            `$${position.exitPrice}`, 
-            `${position.quantitySize}`,
-            `$${position.realizedProfitAndLoss}`,
-          ])
+            [
+                "Contract",
+                "Realization Date",
+                "Direction",
+                "Entry Price",
+                "Exit Price",
+                "Position Size",
+                "Realized P/L ($)",
+            ],
+            ...state.positions.map((position) => [
+                `${position.contractName}`,
+                `${position.positionAddedOn.replace(",", " ")}`,
+                `${position.direction}`,
+                `$${position.entryPrice}`,
+                `$${position.exitPrice}`,
+                `${position.quantitySize}`,
+                `$${position.realizedProfitAndLoss}`,
+            ]),
         ];
 
-        let csvContent = "data:text/csv;charset=utf-8," 
-            + data.map(e => e.join(",")).join("\n");
+        let csvContent = "data:text/csv;charset=utf-8," + data.map((e) => e.join(",")).join("\n");
 
         var encodedUri = encodeURI(csvContent);
         var link = document.createElement("a");
@@ -318,7 +318,7 @@ export const FuturesRecordDetails = () => {
 
         link.click();
         document.body.removeChild(link);
-    }
+    };
 
     return (
         <div className={styles.recordDetailsContainer}>
@@ -467,6 +467,7 @@ export const FuturesRecordDetails = () => {
                         )}
                         views={["year", "month", "day"]}
                         showDaysOutsideCurrentMonth={true}
+                        disableFuture={true}
                     />
                 </LocalizationProvider>
                 <h4> To </h4>
@@ -486,14 +487,17 @@ export const FuturesRecordDetails = () => {
                         views={["year", "month", "day"]}
                         showDaysOutsideCurrentMonth={true}
                         minDate={state.selectedAfterDateFilter}
+                        disableFuture={true}
                     />
                 </LocalizationProvider>
             </div>
 
             <div className={styles.positionsTableOptions}>
                 <div className={styles.downloadCSVContainer}>
-                        <button onClick={exportCVSClick} className={styles.exportButton}>Export To CSV</button>
-                    </div>
+                    <button onClick={exportCVSClick} className={styles.exportButton}>
+                        Export To CSV
+                    </button>
+                </div>
                 <div className={styles.overallProfiltLossHeading}>
                     <h3>
                         Overall Profit/Loss:{" "}
@@ -503,7 +507,7 @@ export const FuturesRecordDetails = () => {
                                     ? styles.textColorRed
                                     : styles.textColorGreen
                             }
-                            >
+                        >
                             ${state.overallProfitLoss.toFixed(2)}
                         </span>
                     </h3>
