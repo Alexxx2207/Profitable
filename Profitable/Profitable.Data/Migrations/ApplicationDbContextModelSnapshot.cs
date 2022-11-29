@@ -273,6 +273,76 @@ namespace Profitable.Data.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.COTReport", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("AssetManagersLong")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AssetManagersLongChange")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AssetManagersShort")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AssetManagersShortChange")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("COTReportedInstrumentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DatePublished")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("LeveragedFundsLong")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LeveragedFundsLongChange")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LeveragedFundsShort")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LeveragedFundsShortChange")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("COTReportedInstrumentId");
+
+                    b.ToTable("COTReports");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.COTReportedInstrument", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InstrumentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Guid");
+
+                    b.ToTable("COTReportedInstruments");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.Exchange", b =>
                 {
                     b.Property<Guid>("Guid")
@@ -690,6 +760,17 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Post");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.COTReport", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.COTReportedInstrument", "COTReportedInstrument")
+                        .WithMany("COTReports")
+                        .HasForeignKey("COTReportedInstrumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("COTReportedInstrument");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>
                 {
                     b.HasOne("Profitable.Models.EntityModels.Exchange", "Exchange")
@@ -830,6 +911,11 @@ namespace Profitable.Data.Migrations
                     b.Navigation("Lists");
 
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("Profitable.Models.EntityModels.COTReportedInstrument", b =>
+                {
+                    b.Navigation("COTReports");
                 });
 
             modelBuilder.Entity("Profitable.Models.EntityModels.FinancialInstrument", b =>

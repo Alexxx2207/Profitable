@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Profitable.Services.Search.Contracts;
-using Profitable.Web.Controllers.BaseApiControllers;
-
-namespace Profitable.Web.Controllers
+﻿namespace Profitable.Web.Controllers
 {
+	using Microsoft.AspNetCore.Mvc;
+	using Profitable.Services.Search.Contracts;
+	using Profitable.Web.Controllers.BaseApiControllers;
+
 	public class SearchController : BaseApiController
 	{
 		private readonly IUserSearchService userSearch;

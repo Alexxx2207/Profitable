@@ -1,10 +1,10 @@
-﻿using Profitable.Common.Enums;
-using Profitable.Common.GlobalConstants;
-using Profitable.Services.Common.Images.Contracts;
-using System.Text.RegularExpressions;
-
-namespace Profitable.Services.Common.Images
+﻿namespace Profitable.Services.Common.Images
 {
+	using Profitable.Common.Enums;
+	using Profitable.Common.GlobalConstants;
+	using Profitable.Services.Common.Images.Contracts;
+	using System.Text.RegularExpressions;
+
 	public class ImageService : IImageService
 	{
 		public async Task<string> SaveUploadedImageAsync(

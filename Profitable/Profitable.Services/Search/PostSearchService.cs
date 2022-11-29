@@ -1,14 +1,13 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Profitable.Common.GlobalConstants;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.EntityModels;
-using Profitable.Models.ResponseModels.Posts;
-using Profitable.Services.Comments.Contracts;
-using Profitable.Services.Search.Contracts;
-
-namespace Profitable.Services.Search
+﻿namespace Profitable.Services.Search
 {
+	using AutoMapper;
+	using Microsoft.EntityFrameworkCore;
+	using Profitable.Data.Repository.Contract;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.ResponseModels.Posts;
+	using Profitable.Services.Comments.Contracts;
+	using Profitable.Services.Search.Contracts;
+
 	public class PostSearchService : IPostSearchService
 	{
 		private readonly IRepository<Post> postRepository;
@@ -41,8 +40,8 @@ namespace Profitable.Services.Search
 					||
 					(p.Author.FirstName + " " + p.Author.LastName).ToLower().Contains(searchTerm)))
 				.Select(post => mapper.Map<PostResponseModel>(post))
-                .Skip(page * pageCount)
-                .Take(pageCount)
+				.Skip(page * pageCount)
+				.Take(pageCount)
 				.ToListAsync();
 
 			foreach (var post in posts)

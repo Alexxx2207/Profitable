@@ -1,45 +1,45 @@
-﻿using Profitable.Data.Repository;
-using Profitable.Data.Seeding.Seeders.Contracts;
-using Profitable.Models.EntityModels;
-using System.Text.Json;
-
-namespace Profitable.Data.Seeding.Seeders
+﻿namespace Profitable.Data.Seeding.Seeders
 {
-    public class MarketTypesSeeder : ISeeder
-    {
-        public async Task SeedAsync(
-            ApplicationDbContext dbContext,
-            IServiceProvider serviceProvider = null)
-        {
-            var marketTypeRepository = new Repository<MarketType>(dbContext);
+	using Profitable.Data.Repository;
+	using Profitable.Data.Seeding.Seeders.Contracts;
+	using Profitable.Models.EntityModels;
+	using System.Text.Json;
 
-            IAsyncEnumerable<string> typesInput = null;
+	public class MarketTypesSeeder : ISeeder
+	{
+		public async Task SeedAsync(
+			ApplicationDbContext dbContext,
+			IServiceProvider serviceProvider = null)
+		{
+			var marketTypeRepository = new Repository<MarketType>(dbContext);
 
-            using (var stream = new FileStream(
-                "DataToSeed/MarketTypes.json",
-                FileMode.Open,
-                FileAccess.Read))
-            {
-                typesInput = JsonSerializer.DeserializeAsyncEnumerable<string>
-                    (stream, new JsonSerializerOptions()
-                    {
-                        AllowTrailingCommas = true,
-                        PropertyNameCaseInsensitive = true,
-                    });
+			IAsyncEnumerable<string> typesInput = null;
 
-                var currentEntries = dbContext.MarketTypes;
+			using (var stream = new FileStream(
+				"DataToSeed/MarketTypes.json",
+				FileMode.Open,
+				FileAccess.Read))
+			{
+				typesInput = JsonSerializer.DeserializeAsyncEnumerable<string>
+					(stream, new JsonSerializerOptions()
+					{
+						AllowTrailingCommas = true,
+						PropertyNameCaseInsensitive = true,
+					});
 
-                await foreach (var type in typesInput.Distinct())
-                {
-                    if (!currentEntries.Any(e => e.Name == type))
-                    {
-                        var marketType = new MarketType();
-                        marketType.Name = type;
+				var currentEntries = dbContext.MarketTypes;
 
-                        await marketTypeRepository.AddAsync(marketType);
-                    }
-                }
-            }
-        }
-    }
+				await foreach (var type in typesInput.Distinct())
+				{
+					if (!currentEntries.Any(e => e.Name == type))
+					{
+						var marketType = new MarketType();
+						marketType.Name = type;
+
+						await marketTypeRepository.AddAsync(marketType);
+					}
+				}
+			}
+		}
+	}
 }

@@ -1,15 +1,15 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Profitable.Common.GlobalConstants;
-using Profitable.Common.Models;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.EntityModels;
-using Profitable.Models.RequestModels.Comments;
-using Profitable.Models.ResponseModels.Comments;
-using Profitable.Services.Comments.Contracts;
-
-namespace Profitable.Services.Comments
+﻿namespace Profitable.Services.Comments
 {
+	using AutoMapper;
+	using Microsoft.EntityFrameworkCore;
+	using Profitable.Common.GlobalConstants;
+	using Profitable.Common.Models;
+	using Profitable.Data.Repository.Contract;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.RequestModels.Comments;
+	using Profitable.Models.ResponseModels.Comments;
+	using Profitable.Services.Comments.Contracts;
+
 	public class CommentService : ICommentService
 	{
 		private readonly IRepository<Comment> repository;
@@ -22,38 +22,38 @@ namespace Profitable.Services.Comments
 		}
 
 		public async Task<Result> AddCommentAsync(
-            Guid postGuid,
+			Guid postGuid,
 			AddCommentRequestModel postRequestModel,
 			Guid requesterGuid)
 		{
 			try
 			{
-                if (postRequestModel.Content.Length > GlobalServicesConstants.CommentMaxLength)
-                {
-                    return
-                        $"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
-                }
+				if (postRequestModel.Content.Length > GlobalServicesConstants.CommentMaxLength)
+				{
+					return
+						$"Content must be no longer than {GlobalServicesConstants.CommentMaxLength} characters.";
+				}
 
-                var newComment = mapper.Map<Comment>(postRequestModel, opt =>
-                opt.AfterMap((src, dest) =>
-                {
-                    dest.PostId = postGuid;
-                    dest.AuthorId = requesterGuid;
-                    dest.PostedOn = DateTime.UtcNow;
+				var newComment = mapper.Map<Comment>(postRequestModel, opt =>
+				opt.AfterMap((src, dest) =>
+				{
+					dest.PostId = postGuid;
+					dest.AuthorId = requesterGuid;
+					dest.PostedOn = DateTime.UtcNow;
 
-                }));
+				}));
 
-                await repository.AddAsync(newComment);
+				await repository.AddAsync(newComment);
 
-                await repository.SaveChangesAsync();
+				await repository.SaveChangesAsync();
 
-                return true;
-            }
+				return true;
+			}
 			catch (Exception e)
 			{
-                return e.Message;
-            }
-        }
+				return e.Message;
+			}
+		}
 
 		public async Task<Result> DeleteCommentAsync(Guid guid, Guid requesterGuid)
 		{
@@ -63,15 +63,15 @@ namespace Profitable.Services.Comments
 				.GetAllAsNoTracking()
 				.FirstOrDefaultAsync(entity => entity.Guid == guid);
 
-				if(comment == null)
+				if (comment == null)
 				{
 					return "Comment not found";
 				}
 
-				if(comment.AuthorId != requesterGuid)
+				if (comment.AuthorId != requesterGuid)
 				{
 					return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
+				}
 
 				repository.Delete(comment);
 
@@ -162,28 +162,28 @@ namespace Profitable.Services.Comments
 
 			try
 			{
-                var comment = mapper.Map<Comment>(newComment);
+				var comment = mapper.Map<Comment>(newComment);
 
-                var existingComment = await repository
-                    .GetAll().
-                    FirstAsync(entity => entity.Guid == guid);
+				var existingComment = await repository
+					.GetAll().
+					FirstAsync(entity => entity.Guid == guid);
 
-                if (existingComment == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Comment");
-                }
+				if (existingComment == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Comment");
+				}
 
-                if (existingComment.AuthorId != requesterGuid)
-                {
-                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
+				if (existingComment.AuthorId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
 
-                existingComment.Content = newComment.Content;
+				existingComment.Content = newComment.Content;
 
-                await repository.SaveChangesAsync();
+				await repository.SaveChangesAsync();
 
-                return true;
-            }
+				return true;
+			}
 			catch (Exception e)
 			{
 				return e.Message;

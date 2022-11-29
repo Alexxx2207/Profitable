@@ -1,12 +1,6 @@
-﻿using Profitable.Models.ResponseModels.Futures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Profitable.Services.Futures.Contracts
+﻿namespace Profitable.Services.Futures.Contracts
 {
+	using Profitable.Models.ResponseModels.Futures;
 	public interface IFuturesService
 	{
 		Task<List<FuturesContractsResponseModel>> GetAllFuturesContracts();

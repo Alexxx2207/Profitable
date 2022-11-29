@@ -1,12 +1,11 @@
-﻿using Profitable.Models.EntityModels.EntityBaseClass;
-using System.ComponentModel.DataAnnotations;
-
-namespace Profitable.Models.EntityModels
+﻿namespace Profitable.Models.EntityModels
 {
+	using Profitable.Models.EntityModels.EntityBaseClass;
+	using System.ComponentModel.DataAnnotations;
 
-    public class Exchange : EntityBase
-    {
-        [Required]
-        public string Name { get; set; }
-    }
+	public class Exchange : EntityBase
+	{
+		[Required]
+		public string Name { get; set; }
+	}
 }

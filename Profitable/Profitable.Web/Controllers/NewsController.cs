@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Profitable.Models.RequestModels.News;
-using Profitable.Models.ResponseModels.News;
-using Profitable.Services.News.Contract;
-using Profitable.Web.Controllers.BaseApiControllers;
-
-namespace Profitable.Web.Controllers
+﻿namespace Profitable.Web.Controllers
 {
+	using Microsoft.AspNetCore.Mvc;
+	using Profitable.Models.RequestModels.News;
+	using Profitable.Models.ResponseModels.News;
+	using Profitable.Services.News.Contract;
+	using Profitable.Web.Controllers.BaseApiControllers;
+
 	public class NewsController : BaseApiController
 	{
 		private readonly INewsService newsService;

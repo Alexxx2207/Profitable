@@ -36,6 +36,7 @@ import { TimeContextProvider } from "../../contexts/TimeContext";
 
 import styles from "./App.module.css";
 import { AddPositionToRecord } from "../Users/AccountStatistics/PositionsRecords/AddPositionToRecord/AddPositionToRecord";
+import { COTReportsPage } from "../COTReports/COTReportsPage";
 
 export function App() {
     const location = useLocation();
@@ -97,11 +98,8 @@ export function App() {
                                     path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid"
                                     element={<FuturesRecordDetails />}
                                 />
-                                
-                                <Route
-                                    path="/positions/save"
-                                    element={<AddPositionToRecord />}
-                                />
+
+                                <Route path="/positions/save" element={<AddPositionToRecord />} />
 
                                 <Route
                                     path="/users/:searchedProfileEmail/positions-records/futures/:recordGuid/create-position"
@@ -139,6 +137,8 @@ export function App() {
                                 <Route path="/calendars" element={<Calendars />} />
 
                                 <Route path="/search" element={<SearchPage />} />
+
+                                <Route path="/cot-reports" element={<COTReportsPage />} />
 
                                 <Route path="*" element={<NotFoundPage />} />
                             </Routes>

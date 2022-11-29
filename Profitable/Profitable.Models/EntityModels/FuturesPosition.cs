@@ -1,9 +1,9 @@
-﻿using Profitable.Common.Enums;
-using Profitable.Models.EntityModels.EntityBaseClass;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Profitable.Models.EntityModels
+﻿namespace Profitable.Models.EntityModels
 {
+	using Profitable.Common.Enums;
+	using Profitable.Models.EntityModels.EntityBaseClass;
+	using System.ComponentModel.DataAnnotations.Schema;
+
 	public class FuturesPosition : EntityBase
 	{
 		public PositionDirection Direction { get; set; }

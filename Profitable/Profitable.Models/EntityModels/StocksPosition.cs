@@ -1,16 +1,15 @@
-﻿using Profitable.Common.Enums;
-using Profitable.Models.EntityModels.EntityBaseClass;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Profitable.Models.EntityModels
+﻿namespace Profitable.Models.EntityModels
 {
+	using Profitable.Models.EntityModels.EntityBaseClass;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
+
 	public class StocksPosition : EntityBase
 	{
 		[Required]
 		public string Name { get; set; }
 
-        [ForeignKey("TradePosition")]
+		[ForeignKey("TradePosition")]
 		public Guid TradePositionId { get; set; }
 
 		public TradePosition TradePosition { get; set; }

@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Profitable.Models.EntityModels;
-using Profitable.Models.RequestModels.Comments;
-using Profitable.Models.ResponseModels.Comments;
-using Profitable.Services.Comments.Contracts;
-using Profitable.Web.Controllers.BaseApiControllers;
-using System.Security.Claims;
-
-namespace Profitable.Web.Controllers
+﻿namespace Profitable.Web.Controllers
 {
+	using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Identity;
+	using Microsoft.AspNetCore.Mvc;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.RequestModels.Comments;
+	using Profitable.Services.Comments.Contracts;
+	using Profitable.Web.Controllers.BaseApiControllers;
+
 	public class CommentsController : BaseApiController
 	{
 		private readonly ICommentService commentService;
@@ -17,7 +15,7 @@ namespace Profitable.Web.Controllers
 
 		public CommentsController(
 			ICommentService commentService,
-            UserManager<ApplicationUser> userManager)
+			UserManager<ApplicationUser> userManager)
 		{
 			this.commentService = commentService;
 			this.userManager = userManager;
@@ -51,14 +49,14 @@ namespace Profitable.Web.Controllers
 		[HttpGet("byuser/all/{page}/{pageCount}")]
 		public async Task<IActionResult> GetAllByUser(
 			[FromRoute] string page,
-            [FromRoute] string pageCount,
-            [FromQuery] string userEmail)
+			[FromRoute] string pageCount,
+			[FromQuery] string userEmail)
 		{
-            var user = await userManager.FindByEmailAsync(userEmail);
+			var user = await userManager.FindByEmailAsync(userEmail);
 
-            var comments =
+			var comments =
 				await commentService.GetCommentsByUserAsync(
-                    user.Id,
+					user.Id,
 					int.Parse(page),
 					int.Parse(pageCount));
 
@@ -87,9 +85,9 @@ namespace Profitable.Web.Controllers
 		[HttpPatch("{commentGuid}/update")]
 		public async Task<IActionResult> Update(
 			[FromRoute] Guid commentGuid,
-            [FromBody] UpdateCommentRequestModel newComment)
+			[FromBody] UpdateCommentRequestModel newComment)
 		{
-            var result = await commentService.UpdateCommentAsync(commentGuid, newComment, this.UserId);
+			var result = await commentService.UpdateCommentAsync(commentGuid, newComment, this.UserId);
 
 			if (result.Succeeded)
 			{
@@ -105,7 +103,7 @@ namespace Profitable.Web.Controllers
 		[HttpDelete("{commentGuid}/delete")]
 		public async Task<IActionResult> Delete(Guid commentGuid)
 		{
-            var result = await commentService.DeleteCommentAsync(commentGuid, this.UserId);
+			var result = await commentService.DeleteCommentAsync(commentGuid, this.UserId);
 
 			if (result.Succeeded)
 			{

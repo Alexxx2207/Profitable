@@ -1,313 +1,315 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Profitable.Common.Enums;
-using Profitable.Common.GlobalConstants;
-using Profitable.Common.Models;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.EntityModels;
-using Profitable.Models.RequestModels.Posts;
-using Profitable.Models.ResponseModels.Posts;
-using Profitable.Services.Common.Images.Contracts;
-using Profitable.Services.Posts.Contracts;
+﻿
 
 namespace Profitable.Services.Posts
 {
-    public class PostService : IPostService
-    {
-        private readonly IRepository<Post> postsRepository;
-        private readonly IRepository<Like> likesRepository;
-        private readonly IRepository<ApplicationUser> applicationUserRepository;
-        private readonly IMapper mapper;
-        private readonly IImageService imageService;
+	using AutoMapper;
+	using Microsoft.EntityFrameworkCore;
+	using Profitable.Common.Enums;
+	using Profitable.Common.GlobalConstants;
+	using Profitable.Common.Models;
+	using Profitable.Data.Repository.Contract;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.RequestModels.Posts;
+	using Profitable.Models.ResponseModels.Posts;
+	using Profitable.Services.Common.Images.Contracts;
+	using Profitable.Services.Posts.Contracts;
 
-        public PostService(
-            IRepository<Post> postsRepository,
-            IRepository<Like> likesRepository,
-            IRepository<ApplicationUser> applicationUserRepository,
-            IMapper mapper,
-            IImageService imageService)
-        {
-            this.postsRepository = postsRepository;
-            this.likesRepository = likesRepository;
-            this.applicationUserRepository = applicationUserRepository;
-            this.mapper = mapper;
-            this.imageService = imageService;
-        }
+	public class PostService : IPostService
+	{
+		private readonly IRepository<Post> postsRepository;
+		private readonly IRepository<Like> likesRepository;
+		private readonly IRepository<ApplicationUser> applicationUserRepository;
+		private readonly IMapper mapper;
+		private readonly IImageService imageService;
 
-        public async Task<Result> AddPostAsync(
-            Guid authorId,
-            AddPostRequestModel newPost)
-        {
-            if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
-            {
-                throw new ArgumentException(
-                    $"Content must be no longer than " +
-                    $"{GlobalServicesConstants.PostMaxLength} characters.");
-            }
+		public PostService(
+			IRepository<Post> postsRepository,
+			IRepository<Like> likesRepository,
+			IRepository<ApplicationUser> applicationUserRepository,
+			IMapper mapper,
+			IImageService imageService)
+		{
+			this.postsRepository = postsRepository;
+			this.likesRepository = likesRepository;
+			this.applicationUserRepository = applicationUserRepository;
+			this.mapper = mapper;
+			this.imageService = imageService;
+		}
 
-            try
-            {
-                var postToAdd = mapper.Map<Post>(newPost, opt => 
-                opt.AfterMap((src, dest) => 
-                {
-                    dest.AuthorId = authorId;
-                    dest.PostedOn = DateTime.UtcNow;
-                }));
+		public async Task<Result> AddPostAsync(
+			Guid authorId,
+			AddPostRequestModel newPost)
+		{
+			if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
+			{
+				throw new ArgumentException(
+					$"Content must be no longer than " +
+					$"{GlobalServicesConstants.PostMaxLength} characters.");
+			}
 
-                if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
-                {
-                    string newFileName =
-                        await imageService.SaveUploadedImageAsync(
-                            ImageFor.Posts,
-                            newPost.ImageFileName,
-                            newPost.Image);
-                    postToAdd.ImageURL = newFileName;
-                }
+			try
+			{
+				var postToAdd = mapper.Map<Post>(newPost, opt =>
+				opt.AfterMap((src, dest) =>
+				{
+					dest.AuthorId = authorId;
+					dest.PostedOn = DateTime.UtcNow;
+				}));
 
-                await postsRepository.AddAsync(postToAdd);
+				if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
+				{
+					string newFileName =
+						await imageService.SaveUploadedImageAsync(
+							ImageFor.Posts,
+							newPost.ImageFileName,
+							newPost.Image);
+					postToAdd.ImageURL = newFileName;
+				}
 
-                await postsRepository.SaveChangesAsync();
+				await postsRepository.AddAsync(postToAdd);
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-        }
+				await postsRepository.SaveChangesAsync();
 
-        public async Task<Result> DeletePostAsync(Guid guid, Guid requesterGuid)
-        {
-            try
-            {
-                var post = await postsRepository
-                 .GetAllAsNoTracking()
-                 .FirstOrDefaultAsync(entity => entity.Guid == guid);
+				return true;
+			}
+			catch (Exception e)
+			{
+				return e.Message;
+			}
+		}
 
-                if (post == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Post");
-                }
+		public async Task<Result> DeletePostAsync(Guid guid, Guid requesterGuid)
+		{
+			try
+			{
+				var post = await postsRepository
+				 .GetAllAsNoTracking()
+				 .FirstOrDefaultAsync(entity => entity.Guid == guid);
 
-                if (post.AuthorId != requesterGuid)
-                {
-                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
+				if (post == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Post");
+				}
 
-                postsRepository.Delete(post);
+				if (post.AuthorId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
 
-                await postsRepository.SaveChangesAsync();
+				postsRepository.Delete(post);
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-        }
+				await postsRepository.SaveChangesAsync();
 
-        public async Task<PostResponseModel> GetPostByGuidAsync(
-            Guid guid,
-            string? loggedInUserEmail)
-        {
-            var post = await postsRepository
-                .GetAllAsNoTracking()
-                .Include(p => p.Author)
-                .Include(p => p.Likes)
-                .Include("Likes.Author")
-                .Where(post => !post.IsDeleted)
-                .FirstOrDefaultAsync(entity => entity.Guid == guid);
+				return true;
+			}
+			catch (Exception e)
+			{
+				return e.Message;
+			}
+		}
 
-            if(post == null)
-            {
-                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Post"));
-            }
-                
-            var mappedPostResponseModel = mapper.Map<PostResponseModel>(post);
+		public async Task<PostResponseModel> GetPostByGuidAsync(
+			Guid guid,
+			string? loggedInUserEmail)
+		{
+			var post = await postsRepository
+				.GetAllAsNoTracking()
+				.Include(p => p.Author)
+				.Include(p => p.Likes)
+				.Include("Likes.Author")
+				.Where(post => !post.IsDeleted)
+				.FirstOrDefaultAsync(entity => entity.Guid == guid);
 
-            if (loggedInUserEmail != null &&
-                mappedPostResponseModel.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
-            {
-                mappedPostResponseModel.IsLikedByTheUsed = true;
-            }
+			if (post == null)
+			{
+				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Post"));
+			}
 
-            return mappedPostResponseModel;
-        }
+			var mappedPostResponseModel = mapper.Map<PostResponseModel>(post);
 
-        public async Task<List<PostResponseModel>> GetPostsByPageAsync(
-            int page,
-            int pageCount,
-            string? loggedInUserEmail)
-        {
-            if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
-            {
-                var posts = await postsRepository
-                    .GetAllAsNoTracking()
-                    .Include(p => p.Author)
-                    .Include(p => p.Likes)
-                    .Include("Likes.Author")
-                    .Include(p => p.Comments)
-                    .Where(post => !post.IsDeleted)
-                    .OrderByDescending(p => p.PostedOn)
-                    .Skip(page * pageCount)
-                    .Take(pageCount)
-                    .Select(post => mapper.Map<PostResponseModel>(post))
-                    .ToListAsync();
+			if (loggedInUserEmail != null &&
+				mappedPostResponseModel.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
+			{
+				mappedPostResponseModel.IsLikedByTheUsed = true;
+			}
 
-                foreach (var post in posts)
-                {
-                    if (loggedInUserEmail != null &&
-                        post.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
-                    {
-                        post.IsLikedByTheUsed = true;
-                    }
-                }
+			return mappedPostResponseModel;
+		}
 
-                return posts;
-            }
-            else
-            {
-                throw new Exception(
-                    $"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
-            }
-        }
+		public async Task<List<PostResponseModel>> GetPostsByPageAsync(
+			int page,
+			int pageCount,
+			string? loggedInUserEmail)
+		{
+			if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
+			{
+				var posts = await postsRepository
+					.GetAllAsNoTracking()
+					.Include(p => p.Author)
+					.Include(p => p.Likes)
+					.Include("Likes.Author")
+					.Include(p => p.Comments)
+					.Where(post => !post.IsDeleted)
+					.OrderByDescending(p => p.PostedOn)
+					.Skip(page * pageCount)
+					.Take(pageCount)
+					.Select(post => mapper.Map<PostResponseModel>(post))
+					.ToListAsync();
 
-        public async Task<List<PostResponseModel>> GetPostsByUserAsync(
-            Guid userId,
-            int page,
-            int pageCount)
-        {
-            var userEmail = (await applicationUserRepository
-                .GetAllAsNoTracking()
-                .FirstOrDefaultAsync(user => user.Id == userId))?.Email;
+				foreach (var post in posts)
+				{
+					if (loggedInUserEmail != null &&
+						post.Likes.Any(like => like.AuthorEmail == loggedInUserEmail))
+					{
+						post.IsLikedByTheUsed = true;
+					}
+				}
 
-            if (userEmail == null)
-            {
-                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User"));
-            }
+				return posts;
+			}
+			else
+			{
+				throw new Exception(
+					$"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
+			}
+		}
 
-            if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
-            {
-                var posts = await postsRepository
-                    .GetAllAsNoTracking()
-                    .Include(p => p.Author)
-                    .Include(p => p.Likes)
-                    .Include("Likes.Author")
-                    .Include(p => p.Comments)
-                    .Where(post =>
-                        post.AuthorId == userId &&
-                        !post.IsDeleted)
-                    .OrderByDescending(p => p.PostedOn)
-                    .Skip(page * pageCount)
-                    .Take(pageCount)
-                    .Select(post => mapper.Map<PostResponseModel>(post))
-                    .ToListAsync();
+		public async Task<List<PostResponseModel>> GetPostsByUserAsync(
+			Guid userId,
+			int page,
+			int pageCount)
+		{
+			var userEmail = (await applicationUserRepository
+				.GetAllAsNoTracking()
+				.FirstOrDefaultAsync(user => user.Id == userId))?.Email;
 
-                foreach (var post in posts)
-                {
-                    if (userEmail != null && post.Likes.Any(like => like.AuthorEmail == userEmail))
-                    {
-                        post.IsLikedByTheUsed = true;
-                    }
-                }
+			if (userEmail == null)
+			{
+				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User"));
+			}
 
-                return posts;
-            }
-            else
-            {
-                throw new Exception(
-                    $"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
-            }
-        }
+			if (pageCount > 0 && pageCount <= GlobalServicesConstants.PostsMaxCountInPage)
+			{
+				var posts = await postsRepository
+					.GetAllAsNoTracking()
+					.Include(p => p.Author)
+					.Include(p => p.Likes)
+					.Include("Likes.Author")
+					.Include(p => p.Comments)
+					.Where(post =>
+						post.AuthorId == userId &&
+						!post.IsDeleted)
+					.OrderByDescending(p => p.PostedOn)
+					.Skip(page * pageCount)
+					.Take(pageCount)
+					.Select(post => mapper.Map<PostResponseModel>(post))
+					.ToListAsync();
 
-        public async Task<Result> UpdatePostAsync(Guid postGuid, UpdatePostRequestModel newPost, Guid requesterGuid)
-        {
-            try
-            {
-                if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
-                {
-                    throw new ArgumentException(
-                        $"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
-                }
+				foreach (var post in posts)
+				{
+					if (userEmail != null && post.Likes.Any(like => like.AuthorEmail == userEmail))
+					{
+						post.IsLikedByTheUsed = true;
+					}
+				}
 
-                var postToUpdate = await postsRepository
-                    .GetAll()
-                    .Where(post => !post.IsDeleted)
-                    .FirstOrDefaultAsync(post => post.Guid == postGuid);
+				return posts;
+			}
+			else
+			{
+				throw new Exception(
+					$"Pages must be between 1 and {GlobalServicesConstants.PostsMaxCountInPage}!");
+			}
+		}
 
-                if (postToUpdate == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Post");
-                }
+		public async Task<Result> UpdatePostAsync(Guid postGuid, UpdatePostRequestModel newPost, Guid requesterGuid)
+		{
+			try
+			{
+				if (newPost.Content.Length > GlobalServicesConstants.PostMaxLength)
+				{
+					throw new ArgumentException(
+						$"Content must be no longer than {GlobalServicesConstants.PostMaxLength} characters.");
+				}
 
-                if (postToUpdate.AuthorId != requesterGuid)
-                {
-                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
+				var postToUpdate = await postsRepository
+					.GetAll()
+					.Where(post => !post.IsDeleted)
+					.FirstOrDefaultAsync(post => post.Guid == postGuid);
 
-                await imageService.DeleteUploadedImageAsync(ImageFor.Posts, postToUpdate.ImageURL);
+				if (postToUpdate == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Post");
+				}
 
-                string newFileName = "";
+				if (postToUpdate.AuthorId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
 
-                if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
-                {
-                    newFileName =
-                        await imageService.SaveUploadedImageAsync(
-                            ImageFor.Posts, newPost.ImageFileName,
-                            newPost.Image);
-                }
+				await imageService.DeleteUploadedImageAsync(ImageFor.Posts, postToUpdate.ImageURL);
 
-                postToUpdate.Title = newPost.Title;
-                postToUpdate.Content = newPost.Content;
-                postToUpdate.ImageURL = newFileName;
+				string newFileName = "";
 
-                postsRepository.Update(postToUpdate);
+				if (!string.IsNullOrWhiteSpace(newPost.ImageFileName))
+				{
+					newFileName =
+						await imageService.SaveUploadedImageAsync(
+							ImageFor.Posts, newPost.ImageFileName,
+							newPost.Image);
+				}
 
-                await postsRepository.SaveChangesAsync();
+				postToUpdate.Title = newPost.Title;
+				postToUpdate.Content = newPost.Content;
+				postToUpdate.ImageURL = newFileName;
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-        }
+				postsRepository.Update(postToUpdate);
 
-        public async Task<int> ManagePostLikeAsync(Guid authorId, Guid postGuid)
-        {
-            var postToUpdate = await postsRepository
-                 .GetAllAsNoTracking()
-                 .Where(post => !post.IsDeleted)
-                 .Include(post => post.Likes)
-                 .FirstOrDefaultAsync(post => post.Guid == postGuid);
+				await postsRepository.SaveChangesAsync();
 
-            var postLikeExisted = await likesRepository
-                .GetAllAsNoTracking()
-                .FirstOrDefaultAsync(postLike =>
-                    postLike.PostId == postGuid && postLike.AuthorId == authorId);
+				return true;
+			}
+			catch (Exception e)
+			{
+				return e.Message;
+			}
+		}
 
-            int likesToShow = postToUpdate.Likes.Count;
+		public async Task<int> ManagePostLikeAsync(Guid authorId, Guid postGuid)
+		{
+			var postToUpdate = await postsRepository
+				 .GetAllAsNoTracking()
+				 .Where(post => !post.IsDeleted)
+				 .Include(post => post.Likes)
+				 .FirstOrDefaultAsync(post => post.Guid == postGuid);
 
-            if (postLikeExisted == null)
-            {
-                var likeToAdd = new Like()
-                {
-                    PostId = postGuid,
-                    AuthorId = authorId,
-                };
+			var postLikeExisted = await likesRepository
+				.GetAllAsNoTracking()
+				.FirstOrDefaultAsync(postLike =>
+					postLike.PostId == postGuid && postLike.AuthorId == authorId);
 
-                await likesRepository.AddAsync(likeToAdd);
-                likesToShow++;
-            }
-            else
-            {
-                likesRepository.HardDelete(postLikeExisted);
-                likesToShow--;
-            }
+			int likesToShow = postToUpdate.Likes.Count;
 
-            await likesRepository.SaveChangesAsync();
+			if (postLikeExisted == null)
+			{
+				var likeToAdd = new Like()
+				{
+					PostId = postGuid,
+					AuthorId = authorId,
+				};
 
-            return likesToShow;
-        }
-    }
+				await likesRepository.AddAsync(likeToAdd);
+				likesToShow++;
+			}
+			else
+			{
+				likesRepository.HardDelete(postLikeExisted);
+				likesToShow--;
+			}
+
+			await likesRepository.SaveChangesAsync();
+
+			return likesToShow;
+		}
+	}
 }

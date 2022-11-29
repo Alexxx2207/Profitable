@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Profitable.Common.Services
+﻿namespace Profitable.Common.Services
 {
+	using System.Text;
+
 	public static class StringManipulations
 	{
 		public static string DivideCapitalizedStringToWords(string capitalizedString)
@@ -14,7 +10,7 @@ namespace Profitable.Common.Services
 			stringBuilder.Append(capitalizedString[0]);
 			for (int i = 1; i < capitalizedString.Length; i++)
 			{
-				if(char.IsUpper(capitalizedString[i]))
+				if (char.IsUpper(capitalizedString[i]))
 				{
 					stringBuilder.Append(' ');
 				}

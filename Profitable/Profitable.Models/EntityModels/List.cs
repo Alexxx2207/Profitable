@@ -1,23 +1,23 @@
-﻿using Profitable.Models.EntityModels.EntityBaseClass;
-using System.ComponentModel.DataAnnotations;
-
-namespace Profitable.Models.EntityModels
+﻿namespace Profitable.Models.EntityModels
 {
-    public class List : EntityBase
-    {
-        public List()
-        {
-            FinancialInstruments = new HashSet<ListsFinancialInstruments>();
-        }
+	using Profitable.Models.EntityModels.EntityBaseClass;
+	using System.ComponentModel.DataAnnotations;
 
-        [Required]
-        public string Name { get; set; }
+	public class List : EntityBase
+	{
+		public List()
+		{
+			FinancialInstruments = new HashSet<ListsFinancialInstruments>();
+		}
 
-        [Required]
-        public Guid TraderId { get; set; }
-        public ApplicationUser Trader { get; set; }
+		[Required]
+		public string Name { get; set; }
 
-        public ICollection<ListsFinancialInstruments> FinancialInstruments { get; set; }
+		[Required]
+		public Guid TraderId { get; set; }
+		public ApplicationUser Trader { get; set; }
 
-    }
+		public ICollection<ListsFinancialInstruments> FinancialInstruments { get; set; }
+
+	}
 }

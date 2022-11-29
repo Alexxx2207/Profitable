@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Profitable.Services.Futures.Contracts;
-using Profitable.Web.Controllers.BaseApiControllers;
-
-namespace Profitable.Web.Controllers
+﻿namespace Profitable.Web.Controllers
 {
+	using Microsoft.AspNetCore.Mvc;
+	using Profitable.Services.Futures.Contracts;
+	using Profitable.Web.Controllers.BaseApiControllers;
+
 	public class FuturesController : BaseApiController
 	{
 		private readonly IFuturesService futuresService;

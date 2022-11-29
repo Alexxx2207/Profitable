@@ -1,13 +1,12 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Profitable.Common.GlobalConstants;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.EntityModels;
-using Profitable.Models.ResponseModels.Users;
-using Profitable.Services.Search.Contracts;
-
-namespace Profitable.Services.Search
+﻿namespace Profitable.Services.Search
 {
+	using AutoMapper;
+	using Microsoft.EntityFrameworkCore;
+	using Profitable.Data.Repository.Contract;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.ResponseModels.Users;
+	using Profitable.Services.Search.Contracts;
+
 	public class UserSearchService : IUserSearchService
 	{
 		private readonly IRepository<ApplicationUser> repository;
@@ -29,9 +28,9 @@ namespace Profitable.Services.Search
 					((u.FirstName + " " + u.LastName).ToLower().Contains(searchTerm)
 					||
 					u.Email.ToLower().Contains(searchTerm)))
-                .Skip(page * pageCount)
-                .Take(pageCount)
-                .Select(user => mapper.Map<UserDetailsResponseModel>(user))
+				.Skip(page * pageCount)
+				.Take(pageCount)
+				.Select(user => mapper.Map<UserDetailsResponseModel>(user))
 				.ToListAsync();
 
 			return users;

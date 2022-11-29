@@ -1,19 +1,21 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Profitable.Common.Enums;
-using Profitable.Common.GlobalConstants;
-using Profitable.Common.Models;
-using Profitable.Common.Services;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.EntityModels;
-using Profitable.Models.RequestModels.Positions.Futures;
-using Profitable.Models.ResponseModels.Positions.Futures;
-using Profitable.Services.Positions.Contracts;
+﻿
 
 namespace Profitable.Services.Positions
 {
+	using AutoMapper;
+	using Microsoft.EntityFrameworkCore;
+	using Profitable.Common.Enums;
+	using Profitable.Common.GlobalConstants;
+	using Profitable.Common.Models;
+	using Profitable.Common.Services;
+	using Profitable.Data.Repository.Contract;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.RequestModels.Positions.Futures;
+	using Profitable.Models.ResponseModels.Positions.Futures;
+	using Profitable.Services.Positions.Contracts;
+
 	public class FuturesPositionsService : IFuturesPositionsService
-    {
+	{
 		private readonly IRepository<TradePosition> tradePositionsRepository;
 		private readonly IRepository<FuturesPosition> futuresPositionsRepository;
 		private readonly IRepository<FuturesContract> futuresContractRepository;
@@ -39,13 +41,13 @@ namespace Profitable.Services.Positions
 			DateTime afterDateFilter,
 			DateTime beforeDateFilter)
 		{
-            var tradePositions = await tradePositionsRepository
+			var tradePositions = await tradePositionsRepository
 				.GetAllAsNoTracking()
 				.Include(p => p.PositionsRecordList)
 				.Where(p =>
 					!p.IsDeleted &&
-                    DateTime.Compare(p.PositionAddedOn.Date, afterDateFilter.Date) >= 0 &&
-                    DateTime.Compare(p.PositionAddedOn.Date, beforeDateFilter.Date) <= 0 &&
+					DateTime.Compare(p.PositionAddedOn.Date, afterDateFilter.Date) >= 0 &&
+					DateTime.Compare(p.PositionAddedOn.Date, beforeDateFilter.Date) <= 0 &&
 					p.PositionsRecordListId == recordId)
 				.OrderBy(p => p.PositionAddedOn)
 				.ToListAsync();
@@ -56,11 +58,11 @@ namespace Profitable.Services.Positions
 			{
 				var futuresPosition = await futuresPositionsRepository
 					.GetAllAsNoTracking()
-                    .Where(position => !position.IsDeleted)
-                    .Include(fp => fp.FuturesContract)
+					.Where(position => !position.IsDeleted)
+					.Include(fp => fp.FuturesContract)
 					.FirstOrDefaultAsync(p => p.TradePositionId == position.Guid);
 
-				if(futuresPosition == null)
+				if (futuresPosition == null)
 				{
 					continue;
 				}
@@ -68,7 +70,7 @@ namespace Profitable.Services.Positions
 				string parsedDirection = Enum.GetName(typeof(PositionDirection), futuresPosition.Direction);
 
 				var responseModel = mapper.Map(
-					futuresPosition.FuturesContract, 
+					futuresPosition.FuturesContract,
 					mapper.Map<FuturesPositionResponseModel>(
 						position,
 						opt => opt.AfterMap((src, dest) =>
@@ -78,7 +80,7 @@ namespace Profitable.Services.Positions
 					)
 				);
 
-                results.Add(responseModel);
+				results.Add(responseModel);
 			}
 
 			return results;
@@ -90,36 +92,36 @@ namespace Profitable.Services.Positions
 				.GetAllAsNoTracking()
 				.Where(position => !position.IsDeleted)
 				.FirstOrDefaultAsync(position => position.Guid == positionGuid);
-			
+
 			var futuresPosition = await futuresPositionsRepository
 				.GetAllAsNoTracking()
 				.Where(position => !position.IsDeleted)
 				.Include(position => position.FuturesContract)
 				.FirstOrDefaultAsync(position => position.TradePositionId == positionGuid);
 
-			if(tradePosition == null)
+			if (tradePosition == null)
 			{
 				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Trade position"));
 			}
-			else if(futuresPosition == null)
+			else if (futuresPosition == null)
 			{
-                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Futures position"));
-            }
+				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Futures position"));
+			}
 
 			string parsedDirection = Enum.GetName(typeof(PositionDirection), futuresPosition.Direction);
 
-            var responseModel = mapper.Map(
-                    futuresPosition.FuturesContract,
-                    mapper.Map<FuturesPositionResponseModel>(
-                        tradePosition,
-                        opt => opt.AfterMap((src, dest) =>
-                        {
-                            dest.Direction = parsedDirection;
-                        })
-                    )
-                );
+			var responseModel = mapper.Map(
+					futuresPosition.FuturesContract,
+					mapper.Map<FuturesPositionResponseModel>(
+						tradePosition,
+						opt => opt.AfterMap((src, dest) =>
+						{
+							dest.Direction = parsedDirection;
+						})
+					)
+				);
 
-            return responseModel;
+			return responseModel;
 		}
 
 		public async Task<Result> AddFuturesPositions(
@@ -129,78 +131,78 @@ namespace Profitable.Services.Positions
 		{
 			try
 			{
-                var dateTimeOfChange = DateTime.UtcNow;
+				var dateTimeOfChange = DateTime.UtcNow;
 
-                var isConvertedSuccessfully =
-                                Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
+				var isConvertedSuccessfully =
+								Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
 
-                if (!isConvertedSuccessfully)
-                {
-                    return "Direction incorrect format";
-                }
+				if (!isConvertedSuccessfully)
+				{
+					return "Direction incorrect format";
+				}
 
-                var positionsRecordUpdated = await positionsRecordListRepository
-                    .GetAll()
-                    .FirstOrDefaultAsync(record => record.Guid == recordId);
+				var positionsRecordUpdated = await positionsRecordListRepository
+					.GetAll()
+					.FirstOrDefaultAsync(record => record.Guid == recordId);
 
-                if (positionsRecordUpdated == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Positions record");
-                }
+				if (positionsRecordUpdated == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+				}
 
-                if (positionsRecordUpdated.UserId != requesterGuid)
-                {
-                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
+				if (positionsRecordUpdated.UserId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
 
-                positionsRecordUpdated.LastUpdated = dateTimeOfChange;
+				positionsRecordUpdated.LastUpdated = dateTimeOfChange;
 
-                var tradePosition = mapper.Map<TradePosition>(model, opt =>
-                opt.AfterMap((src, dest) =>
-                {
-                    dest.PositionsRecordListId = recordId;
-                    dest.PositionAddedOn = dateTimeOfChange;
-                    dest.RealizedProfitAndLoss = CalculationFormulas.CalculateFuturesPL(
-                            parsedPositionDirection == PositionDirection.Long,
-                            model.EntryPrice,
-                            model.ExitPrice,
-                            model.Quantity,
-                            model.TickSize,
-                            model.TickValue);
-                }));
-
-
-                var futuresContractGuid = (await futuresContractRepository
-                    .GetAllAsNoTracking()
-                    .Where(position => !position.IsDeleted)
-                    .FirstOrDefaultAsync(contract => contract.Name == model.ContractName))?.Guid;
-
-                if (futuresContractGuid == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Futures contract");
-                }
-
-                var futuresPosition = new FuturesPosition
-                {
-                    FuturesContractId = futuresContractGuid.Value,
-                    TradePositionId = tradePosition.Guid,
-                    Direction = parsedPositionDirection
-                };
-
-                await tradePositionsRepository.AddAsync(tradePosition);
-
-                await futuresPositionsRepository.AddAsync(futuresPosition);
+				var tradePosition = mapper.Map<TradePosition>(model, opt =>
+				opt.AfterMap((src, dest) =>
+				{
+					dest.PositionsRecordListId = recordId;
+					dest.PositionAddedOn = dateTimeOfChange;
+					dest.RealizedProfitAndLoss = CalculationFormulas.CalculateFuturesPL(
+							parsedPositionDirection == PositionDirection.Long,
+							model.EntryPrice,
+							model.ExitPrice,
+							model.Quantity,
+							model.TickSize,
+							model.TickValue);
+				}));
 
 
-                await tradePositionsRepository.SaveChangesAsync();
+				var futuresContractGuid = (await futuresContractRepository
+					.GetAllAsNoTracking()
+					.Where(position => !position.IsDeleted)
+					.FirstOrDefaultAsync(contract => contract.Name == model.ContractName))?.Guid;
 
-                await futuresPositionsRepository.SaveChangesAsync();
+				if (futuresContractGuid == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Futures contract");
+				}
 
-                await positionsRecordListRepository.SaveChangesAsync();
+				var futuresPosition = new FuturesPosition
+				{
+					FuturesContractId = futuresContractGuid.Value,
+					TradePositionId = tradePosition.Guid,
+					Direction = parsedPositionDirection
+				};
+
+				await tradePositionsRepository.AddAsync(tradePosition);
+
+				await futuresPositionsRepository.AddAsync(futuresPosition);
 
 
-                return true;
-            }
+				await tradePositionsRepository.SaveChangesAsync();
+
+				await futuresPositionsRepository.SaveChangesAsync();
+
+				await positionsRecordListRepository.SaveChangesAsync();
+
+
+				return true;
+			}
 			catch (Exception e)
 			{
 				return e.Message;
@@ -215,51 +217,51 @@ namespace Profitable.Services.Positions
 		{
 			try
 			{
-                var dateTimeOfChange = DateTime.UtcNow;
+				var dateTimeOfChange = DateTime.UtcNow;
 
-                var isConvertedSuccessfully = 
+				var isConvertedSuccessfully =
 								Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
 
-                if (!isConvertedSuccessfully)
-                {
-                    return "Direction incorrect format";
-                }
+				if (!isConvertedSuccessfully)
+				{
+					return "Direction incorrect format";
+				}
 
-                var positionsRecordUpdated = await positionsRecordListRepository
-                    .GetAll()
-                    .FirstOrDefaultAsync(record => record.Guid == recordId);
+				var positionsRecordUpdated = await positionsRecordListRepository
+					.GetAll()
+					.FirstOrDefaultAsync(record => record.Guid == recordId);
 
-                if (positionsRecordUpdated == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Positions record");
-                }
+				if (positionsRecordUpdated == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+				}
 
-                if (positionsRecordUpdated.UserId != requesterGuid)
-                {
-                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
+				if (positionsRecordUpdated.UserId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
 
-                positionsRecordUpdated.LastUpdated = dateTimeOfChange;
+				positionsRecordUpdated.LastUpdated = dateTimeOfChange;
 
 				var tradePosition = await tradePositionsRepository
 					.GetAll()
 					.FirstOrDefaultAsync(position => position.Guid == positionGuid);
 
-                if (tradePosition == null)
-                {
+				if (tradePosition == null)
+				{
 					return GlobalServicesConstants.EntityDoesNotExist("Trade position");
-                }
+				}
 
-                var futuresPosition = await futuresPositionsRepository
-                 .GetAllAsNoTracking()
-                 .Where(position => !position.IsDeleted)
-                 .Include(position => position.FuturesContract)
-                 .FirstOrDefaultAsync(position => position.TradePositionId == positionGuid);
+				var futuresPosition = await futuresPositionsRepository
+				 .GetAllAsNoTracking()
+				 .Where(position => !position.IsDeleted)
+				 .Include(position => position.FuturesContract)
+				 .FirstOrDefaultAsync(position => position.TradePositionId == positionGuid);
 
-                if (futuresPosition == null)
-                {
+				if (futuresPosition == null)
+				{
 					return GlobalServicesConstants.EntityDoesNotExist("Futures position");
-                }
+				}
 
 				tradePosition.EntryPrice = model.EntryPrice;
 				tradePosition.ExitPrice = model.ExitPrice;
@@ -304,30 +306,30 @@ namespace Profitable.Services.Positions
 			{
 				var deletePositionRecord = await positionsRecordListRepository
 					.GetAllAsNoTracking()
-                    .Where(position => !position.IsDeleted)
-                    .FirstOrDefaultAsync(record => record.Guid == recordId);
+					.Where(position => !position.IsDeleted)
+					.FirstOrDefaultAsync(record => record.Guid == recordId);
 
-                if (deletePositionRecord == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Positions record");
-                }
-
-                if (deletePositionRecord.UserId != requesterGuid)
+				if (deletePositionRecord == null)
 				{
-                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
+					return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+				}
+
+				if (deletePositionRecord.UserId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
 
 				var tradePosition = await tradePositionsRepository
-                        .GetAllAsNoTracking()
+						.GetAllAsNoTracking()
 						.Where(position => !position.IsDeleted)
-                        .FirstOrDefaultAsync(p => p.Guid == positionGuid);
+						.FirstOrDefaultAsync(p => p.Guid == positionGuid);
 
-				if(tradePosition == null)
+				if (tradePosition == null)
 				{
-                    return GlobalServicesConstants.EntityDoesNotExist("Trade position");
-                }
+					return GlobalServicesConstants.EntityDoesNotExist("Trade position");
+				}
 
-                tradePositionsRepository.Delete(tradePosition);
+				tradePositionsRepository.Delete(tradePosition);
 
 				await tradePositionsRepository.SaveChangesAsync();
 
@@ -345,15 +347,16 @@ namespace Profitable.Services.Positions
 
 		public CalculateFuturesPositionResponseModel CalculateFuturesPosition(CalculateFuturesPositionRequestModel model)
 		{
-            var isConvertedSuccessfully =
-                                 Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
+			var isConvertedSuccessfully =
+								 Enum.TryParse(model.Direction, out PositionDirection parsedPositionDirection);
 
-            if (!isConvertedSuccessfully)
-            {
+			if (!isConvertedSuccessfully)
+			{
 				throw new Exception("Incorrect direction format");
-            }
+			}
 
-            return new CalculateFuturesPositionResponseModel {
+			return new CalculateFuturesPositionResponseModel
+			{
 				ProfitLoss = CalculationFormulas.CalculateFuturesPL(
 							parsedPositionDirection == PositionDirection.Long,
 							model.EntryPrice,
@@ -363,10 +366,10 @@ namespace Profitable.Services.Positions
 							model.TickValue),
 				Ticks = CalculationFormulas.CalculateFuturesTicks(
 							model.EntryPrice,
-                            model.ExitPrice,
-                            model.Quantity,
-                            model.TickSize)
-            };
-        }
+							model.ExitPrice,
+							model.Quantity,
+							model.TickSize)
+			};
+		}
 	}
 }

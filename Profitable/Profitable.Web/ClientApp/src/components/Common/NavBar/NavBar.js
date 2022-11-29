@@ -112,6 +112,13 @@ export const NavBar = () => {
                     >
                         <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.navbarIcon} />
                     </NavLink>
+
+                    <NavLink
+                        to="/cot-reports"
+                        className={classNames(styles.navbarListItems, styles.navLink)}
+                    >
+                        COT REPORTS
+                    </NavLink>
                 </div>
                 <div className={styles.userPanel}>
                     {JWT ? (

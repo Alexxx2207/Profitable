@@ -1,10 +1,11 @@
-﻿using Profitable.Common.Models;
-
-namespace Profitable.Common.GlobalConstants
+﻿namespace Profitable.Common.GlobalConstants
 {
-    public class GlobalDatabaseConstants
+    using Profitable.Common.Models;
+    using System.Collections.Generic;
+
+    public static class GlobalDatabaseConstants
     {
-        public const string TraderRoleName = "Trader";
+        public static readonly string TraderRoleName = "Trader";
 
         public static readonly IReadOnlyList<SeededTrader> DefaultUsersToSeed = new List<SeededTrader>()
         {

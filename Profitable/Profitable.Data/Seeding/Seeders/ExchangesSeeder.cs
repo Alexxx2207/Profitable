@@ -1,45 +1,45 @@
-﻿using Profitable.Data.Repository;
-using Profitable.Data.Seeding.Seeders.Contracts;
-using Profitable.Models.EntityModels;
-using System.Text.Json;
-
-namespace Profitable.Data.Seeding.Seeders
+﻿namespace Profitable.Data.Seeding.Seeders
 {
-    public class ExchangesSeeder : ISeeder
-    {
-        public async Task SeedAsync(
-            ApplicationDbContext dbContext,
-            IServiceProvider serviceProvider = null)
-        {
-            var exchangeRepository = new Repository<Exchange>(dbContext);
+	using Profitable.Data.Repository;
+	using Profitable.Data.Seeding.Seeders.Contracts;
+	using Profitable.Models.EntityModels;
+	using System.Text.Json;
 
-            IAsyncEnumerable<string> exchangesInput = null;
+	public class ExchangesSeeder : ISeeder
+	{
+		public async Task SeedAsync(
+			ApplicationDbContext dbContext,
+			IServiceProvider serviceProvider = null)
+		{
+			var exchangeRepository = new Repository<Exchange>(dbContext);
 
-            using (var stream = new FileStream(
-                "DataToSeed/Exchanges.json",
-                FileMode.Open,
-                FileAccess.Read))
-            {
-                exchangesInput = JsonSerializer.DeserializeAsyncEnumerable<string>
-                    (stream, new JsonSerializerOptions()
-                    {
-                        AllowTrailingCommas = true,
-                        PropertyNameCaseInsensitive = true,
-                    });
+			IAsyncEnumerable<string> exchangesInput = null;
 
-                var currentEntries = dbContext.Exchanges;
+			using (var stream = new FileStream(
+				"DataToSeed/Exchanges.json",
+				FileMode.Open,
+				FileAccess.Read))
+			{
+				exchangesInput = JsonSerializer.DeserializeAsyncEnumerable<string>
+					(stream, new JsonSerializerOptions()
+					{
+						AllowTrailingCommas = true,
+						PropertyNameCaseInsensitive = true,
+					});
 
-                await foreach (var exchange in exchangesInput.Distinct())
-                {
-                    if (!currentEntries.Any(e => e.Name == exchange))
-                    {
-                        var exchangeEntity = new Exchange();
-                        exchangeEntity.Name = exchange;
+				var currentEntries = dbContext.Exchanges;
 
-                        await exchangeRepository.AddAsync(exchangeEntity);
-                    }
-                }
-            }
-        }
-    }
+				await foreach (var exchange in exchangesInput.Distinct())
+				{
+					if (!currentEntries.Any(e => e.Name == exchange))
+					{
+						var exchangeEntity = new Exchange();
+						exchangeEntity.Name = exchange;
+
+						await exchangeRepository.AddAsync(exchangeEntity);
+					}
+				}
+			}
+		}
+	}
 }

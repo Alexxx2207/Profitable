@@ -1,9 +1,9 @@
-﻿using Profitable.Common.Enums;
-using Profitable.Common.Models;
-using Profitable.Models.ResponseModels.Positions.Records;
-
-namespace Profitable.Services.Positions.Contracts
+﻿namespace Profitable.Services.Positions.Contracts
 {
+	using Profitable.Common.Enums;
+	using Profitable.Common.Models;
+	using Profitable.Models.ResponseModels.Positions.Records;
+
 	public interface IPositionsRecordsService
 	{
 		Task<List<UserPositionsRecordResponseModel>> GetUserRecordsAsync(

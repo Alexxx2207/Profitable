@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.Contracts;
-
-namespace Profitable.Data.Repository
+﻿namespace Profitable.Data.Repository
 {
+    using Microsoft.EntityFrameworkCore;
+    using Profitable.Data.Repository.Contract;
+    using Profitable.Models.Contracts;
+
     public class Repository<TEntity> : IRepository<TEntity>
         where TEntity : class, IDeletebleEntity
     {

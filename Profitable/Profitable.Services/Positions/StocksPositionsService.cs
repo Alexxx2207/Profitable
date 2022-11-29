@@ -1,310 +1,304 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Profitable.Common.Enums;
-using Profitable.Common.GlobalConstants;
-using Profitable.Common.Models;
-using Profitable.Common.Services;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.EntityModels;
-using Profitable.Models.RequestModels.Positions.Stocks;
-using Profitable.Models.ResponseModels.Positions.Stocks;
-using Profitable.Services.Positions.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Profitable.Services.Positions
+﻿namespace Profitable.Services.Positions
 {
-    public class StocksPositionsService : IStocksPositionsService
-    {
-        private readonly IRepository<TradePosition> tradePositionsRepository;
-        private readonly IRepository<StocksPosition> stocksPositionsRepository;
-        private readonly IRepository<PositionsRecordList> positionsRecordListRepository;
-        private readonly IMapper mapper;
+	using AutoMapper;
+	using Microsoft.EntityFrameworkCore;
+	using Profitable.Common.GlobalConstants;
+	using Profitable.Common.Models;
+	using Profitable.Common.Services;
+	using Profitable.Data.Repository.Contract;
+	using Profitable.Models.EntityModels;
+	using Profitable.Models.RequestModels.Positions.Stocks;
+	using Profitable.Models.ResponseModels.Positions.Stocks;
+	using Profitable.Services.Positions.Contracts;
 
-        public StocksPositionsService(
-            IRepository<TradePosition> tradePositionsRepository,
-            IRepository<StocksPosition> stocksPositionsRepository,
-            IRepository<PositionsRecordList> positionsRecordListRepository,
-            IMapper mapper)
-        {
-            this.tradePositionsRepository = tradePositionsRepository;
-            this.stocksPositionsRepository = stocksPositionsRepository;
-            this.positionsRecordListRepository = positionsRecordListRepository;
-            this.mapper = mapper;
-        }
+	public class StocksPositionsService : IStocksPositionsService
+	{
+		private readonly IRepository<TradePosition> tradePositionsRepository;
+		private readonly IRepository<StocksPosition> stocksPositionsRepository;
+		private readonly IRepository<PositionsRecordList> positionsRecordListRepository;
+		private readonly IMapper mapper;
 
-        public CalculateStocksPositionResponseModel CalculateStocksPosition(CalculateStocksPositionRequestModel model)
-        {
-            return new CalculateStocksPositionResponseModel
-            {
-                ProfitLoss = CalculationFormulas.CalculateStocksPL(
-                            model.BuyPrice,
-                            model.SellPrice,
-                            model.NumberOfShares,
-                            model.BuyCommission,
-                            model.SellCommission),
-            };
-        }
+		public StocksPositionsService(
+			IRepository<TradePosition> tradePositionsRepository,
+			IRepository<StocksPosition> stocksPositionsRepository,
+			IRepository<PositionsRecordList> positionsRecordListRepository,
+			IMapper mapper)
+		{
+			this.tradePositionsRepository = tradePositionsRepository;
+			this.stocksPositionsRepository = stocksPositionsRepository;
+			this.positionsRecordListRepository = positionsRecordListRepository;
+			this.mapper = mapper;
+		}
 
-        public async Task<List<StocksPositionResponseModel>> GetStocksPositions(
-           Guid recordId,
-           DateTime afterDateFilter,
-           DateTime beforeDateFilter)
-        {
-            var tradePositions = await tradePositionsRepository
-                .GetAllAsNoTracking()
-                .Include(p => p.PositionsRecordList)
-                .Where(p =>
-                    !p.IsDeleted &&
-                    DateTime.Compare(p.PositionAddedOn.Date, afterDateFilter.Date) >= 0 &&
-                    DateTime.Compare(p.PositionAddedOn.Date, beforeDateFilter.Date) <= 0 &&
-                    p.PositionsRecordListId == recordId)
-                .OrderBy(p => p.PositionAddedOn)
-                .ToListAsync();
+		public CalculateStocksPositionResponseModel CalculateStocksPosition(CalculateStocksPositionRequestModel model)
+		{
+			return new CalculateStocksPositionResponseModel
+			{
+				ProfitLoss = CalculationFormulas.CalculateStocksPL(
+							model.BuyPrice,
+							model.SellPrice,
+							model.NumberOfShares,
+							model.BuyCommission,
+							model.SellCommission),
+			};
+		}
 
-            var results = new List<StocksPositionResponseModel>();
+		public async Task<List<StocksPositionResponseModel>> GetStocksPositions(
+		   Guid recordId,
+		   DateTime afterDateFilter,
+		   DateTime beforeDateFilter)
+		{
+			var tradePositions = await tradePositionsRepository
+				.GetAllAsNoTracking()
+				.Include(p => p.PositionsRecordList)
+				.Where(p =>
+					!p.IsDeleted &&
+					DateTime.Compare(p.PositionAddedOn.Date, afterDateFilter.Date) >= 0 &&
+					DateTime.Compare(p.PositionAddedOn.Date, beforeDateFilter.Date) <= 0 &&
+					p.PositionsRecordListId == recordId)
+				.OrderBy(p => p.PositionAddedOn)
+				.ToListAsync();
 
-            foreach (var position in tradePositions)
-            {
-                var stocksPosition = await stocksPositionsRepository
-                    .GetAllAsNoTracking()
-                    .Where(position => !position.IsDeleted)
-                    .FirstOrDefaultAsync(p => p.TradePositionId == position.Guid);
+			var results = new List<StocksPositionResponseModel>();
 
-                if (stocksPosition == null)
-                {
-                    continue;
-                }
+			foreach (var position in tradePositions)
+			{
+				var stocksPosition = await stocksPositionsRepository
+					.GetAllAsNoTracking()
+					.Where(position => !position.IsDeleted)
+					.FirstOrDefaultAsync(p => p.TradePositionId == position.Guid);
 
-                var responseModel = mapper.Map(
-                    stocksPosition,
-                    mapper.Map<StocksPositionResponseModel>(position)
-                );
+				if (stocksPosition == null)
+				{
+					continue;
+				}
 
-                results.Add(responseModel);
-            }
+				var responseModel = mapper.Map(
+					stocksPosition,
+					mapper.Map<StocksPositionResponseModel>(position)
+				);
 
-            return results;
-        }
+				results.Add(responseModel);
+			}
 
-        public async Task<StocksPositionResponseModel> GetStocksPositionByGuid(Guid positionGuid)
-        {
-            var tradePosition = await tradePositionsRepository
-                .GetAllAsNoTracking()
-                .Where(position => !position.IsDeleted)
-                .FirstOrDefaultAsync(position => position.Guid == positionGuid);
+			return results;
+		}
 
-            var stocksPosition = await stocksPositionsRepository
-                .GetAllAsNoTracking()
-                .Where(position => !position.IsDeleted)
-                .FirstOrDefaultAsync(position => position.TradePositionId == positionGuid);
+		public async Task<StocksPositionResponseModel> GetStocksPositionByGuid(Guid positionGuid)
+		{
+			var tradePosition = await tradePositionsRepository
+				.GetAllAsNoTracking()
+				.Where(position => !position.IsDeleted)
+				.FirstOrDefaultAsync(position => position.Guid == positionGuid);
 
-            if (tradePosition == null)
-            {
-                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Trade position"));
-            }
-            else if (stocksPosition == null)
-            {
-                throw new Exception(GlobalServicesConstants.EntityDoesNotExist("stocks position"));
-            }
+			var stocksPosition = await stocksPositionsRepository
+				.GetAllAsNoTracking()
+				.Where(position => !position.IsDeleted)
+				.FirstOrDefaultAsync(position => position.TradePositionId == positionGuid);
 
-            var responseModel = mapper.Map(
-                    stocksPosition,
-                    mapper.Map<StocksPositionResponseModel>(tradePosition)
-                );
+			if (tradePosition == null)
+			{
+				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("Trade position"));
+			}
+			else if (stocksPosition == null)
+			{
+				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("stocks position"));
+			}
 
-            return responseModel;
-        }
+			var responseModel = mapper.Map(
+					stocksPosition,
+					mapper.Map<StocksPositionResponseModel>(tradePosition)
+				);
 
-        public async Task<Result> AddStocksPositions(
-            Guid recordId,
-            AddStocksPositionRequestModel model,
-            Guid requesterGuid)
-        {
-            try
-            {
-                var dateTimeOfChange = DateTime.UtcNow;
+			return responseModel;
+		}
 
-                var positionsRecordUpdated = await positionsRecordListRepository
-                    .GetAll()
-                    .FirstOrDefaultAsync(record => record.Guid == recordId);
+		public async Task<Result> AddStocksPositions(
+			Guid recordId,
+			AddStocksPositionRequestModel model,
+			Guid requesterGuid)
+		{
+			try
+			{
+				var dateTimeOfChange = DateTime.UtcNow;
 
-                if (positionsRecordUpdated == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Positions record");
-                }
+				var positionsRecordUpdated = await positionsRecordListRepository
+					.GetAll()
+					.FirstOrDefaultAsync(record => record.Guid == recordId);
 
-                if (positionsRecordUpdated.UserId != requesterGuid)
-                {
-                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
+				if (positionsRecordUpdated == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+				}
 
-                positionsRecordUpdated.LastUpdated = dateTimeOfChange;
+				if (positionsRecordUpdated.UserId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
 
-                var tradePosition = mapper.Map<TradePosition>(model, opt =>
-                    opt.AfterMap((src, dest) =>
-                    {
-                        dest.PositionsRecordListId = recordId;
-                        dest.PositionAddedOn = dateTimeOfChange;
-                        dest.RealizedProfitAndLoss = CalculationFormulas.CalculateStocksPL(
-                                model.EntryPrice,
-                                model.ExitPrice,
-                                model.QuantitySize,
-                                model.BuyCommission,
-                                model.SellCommission);
-                    }));
+				positionsRecordUpdated.LastUpdated = dateTimeOfChange;
 
-
-                var stocksPosition = mapper.Map<StocksPosition>(model, opt =>
-                   opt.AfterMap((src, dest) =>
-                   {
-                       dest.TradePositionId = tradePosition.Guid;
-                   }));
-
-                await tradePositionsRepository.AddAsync(tradePosition);
-
-                await stocksPositionsRepository.AddAsync(stocksPosition);
-
-
-                await tradePositionsRepository.SaveChangesAsync();
-
-                await stocksPositionsRepository.SaveChangesAsync();
-
-                await positionsRecordListRepository.SaveChangesAsync();
+				var tradePosition = mapper.Map<TradePosition>(model, opt =>
+					opt.AfterMap((src, dest) =>
+					{
+						dest.PositionsRecordListId = recordId;
+						dest.PositionAddedOn = dateTimeOfChange;
+						dest.RealizedProfitAndLoss = CalculationFormulas.CalculateStocksPL(
+								model.EntryPrice,
+								model.ExitPrice,
+								model.QuantitySize,
+								model.BuyCommission,
+								model.SellCommission);
+					}));
 
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-        }
+				var stocksPosition = mapper.Map<StocksPosition>(model, opt =>
+				   opt.AfterMap((src, dest) =>
+				   {
+					   dest.TradePositionId = tradePosition.Guid;
+				   }));
 
-        public async Task<Result> ChangeStocksPosition(
-            Guid recordId,
-            Guid positionGuid,
-            Guid requesterGuid,
-            ChangeStocksPositionRequestModel model)
-        {
-            try
-            {
-                var dateTimeOfChange = DateTime.UtcNow;
+				await tradePositionsRepository.AddAsync(tradePosition);
 
-                var positionsRecordUpdated = await positionsRecordListRepository
-                    .GetAll()
-                    .FirstOrDefaultAsync(record => record.Guid == recordId);
-
-                if (positionsRecordUpdated == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Positions record");
-                }
-
-                if (positionsRecordUpdated.UserId != requesterGuid)
-                {
-                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
-
-                positionsRecordUpdated.LastUpdated = dateTimeOfChange;
-
-                var tradePosition = await tradePositionsRepository
-                    .GetAll()
-                    .FirstOrDefaultAsync(position => position.Guid == positionGuid);
-
-                if (tradePosition == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Trade position");
-                }
-
-                var stocksPosition = await stocksPositionsRepository
-                 .GetAllAsNoTracking()
-                 .Where(position => !position.IsDeleted)
-                 .FirstOrDefaultAsync(position => position.TradePositionId == positionGuid);
-
-                if (stocksPosition == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("stocks position");
-                }
-
-                tradePosition.EntryPrice = model.EntryPrice;
-                tradePosition.ExitPrice = model.ExitPrice;
-                tradePosition.QuantitySize = model.QuantitySize;
-                tradePosition.RealizedProfitAndLoss = CalculationFormulas.CalculateStocksPL(
-                            model.EntryPrice,
-                            model.ExitPrice,
-                            model.QuantitySize,
-                            model.BuyCommission,
-                            model.SellCommission);
-
-                tradePositionsRepository.Update(tradePosition);
-
-                stocksPositionsRepository.Update(stocksPosition);
+				await stocksPositionsRepository.AddAsync(stocksPosition);
 
 
-                await tradePositionsRepository.SaveChangesAsync();
+				await tradePositionsRepository.SaveChangesAsync();
 
-                await stocksPositionsRepository.SaveChangesAsync();
+				await stocksPositionsRepository.SaveChangesAsync();
 
-                await positionsRecordListRepository.SaveChangesAsync();
+				await positionsRecordListRepository.SaveChangesAsync();
 
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-        }
+				return true;
+			}
+			catch (Exception e)
+			{
+				return e.Message;
+			}
+		}
 
-        public async Task<Result> DeleteStocksPositions(
-            Guid recordId,
-            Guid positionGuid,
-            Guid requesterGuid)
-        {
-            try
-            {
-                var deletePositionRecord = await positionsRecordListRepository
-                    .GetAllAsNoTracking()
-                    .Where(position => !position.IsDeleted)
-                    .FirstOrDefaultAsync(record => record.Guid == recordId);
+		public async Task<Result> ChangeStocksPosition(
+			Guid recordId,
+			Guid positionGuid,
+			Guid requesterGuid,
+			ChangeStocksPositionRequestModel model)
+		{
+			try
+			{
+				var dateTimeOfChange = DateTime.UtcNow;
 
-                if (deletePositionRecord == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Positions record");
-                }
+				var positionsRecordUpdated = await positionsRecordListRepository
+					.GetAll()
+					.FirstOrDefaultAsync(record => record.Guid == recordId);
 
-                if (deletePositionRecord.UserId != requesterGuid)
-                {
-                    return GlobalServicesConstants.RequesterNotOwnerMesssage;
-                }
+				if (positionsRecordUpdated == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+				}
 
-                var tradePosition = await tradePositionsRepository
-                        .GetAllAsNoTracking()
-                        .Where(position => !position.IsDeleted)
-                        .FirstOrDefaultAsync(p => p.Guid == positionGuid);
+				if (positionsRecordUpdated.UserId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
 
-                if (tradePosition == null)
-                {
-                    return GlobalServicesConstants.EntityDoesNotExist("Trade position");
-                }
+				positionsRecordUpdated.LastUpdated = dateTimeOfChange;
 
-                tradePositionsRepository.Delete(tradePosition);
+				var tradePosition = await tradePositionsRepository
+					.GetAll()
+					.FirstOrDefaultAsync(position => position.Guid == positionGuid);
 
-                await tradePositionsRepository.SaveChangesAsync();
+				if (tradePosition == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Trade position");
+				}
 
-                return true;
-            }
-            catch (UnauthorizedAccessException uae)
-            {
-                return uae.Message;
-            }
-            catch (Exception e)
-            {
-                return e.Message;
-            }
-        }
-    }
+				var stocksPosition = await stocksPositionsRepository
+				 .GetAllAsNoTracking()
+				 .Where(position => !position.IsDeleted)
+				 .FirstOrDefaultAsync(position => position.TradePositionId == positionGuid);
+
+				if (stocksPosition == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("stocks position");
+				}
+
+				tradePosition.EntryPrice = model.EntryPrice;
+				tradePosition.ExitPrice = model.ExitPrice;
+				tradePosition.QuantitySize = model.QuantitySize;
+				tradePosition.RealizedProfitAndLoss = CalculationFormulas.CalculateStocksPL(
+							model.EntryPrice,
+							model.ExitPrice,
+							model.QuantitySize,
+							model.BuyCommission,
+							model.SellCommission);
+
+				tradePositionsRepository.Update(tradePosition);
+
+				stocksPositionsRepository.Update(stocksPosition);
+
+
+				await tradePositionsRepository.SaveChangesAsync();
+
+				await stocksPositionsRepository.SaveChangesAsync();
+
+				await positionsRecordListRepository.SaveChangesAsync();
+
+
+				return true;
+			}
+			catch (Exception e)
+			{
+				return e.Message;
+			}
+		}
+
+		public async Task<Result> DeleteStocksPositions(
+			Guid recordId,
+			Guid positionGuid,
+			Guid requesterGuid)
+		{
+			try
+			{
+				var deletePositionRecord = await positionsRecordListRepository
+					.GetAllAsNoTracking()
+					.Where(position => !position.IsDeleted)
+					.FirstOrDefaultAsync(record => record.Guid == recordId);
+
+				if (deletePositionRecord == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Positions record");
+				}
+
+				if (deletePositionRecord.UserId != requesterGuid)
+				{
+					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+				}
+
+				var tradePosition = await tradePositionsRepository
+						.GetAllAsNoTracking()
+						.Where(position => !position.IsDeleted)
+						.FirstOrDefaultAsync(p => p.Guid == positionGuid);
+
+				if (tradePosition == null)
+				{
+					return GlobalServicesConstants.EntityDoesNotExist("Trade position");
+				}
+
+				tradePositionsRepository.Delete(tradePosition);
+
+				await tradePositionsRepository.SaveChangesAsync();
+
+				return true;
+			}
+			catch (UnauthorizedAccessException uae)
+			{
+				return uae.Message;
+			}
+			catch (Exception e)
+			{
+				return e.Message;
+			}
+		}
+	}
 }
