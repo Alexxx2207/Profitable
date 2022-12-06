@@ -16,6 +16,7 @@ import { getUserDataByJWT, getUserEmailFromJWT } from "../../../../services/user
 import { GoToTop } from "../../../Common/GoToTop/GoToTop";
 
 import styles from "./PostsExplorer.module.css";
+import { ShowMoreButton } from "../../../Common/ShowMoreButton/ShowMoreButton";
 
 export const PostsExplorer = () => {
     const navigate = useNavigate();
@@ -124,15 +125,10 @@ export const PostsExplorer = () => {
                 <div className={styles.postsListContainer}>
                     <PostsList posts={state.posts} />
                 </div>
-                {state.showShowMore ? (
-                    <div className={styles.loadMoreContainer}>
-                        <h4 className={styles.loadMoreButton} onClick={handleShowMorePostsClick}>
-                            Show More Posts
-                        </h4>
-                    </div>
-                ) : (
-                    <></>
-                )}
+                <ShowMoreButton
+                    entity={"Posts"}
+                    showShowMore={state.showShowMore}
+                    handler={handleShowMorePostsClick} />
             </div>
 
             <GoToTop />

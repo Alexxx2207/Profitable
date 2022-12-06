@@ -7,6 +7,7 @@ import {
 } from "../../../services/positions/positionsRecordsService";
 import { convertFullDateTime } from "../../../utils/Formatters/timeFormatter";
 import { PositionsRecordListsList } from "./PositionsRecords/PositionsRecordListsList/PositionsRecordListsList";
+import { ShowMoreButton } from "../../Common/ShowMoreButton/ShowMoreButton";
 import {
     POSITIONS_RECORDS_DEFAULT_ORDER,
     POSITIONS_RECORDS_PAGE_COUNT,
@@ -246,15 +247,11 @@ export const AccountStatistics = () => {
                 records={state.lists}
                 showOwnerActionButtons={searchedProfileEmail.localeCompare(loggedInUserEmail) === 0}
             />
-            {state.showShowMore ? (
-                <div className={styles.loadMoreContainer}>
-                    <h4 className={styles.loadMoreButton} onClick={handleShowMoreRecordClick}>
-                        Show More Records
-                    </h4>
-                </div>
-            ) : (
-                <></>
-            )}
+            
+            <ShowMoreButton 
+                entity={"Records"}
+                showShowMore={state.showShowMore}
+                handler={handleShowMoreRecordClick} />
         </div>
     );
 };

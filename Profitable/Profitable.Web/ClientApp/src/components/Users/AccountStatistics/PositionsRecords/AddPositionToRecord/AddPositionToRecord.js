@@ -4,7 +4,6 @@ import { CLIENT_ERROR_TYPE, InstrumentTypes, LongDirectionName, POSITIONS_RECORD
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../../contexts/MessageBoxContext";
 import { TimeContext } from "../../../../../contexts/TimeContext";
-import { changeStateValuesForControlledForms } from "../../../../../services/common/createStateValues";
 import { createClientErrorObject } from "../../../../../services/common/createValidationErrorObject";
 import { isEmptyOrWhiteSpaceFieldChecker } from "../../../../../services/common/errorValidationCheckers";
 import { createFuturesPosition } from "../../../../../services/positions/futuresPositionsService";
@@ -13,9 +12,10 @@ import { getUserPositionsRecordsByInstrumentType } from "../../../../../services
 import { createStocksPosition } from "../../../../../services/positions/stocksPositionsService";
 import { convertFullDateTime } from "../../../../../utils/Formatters/timeFormatter";
 import { ErrorWidget } from "../../../../Common/ErrorWidget/ErrorWidget";
+import { ShowMoreButton } from "../../../../Common/ShowMoreButton/ShowMoreButton";
+import { SavePositionsRecordListWidget } from "./SavePositionsRecordListWidget/SavePositionsRecordListWidget";
 
 import styles from "./AddPositionToRecord.module.css";
-import { SavePositionsRecordListWidget } from "./SavePositionsRecordListWidget/SavePositionsRecordListWidget";
 
 const initialState = {
     lists: [],
@@ -265,15 +265,11 @@ export const AddPositionToRecord = () => {
                     <h2 className={styles.noRecordsHeader}>No Records Made Yet</h2>
                 )}
             </div>
-            {pageState.showShowMore ? (
-                <div className={styles.loadMoreContainer}>
-                    <h4 className={styles.loadMoreButton} onClick={handleShowMoreRecordClick}>
-                        Show More Records
-                    </h4>
-                </div>
-            ) : (
-                <></>
-            )}
+            
+            <ShowMoreButton 
+                entity={"Records"}
+                showShowMore={pageState.showShowMore}
+                handler={handleShowMoreRecordClick} />
     </div>
         
     );

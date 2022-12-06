@@ -10,6 +10,7 @@ import {
 import { loadPostsPageByUserId } from "../../../services/posts/postsService";
 import { CommentsList } from "../../PostsAndComments/Comments/CommentsList/CommentsList";
 import { PostsList } from "../../PostsAndComments/Posts/PostsList/PostsList";
+import { ShowMoreButton } from "../../Common/ShowMoreButton/ShowMoreButton";
 import { getCommentsByUserId } from "../../../services/comments/commentsService";
 
 import styles from "./AccountActivity.module.css";
@@ -201,16 +202,11 @@ export const AccountActivity = () => {
                     <CommentsList comments={state.activityList} />
                 )}
             </section>
-            {state.showShowMore ? (
-                <div className={styles.loadMoreContainer}>
-                    <h4 className={styles.loadMoreButton} onClick={handleShowMorePostsClick}>
-                        Show More{" "}
-                        {state.activityType[0].toUpperCase() + state.activityType.slice(1)}
-                    </h4>
-                </div>
-            ) : (
-                <></>
-            )}
+
+            <ShowMoreButton 
+                entity={" " + state.activityType[0].toUpperCase() + state.activityType.slice(1)}
+                showShowMore={state.showShowMore}
+                handler={handleShowMorePostsClick} />
         </div>
     );
 };

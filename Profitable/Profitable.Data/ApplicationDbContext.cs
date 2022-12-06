@@ -48,6 +48,8 @@
 
 		public DbSet<COTReport> COTReports { get; set; }
 
+		public DbSet<Book> Books { get; set; }
+
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

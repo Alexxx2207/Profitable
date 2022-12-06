@@ -28,10 +28,12 @@ import { CommentsList } from "../../Comments/CommentsList/CommentsList";
 import { CreateComment } from "../../Comments/CreateComment/CreateComment";
 import { getCommentsByPostId } from "../../../../services/comments/commentsService";
 
+import { convertFullDateTime } from "../../../../utils/Formatters/timeFormatter";
+
+import { ShowMoreButton } from "../../../Common/ShowMoreButton/ShowMoreButton";
 import { GoToTop } from "../../../Common/GoToTop/GoToTop";
 
 import styles from "./PostDetails.module.css";
-import { convertFullDateTime } from "../../../../utils/Formatters/timeFormatter";
 
 export const PostDetails = () => {
     const navigate = useNavigate();
@@ -190,6 +192,7 @@ export const PostDetails = () => {
         setState((state) => ({
             ...state,
             showCreateCommentWidget: !state.showCreateCommentWidget,
+            showShowMore: true,
         }));
     }, []);
 
@@ -303,15 +306,11 @@ export const PostDetails = () => {
                     <CommentsList postId={postId} comments={state.post.comments} />
                 </div>
             </section>
-            {state.showShowMore ? (
-                <div className={styles.loadMoreContainer}>
-                    <h4 className={styles.loadMoreButton} onClick={handleShowMoreCommentsClick}>
-                        Show More Comments
-                    </h4>
-                </div>
-            ) : (
-                <></>
-            )}
+
+            <ShowMoreButton
+                entity={"Comments"}
+                showShowMore={state.showShowMore}
+                handler={handleShowMoreCommentsClick} />
 
             <GoToTop />
         </div>

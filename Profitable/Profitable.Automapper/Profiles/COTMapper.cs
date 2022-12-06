@@ -1,4 +1,4 @@
-﻿namespace Profitable.Common.Automapper
+﻿namespace Profitable.Common.Automapper.Profiles
 {
     using AutoMapper;
     using Profitable.Common.Models.ScrapersModels;

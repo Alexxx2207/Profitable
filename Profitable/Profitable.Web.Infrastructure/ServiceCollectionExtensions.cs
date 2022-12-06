@@ -8,6 +8,8 @@
 	using Profitable.Common.Automapper;
 	using Profitable.Data;
 	using Profitable.Models.EntityModels;
+	using Profitable.Services.Books;
+	using Profitable.Services.Books.Contracts;
 	using Profitable.Services.Comments;
 	using Profitable.Services.Comments.Contracts;
 	using Profitable.Services.Common.Images;
@@ -28,6 +30,7 @@
 	using Profitable.Services.Search.Contracts;
 	using Profitable.Services.Users;
 	using Profitable.Services.Users.Contracts;
+	using System.Reflection;
 	using System.Text;
 
 	public static class ServiceCollectionExtensions
@@ -67,6 +70,7 @@
 			services.AddScoped<IFuturesPositionsService, FuturesPositionsService>();
 			services.AddScoped<IStocksPositionsService, StocksPositionsService>();
 			services.AddScoped<ICOTService, COTService>();
+			services.AddScoped<IBooksService, BooksService>();
 
 			return services;
 		}
@@ -105,19 +109,13 @@
 
 		public static IServiceCollection ConfigureAutomapper(this IServiceCollection services)
 		{
+			var profileTypes = Assembly.GetAssembly(typeof(AutoMapperConfiguration)).GetTypes()
+				.Where(t => t.IsSubclassOf(typeof(Profile)))
+				.ToArray();
+
 			var mapperConfig = new MapperConfiguration(mc =>
 			{
-				mc.AddProfile(new PostsMapper());
-				mc.AddProfile(new LikesMapper());
-				mc.AddProfile(new CommentsMapper());
-				mc.AddProfile(new MarketsMapper());
-				mc.AddProfile(new UsersMapper());
-				mc.AddProfile(new FuturesContractsMapper());
-				mc.AddProfile(new FuturesPositionsMapper());
-				mc.AddProfile(new StocksPositionsMapper());
-				mc.AddProfile(new PositionsRecordsMapper());
-				mc.AddProfile(new NewsMapper());
-				mc.AddProfile(new COTMapper());
+				mc.AddMaps(profileTypes);
 			});
 
 			IMapper mapper = mapperConfig.CreateMapper();

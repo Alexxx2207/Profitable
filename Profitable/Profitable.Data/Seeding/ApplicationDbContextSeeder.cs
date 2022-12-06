@@ -34,6 +34,7 @@
 				new FinantialInstrumentsSeeder(),
 				new FuturesSeeder(),
 				new COTReportsSeeder(),
+				new BooksSeeder(),
 			};
 
 			if (!isProduction)

@@ -6,11 +6,11 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 
-import { getReport, getReportedInstruments } from "../../services/cot/cotReportService";
+import { getReport, getReportedInstruments } from "../../../services/cot/cotReportService";
 import dayjs from "dayjs";
-import { getLastDayOFWeekDate } from "../../utils/date-utilities/dateFunctions";
+import { getLastDayOFWeekDate } from "../../../utils/date-utilities/dateFunctions";
 
-import { plusInFrontOfPositiveNumber } from "../../utils/Formatters/stringFormatter";
+import { plusInFrontOfPositiveNumber } from "../../../utils/Formatters/stringFormatter";
 
 import styles from "./COTReportsPage.module.css";
 

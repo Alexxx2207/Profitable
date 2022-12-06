@@ -9,6 +9,7 @@ import debounce from "lodash.debounce";
 
 import styles from "./SearchPage.module.css";
 import { MessageBoxContext } from "../../contexts/MessageBoxContext";
+import { ShowMoreButton } from "../Common/ShowMoreButton/ShowMoreButton";
 
 const intialState = {
     searchedTerm: "",
@@ -16,7 +17,7 @@ const intialState = {
     searchedModels: Object.getOwnPropertyNames(searchedModels),
     searchResults: [],
     page: 0,
-    showShowMore: true,
+    showShowMore: false,
 };
 
 const reducer = (state, action) => {
@@ -188,15 +189,10 @@ export const SearchPage = () => {
                 )}
             </section>
 
-            {state.showShowMore && state.searchedTerm ? (
-                <div className={styles.loadMoreContainer}>
-                    <h4 className={styles.loadMoreButton} onClick={handleShowMoreClick}>
-                        Show More {state.searchedModel}
-                    </h4>
-                </div>
-            ) : (
-                <></>
-            )}
+            <ShowMoreButton 
+                entity={state.searchedModel}
+                showShowMore={state.showShowMore}
+                handler={handleShowMoreClick} />
         </div>
     );
 };

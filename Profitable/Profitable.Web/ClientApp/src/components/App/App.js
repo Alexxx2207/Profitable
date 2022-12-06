@@ -36,7 +36,8 @@ import { TimeContextProvider } from "../../contexts/TimeContext";
 
 import styles from "./App.module.css";
 import { AddPositionToRecord } from "../Users/AccountStatistics/PositionsRecords/AddPositionToRecord/AddPositionToRecord";
-import { COTReportsPage } from "../COTReports/COTReportsPage";
+import { FundamentalAnalysisPage } from "../FundamentalAnalysis/FundamentalAnalysisPage";
+import { EducationPage } from "../Education/EducationPage";
 
 export function App() {
     const location = useLocation();
@@ -138,7 +139,12 @@ export function App() {
 
                                 <Route path="/search" element={<SearchPage />} />
 
-                                <Route path="/cot-reports" element={<COTReportsPage />} />
+                                <Route 
+                                    className={styles.fa_nav_link}
+                                    path="/fundamental-analysis" 
+                                    element={<FundamentalAnalysisPage />} />
+
+                                <Route path="/education" element={<EducationPage />} />
 
                                 <Route path="*" element={<NotFoundPage />} />
                             </Routes>
