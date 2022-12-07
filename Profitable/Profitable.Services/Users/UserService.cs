@@ -92,21 +92,29 @@
 
 		public async Task<JWTToken> LoginUserAsync(LoginUserRequestModel userRequestModel)
 		{
-			var user = await repository
-				.GetAllAsNoTracking()
+			try
+			{
+				var user = await repository
+				.GetAll()
 				.Where(user => !user.IsDeleted)
 				.FirstOrDefaultAsync(user => user.Email == userRequestModel.Email);
 
-			if (user != null &&
-				await userManager.CheckPasswordAsync(user, userRequestModel.Password))
-			{
-				return jWTManagerRepository
-						.Authenticate(mapper.Map<AuthUserModel>(user));
+				if (user != null &&
+					await userManager.CheckPasswordAsync(user, userRequestModel.Password))
+				{
+					return jWTManagerRepository
+							.Authenticate(mapper.Map<AuthUserModel>(user));
+				}
+				else
+				{
+					throw new ArgumentException(
+						"We have found you by email, but the provided password is invalid.");
+				}
 			}
-			else
+			catch (Exception)
 			{
 				throw new Exception(
-					"We have found you by email, but the provided password is invalid.");
+						"Internal Server Error");
 			}
 		}
 

@@ -1,14 +1,15 @@
 import { useCallback, useContext, useReducer } from "react";
 import { searchedModels, SEARCH_ENTITY_IN_PAGE_COUNT } from "../../common/config";
 import { searchByTerm } from "../../services/search/searchService";
-
 import { UserSearchResult } from "./UserSearchResult/UserSearchResult";
-import { PostsList } from "../PostsAndComments/Posts/PostsList/PostsList";
 
 import debounce from "lodash.debounce";
 
-import styles from "./SearchPage.module.css";
 import { MessageBoxContext } from "../../contexts/MessageBoxContext";
+import { ShowMoreButton } from "../Common/ShowMoreButton/ShowMoreButton";
+import { BookList } from "../Education/BooksList/BooksList";
+
+import styles from "./SearchPage.module.css";
 
 const intialState = {
     searchedTerm: "",
@@ -16,7 +17,7 @@ const intialState = {
     searchedModels: Object.getOwnPropertyNames(searchedModels),
     searchResults: [],
     page: 0,
-    showShowMore: true,
+    showShowMore: false,
 };
 
 const reducer = (state, action) => {
@@ -115,8 +116,8 @@ export const SearchPage = () => {
                     ))}
                 </div>
             );
-        } else if (state.searchedModel.localeCompare(searchedModels.Posts) === 0) {
-            return <PostsList posts={state.searchResults} />;
+        } else if (state.searchedModel.localeCompare(searchedModels.Books) === 0) {
+            return <BookList books={state.searchResults} />;
         }
     };
 
@@ -188,15 +189,10 @@ export const SearchPage = () => {
                 )}
             </section>
 
-            {state.showShowMore && state.searchedTerm ? (
-                <div className={styles.loadMoreContainer}>
-                    <h4 className={styles.loadMoreButton} onClick={handleShowMoreClick}>
-                        Show More {state.searchedModel}
-                    </h4>
-                </div>
-            ) : (
-                <></>
-            )}
+            <ShowMoreButton 
+                entity={state.searchedModel}
+                showShowMore={state.showShowMore}
+                handler={handleShowMoreClick} />
         </div>
     );
 };

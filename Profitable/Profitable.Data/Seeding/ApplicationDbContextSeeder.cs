@@ -34,13 +34,8 @@
 				new FinantialInstrumentsSeeder(),
 				new FuturesSeeder(),
 				new COTReportsSeeder(),
+				new BooksSeeder(),
 			};
-
-			if (!isProduction)
-			{
-				seeders.Add(new PostsSeeder());
-			}
-
 
 			foreach (var seeder in seeders)
 			{

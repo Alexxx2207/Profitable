@@ -261,7 +261,7 @@ export const ProfileInfo = () => {
                                 <div className={styles.deleteHeadingContainer}>
                                     <h4 className={styles.deleteHeading}>Delete Account</h4>
                                     <h6 className={styles.deleteHeading}>
-                                        Your posts will also be deleted!
+                                        Your chats' messages will be deleted!
                                     </h6>
                                 </div>
                                 <button

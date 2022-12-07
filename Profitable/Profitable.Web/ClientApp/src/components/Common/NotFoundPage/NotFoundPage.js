@@ -1,27 +1,10 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { MISSING_POST_GUID_ERROR_PAGE_PATH } from "../../../common/config";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./NotFoundPage.module.css";
 
 export const NotFoundPage = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const [redirectButtonData, setRedirectButtonData] = useState({
-        textContent: "Home Page",
-        url: "/",
-    });
-
-    useEffect(() => {
-        if (location.pathname === MISSING_POST_GUID_ERROR_PAGE_PATH) {
-            setRedirectButtonData({
-                textContent: "Go To Posts List",
-                url: "/posts",
-            });
-        }
-        // eslint-disable-next-line
-    }, []);
 
     return (
         <div className={styles.missingPageContainer}>
@@ -35,10 +18,10 @@ export const NotFoundPage = () => {
                     You can start or resume researching and analysing by clicking the button below
                 </h5>
                 <button
-                    onClick={() => navigate(redirectButtonData.url)}
+                    onClick={() => navigate("/")}
                     className={styles.homeButton}
                 >
-                    {redirectButtonData.textContent}
+                    Home Page
                 </button>
             </div>
         </div>

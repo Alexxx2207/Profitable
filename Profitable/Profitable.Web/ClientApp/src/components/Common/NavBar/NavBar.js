@@ -68,13 +68,6 @@ export const NavBar = () => {
                     </NavLink>
 
                     <NavLink
-                        to="/posts"
-                        className={classNames(styles.navbarListItems, styles.navLink)}
-                    >
-                        POSTS
-                    </NavLink>
-
-                    <NavLink
                         to="/calculators"
                         className={classNames(styles.navbarListItems, styles.navLink)}
                     >
@@ -114,10 +107,17 @@ export const NavBar = () => {
                     </NavLink>
 
                     <NavLink
-                        to="/cot-reports"
+                        to="/fundamental-analysis"
                         className={classNames(styles.navbarListItems, styles.navLink)}
                     >
-                        COT REPORTS
+                        FUNDAMENTALS
+                    </NavLink>
+
+                    <NavLink
+                        to="/education"
+                        className={classNames(styles.navbarListItems, styles.navLink)}
+                    >
+                        EDUCATION
                     </NavLink>
                 </div>
                 <div className={styles.userPanel}>

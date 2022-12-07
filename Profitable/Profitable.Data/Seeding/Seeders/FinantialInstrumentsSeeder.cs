@@ -12,14 +12,12 @@
 		{
 			var instrumentRepository = new Repository<FinancialInstrument>(dbContext);
 
-			IAsyncEnumerable<JsonInstrument> instrumentsInput = null;
-
 			using (var stream = new FileStream(
 				"DataToSeed/TicketSymbols.json",
 				FileMode.Open,
 				FileAccess.Read))
 			{
-				instrumentsInput = JsonSerializer.DeserializeAsyncEnumerable<JsonInstrument>
+				var instrumentsInput = JsonSerializer.DeserializeAsyncEnumerable<JsonInstrument>
 					(stream, new JsonSerializerOptions()
 					{
 						AllowTrailingCommas = true,

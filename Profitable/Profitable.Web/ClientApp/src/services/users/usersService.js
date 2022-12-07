@@ -164,3 +164,9 @@ export const getUserGuidFromJWT = async (jwt) => {
 
     return await response.text();
 };
+
+export const getUsersBySearchTerm = (searchTerm, page, pageCount) => {
+    return request
+        .get(`${WEB_API_BASE_URL}/search/users/${searchTerm}?page=${page}&pageCount=${pageCount}`)
+        .then((response) => response.json());
+};

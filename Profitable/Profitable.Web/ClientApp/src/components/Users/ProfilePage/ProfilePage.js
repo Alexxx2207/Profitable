@@ -28,12 +28,6 @@ export const ProfilePage = () => {
                 >
                     Statistics
                 </NavLink>
-                <NavLink
-                    to={"account-activity"}
-                    className={url.includes("account-activity") ? styles.active : ""}
-                >
-                    Activity
-                </NavLink>
             </nav>
             <Outlet />
             <GoToTop />
