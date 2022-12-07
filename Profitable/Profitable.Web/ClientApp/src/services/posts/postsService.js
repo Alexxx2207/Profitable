@@ -75,3 +75,9 @@ export const manageLikePost = async (jwt, postId) => {
 
     return await result.text();
 };
+
+export const getPostsBySearchTerm = (searchTerm, page, pageCount) => {
+    return request
+        .get(`${WEB_API_BASE_URL}/search/posts/${searchTerm}?page=${page}&pageCount=${pageCount}`)
+        .then((response) => response.json());
+};

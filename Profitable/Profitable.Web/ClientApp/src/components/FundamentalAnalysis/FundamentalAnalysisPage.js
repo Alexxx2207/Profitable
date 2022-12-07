@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import { COTReportsPage } from "./COTReports/COTReportsPage";
-
+import { GoToTop } from "../Common/GoToTop/GoToTop";
 import styles from "./FundamentalAnalysisPage.module.css";
 
 export const FundamentalAnalysisPage = () => {
@@ -125,6 +125,8 @@ export const FundamentalAnalysisPage = () => {
             <section className={styles.COTSection}>
                 <COTReportsPage />
             </section>
+
+            <GoToTop />
         </main>
     );
 }

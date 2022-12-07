@@ -2,6 +2,18 @@
     margin: 1rem 2rem;
 }
 
+.searchInputContainer {
+    margin: 0rem 2rem;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    border: 2px solid white;
+    border-radius: 15px;
+}
+
 .bookSectionHeader {
     border-bottom: 3px solid white;
     padding-left: 1rem;

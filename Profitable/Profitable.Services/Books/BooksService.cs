@@ -24,7 +24,7 @@ namespace Profitable.Services.Books
 		{
 			var books = await booksRepository
 				.GetAllAsNoTracking()
-				.OrderBy(book => book.Guid)
+				.OrderBy(book => book.Title)
 				.Skip(page * pageCount)
 				.Take(pageCount)
 				.ToListAsync();

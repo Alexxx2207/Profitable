@@ -30,6 +30,7 @@ export const POST_CONTENT_MAX_COUNT = 2000;
 export const searchedModels = {
     Users: "Users",
     Posts: "Posts",
+    Books: "Books",
 };
 
 

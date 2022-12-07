@@ -71,6 +71,7 @@
 			services.AddScoped<IStocksPositionsService, StocksPositionsService>();
 			services.AddScoped<ICOTService, COTService>();
 			services.AddScoped<IBooksService, BooksService>();
+			services.AddScoped<IBookSearchService, BookSearchService>();
 
 			return services;
 		}

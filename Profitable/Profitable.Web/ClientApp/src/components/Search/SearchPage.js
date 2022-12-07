@@ -10,6 +10,7 @@ import debounce from "lodash.debounce";
 import styles from "./SearchPage.module.css";
 import { MessageBoxContext } from "../../contexts/MessageBoxContext";
 import { ShowMoreButton } from "../Common/ShowMoreButton/ShowMoreButton";
+import { BookList } from "../Education/BooksList/BooksList";
 
 const intialState = {
     searchedTerm: "",
@@ -118,6 +119,8 @@ export const SearchPage = () => {
             );
         } else if (state.searchedModel.localeCompare(searchedModels.Posts) === 0) {
             return <PostsList posts={state.searchResults} />;
+        } else if (state.searchedModel.localeCompare(searchedModels.Books) === 0) {
+            return <BookList books={state.searchResults} />;
         }
     };
 
