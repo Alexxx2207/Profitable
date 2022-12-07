@@ -37,12 +37,6 @@
 				new BooksSeeder(),
 			};
 
-			if (!isProduction)
-			{
-				seeders.Add(new PostsSeeder());
-			}
-
-
 			foreach (var seeder in seeders)
 			{
 				await seeder.SeedAsync(dbContext, serviceProvider);

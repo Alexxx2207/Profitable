@@ -7,16 +7,13 @@
 	public class SearchController : BaseApiController
 	{
 		private readonly IUserSearchService userSearch;
-		private readonly IPostSearchService postSearch;
 		private readonly IBookSearchService bookSearch;
 
 		public SearchController(
 			IUserSearchService userSearch,
-			IPostSearchService postSearch,
 			IBookSearchService bookSearch)
 		{
 			this.userSearch = userSearch;
-			this.postSearch = postSearch;
 			this.bookSearch = bookSearch;
 		}
 
@@ -29,17 +26,6 @@
 			var usersFound = await userSearch.GetMatchingUsers(searchTerm, page, pageCount);
 
 			return Ok(usersFound);
-		}
-
-		[HttpGet("posts/{searchTerm}")]
-		public async Task<IActionResult> Posts(
-			[FromRoute] string searchTerm,
-			[FromQuery] int page,
-			[FromQuery] int pageCount)
-		{
-			var postsFound = await postSearch.GetMatchingPosts(searchTerm, page, pageCount);
-
-			return Ok(postsFound);
 		}
 
 		[HttpGet("books/{searchTerm}")]

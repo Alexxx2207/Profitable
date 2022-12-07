@@ -4,6 +4,5 @@
     public enum ImageFor
     {
         Users = 1,
-        Posts = 2,
     }
 }

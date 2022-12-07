@@ -17,10 +17,6 @@
 
             Lists = new HashSet<List>();
 
-            Posts = new HashSet<Post>();
-            Comments = new HashSet<Comment>();
-            Likes = new HashSet<Like>();
-
         }
 
         [Required]
@@ -39,12 +35,6 @@
 
 
         public virtual ICollection<List> Lists { get; set; }
-
-        public virtual ICollection<Post> Posts { get; set; }
-
-        public virtual ICollection<Comment> Comments { get; set; }
-
-        public virtual ICollection<Like> Likes { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 

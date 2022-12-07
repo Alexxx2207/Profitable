@@ -10,8 +10,6 @@
 	using Profitable.Models.EntityModels;
 	using Profitable.Services.Books;
 	using Profitable.Services.Books.Contracts;
-	using Profitable.Services.Comments;
-	using Profitable.Services.Comments.Contracts;
 	using Profitable.Services.Common.Images;
 	using Profitable.Services.Common.Images.Contracts;
 	using Profitable.Services.COT;
@@ -24,10 +22,6 @@
 	using Profitable.Services.News.Contract;
 	using Profitable.Services.Positions;
 	using Profitable.Services.Positions.Contracts;
-	using Profitable.Services.Posts;
-	using Profitable.Services.Posts.Contracts;
-	using Profitable.Services.Search;
-	using Profitable.Services.Search.Contracts;
 	using Profitable.Services.Users;
 	using Profitable.Services.Users.Contracts;
 	using System.Reflection;
@@ -58,20 +52,15 @@
 		public static IServiceCollection AddBusinessLayerServices(this IServiceCollection services)
 		{
 			services.AddScoped<IImageService, ImageService>();
-			services.AddScoped<IPostService, PostService>();
-			services.AddScoped<ICommentService, CommentService>();
 			services.AddScoped<IMarketsService, MarketsService>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IFuturesService, FuturesService>();
 			services.AddScoped<INewsService, NewsService>();
 			services.AddScoped<IPositionsRecordsService, PositionsRecordsService>();
-			services.AddScoped<IUserSearchService, UserSearchService>();
-			services.AddScoped<IPostSearchService, PostSearchService>();
 			services.AddScoped<IFuturesPositionsService, FuturesPositionsService>();
 			services.AddScoped<IStocksPositionsService, StocksPositionsService>();
 			services.AddScoped<ICOTService, COTService>();
 			services.AddScoped<IBooksService, BooksService>();
-			services.AddScoped<IBookSearchService, BookSearchService>();
 
 			return services;
 		}

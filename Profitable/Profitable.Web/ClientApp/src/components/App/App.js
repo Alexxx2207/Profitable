@@ -9,15 +9,10 @@ import { Login } from "../Authentication/Login/Login";
 import { Register } from "../Authentication/Register/Register";
 import { Logout } from "../Authentication/Logout";
 import { NotFoundPage } from "../Common/NotFoundPage/NotFoundPage";
-import { PostDetails } from "../PostsAndComments/Posts/PostDetails/PostDetails";
-import { CreatePost } from "../PostsAndComments/Posts/CreatePost/CreatePost";
-import { EditPost } from "../PostsAndComments/Posts/EditPost/EditPost";
-import { PostsExplorer } from "../PostsAndComments/Posts/PostsExplorer/PostsExplorer";
 import { Calcualtors } from "../Calculators/Calculators";
 import { Calendars } from "../Calendars/Calendars";
 import { NewsList } from "../News/NewsList";
 import { NewsArticle } from "../News/NewsArticle/NewsArticle";
-import { AccountActivity } from "../Users/AccountActivity/AccountActivity";
 import { ProfilePage } from "../Users/ProfilePage/ProfilePage";
 import { ProfileInfo } from "../Users/ProfileInfo/ProfileInfo";
 import { AccountStatistics } from "../Users/AccountStatistics/AccountStatistics";
@@ -60,12 +55,6 @@ export function App() {
 
                                 <Route path="/markets" element={<MarketsPage />} />
 
-                                <Route path="/posts" element={<PostsExplorer />} />
-
-                                <Route path="/posts/:postId" element={<PostDetails />} />
-
-                                <Route path="/posts/create" element={<CreatePost />} />
-
                                 <Route path="/login" element={<Login />} />
 
                                 <Route path="/register" element={<Register />} />
@@ -82,7 +71,6 @@ export function App() {
                                         path="account-statistics"
                                         element={<AccountStatistics />}
                                     />
-                                    <Route path="account-activity" element={<AccountActivity />} />
                                 </Route>
 
                                 <Route
@@ -126,8 +114,6 @@ export function App() {
                                     path="/users/:searchedProfileEmail/positions-records/stocks/:recordGuid/change-position/:positionGuid"
                                     element={<ChangeStocksPosition />}
                                 />
-
-                                <Route path="/posts/:postId/edit" element={<EditPost />} />
 
                                 <Route path="/calculators" element={<Calcualtors />} />
 

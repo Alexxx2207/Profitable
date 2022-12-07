@@ -18,12 +18,6 @@
 
 		public DbSet<ApplicationUser> Users { get; set; }
 
-		public DbSet<Post> Posts { get; set; }
-
-		public DbSet<Comment> Comments { get; set; }
-
-		public DbSet<Like> Likes { get; set; }
-
 		public DbSet<List> Lists { get; set; }
 
 		public DbSet<ListsFinancialInstruments> ListsFinancialInstruments { get; set; }
@@ -74,16 +68,6 @@
 			builder.Ignore<IdentityUserClaim<string>>();
 			builder.Ignore<IdentityUserToken<string>>();
 			builder.Ignore<IdentityUser<string>>();
-
-			builder.Entity<Comment>()
-				.HasOne(c => c.Post)
-				.WithMany(p => p.Comments)
-				.OnDelete(DeleteBehavior.Restrict);
-
-			builder.Entity<Like>()
-				.HasOne(c => c.Post)
-				.WithMany(p => p.Likes)
-				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

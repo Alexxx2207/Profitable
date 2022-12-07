@@ -68,13 +68,6 @@ export const NavBar = () => {
                     </NavLink>
 
                     <NavLink
-                        to="/posts"
-                        className={classNames(styles.navbarListItems, styles.navLink)}
-                    >
-                        POSTS
-                    </NavLink>
-
-                    <NavLink
                         to="/calculators"
                         className={classNames(styles.navbarListItems, styles.navLink)}
                     >

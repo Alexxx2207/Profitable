@@ -38,7 +38,6 @@
   <ItemGroup>
     <Content Remove="DataToSeed\Exchanges.json" />
     <Content Remove="DataToSeed\MarketTypes.json" />
-    <Content Remove="DataToSeed\TestPosts.json" />
     <Content Remove="DataToSeed\TicketSymbols.json" />
   </ItemGroup>
 
@@ -53,7 +52,6 @@
     <Folder Include="ClientApp\src\components\Communication\Chat\" />
     <Folder Include="ClientApp\src\components\Communication\Posts\" />
     <Folder Include="ClientApp\src\components\Markets\" />
-    <Folder Include="Uploads\Posts\" />
     <Folder Include="Uploads\Users\" />
   </ItemGroup>
 
@@ -62,9 +60,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="DataToSeed\MarketTypes.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="DataToSeed\TestPosts.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="DataToSeed\TicketSymbols.json">
