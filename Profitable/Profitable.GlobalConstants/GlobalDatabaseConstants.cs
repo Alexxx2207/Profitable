@@ -5,8 +5,6 @@
 
     public static class GlobalDatabaseConstants
     {
-        public static readonly string TraderRoleName = "Trader";
-
         public static readonly IReadOnlyList<SeededTrader> DefaultUsersToSeed = new List<SeededTrader>()
         {
             new SeededTrader()

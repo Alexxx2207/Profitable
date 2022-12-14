@@ -33,12 +33,15 @@
 						var exchange = dbContext.Exchanges.FirstOrDefault(e => e.Name == instrument.Exchange);
 						var marketType = dbContext.MarketTypes.FirstOrDefault(e => e.Name == instrument.Type);
 
-						var finInstrument = new FinancialInstrument();
-						finInstrument.TickerSymbol = instrument.Symbol.ToUpper();
-						finInstrument.Exchange = exchange;
-						finInstrument.MarketType = marketType;
+						if (exchange != null && marketType != null)
+						{
+							var finInstrument = new FinancialInstrument();
+							finInstrument.TickerSymbol = instrument.Symbol.ToUpper();
+							finInstrument.Exchange = exchange;
+							finInstrument.MarketType = marketType;
 
-						await instrumentRepository.AddAsync(finInstrument);
+							await instrumentRepository.AddAsync(finInstrument);
+						}
 					}
 				}
 			}

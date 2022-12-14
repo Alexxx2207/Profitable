@@ -33,8 +33,10 @@
 				{
 					if (!currentEntries.Any(e => e.Name == type))
 					{
-						var marketType = new MarketType();
-						marketType.Name = type;
+						var marketType = new MarketType
+						{
+							Name = type
+						};
 
 						await marketTypeRepository.AddAsync(marketType);
 					}

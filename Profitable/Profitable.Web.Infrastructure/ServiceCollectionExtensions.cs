@@ -43,8 +43,7 @@
 					options.Password.RequiredLength = 6;
 				})
 				.AddEntityFrameworkStores<ApplicationDbContext>()
-				.AddRoles<IdentityRole<Guid>>()
-				.AddDefaultTokenProviders();
+				.AddDefaultTokenProviders(); ;
 
 			return services;
 		}

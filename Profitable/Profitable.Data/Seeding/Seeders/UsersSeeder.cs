@@ -19,15 +19,14 @@
 			{
 				await SeedUserAsync(
 					userManager,
-					trader,
-					role: GlobalDatabaseConstants.TraderRoleName);
+					trader);
 			}
 
 		}
 
 		private static async Task SeedUserAsync(
 			UserManager<ApplicationUser> userManager,
-			SeededTrader trader, string role = null)
+			SeededTrader trader)
 		{
 			var userExists = await userManager.FindByEmailAsync(trader.Email);
 
@@ -48,10 +47,6 @@
 				{
 					throw new Exception(
 						string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
-				}
-				else
-				{
-					await userManager.AddToRoleAsync(user, role);
 				}
 			}
 		}

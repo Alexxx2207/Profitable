@@ -1,67 +1,67 @@
 [
   {
     "symbol": "AAPL",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
     "symbol": "TSLA",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
     "symbol": "QQQ",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
     "symbol": "AMZN",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
     "symbol": "NVDA",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
     "symbol": "AMD",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
     "symbol": "META",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
     "symbol": "MSFT",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
     "symbol": "BABA",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NYSE"
   },
   {
     "symbol": "AMC",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NYSE"
   },
   {
     "symbol": "NFLX",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
     "symbol": "TWTR",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NYSE"
   },
   {
     "symbol": "GOOG",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NASDAQ"
   },
   {
@@ -206,32 +206,32 @@
   },
   {
     "symbol": "CAT",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NYSE"
   },
   {
     "symbol": "VMC",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NYSE"
   },
   {
     "symbol": "MLM",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NYSE"
   },
   {
     "symbol": "URI",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NYSE"
   },
   {
     "symbol": "EXP",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NYSE"
   },
   {
     "symbol": "STN",
-    "type": "stock",
+    "type": "stocks",
     "exchange": "NYSE"
   }
 ]

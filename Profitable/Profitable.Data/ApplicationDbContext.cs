@@ -16,11 +16,7 @@
 			: base(options)
 		{ }
 
-		public DbSet<ApplicationUser> Users { get; set; }
-
-		public DbSet<List> Lists { get; set; }
-
-		public DbSet<ListsFinancialInstruments> ListsFinancialInstruments { get; set; }
+		public DbSet<Organization> Organizations { get; set; }
 
 		public DbSet<FinancialInstrument> FinancialInstruments { get; set; }
 
@@ -63,11 +59,40 @@
 		{
 			base.OnModelCreating(builder);
 
-			builder.Ignore<IdentityUserLogin<string>>();
-			builder.Ignore<IdentityUserRole<string>>();
-			builder.Ignore<IdentityUserClaim<string>>();
-			builder.Ignore<IdentityUserToken<string>>();
-			builder.Ignore<IdentityUser<string>>();
+			builder.Entity<IdentityUserClaim<Guid>>(entity =>
+			{
+				entity.ToTable(name: "UsersClaims");
+			});
+
+			builder.Entity<IdentityUserLogin<Guid>>(entity =>
+			{
+				entity.ToTable(name: "UsersLogins");
+			});
+
+			builder.Entity<IdentityUserToken<Guid>>(entity =>
+			{
+				entity.ToTable(name: "UsersTokens");
+			});
+
+			builder.Entity<IdentityUserRole<Guid>>(entity =>
+			{
+				entity.ToTable(name: "UsersRoles");
+			});
+
+			builder.Entity<IdentityRoleClaim<Guid>>(entity =>
+			{
+				entity.ToTable(name: "RolesClaims");
+			});
+
+			builder.Entity<IdentityRole<Guid>>(entity =>
+			{
+				entity.ToTable(name: "Roles");
+			});
+
+			builder.Entity<ApplicationUser>(entity =>
+			{
+				entity.ToTable(name: "Users");
+			});
 		}
 	}
 }

@@ -2,7 +2,7 @@
 {
 	using Microsoft.AspNetCore.Identity;
 	using Microsoft.Extensions.DependencyInjection;
-	using Profitable.Common.GlobalConstants;
+	using Profitable.Common.Enums;
 	using Profitable.Data.Seeding.Seeders.Contracts;
 
 	public class RoleSeeder : ISeeder
@@ -14,7 +14,10 @@
 			var roleManager =
 					serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
-			await SeedRoleAsync(roleManager, GlobalDatabaseConstants.TraderRoleName);
+			foreach (UserOrganizationsRoles role in Enum.GetValues(typeof(UserOrganizationsRoles)))
+			{
+				await SeedRoleAsync(roleManager, role.ToString());
+			}
 		}
 
 		private static async Task SeedRoleAsync(
