@@ -46,20 +46,33 @@ https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce238
 ![image](https://user-images.githubusercontent.com/61185321/182322449-08b080b8-e2a0-4e0b-a09c-6ede73d6540d.png)
 ![image](https://user-images.githubusercontent.com/61185321/182322515-427f9103-ffb2-4c05-a017-37aa9e8c12f8.png)
   
+3. In Solution Explorer open folder AdminPanel and right click on Profitable.AdminPanel
   
-3. In Solution Explorer open folder Web and right click on Profitable.Web
+![image](https://user-images.githubusercontent.com/61185321/208537052-eda766f0-6814-41db-9d26-3f40e95e2db2.png)
+
+
+**A dialog with many options is opened.**  
   
-![image](https://user-images.githubusercontent.com/61185321/182330066-0dd0ebf4-2160-4f9d-a09e-1bed6ae080ac.png)
+4.In this dialog click **'Set as Startup Project'**
+
+![image](https://user-images.githubusercontent.com/61185321/208537174-995e58f5-79e8-4d1d-b2df-e41db928b190.png)
+
+
+5. Start the application, a console app is started, make sure **all enitities from the list are seeded in your database!**
+
+
+6. In Solution Explorer open folder Web and right click on Profitable.Web
+  
 ![image](https://user-images.githubusercontent.com/61185321/182330356-6590855b-3d76-4b86-ab9a-8e5d7375d5e8.png)
   
 **A dialog with many options is opened.**
   
   
-4. In this dialog click **'Set as Startup Project'**  
+7. In this dialog click **'Set as Startup Project'**  
   
 ![image](https://user-images.githubusercontent.com/61185321/182323855-25bd40a0-98e2-4038-ab47-baa551f8110d.png)
   
-5. Click on the empty green arrow in the navigation bar
+8. Click on the empty green arrow in the navigation bar
   
 ![image](https://user-images.githubusercontent.com/61185321/182324277-8c4b9498-f0ce-4e44-acbe-e641316ad5e3.png)
   
@@ -77,7 +90,8 @@ https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce238
 - SQL Server
 - Identity JWT
 - Automapper
-
+- SignalR
+- Argon2 (hashing algorithm)
 
 **Frontend**
 
