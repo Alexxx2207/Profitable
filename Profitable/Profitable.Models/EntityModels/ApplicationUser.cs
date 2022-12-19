@@ -1,24 +1,21 @@
 ﻿namespace Profitable.Models.EntityModels
 {
-	using Microsoft.AspNetCore.Identity;
-	using Profitable.Models.Contracts;
+	using Profitable.Common.Enums;
+	using Profitable.Models.EntityModels.EntityBaseClass;
 	using System;
 	using System.ComponentModel.DataAnnotations;
 	using System.ComponentModel.DataAnnotations.Schema;
 
-	public class ApplicationUser : IdentityUser<Guid>, IDeletebleEntity
+	public class ApplicationUser : EntityBase
 	{
-		public ApplicationUser()
-		{
-			Id = Guid.NewGuid();
-			Roles = new HashSet<IdentityUserRole<Guid>>();
-			Claims = new HashSet<IdentityUserClaim<Guid>>();
-			Logins = new HashSet<IdentityUserLogin<Guid>>();
-		}
+		[Required]
+		public string Email { get; set; }
 
-		public ApplicationUser(string userName) : base(userName)
-		{
-		}
+		[Required]
+		public string PasswordHash { get; set; }
+
+		[Required]
+		public string Salt { get; set; }
 
 		[Required]
 		public string FirstName { get; set; }
@@ -34,14 +31,6 @@
 		public Guid? OrganizationId { get; set; }
 		public Organization? Organization { get; set; }
 
-		public bool IsDeleted { get; set; }
-
-		public DateTime? DeletedOn { get; set; }
-
-		public virtual ICollection<IdentityUserRole<Guid>> Roles { get; set; }
-
-		public virtual ICollection<IdentityUserClaim<Guid>> Claims { get; set; }
-
-		public virtual ICollection<IdentityUserLogin<Guid>> Logins { get; set; }
+		public UserOrganizationsRoles OrganizationRole { get; set; }
 	}
 }

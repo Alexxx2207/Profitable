@@ -1,22 +1,18 @@
-﻿namespace Profitable.Data.Seeding.Seeders
+﻿namespace Profitable.AdminPanel.Common.Services.Seeders
 {
-	using Profitable.Data.Repository;
-	using Profitable.Data.Seeding.Seeders.Contracts;
+	using Profitable.AdminPanel.Common.Services.Seeders.Contracts;
+	using Profitable.Data;
 	using Profitable.Models.EntityModels;
 	using System.Text.Json;
 
 	public class MarketTypesSeeder : ISeeder
 	{
-		public async Task SeedAsync(
-			ApplicationDbContext dbContext,
-			IServiceProvider serviceProvider = null)
+		public async Task SeedAsync(ApplicationDbContext dbContext)
 		{
-			var marketTypeRepository = new Repository<MarketType>(dbContext);
-
 			IAsyncEnumerable<string> typesInput = null;
 
 			using (var stream = new FileStream(
-				"DataToSeed/MarketTypes.json",
+				"Seeders/DataToSeed/MarketTypes.json",
 				FileMode.Open,
 				FileAccess.Read))
 			{
@@ -38,10 +34,11 @@
 							Name = type
 						};
 
-						await marketTypeRepository.AddAsync(marketType);
+						await dbContext.AddAsync(marketType);
 					}
 				}
 			}
+			await dbContext.SaveChangesAsync();
 		}
 	}
 }

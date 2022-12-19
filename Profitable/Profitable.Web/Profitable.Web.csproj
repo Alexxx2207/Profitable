@@ -30,15 +30,13 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="DataToSeed\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="DataToSeed\**" />
+    <EmbeddedResource Remove="DataToSeed\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="DataToSeed\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="DataToSeed\Exchanges.json" />
-    <Content Remove="DataToSeed\MarketTypes.json" />
-    <Content Remove="DataToSeed\TicketSymbols.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,25 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="DataToSeed\Exchanges.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="DataToSeed\MarketTypes.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="DataToSeed\TicketSymbols.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="DataToSeed\Books.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="DataToSeed\FuturesInformation.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

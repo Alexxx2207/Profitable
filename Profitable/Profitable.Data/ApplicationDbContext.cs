@@ -1,13 +1,10 @@
 ﻿namespace Profitable.Data
 {
-	using Microsoft.AspNetCore.Identity;
-	using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.Extensions.Configuration;
 	using Profitable.Models.EntityModels;
 
-	public class ApplicationDbContext :
-					IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+	public class ApplicationDbContext : DbContext
 	{
 		public ApplicationDbContext()
 		{ }
@@ -15,6 +12,8 @@
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
 		{ }
+
+		public DbSet<ApplicationUser> Users { get; set; }
 
 		public DbSet<Organization> Organizations { get; set; }
 
@@ -58,41 +57,6 @@
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
-
-			builder.Entity<IdentityUserClaim<Guid>>(entity =>
-			{
-				entity.ToTable(name: "UsersClaims");
-			});
-
-			builder.Entity<IdentityUserLogin<Guid>>(entity =>
-			{
-				entity.ToTable(name: "UsersLogins");
-			});
-
-			builder.Entity<IdentityUserToken<Guid>>(entity =>
-			{
-				entity.ToTable(name: "UsersTokens");
-			});
-
-			builder.Entity<IdentityUserRole<Guid>>(entity =>
-			{
-				entity.ToTable(name: "UsersRoles");
-			});
-
-			builder.Entity<IdentityRoleClaim<Guid>>(entity =>
-			{
-				entity.ToTable(name: "RolesClaims");
-			});
-
-			builder.Entity<IdentityRole<Guid>>(entity =>
-			{
-				entity.ToTable(name: "Roles");
-			});
-
-			builder.Entity<ApplicationUser>(entity =>
-			{
-				entity.ToTable(name: "Users");
-			});
 		}
 	}
 }

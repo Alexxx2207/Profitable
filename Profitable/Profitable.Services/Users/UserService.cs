@@ -1,11 +1,11 @@
 ﻿namespace Profitable.Services.Users
 {
 	using AutoMapper;
-	using Microsoft.AspNetCore.Identity;
 	using Microsoft.EntityFrameworkCore;
 	using Profitable.Common.Enums;
 	using Profitable.Common.GlobalConstants;
 	using Profitable.Common.Models;
+	using Profitable.Common.Services;
 	using Profitable.Data.Repository.Contract;
 	using Profitable.Models.EntityModels;
 	using Profitable.Models.RequestModels.Users;
@@ -18,20 +18,17 @@
 		private readonly IRepository<ApplicationUser> repository;
 		private readonly IMapper mapper;
 		private readonly IJWTManagerRepository jWTManagerRepository;
-		private readonly UserManager<ApplicationUser> userManager;
 		private readonly IImageService imageService;
 
 		public UserService(
 			IMapper mapper,
 			IRepository<ApplicationUser> repository,
 			IJWTManagerRepository jWTManagerRepository,
-			UserManager<ApplicationUser> userManager,
 			IImageService imageService)
 		{
 			this.repository = repository;
 			this.mapper = mapper;
 			this.jWTManagerRepository = jWTManagerRepository;
-			this.userManager = userManager;
 			this.imageService = imageService;
 		}
 
@@ -57,7 +54,7 @@
 			var requester = await repository
 				.GetAll()
 				.Where(user => !user.IsDeleted)
-				.FirstOrDefaultAsync(user => user.Id == requesterId);
+				.FirstOrDefaultAsync(user => user.Guid == requesterId);
 
 			var userToEdit = await repository
 			   .GetAll()
@@ -74,7 +71,7 @@
 				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
 			}
 
-			if (requester.Id != userToEdit.Id)
+			if (requester.Guid != userToEdit.Guid)
 			{
 				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
 			}
@@ -92,56 +89,70 @@
 
 		public async Task<JWTToken> LoginUserAsync(LoginUserRequestModel userRequestModel)
 		{
-			try
-			{
-				var user = await repository
-				.GetAll()
+			var user = await repository
+				.GetAllAsNoTracking()
 				.Where(user => !user.IsDeleted)
 				.FirstOrDefaultAsync(user => user.Email == userRequestModel.Email);
 
-				if (user != null &&
-					await userManager.CheckPasswordAsync(user, userRequestModel.Password))
+			if (user == null)
+			{
+				throw new ArgumentException(
+					GlobalServicesConstants.EntityDoesNotExist("User"));
+			}
+			else if (!Security.VerifyPassword(
+				userRequestModel.Password,
+				user.Guid,
+				user.Salt,
+				user.PasswordHash))
+			{
+				throw new ArgumentException(
+					"We have found you by email, but the provided password is invalid.");
+
+			}
+
+			return jWTManagerRepository
+						.Authenticate(mapper.Map<AuthUserModel>(user));
+		}
+
+		public async Task<JWTToken> RegisterUserAsync(RegisterUserRequestModel userRequestModel)
+		{
+			if (repository.GetAllAsNoTracking().Any(u => u.Email == userRequestModel.Email))
+			{
+				throw new InvalidOperationException(
+					"Internal Server Error");
+			}
+
+			try
+			{
+				if (userRequestModel.FirstName.Length >= 2 &&
+					userRequestModel.LastName.Length >= 2 &&
+					userRequestModel.Password.Length >= GlobalServicesConstants.PasswordMinLength &&
+					!string.IsNullOrWhiteSpace(userRequestModel.Email) &&
+					!string.IsNullOrWhiteSpace(userRequestModel.Password))
 				{
+					var user = mapper.Map<ApplicationUser>(userRequestModel);
+
+					var hashPasswordResult = Security.HashUserPassword(userRequestModel.Password, user.Guid);
+
+					user.PasswordHash = hashPasswordResult.PasswordHash;
+					user.Salt = hashPasswordResult.Salt;
+
+					await repository.AddAsync(user);
+
+					await repository.SaveChangesAsync();
+
 					return jWTManagerRepository
-							.Authenticate(mapper.Map<AuthUserModel>(user));
+									.Authenticate(mapper.Map<AuthUserModel>(user));
 				}
 				else
 				{
-					throw new ArgumentException(
-						"We have found you by email, but the provided password is invalid.");
+					return null;
 				}
 			}
 			catch (Exception)
 			{
 				throw new Exception(
 						"Internal Server Error");
-			}
-		}
-
-		public async Task<JWTToken> RegisterUserAsync(RegisterUserRequestModel userRequestModel)
-		{
-
-			if (userRequestModel.FirstName.Length >= 2 && userRequestModel.LastName.Length >= 2)
-			{
-				var user = mapper.Map<ApplicationUser>(userRequestModel);
-
-				var result = await userManager.CreateAsync(user, userRequestModel.Password);
-				if (!result.Succeeded)
-				{
-					throw new Exception(
-						string.Join(
-							Environment.NewLine,
-							result.Errors.Select(e => e.Description)));
-				}
-				else
-				{
-					return jWTManagerRepository
-								.Authenticate(mapper.Map<AuthUserModel>(user));
-				}
-			}
-			else
-			{
-				return null;
 			}
 		}
 
@@ -152,7 +163,7 @@
 			var requester = await repository
 				.GetAll()
 				.Where(user => !user.IsDeleted)
-				.FirstOrDefaultAsync(user => user.Id == requesterId);
+				.FirstOrDefaultAsync(user => user.Guid == requesterId);
 
 			var userToEdit = await repository
 			   .GetAll()
@@ -169,17 +180,16 @@
 				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
 			}
 
-			if (requester.Id != userToEdit.Id)
+			if (requester.Guid != userToEdit.Guid)
 			{
 				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
 			}
 
-			var result =
-					 await userManager.ChangePasswordAsync(
-						 requester, editUserData.OldPassword,
+			var result = await ChangePasswordAsync(
+						 userToEdit,
 						 editUserData.NewPassword);
 
-			if (result.Succeeded)
+			if (result)
 			{
 				return mapper.Map<UserDetailsResponseModel>(requester);
 			}
@@ -197,7 +207,7 @@
 			var requester = await repository
 				 .GetAll()
 				 .Where(user => !user.IsDeleted)
-				 .FirstOrDefaultAsync(user => user.Id == requesterId);
+				 .FirstOrDefaultAsync(user => user.Guid == requesterId);
 
 			var userToEdit = await repository
 			   .GetAll()
@@ -214,7 +224,7 @@
 				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
 			}
 
-			if (requester.Id != userToEdit.Id)
+			if (requester.Guid != userToEdit.Guid)
 			{
 				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
 			}
@@ -246,7 +256,7 @@
 			var requester = await repository
 				 .GetAll()
 				 .Where(user => !user.IsDeleted)
-				 .FirstOrDefaultAsync(user => user.Id == requesterId);
+				 .FirstOrDefaultAsync(user => user.Guid == requesterId);
 
 			var userToEdit = await repository
 			   .GetAll()
@@ -263,7 +273,7 @@
 				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
 			}
 
-			if (requester.Id != userToEdit.Id)
+			if (requester.Guid != userToEdit.Guid)
 			{
 				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
 			}
@@ -289,7 +299,7 @@
 			var requester = await repository
 				 .GetAll()
 				 .Where(user => !user.IsDeleted)
-				 .FirstOrDefaultAsync(user => user.Id == requesterId);
+				 .FirstOrDefaultAsync(user => user.Guid == requesterId);
 
 			var userToEdit = await repository
 			   .GetAll()
@@ -306,7 +316,7 @@
 				throw new Exception(GlobalServicesConstants.EntityDoesNotExist("User To Edit"));
 			}
 
-			if (requester.Id != userToEdit.Id)
+			if (requester.Guid != userToEdit.Guid)
 			{
 				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
 			}
@@ -323,6 +333,11 @@
 			await repository.SaveChangesAsync();
 
 			return true;
+		}
+
+		private async Task<bool> ChangePasswordAsync(ApplicationUser user, string newPassword)
+		{
+			return false;
 		}
 	}
 }

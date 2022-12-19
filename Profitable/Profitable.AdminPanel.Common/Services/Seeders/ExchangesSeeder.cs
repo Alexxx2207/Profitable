@@ -1,22 +1,18 @@
-﻿namespace Profitable.Data.Seeding.Seeders
+﻿namespace Profitable.AdminPanel.Common.Services.Seeders
 {
-	using Profitable.Data.Repository;
-	using Profitable.Data.Seeding.Seeders.Contracts;
+	using Profitable.AdminPanel.Common.Services.Seeders.Contracts;
+	using Profitable.Data;
 	using Profitable.Models.EntityModels;
 	using System.Text.Json;
 
 	public class ExchangesSeeder : ISeeder
 	{
-		public async Task SeedAsync(
-			ApplicationDbContext dbContext,
-			IServiceProvider serviceProvider = null)
+		public async Task SeedAsync(ApplicationDbContext dbContext)
 		{
-			var exchangeRepository = new Repository<Exchange>(dbContext);
-
 			IAsyncEnumerable<string> exchangesInput = null;
 
 			using (var stream = new FileStream(
-				"DataToSeed/Exchanges.json",
+				"Seeders/DataToSeed/Exchanges.json",
 				FileMode.Open,
 				FileAccess.Read))
 			{
@@ -36,10 +32,11 @@
 						var exchangeEntity = new Exchange();
 						exchangeEntity.Name = exchange;
 
-						await exchangeRepository.AddAsync(exchangeEntity);
+						await dbContext.AddAsync(exchangeEntity);
 					}
 				}
 			}
+			await dbContext.SaveChangesAsync();
 		}
 	}
 }

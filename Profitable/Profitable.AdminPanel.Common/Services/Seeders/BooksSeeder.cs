@@ -1,18 +1,16 @@
-﻿namespace Profitable.Data.Seeding.Seeders
+﻿namespace Profitable.AdminPanel.Common.Services.Seeders
 {
-	using Profitable.Data.Repository;
-	using Profitable.Data.Seeding.Seeders.Contracts;
+	using Profitable.AdminPanel.Common.Services.Seeders.Contracts;
+	using Profitable.Data;
 	using Profitable.Models.EntityModels;
 	using System.Text.Json;
 
 	public class BooksSeeder : ISeeder
 	{
-		public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider = null)
+		public async Task SeedAsync(ApplicationDbContext dbContext)
 		{
-			var instrumentRepository = new Repository<Book>(dbContext);
-
 			using (var stream = new FileStream(
-				"DataToSeed/Books.json",
+				"Seeders/DataToSeed/Books.json",
 				FileMode.Open,
 				FileAccess.Read))
 			{
@@ -29,14 +27,15 @@
 				{
 					if (!currentEntries.Any(e => e.Title == instrument.Title))
 					{
-						var finInstrument = new Book();
-						finInstrument.Title = instrument.Title;
-						finInstrument.Authors = instrument.Authors;
+						var book = new Book();
+						book.Title = instrument.Title;
+						book.Authors = instrument.Authors;
 
-						await instrumentRepository.AddAsync(finInstrument);
+						await dbContext.AddAsync(book);
 					}
 				}
 			}
+			await dbContext.SaveChangesAsync();
 		}
 
 		private class JsonInstrument

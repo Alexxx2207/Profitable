@@ -1,19 +1,16 @@
-﻿namespace Profitable.Data.Seeding.Seeders
+﻿namespace Profitable.AdminPanel.Common.Services.Seeders
 {
-	using Profitable.Data.Repository;
-	using Profitable.Data.Seeding.Seeders.Contracts;
+	using Profitable.AdminPanel.Common.Services.Seeders.Contracts;
+	using Profitable.Data;
 	using Profitable.Models.EntityModels;
 	using System.Text.Json;
+
 	public class FinantialInstrumentsSeeder : ISeeder
 	{
-		public async Task SeedAsync(
-			ApplicationDbContext dbContext,
-			IServiceProvider serviceProvider = null)
+		public async Task SeedAsync(ApplicationDbContext dbContext)
 		{
-			var instrumentRepository = new Repository<FinancialInstrument>(dbContext);
-
 			using (var stream = new FileStream(
-				"DataToSeed/TicketSymbols.json",
+				"Seeders/DataToSeed/TicketSymbols.json",
 				FileMode.Open,
 				FileAccess.Read))
 			{
@@ -30,8 +27,11 @@
 				{
 					if (!currentEntries.Any(e => e.TickerSymbol == instrument.Symbol))
 					{
-						var exchange = dbContext.Exchanges.FirstOrDefault(e => e.Name == instrument.Exchange);
-						var marketType = dbContext.MarketTypes.FirstOrDefault(e => e.Name == instrument.Type);
+						var exchange = dbContext.Exchanges
+							.FirstOrDefault(e => e.Name == instrument.Exchange);
+
+						var marketType = dbContext.MarketTypes
+							.FirstOrDefault(e => e.Name == instrument.Type);
 
 						if (exchange != null && marketType != null)
 						{
@@ -40,11 +40,12 @@
 							finInstrument.Exchange = exchange;
 							finInstrument.MarketType = marketType;
 
-							await instrumentRepository.AddAsync(finInstrument);
+							await dbContext.AddAsync(finInstrument);
 						}
 					}
 				}
 			}
+			await dbContext.SaveChangesAsync();
 		}
 
 		private class JsonInstrument

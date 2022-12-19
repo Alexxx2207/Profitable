@@ -2,12 +2,9 @@
 {
 	using AutoMapper;
 	using Microsoft.AspNetCore.Authentication.JwtBearer;
-	using Microsoft.AspNetCore.Identity;
 	using Microsoft.Extensions.DependencyInjection;
 	using Microsoft.IdentityModel.Tokens;
 	using Profitable.Common.Automapper;
-	using Profitable.Data;
-	using Profitable.Models.EntityModels;
 	using Profitable.Services.Books;
 	using Profitable.Services.Books.Contracts;
 	using Profitable.Services.Common.Images;
@@ -22,6 +19,8 @@
 	using Profitable.Services.News.Contract;
 	using Profitable.Services.Positions;
 	using Profitable.Services.Positions.Contracts;
+	using Profitable.Services.Search;
+	using Profitable.Services.Search.Contracts;
 	using Profitable.Services.Users;
 	using Profitable.Services.Users.Contracts;
 	using System.Reflection;
@@ -29,25 +28,6 @@
 
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddIdentity(this IServiceCollection services)
-		{
-			services
-				.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
-				{
-					options.SignIn.RequireConfirmedEmail = true;
-					options.User.RequireUniqueEmail = true;
-					options.Password.RequireDigit = false;
-					options.Password.RequireLowercase = false;
-					options.Password.RequireUppercase = false;
-					options.Password.RequireNonAlphanumeric = false;
-					options.Password.RequiredLength = 6;
-				})
-				.AddEntityFrameworkStores<ApplicationDbContext>()
-				.AddDefaultTokenProviders(); ;
-
-			return services;
-		}
-
 		public static IServiceCollection AddBusinessLayerServices(this IServiceCollection services)
 		{
 			services.AddScoped<IImageService, ImageService>();
@@ -60,6 +40,8 @@
 			services.AddScoped<IStocksPositionsService, StocksPositionsService>();
 			services.AddScoped<ICOTService, COTService>();
 			services.AddScoped<IBooksService, BooksService>();
+			services.AddScoped<IBookSearchService, BookSearchService>();
+			services.AddScoped<IUserSearchService, UserSearchService>();
 
 			return services;
 		}

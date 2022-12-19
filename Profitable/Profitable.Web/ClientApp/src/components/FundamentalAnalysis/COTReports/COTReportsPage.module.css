@@ -90,8 +90,9 @@
 .assetManagersShorts,
 .leveragedFundsLongs,
 .leveragedFundsShorts {
-    font-family: monospace;
-    font-weight: 500;
+    font-family: "AGENCYFB";
+    font-size: 1.7rem;
+    font-weight: 400;
 }
 
 .assetManagersLongsChange,
@@ -99,10 +100,10 @@
 .leveragedFundsLongsChange,
 .leveragedFundsShortsChange {
     margin-top: -1rem;
-    font-family: monospace;
-    font-weight: 600;
+    font-family: "AGENCYFB";
     border-radius: 50px;
-    font-size: 1.7rem;
+    font-size: 1.8rem;
+    font-weight: 400;
     padding: 1rem;
 }
 

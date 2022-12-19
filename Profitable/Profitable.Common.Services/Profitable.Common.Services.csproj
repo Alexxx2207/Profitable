@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Profitable.Common.Models\Profitable.Common.Models.csproj" />
+    <ProjectReference Include="..\Profitable.GlobalConstants\Profitable.Common.GlobalConstants.csproj" />
+  </ItemGroup>
+
 </Project>

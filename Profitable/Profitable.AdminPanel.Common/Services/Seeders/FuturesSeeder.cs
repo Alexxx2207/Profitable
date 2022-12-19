@@ -1,21 +1,18 @@
-﻿namespace Profitable.Data.Seeding.Seeders
+﻿namespace Profitable.AdminPanel.Common.Services.Seeders
 {
-	using Profitable.Data.Repository;
-	using Profitable.Data.Seeding.Seeders.Contracts;
+	using Profitable.AdminPanel.Common.Services.Seeders.Contracts;
+	using Profitable.Data;
 	using Profitable.Models.EntityModels;
 	using System.Text.Json;
+
 	public class FuturesSeeder : ISeeder
 	{
-		public async Task SeedAsync(
-			ApplicationDbContext dbContext,
-			IServiceProvider serviceProvider)
+		public async Task SeedAsync(ApplicationDbContext dbContext)
 		{
-			var futuresContractRepository = new Repository<FuturesContract>(dbContext);
-
 			IAsyncEnumerable<JsonFutures> typesInput = null;
 
 			using (var stream = new FileStream(
-				"DataToSeed/FuturesInformation.json",
+				"Seeders/DataToSeed/FuturesInformation.json",
 				FileMode.Open,
 				FileAccess.Read))
 			{
@@ -37,11 +34,13 @@
 						futuresContract.TickSize = double.Parse(jsonFuturesContract.TickSize);
 						futuresContract.TickValue = double.Parse(jsonFuturesContract.TickValue);
 
-						await futuresContractRepository.AddAsync(futuresContract);
+						await dbContext.AddAsync(futuresContract);
 					}
 				}
 			}
+			await dbContext.SaveChangesAsync();
 		}
+
 		private class JsonFutures
 		{
 			public string Name { get; set; }

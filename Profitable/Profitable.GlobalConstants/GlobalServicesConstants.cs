@@ -2,6 +2,7 @@
 {
 	public static class GlobalServicesConstants
 	{
+		public static readonly int SaltByteArraySize = 64;
 
 		public static readonly string UploadsFolderInProject = "Profitable.Web";
 
@@ -17,16 +18,6 @@
 
 		public static readonly int WeeksOfCOTReportsForFirstSeed = 10;
 
-		public static readonly Dictionary<string, string> CotReportSourcesLinks = new Dictionary<string, string>
-		{
-			{
-				"S&P 500 Consolidated - CHICAGO MERCANTILE EXCHANGE",
-				"https://www.tradingster.com/cot/futures/fin/13874"
-			},
-			{
-				"NASDAQ-100 Consolidated - CHICAGO MERCANTILE EXCHANGE",
-				"https://www.tradingster.com/cot/futures/fin/20974"
-			}
-		};
+		public static readonly int PasswordMinLength = 6;
 	}
 }
