@@ -12,7 +12,7 @@
 			IAsyncEnumerable<JsonFutures> typesInput = null;
 
 			using (var stream = new FileStream(
-				"Seeders/DataToSeed/FuturesInformation.json",
+                "Services/Seeders/DataToSeed/FuturesInformation.json",
 				FileMode.Open,
 				FileAccess.Read))
 			{

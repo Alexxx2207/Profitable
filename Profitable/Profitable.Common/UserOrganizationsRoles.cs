@@ -2,8 +2,9 @@
 {
 	public enum UserOrganizationsRoles
 	{
-		Owner = 0,
-		Admin = 1,
-		Member = 2,
+		None = 0,
+		Owner = 1,
+		Admin = 2,
+		Member = 3,
 	}
 }

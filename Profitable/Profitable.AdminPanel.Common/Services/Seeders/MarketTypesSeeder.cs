@@ -12,7 +12,7 @@
 			IAsyncEnumerable<string> typesInput = null;
 
 			using (var stream = new FileStream(
-				"Seeders/DataToSeed/MarketTypes.json",
+				"Services/Seeders/DataToSeed/MarketTypes.json",
 				FileMode.Open,
 				FileAccess.Read))
 			{

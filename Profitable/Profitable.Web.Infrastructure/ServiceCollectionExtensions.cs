@@ -17,6 +17,8 @@
 	using Profitable.Services.Markets.Contract;
 	using Profitable.Services.News;
 	using Profitable.Services.News.Contract;
+	using Profitable.Services.Organizations;
+	using Profitable.Services.Organizations.Contracts;
 	using Profitable.Services.Positions;
 	using Profitable.Services.Positions.Contracts;
 	using Profitable.Services.Search;
@@ -42,6 +44,7 @@
 			services.AddScoped<IBooksService, BooksService>();
 			services.AddScoped<IBookSearchService, BookSearchService>();
 			services.AddScoped<IUserSearchService, UserSearchService>();
+			services.AddScoped<IOrganizationsService, OrganizationsService>();
 
 			return services;
 		}

@@ -5,6 +5,9 @@
 
 	public interface IOrganizationsService
 	{
+
+		Task<Result> AddMembersToOrganization(AddMembersRequestModel model);
+
 		Task<Result> AddOrganization(AddOrganizationRequestModel model);
 
 		Task<Result> UpdateOrganizationGeneralSettings(UpdateOrganizationRequestModel model);

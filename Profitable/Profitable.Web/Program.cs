@@ -32,14 +32,6 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-
-using (var serviceScope = app.Services.CreateScope())
-{
-	var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-	dbContext.Database.Migrate();
-}
-
 if (!app.Environment.IsDevelopment())
 {
 	app.UseHsts();

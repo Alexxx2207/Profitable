@@ -1,11 +1,9 @@
-﻿using Profitable.AdminPanel.Common.Constants;
-using Profitable.AdminPanel.Services.Menu;
-
-
-
-namespace Profitable.AdminPanel
+﻿namespace Profitable.AdminPanel
 {
-	public class Program
+    using Profitable.AdminPanel.Common.Constants;
+    using Profitable.AdminPanel.Services.Menu;
+
+    public class Program
 	{
 		static void Main(string[] args)
 		{

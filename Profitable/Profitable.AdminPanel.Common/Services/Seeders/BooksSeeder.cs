@@ -10,7 +10,7 @@
 		public async Task SeedAsync(ApplicationDbContext dbContext)
 		{
 			using (var stream = new FileStream(
-				"Seeders/DataToSeed/Books.json",
+                "Services/Seeders/DataToSeed/Books.json",
 				FileMode.Open,
 				FileAccess.Read))
 			{

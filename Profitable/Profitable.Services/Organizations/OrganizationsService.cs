@@ -1,15 +1,16 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Profitable.Common.GlobalConstants;
-using Profitable.Common.Models;
-using Profitable.Data.Repository.Contract;
-using Profitable.Models.EntityModels;
-using Profitable.Models.RequestModels.Organizations;
-using Profitable.Services.Organizations.Contracts;
-
-namespace Profitable.Services.Organizations
+﻿namespace Profitable.Services.Organizations
 {
-	public class OrganizationsService : IOrganizationsService, IMembersService
+    using AutoMapper;
+    using Microsoft.EntityFrameworkCore;
+    using Profitable.Common.Enums;
+    using Profitable.Common.GlobalConstants;
+    using Profitable.Common.Models;
+    using Profitable.Data.Repository.Contract;
+    using Profitable.Models.EntityModels;
+    using Profitable.Models.RequestModels.Organizations;
+    using Profitable.Services.Organizations.Contracts;
+
+    public class OrganizationsService : IOrganizationsService, IMembersService
 	{
 		private readonly IMapper mapper;
 		private readonly IRepository<Organization> organizationRepository;
@@ -25,10 +26,25 @@ namespace Profitable.Services.Organizations
 			this.usersRepository = usersRepository;
 		}
 
-		public Task<Result> AddMembersToOrganization(AddMembersRequestModel addMembersRequestModel)
+		public async Task<Result> AddMembersToOrganization(AddMembersRequestModel model)
 		{
-			throw new NotImplementedException();
-		}
+			try
+			{
+				await usersRepository
+					.GetAll()
+					.Where(u => model.Members.Any(m => m == u.Guid))
+					.ExecuteUpdateAsync(s =>
+						s.SetProperty(x => x.OrganizationId, x => model.OrganizationId)
+						 .SetProperty(x => x.OrganizationRole, x => UserOrganizationsRoles.Member));
+
+				return true;
+            }
+			catch (Exception e)
+			{
+				return e.Message;
+			}
+            
+        }
 
 		public async Task<Result> AddOrganization(AddOrganizationRequestModel model)
 		{
@@ -43,6 +59,13 @@ namespace Profitable.Services.Organizations
 					throw new InvalidOperationException(
 						GlobalServicesConstants.EntityDoesNotExist("User"));
 				}
+				if(user.OrganizationId.HasValue)
+				{
+                    throw new InvalidOperationException(
+                        "User is already in a organization! " +
+						"User can be in only one organization at a time. " +
+						"Make sure you are not in one first.");
+                }
 				else
 				{
 					var organization = new Organization()

@@ -102,7 +102,7 @@
 			GetCOTRequestModel getCOTRequestModel)
 		{
 			var newReport = await ScrapeNewReport(
-					GlobalServicesConstants.CotReportSourcesLinks[getCOTRequestModel.InstrumentName],
+					GlobalDatabaseConstants.CotReportSourcesLinks[getCOTRequestModel.InstrumentName],
 					getCOTRequestModel.FromDate);
 
 			if(newReport == null)

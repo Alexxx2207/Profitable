@@ -45,9 +45,9 @@
 			},
 			new SeederChoice()
 			{
-				ChoiceMessage = "Seed All From The Above Choice",
+				ChoiceMessage = "Seed All Entities",
 				ChoiceNumber = 7,
-				Seeder = new COTReportsSeeder()
+				Seeder = new AllSeedersSeeder()
 			},
 		};
 	}
