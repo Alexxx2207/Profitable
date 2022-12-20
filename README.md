@@ -35,47 +35,58 @@ https://github.com/Alexxx2207/Profitable/blob/2764f87d0b1a26990fdc42416da16ce238
 
 ## How To Start The Project
     
-1. Open folder Profitable and click Profitable.sln from your file explorer
-  
-![image](https://user-images.githubusercontent.com/61185321/182321525-02dd831b-2a63-4d71-aaa7-b1893ed3035d.png)
-![image](https://user-images.githubusercontent.com/61185321/182321593-cdc71aab-7e36-4f87-a952-4fe0424bebcb.png)
-  
+1. Open folder Profitable and click Profitable.sln from your file explorer  
     
 2. After Visual Studio is loaded, go to View->Solution Explorer **(Skip this step if you already see a Solution Explorer section on your screen)**
   
-![image](https://user-images.githubusercontent.com/61185321/182322449-08b080b8-e2a0-4e0b-a09c-6ede73d6540d.png)
-![image](https://user-images.githubusercontent.com/61185321/182322515-427f9103-ffb2-4c05-a017-37aa9e8c12f8.png)
-  
-3. In Solution Explorer open folder AdminPanel and right click on Profitable.AdminPanel
-  
-![image](https://user-images.githubusercontent.com/61185321/208537052-eda766f0-6814-41db-9d26-3f40e95e2db2.png)
+3. Make sure you have applied migrations 
+    
+    3.1 In Solution Explorer open folder Common and right click on Porfitable.Data
+
+    3.2 Search for Open In Terminal
+    
+    3.3 A Developer PowerShell window is opened -> Run the command "**dotnet ef database update**"
+    
+ 
+4. In Solution Explorer open folder AdminPanel and right click on Profitable.AdminPanel
+
+    ![image](https://user-images.githubusercontent.com/61185321/208537052-eda766f0-6814-41db-9d26-3f40e95e2db2.png)
 
 
-**A dialog with many options is opened.**  
+    **A dialog with many options is opened.**  
   
-4.In this dialog click **'Set as Startup Project'**
+  
+5. In this dialog click **'Set as Startup Project'**
 
-![image](https://user-images.githubusercontent.com/61185321/208537174-995e58f5-79e8-4d1d-b2df-e41db928b190.png)
-
-
-5. Start the application, a console app is started, make sure **all enitities from the list are seeded in your database!**
+   ![image](https://user-images.githubusercontent.com/61185321/208653302-5db2ba41-aeec-4abe-8d29-e50dd1c0bdfa.png)
 
 
-6. In Solution Explorer open folder Web and right click on Profitable.Web
+6. Start the application. A console app is started, make sure **all enitities from the list are seeded in your database!**
+
+
+7. In Solution Explorer open folder Web and right click on Profitable.Web
   
-![image](https://user-images.githubusercontent.com/61185321/182330356-6590855b-3d76-4b86-ab9a-8e5d7375d5e8.png)
+    ![image](https://user-images.githubusercontent.com/61185321/182330356-6590855b-3d76-4b86-ab9a-8e5d7375d5e8.png)
   
-**A dialog with many options is opened.**
+    **A dialog with many options is opened.**
   
   
-7. In this dialog click **'Set as Startup Project'**  
+8. In this dialog click **'Set as Startup Project'** 
   
-![image](https://user-images.githubusercontent.com/61185321/182323855-25bd40a0-98e2-4038-ab47-baa551f8110d.png)
-  
-8. Click on the empty green arrow in the navigation bar
-  
-![image](https://user-images.githubusercontent.com/61185321/182324277-8c4b9498-f0ce-4e44-acbe-e641316ad5e3.png)
-  
+   ![image](https://user-images.githubusercontent.com/61185321/208653255-e2d4dbef-ad4d-4f78-ab71-e88a7b425d11.png)
+
+
+9. Make sure you have installed all JS packages
+    
+    9.1 Open Profitable.Web -> ClientApp with VS Code
+    
+    9.2 Run "**npm install**" in Terminal
+
+10. Start the application from the Visual Studio
+
+    ![image](https://user-images.githubusercontent.com/61185321/208654548-c1b03a63-48ae-4074-a4e6-1d47eb0e5130.png)
+
+
 ***This will start both the backend and the frontend servers and automatically open a browser tab with the project application.***
   
 > :warning: **Do NOT close the console windows that were opened after clicking the empty green arrow!** :warning:  
