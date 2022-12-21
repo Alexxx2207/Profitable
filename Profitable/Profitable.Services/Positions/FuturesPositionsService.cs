@@ -152,7 +152,7 @@ namespace Profitable.Services.Positions
 
 				if (positionsRecordUpdated.UserId != requesterGuid)
 				{
-					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+					return GlobalServicesConstants.RequesterNotOwnerMessage;
 				}
 
 				positionsRecordUpdated.LastUpdated = dateTimeOfChange;
@@ -238,7 +238,7 @@ namespace Profitable.Services.Positions
 
 				if (positionsRecordUpdated.UserId != requesterGuid)
 				{
-					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+					return GlobalServicesConstants.RequesterNotOwnerMessage;
 				}
 
 				positionsRecordUpdated.LastUpdated = dateTimeOfChange;
@@ -316,7 +316,7 @@ namespace Profitable.Services.Positions
 
 				if (deletePositionRecord.UserId != requesterGuid)
 				{
-					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+					return GlobalServicesConstants.RequesterNotOwnerMessage;
 				}
 
 				var tradePosition = await tradePositionsRepository

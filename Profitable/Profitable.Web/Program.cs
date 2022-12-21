@@ -2,16 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using Profitable.Data;
 using Profitable.Data.Repository;
 using Profitable.Data.Repository.Contract;
-using Profitable.Data.Seeding;
 using Profitable.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddIdentity();
+	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.ConfigureAutomapper();
 
@@ -22,13 +18,13 @@ builder.Services.AddBusinessLayerServices();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "policy",
-                      policy =>
-                      {
-                          policy.WithOrigins("https://localhost:44415")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
-                      });
+	options.AddPolicy(name: "policy",
+					  policy =>
+					  {
+						  policy.WithOrigins("https://localhost:44415")
+						  .AllowAnyHeader()
+						  .AllowAnyMethod();
+					  });
 });
 
 builder.Services.AddControllers();
@@ -36,22 +32,9 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-
-using (var serviceScope = app.Services.CreateScope())
-{
-    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-    dbContext.Database.Migrate();
-
-    new ApplicationDbContextSeeder(app.Environment.IsProduction())
-        .SeedAsync(dbContext, serviceScope.ServiceProvider)
-        .GetAwaiter()
-        .GetResult();
-}
-
 if (!app.Environment.IsDevelopment())
 {
-    app.UseHsts();
+	app.UseHsts();
 }
 
 app.UseCors("policy");
@@ -64,8 +47,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+	name: "default",
+	pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html"); ;
 

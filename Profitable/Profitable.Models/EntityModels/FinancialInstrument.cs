@@ -2,15 +2,10 @@
 {
 	using Profitable.Models.EntityModels.EntityBaseClass;
 	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
 
 	public class FinancialInstrument : EntityBase
 	{
-		public FinancialInstrument()
-		{
-			ListsContainingIt = new HashSet<ListsFinancialInstruments>();
-
-		}
-
 		[Required]
 		public string TickerSymbol { get; set; }
 
@@ -18,11 +13,8 @@
 		public Guid ExchangeId { get; set; }
 		public Exchange Exchange { get; set; }
 
-		[Required]
+		[ForeignKey("MarketType")]
 		public Guid MarketTypeId { get; set; }
-
 		public MarketType MarketType { get; set; }
-
-		public ICollection<ListsFinancialInstruments> ListsContainingIt { get; set; }
 	}
 }

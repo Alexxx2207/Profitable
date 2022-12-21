@@ -70,7 +70,7 @@
 
 				if (recordToUpdate.UserId != requesterGuid)
 				{
-					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+					return GlobalServicesConstants.RequesterNotOwnerMessage;
 				}
 
 				recordToUpdate.Name = recordName;
@@ -102,7 +102,7 @@
 
 				if (record.UserId != requesterGuid)
 				{
-					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+					return GlobalServicesConstants.RequesterNotOwnerMessage;
 				}
 
 				repository.Delete(record);

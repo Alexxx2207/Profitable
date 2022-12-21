@@ -8,7 +8,7 @@ import styles from "./MarketsFiltrator.module.css";
 export const MarketsFiltrator = ({ instrument, onInstrumentChange }) => {
     const [state, setState] = useState({
         markets: [],
-        marketSelected: "Stock",
+        marketSelected: "Stocks",
         instruments: [],
         instrumentSelected: instrument,
     });

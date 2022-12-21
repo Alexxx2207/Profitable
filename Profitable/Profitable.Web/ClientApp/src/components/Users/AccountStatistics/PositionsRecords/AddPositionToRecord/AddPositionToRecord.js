@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useReducer } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { CLIENT_ERROR_TYPE, InstrumentTypes, LongDirectionName, POSITIONS_RECORDS_PAGE_COUNT, ShortDirectionName } from "../../../../../common/config";
 import { AuthContext } from "../../../../../contexts/AuthContext";
 import { MessageBoxContext } from "../../../../../contexts/MessageBoxContext";
@@ -16,8 +16,10 @@ import { ShowMoreButton } from "../../../../Common/ShowMoreButton/ShowMoreButton
 import { SavePositionsRecordListWidget } from "./SavePositionsRecordListWidget/SavePositionsRecordListWidget";
 
 import styles from "./AddPositionToRecord.module.css";
+import { getUserEmailFromJWT } from "../../../../../services/users/usersService";
 
 const initialState = {
+    userEmail: "",
     lists: [],
     page: 0,
     showShowMore: true,
@@ -33,6 +35,12 @@ const initialState = {
 
 const reducer = (pageState, action) => {
     switch (action.type) {
+        case "setUserEmail": {
+            return {
+                ...pageState,
+                userEmail: action.payload,
+            };
+        }
         case "increasePageCount": {
             return {
                 ...pageState,
@@ -139,6 +147,14 @@ export const AddPositionToRecord = () => {
         [loadRecords, pageState.page]
     );
     
+        useEffect(() => {
+            getUserEmailFromJWT(JWT)
+                .then(email => setState({
+                    type: "setUserEmail",
+                    payload: email,
+                }));
+        }, [JWT]);
+
     useEffect(() => {
         getUserPositionsRecordsByInstrumentType(
             state.userEmail,
@@ -262,7 +278,11 @@ export const AddPositionToRecord = () => {
                         />
                     ))
                 ) : (
-                    <h2 className={styles.noRecordsHeader}>No Records Made Yet</h2>
+                    <h2 className={styles.noRecordsHeader}>
+                        No Records Made Yet - Go To <Link 
+                        to={`/users/${pageState.userEmail}/account-statistics`}>
+                            Records
+                        </Link> to create one</h2>
                 )}
             </div>
             

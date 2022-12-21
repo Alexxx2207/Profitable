@@ -1,9 +1,7 @@
 ﻿namespace Profitable.Web.Controllers
 {
 	using Microsoft.AspNetCore.Authorization;
-	using Microsoft.AspNetCore.Identity;
 	using Microsoft.AspNetCore.Mvc;
-	using Profitable.Models.EntityModels;
 	using Profitable.Models.RequestModels.Users;
 	using Profitable.Services.Users.Contracts;
 	using Profitable.Web.Controllers.BaseApiControllers;
@@ -12,14 +10,11 @@
 	public class UsersController : BaseApiController
 	{
 		private readonly IUserService userService;
-		private readonly UserManager<ApplicationUser> userManager;
 
 		public UsersController(
-			IUserService userService,
-			UserManager<ApplicationUser> userManager)
+			IUserService userService)
 		{
 			this.userService = userService;
-			this.userManager = userManager;
 		}
 
 		[Authorize]
@@ -140,16 +135,13 @@
 
 				return Ok(token);
 			}
+			catch (InvalidOperationException)
+			{
+				return BadRequest($"Username '{userRequestModel.Email}' is already taken.");
+			}
 			catch (Exception error)
 			{
-				return BadRequest(
-					string.Join(
-						Environment.NewLine,
-						error.Message
-							.Split(Environment.NewLine)
-							.Where(messages =>
-								messages != $"Username '{userRequestModel.Email}' is already taken."))
-			   );
+				return BadRequest(error.Message);
 			}
 		}
 

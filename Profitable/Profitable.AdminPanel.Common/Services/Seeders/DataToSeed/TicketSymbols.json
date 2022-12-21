@@ -1,0 +1,237 @@
+[
+  {
+    "symbol": "AAPL",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "TSLA",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "QQQ",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "AMZN",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "NVDA",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "AMD",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "META",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "MSFT",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "BABA",
+    "type": "stocks",
+    "exchange": "NYSE"
+  },
+  {
+    "symbol": "AMC",
+    "type": "stocks",
+    "exchange": "NYSE"
+  },
+  {
+    "symbol": "NFLX",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "TWTR",
+    "type": "stocks",
+    "exchange": "NYSE"
+  },
+  {
+    "symbol": "GOOG",
+    "type": "stocks",
+    "exchange": "NASDAQ"
+  },
+  {
+    "symbol": "USOIL",
+    "type": "commodity",
+    "exchange": "TVC"
+  },
+  {
+    "symbol": "GOLD",
+    "type": "commodity",
+    "exchange": "TVC"
+  },
+  {
+    "symbol": "SILVER",
+    "type": "commodity",
+    "exchange": "TVC"
+  },
+  {
+    "symbol": "COPPER",
+    "type": "commodity",
+    "exchange": "CAPITALCOM"
+  },
+  {
+    "symbol": "NATURALGAS",
+    "type": "commodity",
+    "exchange": "CAPITALCOM"
+  },
+  {
+    "symbol": "SUGAR",
+    "type": "commodity",
+    "exchange": "PEPPERSTONE"
+  },
+  {
+    "symbol": "CORN",
+    "type": "commodity",
+    "exchange": "GLOBALPRIME"
+  },
+  {
+    "symbol": "WHEAT",
+    "type": "commodity",
+    "exchange": "PEPPERSTONE"
+  },
+  {
+    "symbol": "EURUSD",
+    "type": "forex",
+    "exchange": "FX_IDC"
+  },
+  {
+    "symbol": "CHFUSD",
+    "type": "forex",
+    "exchange": "FX_IDC"
+  },
+  {
+    "symbol": "CADUSD",
+    "type": "forex",
+    "exchange": "FX_IDC"
+  },
+  {
+    "symbol": "BGNUSD",
+    "type": "forex",
+    "exchange": "FX_IDC"
+  },
+  {
+    "symbol": "CNYUSD",
+    "type": "forex",
+    "exchange": "FX_IDC"
+  },
+  {
+    "symbol": "RUBUSD",
+    "type": "forex",
+    "exchange": "FX_IDC"
+  },
+  {
+    "symbol": "NASDAQ",
+    "type": "index",
+    "exchange": "SKILLING"
+  },
+  {
+    "symbol": "SPX500",
+    "type": "index",
+    "exchange": "BLACKBULL"
+  },
+  {
+    "symbol": "GER30",
+    "type": "index",
+    "exchange": "GLOBALPRIME"
+  },
+  {
+    "symbol": "UK100",
+    "type": "index",
+    "exchange": "CAPITALCOM"
+  },
+  {
+    "symbol": "RTSI",
+    "type": "index",
+    "exchange": "MOEX"
+  },
+  {
+    "symbol": "000001",
+    "type": "index",
+    "exchange": "SSE"
+  },
+  {
+    "symbol": "DJI",
+    "type": "index",
+    "exchange": "FOREXCOM"
+  },
+  {
+    "symbol": "DXY",
+    "type": "index",
+    "exchange": "CAPITALCOM"
+  },
+  {
+    "symbol": "BTCUSD",
+    "type": "crypto",
+    "exchange": "COINBASE"
+  },
+  {
+    "symbol": "ETHUSD",
+    "type": "crypto",
+    "exchange": "COINBASE"
+  },
+  {
+    "symbol": "SOLUSD",
+    "type": "crypto",
+    "exchange": "COINBASE"
+  },
+  {
+    "symbol": "EGLDUSD",
+    "type": "crypto",
+    "exchange": "BINANCE"
+  },
+  {
+    "symbol": "DOTUSD",
+    "type": "crypto",
+    "exchange": "BINANCE"
+  },
+  {
+    "symbol": "LINKUSD",
+    "type": "crypto",
+    "exchange": "BINANCE"
+  },
+  {
+    "symbol": "CAT",
+    "type": "stocks",
+    "exchange": "NYSE"
+  },
+  {
+    "symbol": "VMC",
+    "type": "stocks",
+    "exchange": "NYSE"
+  },
+  {
+    "symbol": "MLM",
+    "type": "stocks",
+    "exchange": "NYSE"
+  },
+  {
+    "symbol": "URI",
+    "type": "stocks",
+    "exchange": "NYSE"
+  },
+  {
+    "symbol": "EXP",
+    "type": "stocks",
+    "exchange": "NYSE"
+  },
+  {
+    "symbol": "STN",
+    "type": "stocks",
+    "exchange": "NYSE"
+  }
+]

@@ -5,10 +5,12 @@ import {
     INVALID_OLD_PASSWORD_PROVIDED_ERROR_MESSAGE,
 } from "../../common/config";
 
+import { sha512 } from 'crypto-hash';
+
 export const loginUser = async (email, password) => {
     let response = await request.post(`${WEB_API_BASE_URL}/users/login`, {
         email,
-        password,
+        password: await sha512(password),
     });
 
     if (response.status === 400) {
@@ -26,7 +28,7 @@ export const loginUser = async (email, password) => {
 export const registerUser = async (email, firstName, lastName, password) => {
     let response = await request.post(`${WEB_API_BASE_URL}/users/register`, {
         email,
-        password,
+        password: await sha512(password),
         firstName,
         lastName,
     });
@@ -62,8 +64,8 @@ export const editUserPasswоrd = async (email, jwt, oldPassword, newPassword) =>
         `${WEB_API_BASE_URL}/users/user/edit/password`,
         {
             email,
-            oldPassword,
-            newPassword,
+            oldPassword: await sha512(oldPassword),
+            newPassword: await sha512(newPassword),
         },
         {
             Authorization: "Bearer " + jwt,

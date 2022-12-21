@@ -133,7 +133,7 @@
 
 				if (positionsRecordUpdated.UserId != requesterGuid)
 				{
-					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+					return GlobalServicesConstants.RequesterNotOwnerMessage;
 				}
 
 				positionsRecordUpdated.LastUpdated = dateTimeOfChange;
@@ -199,7 +199,7 @@
 
 				if (positionsRecordUpdated.UserId != requesterGuid)
 				{
-					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+					return GlobalServicesConstants.RequesterNotOwnerMessage;
 				}
 
 				positionsRecordUpdated.LastUpdated = dateTimeOfChange;
@@ -272,7 +272,7 @@
 
 				if (deletePositionRecord.UserId != requesterGuid)
 				{
-					return GlobalServicesConstants.RequesterNotOwnerMesssage;
+					return GlobalServicesConstants.RequesterNotOwnerMessage;
 				}
 
 				var tradePosition = await tradePositionsRepository

@@ -1,46 +1,36 @@
 ﻿namespace Profitable.Models.EntityModels
 {
-    using Microsoft.AspNetCore.Identity;
-    using Profitable.Models.Contracts;
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+	using Profitable.Common.Enums;
+	using Profitable.Models.EntityModels.EntityBaseClass;
+	using System;
+	using System.ComponentModel.DataAnnotations;
+	using System.ComponentModel.DataAnnotations.Schema;
 
-    public class ApplicationUser : IdentityUser<Guid>, IDeletebleEntity
-    {
-        public ApplicationUser()
-        {
-            Id = Guid.NewGuid();
-            Roles = new HashSet<IdentityUserRole<string>>();
-            Claims = new HashSet<IdentityUserClaim<string>>();
-            Logins = new HashSet<IdentityUserLogin<string>>();
+	public class ApplicationUser : EntityBase
+	{
+		[Required]
+		public string Email { get; set; }
 
-            Lists = new HashSet<List>();
+		[Required]
+		public string PasswordHash { get; set; }
 
-        }
+		[Required]
+		public string Salt { get; set; }
 
-        [Required]
-        public string FirstName { get; set; }
+		[Required]
+		public string FirstName { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
+		[Required]
+		public string LastName { get; set; }
 
-        public string? Description { get; set; }
+		public string? Description { get; set; }
 
-        public string? ProfilePictureURL { get; set; }
+		public string? ProfilePictureURL { get; set; }
 
-        public bool IsDeleted { get; set; }
+		[ForeignKey("Organization")]
+		public Guid? OrganizationId { get; set; }
+		public Organization? Organization { get; set; }
 
-        public DateTime? DeletedOn { get; set; }
-
-
-        public virtual ICollection<List> Lists { get; set; }
-
-        public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
-
-        public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
-
-        public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
-
-    }
+		public UserOrganizationsRoles OrganizationRole { get; set; }
+	}
 }

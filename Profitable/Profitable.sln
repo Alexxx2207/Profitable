@@ -38,7 +38,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.Services"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.Extensions", "Profitable.Common.Extensions\Profitable.Common.Extensions.csproj", "{72800DB5-C34A-41DD-B423-5362E51F2B39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profitable.Common.Scrapers", "Profitable.Common.Scrapers\Profitable.Common.Scrapers.csproj", "{6FA727A5-FDA3-4AF4-8A04-B1423541A924}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Profitable.Common.Scrapers", "Profitable.Common.Scrapers\Profitable.Common.Scrapers.csproj", "{6FA727A5-FDA3-4AF4-8A04-B1423541A924}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AdminPanel", "AdminPanel", "{CA577E3C-ED13-49AF-82CF-758F48772E03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profitable.AdminPanel", "Profitable.AdminPanel\Profitable.AdminPanel.csproj", "{3707B3F9-A842-40C6-8A90-DD98920E247F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profitable.AdminPanel.Services", "Profitable.AdminPanel.Services\Profitable.AdminPanel.Services.csproj", "{F572B02E-2C05-4825-A0EA-442CAB867823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profitable.AdminPanel.Common", "Profitable.AdminPanel.Common\Profitable.AdminPanel.Common.csproj", "{8D99BDCC-0B1E-49E6-AE06-1FAEE216D3D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +102,18 @@ Global
 		{6FA727A5-FDA3-4AF4-8A04-B1423541A924}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FA727A5-FDA3-4AF4-8A04-B1423541A924}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FA727A5-FDA3-4AF4-8A04-B1423541A924}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3707B3F9-A842-40C6-8A90-DD98920E247F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3707B3F9-A842-40C6-8A90-DD98920E247F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3707B3F9-A842-40C6-8A90-DD98920E247F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3707B3F9-A842-40C6-8A90-DD98920E247F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F572B02E-2C05-4825-A0EA-442CAB867823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F572B02E-2C05-4825-A0EA-442CAB867823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F572B02E-2C05-4825-A0EA-442CAB867823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F572B02E-2C05-4825-A0EA-442CAB867823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D99BDCC-0B1E-49E6-AE06-1FAEE216D3D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D99BDCC-0B1E-49E6-AE06-1FAEE216D3D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D99BDCC-0B1E-49E6-AE06-1FAEE216D3D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D99BDCC-0B1E-49E6-AE06-1FAEE216D3D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +131,9 @@ Global
 		{36E3B9B0-E1FE-4E59-9816-118318BF513C} = {6D781006-3051-40C3-9EB0-B2E7761A9CA9}
 		{72800DB5-C34A-41DD-B423-5362E51F2B39} = {6D781006-3051-40C3-9EB0-B2E7761A9CA9}
 		{6FA727A5-FDA3-4AF4-8A04-B1423541A924} = {6D781006-3051-40C3-9EB0-B2E7761A9CA9}
+		{3707B3F9-A842-40C6-8A90-DD98920E247F} = {CA577E3C-ED13-49AF-82CF-758F48772E03}
+		{F572B02E-2C05-4825-A0EA-442CAB867823} = {CA577E3C-ED13-49AF-82CF-758F48772E03}
+		{8D99BDCC-0B1E-49E6-AE06-1FAEE216D3D0} = {CA577E3C-ED13-49AF-82CF-758F48772E03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E84C6D35-AC07-4313-BE33-390A9FC6E8C2}

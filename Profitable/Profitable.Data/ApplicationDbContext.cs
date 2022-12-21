@@ -1,13 +1,10 @@
 ﻿namespace Profitable.Data
 {
-	using Microsoft.AspNetCore.Identity;
-	using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.Extensions.Configuration;
 	using Profitable.Models.EntityModels;
 
-	public class ApplicationDbContext :
-					IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+	public class ApplicationDbContext : DbContext
 	{
 		public ApplicationDbContext()
 		{ }
@@ -18,9 +15,7 @@
 
 		public DbSet<ApplicationUser> Users { get; set; }
 
-		public DbSet<List> Lists { get; set; }
-
-		public DbSet<ListsFinancialInstruments> ListsFinancialInstruments { get; set; }
+		public DbSet<Organization> Organizations { get; set; }
 
 		public DbSet<FinancialInstrument> FinancialInstruments { get; set; }
 
@@ -62,12 +57,6 @@
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
-
-			builder.Ignore<IdentityUserLogin<string>>();
-			builder.Ignore<IdentityUserRole<string>>();
-			builder.Ignore<IdentityUserClaim<string>>();
-			builder.Ignore<IdentityUserToken<string>>();
-			builder.Ignore<IdentityUser<string>>();
 		}
 	}
 }
