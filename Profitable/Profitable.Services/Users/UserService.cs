@@ -73,7 +73,7 @@
 
 			if (requester.Guid != userToEdit.Guid)
 			{
-				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMessage);
 			}
 
 			requester.FirstName = editUserData.FirstName;
@@ -182,7 +182,7 @@
 
 			if (requester.Guid != userToEdit.Guid)
 			{
-				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMessage);
 			}
 
 			var result = await ChangePasswordAsync(
@@ -226,7 +226,7 @@
 
 			if (requester.Guid != userToEdit.Guid)
 			{
-				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMessage);
 			}
 
 			if (!string.IsNullOrWhiteSpace(requester.ProfilePictureURL))
@@ -275,7 +275,7 @@
 
 			if (requester.Guid != userToEdit.Guid)
 			{
-				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMessage);
 			}
 
 			if (!string.IsNullOrWhiteSpace(requester.ProfilePictureURL))
@@ -318,7 +318,7 @@
 
 			if (requester.Guid != userToEdit.Guid)
 			{
-				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMesssage);
+				throw new Exception(GlobalServicesConstants.RequesterNotOwnerMessage);
 			}
 
 			if (!string.IsNullOrWhiteSpace(requester.ProfilePictureURL))

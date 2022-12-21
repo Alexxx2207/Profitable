@@ -45,6 +45,7 @@
 			services.AddScoped<IBookSearchService, BookSearchService>();
 			services.AddScoped<IUserSearchService, UserSearchService>();
 			services.AddScoped<IOrganizationsService, OrganizationsService>();
+			services.AddScoped<IOrganizationMembersService, OrganizationsService>();
 
 			return services;
 		}
@@ -83,7 +84,8 @@
 
 		public static IServiceCollection ConfigureAutomapper(this IServiceCollection services)
 		{
-			var profileTypes = Assembly.GetAssembly(typeof(AutoMapperConfiguration)).GetTypes()
+			var profileTypes = Assembly.GetAssembly(typeof(AutoMapperConfiguration))
+				.GetTypes()
 				.Where(t => t.IsSubclassOf(typeof(Profile)))
 				.ToArray();
 

@@ -2,8 +2,8 @@
 {
 	public class AddOrganizationRequestModel
 	{
-		public string Name { get; set; }
+		public Guid RequesterId { get; set; }
 
-		public Guid OwnerId { get; set; }
+		public string Name { get; set; }
 	}
 }

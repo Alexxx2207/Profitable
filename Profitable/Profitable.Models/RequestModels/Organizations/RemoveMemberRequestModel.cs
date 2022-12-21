@@ -4,6 +4,6 @@
 	{
 		public Guid RequesterId { get; set; }
 
-		public Guid MemeberToRemoveId { get; set; }
+		public Guid MemberToRemoveId { get; set; }
 	}
 }

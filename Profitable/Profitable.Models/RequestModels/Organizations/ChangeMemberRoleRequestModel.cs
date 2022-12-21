@@ -4,7 +4,7 @@ namespace Profitable.Models.RequestModels.Organizations
 {
 	public class ChangeMemberRoleRequestModel
 	{
-		public Guid OwnerId { get; set; }
+		public Guid RequesterId { get; set; }
 
 		public Guid ManipulatedMemberId { get; set; }
 
