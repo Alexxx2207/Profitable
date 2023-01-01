@@ -335,9 +335,42 @@
 			return true;
 		}
 
+		public async Task<string> GetUserOrganization(Guid userToCheckId, string requesterEmail)
+		{
+			var user = await repository
+				.GetAllAsNoTracking()
+				.FirstOrDefaultAsync(x => x.Guid == userToCheckId);
+
+			if (user == null)
+			{
+				throw new InvalidOperationException(GlobalServicesConstants.EntityDoesNotExist("User to check"));
+			}
+
+			if (user.Email != requesterEmail)
+			{
+				throw new UnauthorizedAccessException("Requester not authorized to check!");
+			}
+
+			return user.OrganizationId?.ToString() ?? "";
+		}
+
 		private async Task<bool> ChangePasswordAsync(ApplicationUser user, string newPassword)
 		{
-			return false;
+			return await Task.Run(() =>
+			{
+				try
+				{
+					var hashResult = Security.HashUserPassword(newPassword, user.Guid);
+					user.PasswordHash = hashResult.PasswordHash;
+					user.Salt = hashResult.Salt;
+
+					return true;
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+			});
 		}
 	}
 }

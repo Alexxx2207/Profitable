@@ -54,6 +54,7 @@ const reducer = (state, action) => {
 };
 
 export const AddPositionsRecord = () => {
+    
     const navigate = useNavigate();
 
     const { searchedProfileEmail } = useParams();

@@ -1,129 +1,185 @@
 ﻿namespace Profitable.Web.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using Profitable.Models.RequestModels.Organizations;
-    using Profitable.Models.RequestModels.Users;
-    using Profitable.Services.Organizations.Contracts;
-    using Profitable.Web.Controllers.BaseApiControllers;
+	using Microsoft.AspNetCore.Authorization;
+	using Microsoft.AspNetCore.Mvc;
+	using Profitable.Models.RequestModels.Organizations;
+	using Profitable.Services.Organizations.Contracts;
+	using Profitable.Web.Controllers.BaseApiControllers;
 
-    public class OrganizationsController : BaseApiController
-    {
-        private readonly IOrganizationsService organizationsService;
-        private readonly IOrganizationMembersService organizationMembersService;
+	public class OrganizationsController : BaseApiController
+	{
+		private readonly IOrganizationsService organizationsService;
+		private readonly IOrganizationMembersService organizationMembersService;
 
-        public OrganizationsController(
-            IOrganizationsService organizationsService,
-            IOrganizationMembersService organizationMembersService)
-        {
-            this.organizationsService = organizationsService;
-            this.organizationMembersService = organizationMembersService;
-        }
+		public OrganizationsController(
+			IOrganizationsService organizationsService,
+			IOrganizationMembersService organizationMembersService)
+		{
+			this.organizationsService = organizationsService;
+			this.organizationMembersService = organizationMembersService;
+		}
 
-        [HttpPost("add-members")]
-        [Authorize]
-        public async Task<IActionResult> AddMembers(
-            [FromBody] AddMembersRequestModel addMembersRequestModel)
-        {
-            addMembersRequestModel.RequesterId = UserId;
+		[HttpPatch("add-member")]
+		[Authorize]
+		public async Task<IActionResult> AddMembers(
+			[FromBody] AddMemberRequestModel addMembersRequestModel)
+		{
+			addMembersRequestModel.RequesterId = UserId;
 
-            var result = await organizationMembersService
-                .AddMembersToOrganization(addMembersRequestModel);
+			var result = await organizationMembersService
+				.AddMemberToOrganization(addMembersRequestModel);
 
-            if(result.Succeeded) 
-            {
-                return Ok();
-            }
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
 
-            return BadRequest(result.Error);
-        }
-        
-        [HttpPost("change-member-role")]
-        [Authorize]
-        public async Task<IActionResult> ChangeMemberRole(
-            [FromBody] ChangeMemberRoleRequestModel changeMemberRequestModel)
-        {
-            changeMemberRequestModel.RequesterId = UserId;
+			return BadRequest(result.Error);
+		}
 
-            var result = await organizationMembersService
-                .ChangeMemberRoleToOrganization(changeMemberRequestModel);
+		[HttpPatch("change-member-role")]
+		[Authorize]
+		public async Task<IActionResult> ChangeMemberRole(
+			[FromBody] ChangeMemberRoleRequestModel changeMemberRequestModel)
+		{
+			changeMemberRequestModel.RequesterId = UserId;
 
-            if(result.Succeeded) 
-            {
-                return Ok();
-            }
+			var result = await organizationMembersService
+				.ChangeMemberRoleToOrganization(changeMemberRequestModel);
 
-            return BadRequest(result.Error);
-        }
-        
-        [HttpPatch("remove-member")]
-        [Authorize]
-        public async Task<IActionResult> RemoveMember(
-            [FromBody] RemoveMemberRequestModel removeMemberRequestModel)
-        {
-            removeMemberRequestModel.RequesterId = UserId;
+			if (result.Succeeded)
+			{
+				return Ok(changeMemberRequestModel.RoleToAssign);
+			}
 
-            var result = await organizationMembersService
-                .RemoveMemberFromOrganization(removeMemberRequestModel);
+			return BadRequest(result.Error);
+		}
 
-            if(result.Succeeded) 
-            {
-                return Ok();
-            }
+		[HttpPatch("remove-member")]
+		[Authorize]
+		public async Task<IActionResult> RemoveMember(
+			[FromBody] RemoveMemberRequestModel removeMemberRequestModel)
+		{
+			removeMemberRequestModel.RequesterId = UserId;
 
-            return BadRequest(result.Error);
-        }
-        
-        [HttpPost("add")]
-        [Authorize]
-        public async Task<IActionResult> Add(
-            [FromBody] AddOrganizationRequestModel addRequestModel)
-        {
+			var result = await organizationMembersService
+				.RemoveMemberFromOrganization(removeMemberRequestModel);
 
-            addRequestModel.RequesterId = UserId;
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
 
-            var result = await organizationsService.AddOrganization(addRequestModel);
+			return BadRequest(result.Error);
+		}
 
-            if(result.Succeeded) 
-            {
-                return Ok();
-            }
+		[HttpPost("add-organization")]
+		[Authorize]
+		public async Task<IActionResult> Add(
+			[FromBody] AddOrganizationRequestModel addRequestModel)
+		{
 
-            return BadRequest(result.Error);
-        }
-        
-        [HttpPatch("update")]
-        [Authorize]
-        public async Task<IActionResult> Update(
-            [FromBody] UpdateOrganizationRequestModel updateRequestModel)
-        {
-            updateRequestModel.RequesterId = UserId;
+			addRequestModel.RequesterId = UserId;
 
-            var result = await organizationsService.UpdateOrganizationGeneralSettings(updateRequestModel);
+			var result = await organizationsService.AddOrganization(addRequestModel);
 
-            if(result.Succeeded) 
-            {
-                return Ok();
-            }
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
 
-            return BadRequest(result.Error);
-        }
-        
-        [HttpDelete("delete")]
-        [Authorize]
-        public async Task<IActionResult> Delete(
-            [FromQuery] DeleteOrganizationRequestModel deleteRequestModel)
-        {
-            deleteRequestModel.RequesterId = UserId;
+			return BadRequest(result.Error);
+		}
 
-            var result = await organizationsService.DeleteOrganization(deleteRequestModel);
+		[HttpPatch("update")]
+		[Authorize]
+		public async Task<IActionResult> Update(
+			[FromBody] UpdateOrganizationRequestModel updateRequestModel)
+		{
+			updateRequestModel.RequesterId = UserId;
 
-            if(result.Succeeded) 
-            {
-                return Ok();
-            }
+			var result = await organizationsService.UpdateOrganizationGeneralSettings(updateRequestModel);
 
-            return BadRequest(result.Error);
-        }
-    }
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
+
+			return BadRequest(result.Error);
+		}
+
+		[HttpDelete("delete")]
+		[Authorize]
+		public async Task<IActionResult> Delete(
+			[FromQuery] DeleteOrganizationRequestModel deleteRequestModel)
+		{
+			deleteRequestModel.RequesterId = UserId;
+
+			var result = await organizationsService.DeleteOrganization(deleteRequestModel);
+
+			if (result.Succeeded)
+			{
+				return Ok();
+			}
+
+			return BadRequest(result.Error);
+		}
+
+		[HttpGet("{organizationId}/get-organization")]
+		public async Task<IActionResult> Get(
+			[FromRoute] Guid organizationId)
+		{
+			var result = await organizationsService.GetOrganization(organizationId);
+
+			return Ok(result);
+		}
+
+		[HttpGet("{organizationId}/get-messages")]
+		[Authorize]
+		public async Task<IActionResult> GetMessages(
+			[FromRoute] Guid organizationId,
+			[FromQuery] int page,
+			[FromQuery] int pageCount)
+		{
+			try
+			{
+				var request = new GetOrganizationMessagesRequestModel()
+				{
+					RequesterId = UserId,
+					OrganizationId = organizationId,
+					Page = page,
+					PageCount = pageCount
+				};
+				var result = await organizationsService
+					.GetOrganizationMessages(request);
+
+				result.Reverse();
+
+				return Ok(result);
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+		}
+
+		[HttpPost("{organizationId}/add-message")]
+		[Authorize]
+		public async Task<IActionResult> AddMessage(
+			[FromBody] AddMessageRequestModel request)
+		{
+			try
+			{
+				request.SenderId = UserId;
+
+				var result = await organizationsService.AddMessageInOrganization(request);
+
+				return Ok(result);
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+		}
+	}
 }

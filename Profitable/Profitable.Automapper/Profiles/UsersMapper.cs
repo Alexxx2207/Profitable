@@ -19,6 +19,12 @@
 					dest => dest.Guid,
 					opt => opt.MapFrom(src => src.Guid))
 				.ForMember(
+					dest => dest.OrganizationId,
+					opt => opt.MapFrom(src => src.OrganizationId))
+				.ForMember(
+					dest => dest.OrganizationRole,
+					opt => opt.MapFrom(src => src.OrganizationRole.ToString()))
+				.ForMember(
 				dest => dest.ProfileImage,
 				opt => opt.ConvertUsing(
 					new ImageByteArrayConverter(ImageFor.Users),

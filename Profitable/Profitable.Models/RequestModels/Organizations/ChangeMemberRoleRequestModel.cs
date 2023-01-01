@@ -1,6 +1,4 @@
-﻿using Profitable.Common.Enums;
-
-namespace Profitable.Models.RequestModels.Organizations
+﻿namespace Profitable.Models.RequestModels.Organizations
 {
 	public class ChangeMemberRoleRequestModel
 	{
@@ -8,6 +6,6 @@ namespace Profitable.Models.RequestModels.Organizations
 
 		public Guid ManipulatedMemberId { get; set; }
 
-		public UserOrganizationsRoles RoleToAssign { get; set; }
+		public string RoleToAssign { get; set; }
 	}
 }

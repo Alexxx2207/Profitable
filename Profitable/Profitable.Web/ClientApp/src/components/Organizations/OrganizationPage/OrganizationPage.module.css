@@ -1,0 +1,103 @@
+.chatContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.headerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 1rem;
+    border-bottom: 1px solid white;
+    padding-left: 2rem;
+}
+
+.organizationName {
+    letter-spacing: 1px;
+}
+
+.editOrganizationButton {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0.5rem 2rem;
+    margin: 0.3rem 0rem;
+}
+
+.deleteOrganizationButton {
+    cursor: pointer;
+    border-color: white;
+    background-color: rgb(169, 0, 0);
+    color: white;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0.5rem 2rem;
+    margin: 0.3rem 0rem;
+}
+
+.messagesContainer {
+    margin: 1rem;
+    flex-grow: 0.5;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 6rem;
+}
+
+.rightMessage {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.footerContainer
+{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid white;
+}
+
+.addCommentContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem 1rem;
+}
+
+.addCommentInput {
+    width: 90%;
+    border: 2px solid grey;
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+
+.addCommentSendButton {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0.5rem 2rem;
+}
+
+.notInOrganizationContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 10rem;
+    gap: 0.5rem;
+}
+
+.notInOrganizationMessage {
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    border-bottom: 2px solid white;
+    padding: 0rem 0.5rem;
+}

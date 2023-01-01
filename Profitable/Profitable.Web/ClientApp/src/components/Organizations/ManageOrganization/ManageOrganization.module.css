@@ -1,0 +1,105 @@
+.pageContainer {
+    margin: 1.5rem;
+}
+
+.pageHeader {
+    margin-bottom: 1rem;
+}
+
+.pageBody {
+    margin-left: 1rem;
+}
+
+.nameManagement {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.nameInputField {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+}
+
+.saveButton {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0.4rem 2rem;
+}
+
+.manageMembers {
+    margin-top: 2rem;
+}
+
+.searchInputContainer {
+    margin: 0rem 2rem;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    border: 2px solid white;
+    border-radius: 15px;
+}
+
+.resultSection {
+    margin-top: 2rem;
+}
+
+.searchedResultsHeader {
+    text-align: center;
+    letter-spacing: 1px;
+    margin: 0rem 1rem;
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+    border-bottom: 2px solid white;
+}
+
+.searchedResultsContainer {
+    margin: 0rem 2rem;
+}
+
+.noMatchingHeader {
+    background-color: white;
+    color: black;
+    padding: 2rem 0rem;
+    text-align: center;
+    border-radius: 10px;
+    letter-spacing: 1px;
+}
+
+.userResultsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem
+}
+
+.loadMoreContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.loadMoreButton {
+    color: grey;
+    border: 2px solid grey;
+    border-radius: 15px;
+    transition: 0.3s ease-out;
+    letter-spacing: 1px;
+    padding: 0.5rem 1rem;
+}
+
+.loadMoreButton:hover {
+    color: white;
+    border: 2px solid white;
+    cursor: pointer;
+    transition: 0.3s ease-out;
+}

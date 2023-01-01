@@ -29,10 +29,14 @@ import { CreateStocksPosition } from "../Users/AccountStatistics/StocksPositions
 import { ChangeStocksPosition } from "../Users/AccountStatistics/StocksPositions/ChangeStocksPosition/ChangeStocksPosition";
 import { TimeContextProvider } from "../../contexts/TimeContext";
 
-import styles from "./App.module.css";
 import { AddPositionToRecord } from "../Users/AccountStatistics/PositionsRecords/AddPositionToRecord/AddPositionToRecord";
 import { FundamentalAnalysisPage } from "../FundamentalAnalysis/FundamentalAnalysisPage";
 import { EducationPage } from "../Education/EducationPage";
+import { AddOrganization } from "../Organizations/AddOrganization/AddOrganization";
+
+import styles from "./App.module.css";
+import { OrganizationPage } from "../Organizations/OrganizationPage/OrganizationPage";
+import { ManageOrganization } from "../Organizations/ManageOrganization/ManageOrganization";
 
 export function App() {
     const location = useLocation();
@@ -124,6 +128,12 @@ export function App() {
                                 <Route path="/calendars" element={<Calendars />} />
 
                                 <Route path="/search" element={<SearchPage />} />
+
+                                <Route path="/organization" element={<OrganizationPage />} />
+
+                                <Route path=":searchedProfileEmail/organizations/add" element={<AddOrganization />} />
+
+                                <Route path="/organizations/:organizationId/manage" element={<ManageOrganization />} />
 
                                 <Route 
                                     className={styles.fa_nav_link}

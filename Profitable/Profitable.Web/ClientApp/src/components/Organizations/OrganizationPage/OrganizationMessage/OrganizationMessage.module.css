@@ -1,0 +1,37 @@
+.messageContainer {
+    background-color: white;
+    border-radius: 15px;
+    padding: 1rem;
+    width: 49%;
+}
+
+.messageContainer *{
+    background-color: white;
+}
+
+.infoContainer {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.senderContainer {
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: black;
+}
+
+.dateContainer {
+    font-weight: 500;
+    color: grey;
+}
+
+.message {
+    word-wrap: break-word;
+    overflow-wrap: break-all;
+    hyphens: manual;
+    color: black;
+    letter-spacing: 1px;
+    font-size: 16px;
+    letter-spacing: 1px;
+}

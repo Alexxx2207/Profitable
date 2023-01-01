@@ -13,5 +13,9 @@
         public byte[] ProfileImage { get; set; }
 
         public string Description { get; set; }
+
+        public string OrganizationId { get; set; }
+
+        public string OrganizationRole { get; set; }
     }
 }
