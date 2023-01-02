@@ -123,7 +123,10 @@ export const MemberSearchResult = ({
                             </button>
                         </> 
                     :
-                    <></>
+                    state.organizationId !== userManager.organizationId ?
+                        <h5>Already In Other Organization</h5>
+                    :
+                        <h5>Owner Of The Organization</h5>
                 }
                 
             </div>

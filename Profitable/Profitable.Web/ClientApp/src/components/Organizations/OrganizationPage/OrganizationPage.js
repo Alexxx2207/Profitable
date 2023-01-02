@@ -1,5 +1,7 @@
-import { useCallback, useContext, useEffect, useReducer } from "react";
-import { MESSAGES_IN_PAGE_COUNT, organizationRolesToManage } from "../../../common/config";
+import { useCallback, useContext, useEffect, useReducer, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { HubConnectionBuilder } from '@microsoft/signalr';
+import { HUB_URL, MESSAGES_IN_PAGE_COUNT, organizationRolesToManage } from "../../../common/config";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { addOrganizationMessage, deleteOrganizationMessage, getOrganization, getOrganizationMessages } from "../../../services/organization/organizationsService";
 import { getUserDataByJWT, getAuthenticatedUserOrganization } from "../../../services/users/usersService";
@@ -7,9 +9,9 @@ import { OrganizationMessage } from "./OrganizationMessage/OrganizationMessage";
 
 import { ShowMoreButton } from "../../Common/ShowMoreButton/ShowMoreButton";
 
-import styles from "./OrganizationPage.module.css";
-import { useNavigate } from "react-router-dom";
 import { MessageBoxContext } from "../../../contexts/MessageBoxContext";
+
+import styles from "./OrganizationPage.module.css";
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -22,6 +24,11 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 messages: action.payload
+            }
+        case "receiveMessages":
+            return {
+                ...state,
+                messages: [ ...state.messages, action.payload]
             }
         case "loadMoreOrganizationMessages":
             return {
@@ -43,10 +50,10 @@ const reducer = (state, action) => {
                 ...state,
                 showManagementButton: action.payload
             }
-        case "changeAddCommentText":
+        case "changeAddMessageText":
             return {
                 ...state,
-                addCommentText: action.payload
+                addMessageText: action.payload
             }
         case "pageIncrease":
             return {
@@ -72,17 +79,45 @@ export const OrganizationPage = () => {
     const { JWT } = useContext(AuthContext);
     const { setMessageBoxSettings } = useContext(MessageBoxContext);
     
+    const [ connection, setConnection ] = useState(null);
+
+    
     const [state, setState] = useReducer(reducer, {
         name: "",
         messages: [],
         organizationId: "",
         user: "",
         showManagementButton: false,
-        addCommentText: "",
+        addMessageText: "",
         showShowMore: true,
         showEditButton: true,
         page: 0,
     });
+    
+    useEffect(() => {
+        const newConnection = new HubConnectionBuilder()
+            .withUrl(HUB_URL)
+            .withAutomaticReconnect()
+            .build();
+
+        setConnection(newConnection);
+    }, []);
+
+    useEffect(() => {
+        if (connection) {
+            connection.start()
+                .then(result => {
+    
+                    connection.on('ReceiveMessage', message => {
+                        setState({
+                            type: "receiveMessages",
+                            payload: message
+                        });
+                    });
+                })
+                .catch(e => console.log('Connection failed: ', e));
+        }
+    }, [connection]);
 
     useEffect(() => {
         async function fetchData() {
@@ -120,22 +155,29 @@ export const OrganizationPage = () => {
 
     useEffect(() => {
         window.scrollTo(0, document.body.scrollHeight);
-    }, [state.userId]);
+    }, [state.messages]);
 
-    const addCommentOnChangeHandler = (e) => {
+    const addMessageOnChangeHandler = (e) => {
         setState({
-            type: "changeAddCommentText",
+            type: "changeAddMessageText",
             payload: e.target.value
         })
     };
 
-    const addCommentSendOnClickHandler = (e) => {
-        if(state.addCommentText)
+    const sendMessage = async (message) => {
+        if (connection.connectionId) {
+            await connection.send('SendMessage', message);
+        }
+    }
+
+    const addMessageSendOnClickHandler = (e) => {
+        if(state.addMessageText)
         {
-            addOrganizationMessage(JWT, state.organizationId, state.addCommentText)
-            .then(result => {
+            addOrganizationMessage(JWT, state.organizationId, state.addMessageText)
+            .then(message => {
+                sendMessage(message);
                 setState({
-                    type: "changeAddCommentText",
+                    type: "changeAddMessageText",
                     payload: ""
                 });
             });
@@ -247,16 +289,16 @@ export const OrganizationPage = () => {
                         )}
                     </div>
                     <div className={styles.footerContainer}>
-                        <div className={styles.addCommentContainer}>
+                        <div className={styles.addMessageContainer}>
                             <input 
-                                className={styles.addCommentInput}
+                                className={styles.addMessageInput}
                                 placeholder="Type your message here!"
                                 type="text" 
-                                value={state.addCommentText}
-                                onChange={addCommentOnChangeHandler} />
+                                value={state.addMessageText}
+                                onChange={addMessageOnChangeHandler} />
                                 <button 
-                                    className={styles.addCommentSendButton}
-                                    onClick={addCommentSendOnClickHandler}>
+                                    className={styles.addMessageSendButton}
+                                    onClick={addMessageSendOnClickHandler}>
                                     Send
                                 </button>
                         </div>

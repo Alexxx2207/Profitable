@@ -61,7 +61,7 @@
     border-top: 1px solid white;
 }
 
-.addCommentContainer {
+.addMessageContainer {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -69,14 +69,14 @@
     padding: 1rem 1rem;
 }
 
-.addCommentInput {
+.addMessageInput {
     width: 90%;
     border: 2px solid grey;
     border-radius: 10px;
     padding: 0.5rem;
 }
 
-.addCommentSendButton {
+.addMessageSendButton {
     cursor: pointer;
     background-color: white;
     color: black;

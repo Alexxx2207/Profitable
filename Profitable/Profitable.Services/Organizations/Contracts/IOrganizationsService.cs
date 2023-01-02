@@ -10,7 +10,7 @@
 
 		Task<Result> AddOrganization(AddOrganizationRequestModel model);
 
-		Task<Result> AddMessageInOrganization(AddMessageRequestModel model);
+		Task<OrganizationMessageResponseModel> AddMessageInOrganization(AddMessageRequestModel model);
 
 		Task<Result> UpdateOrganizationGeneralSettings(
 			UpdateOrganizationRequestModel model);

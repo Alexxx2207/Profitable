@@ -135,7 +135,8 @@
 			}
 		}
 
-		public async Task<Result> AddMessageInOrganization(AddMessageRequestModel model)
+		public async Task<OrganizationMessageResponseModel> AddMessageInOrganization(
+			AddMessageRequestModel model)
 		{
 			try
 			{
@@ -157,15 +158,22 @@
 
 				await organizationMessagesRepository.SaveChangesAsync();
 
-				return true;
+				return new OrganizationMessageResponseModel
+				{
+					SenderId = sender.Guid.ToString(),
+					Sender = $"{sender.FirstName} {sender.LastName}",
+					SentOn = organizationMessage.SentOn.ToString("f"),
+					Content = organizationMessage.Message
+
+				};
 			}
 			catch (InvalidOperationException e)
 			{
-				return e.Message;
+				throw e;
 			}
 			catch (Exception)
 			{
-				return GlobalServicesConstants.InternalServerErrorMessage;
+				throw new Exception(GlobalServicesConstants.InternalServerErrorMessage);
 			}
 		}
 

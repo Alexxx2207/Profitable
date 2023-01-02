@@ -1,5 +1,7 @@
 export const JWT_LOCAL_STORAGE_KEY = "JWT";
 
+export const BASE_URL = "https://localhost:7048/";
+export const HUB_URL = "https://localhost:7048/hubs/chat";
 export const WEB_API_BASE_URL = "https://localhost:7048/api";
 
 export const SEARCH_ENTITY_IN_PAGE_COUNT = 5;
