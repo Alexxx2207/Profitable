@@ -11,8 +11,8 @@ export const About = () => {
                     <p className={styles.aboutParagraph}>
                         We are Profitable - a large company, aiming to help institutional and retail
                         traders achieve more by making their everyday job easier. We believe that
-                        when a person is connected to many others and has access to instant
-                        information, he/she is one step closer to professionalism.
+                        if people are connected and have access to high quality
+                        information, their success is dependent only on themself.
                     </p>
                 </section>
 

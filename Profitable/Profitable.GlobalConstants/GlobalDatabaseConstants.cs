@@ -2,6 +2,8 @@
 {
 	public static class GlobalDatabaseConstants
 	{
+		public const int MESSAGE_MAX_LENGTH = 8000;
+
 		public static readonly Dictionary<string, string> CotReportSourcesLinks = new Dictionary<string, string>
 		{
 			{

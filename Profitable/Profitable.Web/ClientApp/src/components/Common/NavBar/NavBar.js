@@ -11,6 +11,7 @@ import {
     faNewspaper,
     faCalendarDays,
     faMagnifyingGlass,
+    faComment,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -68,6 +69,27 @@ export const NavBar = () => {
                     </NavLink>
 
                     <NavLink
+                        to="/fundamental-analysis"
+                        className={classNames(styles.navbarListItems, styles.navLink)}
+                    >
+                        FA
+                    </NavLink>
+
+                    <NavLink
+                        to="/education"
+                        className={classNames(styles.navbarListItems, styles.navLink)}
+                    >
+                        EDUCATION
+                    </NavLink>
+
+                    <NavLink
+                        to="/organization"
+                        className={classNames(styles.navbarListItems, styles.navLink)}
+                    >
+                        <FontAwesomeIcon icon={faComment} className={styles.navbarIcon} />
+                    </NavLink>
+
+                    <NavLink
                         to="/calculators"
                         className={classNames(styles.navbarListItems, styles.navLink)}
                     >
@@ -105,20 +127,6 @@ export const NavBar = () => {
                     >
                         <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.navbarIcon} />
                     </NavLink>
-
-                    <NavLink
-                        to="/fundamental-analysis"
-                        className={classNames(styles.navbarListItems, styles.navLink)}
-                    >
-                        FUNDAMENTALS
-                    </NavLink>
-
-                    <NavLink
-                        to="/education"
-                        className={classNames(styles.navbarListItems, styles.navLink)}
-                    >
-                        EDUCATION
-                    </NavLink>
                 </div>
                 <div className={styles.userPanel}>
                     {JWT ? (
@@ -151,7 +159,7 @@ export const NavBar = () => {
                                 to="/register"
                                 className={classNames(styles.navbarListItems, styles.navLink)}
                             >
-                                REGISTER
+                                SIGN UP
                             </NavLink>
                         </div>
                     )}

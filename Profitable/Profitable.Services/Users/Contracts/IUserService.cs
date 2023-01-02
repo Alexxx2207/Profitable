@@ -20,5 +20,7 @@
 		Task<JWTToken> RegisterUserAsync(RegisterUserRequestModel user);
 
 		Task<JWTToken> LoginUserAsync(LoginUserRequestModel user);
+
+		Task<string> GetUserOrganization(Guid userToCheckId, string requesterEmail);
 	}
 }

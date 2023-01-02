@@ -319,6 +319,41 @@ namespace Profitable.Data.Migrations
                     b.ToTable("Organizations");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.OrganizationMessage", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(8000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SentOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("OrganizationsMessages");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.PositionsRecordList", b =>
                 {
                     b.Property<Guid>("Guid")
@@ -478,6 +513,25 @@ namespace Profitable.Data.Migrations
                     b.Navigation("TradePosition");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.OrganizationMessage", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.Organization", "Organization")
+                        .WithMany("Messages")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "Sender")
+                        .WithMany("Messages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.PositionsRecordList", b =>
                 {
                     b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "User")
@@ -511,6 +565,11 @@ namespace Profitable.Data.Migrations
                     b.Navigation("PositionsRecordList");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.ApplicationUser", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.COTReportedInstrument", b =>
                 {
                     b.Navigation("COTReports");
@@ -518,6 +577,8 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.Organization", b =>
                 {
+                    b.Navigation("Messages");
+
                     b.Navigation("Users");
                 });
 

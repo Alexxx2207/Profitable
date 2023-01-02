@@ -101,6 +101,26 @@ export const editUserImage = async (email, jwt, fileName, image) => {
     return await response.json();
 };
 
+
+export const editUserRole = async (jwt, manipulatedMemberId, roleToAssign) => {
+    let response = await request.patch(
+        `${WEB_API_BASE_URL}/organizations/change-member-role`,
+        {
+            manipulatedMemberId,
+            roleToAssign,
+        },
+        {
+            Authorization: "Bearer " + jwt,
+        }
+    );
+
+    if (response.status === 401) {
+        throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
+    }
+
+    return await response.text();
+};
+
 export const getUserDataByJWT = async (jwt) => {
     let response = await request.get(`${WEB_API_BASE_URL}/users/user`, null, {
         Authorization: "Bearer " + jwt,
@@ -164,7 +184,7 @@ export const getUserGuidFromJWT = async (jwt) => {
         throw new Error(await response.text());
     }
 
-    return await response.text();
+    return await response.json();
 };
 
 export const getUsersBySearchTerm = (searchTerm, page, pageCount) => {
@@ -172,3 +192,11 @@ export const getUsersBySearchTerm = (searchTerm, page, pageCount) => {
         .get(`${WEB_API_BASE_URL}/search/users/${searchTerm}?page=${page}&pageCount=${pageCount}`)
         .then((response) => response.json());
 };
+
+export const  getAuthenticatedUserOrganization = async (jwt, userEmail) => {
+    var response = await request.get(`${WEB_API_BASE_URL}/users/${userEmail}/organization`, null,
+    {
+        Authorization: "Bearer " + jwt,
+    });
+    return await response.text();
+} ;

@@ -6,38 +6,45 @@ export const MessageBoxContext = createContext();
 
 export const MessageBoxContextProvider = ({ children }) => {
     const messageBoxInitialState = {
-        message: "",
-        good: false,
-        show: false,
+        messages: [],
     };
 
-    const [messageBox, setMessageBox] = useState([{ ...messageBoxInitialState }]);
+    const [messageBox, setMessageBox] = useState({ ...messageBoxInitialState });
 
     const setMessageBoxSettings = (message, good) => {
-        setMessageBox({
-            message: message,
-            good,
-            show: true,
+        setMessageBox(state => {
+            state.messages.unshift({message, good});
+            return {
+                ...messageBox,
+                messages: state.messages
+            }
         });
     };
 
-    const disposeMessageBoxSettings = () => {
-        setTimeout(() => {
-            setMessageBox({ ...messageBoxInitialState });
-        }, 2600);
-    };
+    const disposeMessageBox = () => {
+        setMessageBox(state => {
+            state.messages.shift();
+            return {
+                ...messageBox,
+                messages: state.messages
+            }
+        });
+    }
+
     return (
         <MessageBoxContext.Provider value={{ setMessageBoxSettings }}>
             {children}
-            {messageBox.show ? (
-                <MessageBox
-                    message={messageBox.message}
-                    good={messageBox.good}
-                    disposeMessageBoxSettings={disposeMessageBoxSettings}
+            {
+            messageBox.messages.map((message, index) => 
+                 <MessageBox
+                    key={messageBox.messages.length - index}
+                    message={message.message}
+                    good={message.good}
+                    index={index}
+                    disposeMessageBox={disposeMessageBox}
                 />
-            ) : (
-                ""
             )}
+           
         </MessageBoxContext.Provider>
     );
 };

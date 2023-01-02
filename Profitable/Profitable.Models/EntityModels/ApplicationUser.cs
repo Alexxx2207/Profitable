@@ -8,6 +8,11 @@
 
 	public class ApplicationUser : EntityBase
 	{
+		public ApplicationUser()
+		{
+			Messages = new HashSet<OrganizationMessage>();
+		}
+
 		[Required]
 		public string Email { get; set; }
 
@@ -32,5 +37,7 @@
 		public Organization? Organization { get; set; }
 
 		public UserOrganizationsRoles OrganizationRole { get; set; }
+
+		public ICollection<OrganizationMessage> Messages { get; set; }
 	}
 }

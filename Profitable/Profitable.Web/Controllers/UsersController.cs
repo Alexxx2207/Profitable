@@ -169,5 +169,14 @@
 
 			return Ok(result);
 		}
+
+		[Authorize]
+		[HttpGet("{userEmail}/organization")]
+		public async Task<IActionResult> GetUserOrganizationAsync([FromRoute] string userEmail)
+		{
+			var result = await userService.GetUserOrganization(this.UserId, userEmail);
+
+			return Ok(result);
+		}
 	}
 }

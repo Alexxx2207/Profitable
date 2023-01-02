@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Profitable.Data;
 using Profitable.Data.Repository;
 using Profitable.Data.Repository.Contract;
+using Profitable.Web.Hubs;
 using Profitable.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,12 +24,14 @@ builder.Services.AddCors(options =>
 					  {
 						  policy.WithOrigins("https://localhost:44415")
 						  .AllowAnyHeader()
+						  .AllowCredentials()
 						  .AllowAnyMethod();
 					  });
 });
 
 builder.Services.AddControllers();
 
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -49,6 +52,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller}/{action=Index}/{id?}");
+
+app.MapHub<ChatHub>("/hubs/chat");
 
 app.MapFallbackToFile("index.html"); ;
 

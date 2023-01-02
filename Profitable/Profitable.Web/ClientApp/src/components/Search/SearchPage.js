@@ -154,7 +154,7 @@ export const SearchPage = () => {
             <h1 className={styles.searchPageHeader}>Search Whatever You Need</h1>
             <div className={styles.searchInputContainer}>
                 <input
-                    placeholder={"Search here..."}
+                    placeholder={"Search here by name or email..."}
                     type="text"
                     onChange={optimisedOnChange}
                     className={styles.searchInput}

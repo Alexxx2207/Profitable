@@ -33,7 +33,7 @@ export const ProfileInfo = () => {
         previewImageFileName: undefined,
     });
 
-    const [loggedInUserEmail, setLoggedInUserEmail] = useState({});
+    const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
 
     const { JWT, removeAuth } = useContext(AuthContext);
     const { setMessageBoxSettings } = useContext(MessageBoxContext);

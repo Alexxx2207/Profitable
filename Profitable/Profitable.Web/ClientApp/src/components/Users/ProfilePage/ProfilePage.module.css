@@ -48,3 +48,24 @@
     border: 3px solid white;
     transition: 0.3s ease-out;
 }
+
+.organizationContainer {
+    display: flex;
+    justify-content: right;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.createOrganizationButton {
+    background-color: white;
+    color: black;
+    padding: 0.6rem 2rem;
+    border-radius: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.createOrganizationButton:disabled {
+    opacity: 0.5;
+}

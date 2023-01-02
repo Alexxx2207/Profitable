@@ -1,0 +1,133 @@
+.pageContainer {
+    display: flex;
+    justify-content: center;
+    padding-top: 12vh;
+}
+
+.organizationAddFormContainer {
+    display: flex;
+    justify-content: center;
+    width: 47%;
+    margin-right: 3rem;
+}
+
+.organizationAddForm {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+
+    padding: 1rem 2rem;
+}
+
+.organizationAddForm * {
+    background-color: white;
+    color: black;
+}
+
+.organizationAddFormLabelContainer {
+    border-bottom: 2px solid black;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.addOrganizationLabel {
+    margin-bottom: 1rem;
+}
+
+.formGroup {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0rem;
+    width: 100%;
+}
+
+.formGroup div {
+    width: 50%;
+}
+
+.formGroup div h5 {
+    font-size: 1.3rem;
+    margin: 0px;
+}
+
+.inputField {
+    border: 2px solid #1e222d5c;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    width: 90%;
+    font-size: 1.3rem;
+}
+
+.inputField:focus {
+    border: 2px solid #1e222d;
+}
+
+.instrumentGroupSelector {
+    border-radius: 10px;
+    width: 70%;
+    font-weight: 600;
+    padding: 0.1rem 0.3rem;
+    border: 2px solid #aeafb3;
+}
+
+.instrumentGroupSelector:focus {
+    border: 2px solid black;
+}
+
+.submitButtonContainer {
+    width: 100%;
+    padding: 2rem 0rem 1rem 0rem;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 0.8vh 0.8vw;
+    font-size: 24px;
+    font-weight: 700;
+    border: none;
+    letter-spacing: 1px;
+    border-radius: 10px;
+    border: 0.2rem solid #1e222d21;
+    transition: linear 0.5s;
+
+}
+
+.submitButton:hover {
+    cursor: pointer;
+    background-color: #1e222d;
+    color: white;
+    border-radius: 10px;
+    transition: linear 0.3s;
+}
+
+.organizationAddFormAside {
+    width: 35%;
+    position: sticky;
+    height: 30rem;
+    top: 15vh;
+}
+
+.errorsHeadingContainer {
+    border-bottom: 2px solid white;
+    margin-bottom: 2rem;
+}
+
+.errorsHeading {
+    text-align: center;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.errorsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}

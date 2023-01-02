@@ -15,7 +15,10 @@
 
 		public DbSet<ApplicationUser> Users { get; set; }
 
+
 		public DbSet<Organization> Organizations { get; set; }
+
+		public DbSet<OrganizationMessage> OrganizationsMessages { get; set; }
 
 		public DbSet<FinancialInstrument> FinancialInstruments { get; set; }
 
