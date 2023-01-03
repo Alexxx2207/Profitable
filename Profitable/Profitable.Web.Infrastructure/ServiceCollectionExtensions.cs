@@ -13,6 +13,8 @@
 	using Profitable.Services.COT.Contracts;
 	using Profitable.Services.Futures;
 	using Profitable.Services.Futures.Contracts;
+	using Profitable.Services.Journals;
+	using Profitable.Services.Journals.Contracts;
 	using Profitable.Services.Markets;
 	using Profitable.Services.Markets.Contract;
 	using Profitable.Services.News;
@@ -46,6 +48,7 @@
 			services.AddScoped<IUserSearchService, UserSearchService>();
 			services.AddScoped<IOrganizationsService, OrganizationsService>();
 			services.AddScoped<IOrganizationMembersService, OrganizationsService>();
+			services.AddScoped<IJournalService, JournalService>();
 
 			return services;
 		}

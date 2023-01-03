@@ -1,0 +1,26 @@
+.missingPageContainer {
+    padding: 6vh 1vw;
+    text-align: center;
+}
+
+.logo404 {
+    margin-bottom: 4vh;
+    font-size: 27vh;
+}
+
+.teaseContainer {
+    font-size: 4vh;
+    line-height: 7vh;
+}
+
+.homeButton {
+    margin-top: 5vh;
+    padding: 1rem 5rem;
+    font-size: 4vh;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border: none;
+    color: black;
+    background-color: white;
+    border-radius: 100px;
+}

@@ -5,6 +5,7 @@ export const HUB_URL = "https://localhost:7048/hubs/chat";
 export const WEB_API_BASE_URL = "https://localhost:7048/api";
 
 export const SEARCH_ENTITY_IN_PAGE_COUNT = 5;
+export const JOURNAL_IN_PAGE_COUNT = 5;
 export const MESSAGES_IN_PAGE_COUNT = 5;
 export const BOOKS_PAGE_COUNT = 6;
 export const POSITIONS_RECORDS_PAGE_COUNT = 5;

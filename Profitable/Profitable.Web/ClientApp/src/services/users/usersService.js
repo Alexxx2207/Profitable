@@ -13,7 +13,7 @@ export const loginUser = async (email, password) => {
         password: await sha512(password),
     });
 
-    if (response.status === 400) {
+    if (!response.ok) {
         let errorMessage = await response.text();
         if (errorMessage === "Sequence contains no elements.") {
             errorMessage =
@@ -33,7 +33,7 @@ export const registerUser = async (email, firstName, lastName, password) => {
         lastName,
     });
 
-    if (response.status === 400) {
+    if (!response.ok) {
         throw new Error(await response.text());
     }
     return await response.json();
@@ -53,7 +53,7 @@ export const editGeneralUserData = async (email, firstName, lastName, descriptio
         }
     );
 
-    if (response.status === 401) {
+    if (!response.ok) {
         throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
     }
     return await response.json();
@@ -72,9 +72,9 @@ export const editUserPasswоrd = async (email, jwt, oldPassword, newPassword) =>
         }
     );
 
-    if (response.status === 401) {
+    if (!response.ok) {
         throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
-    } else if (response.status === 400) {
+    } else if (!response.ok) {
         throw new Error(INVALID_OLD_PASSWORD_PROVIDED_ERROR_MESSAGE);
     }
 
@@ -94,7 +94,7 @@ export const editUserImage = async (email, jwt, fileName, image) => {
         }
     );
 
-    if (response.status === 401) {
+    if (!response.ok) {
         throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
     }
 
@@ -114,7 +114,7 @@ export const editUserRole = async (jwt, manipulatedMemberId, roleToAssign) => {
         }
     );
 
-    if (response.status === 401) {
+    if (!response.ok) {
         throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
     }
 
@@ -126,7 +126,7 @@ export const getUserDataByJWT = async (jwt) => {
         Authorization: "Bearer " + jwt,
     });
 
-    if (response.status === 401) {
+    if (!response.ok) {
         throw new Error(JWT_EXPIRED_WHILE_EDITING_ERROR_MESSAGE);
     }
 
@@ -138,7 +138,7 @@ export const deleteUserData = async (jwt, email) => {
         Authorization: "Bearer " + jwt,
     });
 
-    if (response.status === 401) {
+    if (!response.ok) {
         throw new Error(await response.text());
     }
 
@@ -150,7 +150,7 @@ export const deleteUserImage = async (jwt, email) => {
         Authorization: "Bearer " + jwt,
     });
 
-    if (response.status === 401) {
+    if (!response.ok) {
         throw new Error(await response.text());
     }
 
@@ -168,7 +168,7 @@ export const getUserEmailFromJWT = async (jwt) => {
         Authorization: "Bearer " + jwt,
     });
 
-    if (response.status === 401) {
+    if (!response.ok) {
         throw new Error(await response.text());
     }
 
@@ -180,7 +180,7 @@ export const getUserGuidFromJWT = async (jwt) => {
         Authorization: "Bearer " + jwt,
     });
 
-    if (response.status === 401) {
+    if (!response.ok) {
         throw new Error(await response.text());
     }
 

@@ -6,7 +6,7 @@ export const PositionsRecordListsList = ({ records, showOwnerActionButtons }) =>
     return (
         <div className={styles.listContainer}>
             {records.length > 0 ? (
-                records.map((list, index) => (
+                records.map((list) => (
                     <PositionsRecordListWidget
                         key={list.guid}
                         list={list}

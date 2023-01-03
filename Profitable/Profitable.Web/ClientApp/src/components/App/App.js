@@ -37,6 +37,11 @@ import { AddOrganization } from "../Organizations/AddOrganization/AddOrganizatio
 import styles from "./App.module.css";
 import { OrganizationPage } from "../Organizations/OrganizationPage/OrganizationPage";
 import { ManageOrganization } from "../Organizations/ManageOrganization/ManageOrganization";
+import { AccountJournal } from "../Users/AccountJournal/AccountJournal";
+import { CreateJournalPage } from "../Users/AccountJournal/CreateJournalPage/CreateJournalPage";
+import { JournalDetails } from "../Users/AccountJournal/JournalDetails/JournalDetails";
+import { UpdateJournalPage } from "../Users/AccountJournal/UpdateJournalPage/UpdateJournalPage";
+import { UserNotFound } from "../Common/UserNotFound/UserNotFound";
 
 export function App() {
     const location = useLocation();
@@ -74,6 +79,10 @@ export function App() {
                                     <Route
                                         path="account-statistics"
                                         element={<AccountStatistics />}
+                                    />
+                                    <Route
+                                        path="account-journal"
+                                        element={<AccountJournal />}
                                     />
                                 </Route>
 
@@ -119,6 +128,15 @@ export function App() {
                                     element={<ChangeStocksPosition />}
                                 />
 
+                                <Route path="/:searchedProfileEmail/journals/create"
+                                    element={<CreateJournalPage />} />
+
+                                <Route path="/:searchedProfileEmail/journals/:journalId"
+                                    element={<JournalDetails />} />
+                                
+                                <Route path="/:searchedProfileEmail/journals/:journalId/update"
+                                    element={<UpdateJournalPage />} />
+
                                 <Route path="/calculators" element={<Calcualtors />} />
 
                                 <Route path="/news" element={<NewsList />} />
@@ -141,6 +159,8 @@ export function App() {
                                     element={<FundamentalAnalysisPage />} />
 
                                 <Route path="/education" element={<EducationPage />} />
+
+                                <Route path="/user-not-found" element={<UserNotFound />} />
 
                                 <Route path="*" element={<NotFoundPage />} />
                             </Routes>

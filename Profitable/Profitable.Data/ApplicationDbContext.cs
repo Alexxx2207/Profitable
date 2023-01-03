@@ -13,8 +13,10 @@
 			: base(options)
 		{ }
 
+
 		public DbSet<ApplicationUser> Users { get; set; }
 
+		public DbSet<Journal> Journals { get; set; }
 
 		public DbSet<Organization> Organizations { get; set; }
 

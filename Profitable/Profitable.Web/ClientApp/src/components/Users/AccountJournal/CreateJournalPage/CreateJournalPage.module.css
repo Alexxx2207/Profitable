@@ -4,14 +4,14 @@
     padding-top: 12vh;
 }
 
-.organizationAddFormContainer {
+.journalAddFormContainer {
     display: flex;
     justify-content: center;
-    width: 47%;
-    margin-right: 3rem;
+    width: 51%;
+    margin-right: 2rem;
 }
 
-.organizationAddForm {
+.journalAddForm {
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -24,12 +24,12 @@
     padding: 1rem 2rem;
 }
 
-.organizationAddForm * {
+.journalAddForm * {
     background-color: white;
     color: black;
 }
 
-.organizationAddFormLabelContainer {
+.journalAddFormLabelContainer {
     border-bottom: 2px solid black;
     width: 100%;
     text-align: center;
@@ -61,7 +61,7 @@
     border-radius: 10px;
     display: inline-block;
     padding: 0.5rem 1rem;
-    width: 90%;
+    width: 100%;
     font-size: 1.3rem;
 }
 
@@ -95,7 +95,7 @@
     transition: linear 0.3s;
 }
 
-.organizationAddFormAside {
+.journalAddFormAside {
     width: 35%;
     position: sticky;
     height: 30rem;

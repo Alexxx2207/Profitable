@@ -12,22 +12,36 @@
     cursor: pointer;
 }
 
-.recordInfo {
+.journalInfo {
     width: 50%;
 }
 
-.recordNameHeader {
+.journalNameHeader {
     text-transform: capitalize;
 }
 
-.openPositionsRecordButtonContainer {
+.journalPostedOnHeader {
+    color: grey;
+}
+
+.journalContentHeader {
+    margin: 0;
+    padding-left: 0.5rem;
+    width: 20vw;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.openPositionsJournalButtonContainer {
     display: flex;
     align-items: center;
     gap: 2vw;
     justify-content: center;
+    width: 50%;
 }
 
-.openPositionsRecordButton {
+.openPositionsJournalButton {
     border-radius: 10px;
     padding: 0.5rem 1.5vw;
     letter-spacing: 1px;
@@ -39,13 +53,13 @@
     transition: 0.2s ease-in-out;
 }
 
-.openPositionsRecordButton:hover {
+.openPositionsJournalButton:hover {
     background-color: green;
     color: white;
     transition: 0.2s ease-in-out;
 }
 
-.changeNamePositionsRecordButton {
+.changeNamePositionsJournalButton {
     border-radius: 10px;
     padding: 0.5rem 1.5vw;
     letter-spacing: 1px;
@@ -57,13 +71,13 @@
     transition: 0.2s ease-in-out;
 }
 
-.changeNamePositionsRecordButton:hover {
+.changeNamePositionsJournalButton:hover {
     background-color: rgb(224, 146, 0);
     color: white;
     transition: 0.2s ease-in-out;
 }
 
-.deletePositionsRecordButton {
+.deletePositionsJournalButton {
     border-radius: 10px;
     padding: 0.5rem 1.5vw;
     letter-spacing: 1px;
@@ -75,7 +89,7 @@
     transition: 0.2s ease-in-out;
 }
 
-.deletePositionsRecordButton:hover {
+.deletePositionsJournalButton:hover {
     background-color: rgb(200, 0, 0);
     color: white;
     transition: 0.2s ease-in-out;

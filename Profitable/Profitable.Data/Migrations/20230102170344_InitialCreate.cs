@@ -183,6 +183,58 @@ namespace Profitable.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Journals",
+                columns: table => new
+                {
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Journals", x => x.Guid);
+                    table.ForeignKey(
+                        name: "FK_Journals_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Guid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrganizationsMessages",
+                columns: table => new
+                {
+                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrganizationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", maxLength: 8000, nullable: false),
+                    SentOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrganizationsMessages", x => x.Guid);
+                    table.ForeignKey(
+                        name: "FK_OrganizationsMessages_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Guid",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrganizationsMessages_Users_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Users",
+                        principalColumn: "Guid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PositionsRecordLists",
                 columns: table => new
                 {
@@ -307,6 +359,21 @@ namespace Profitable.Data.Migrations
                 column: "TradePositionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Journals_UserId",
+                table: "Journals",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrganizationsMessages_OrganizationId",
+                table: "OrganizationsMessages",
+                column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrganizationsMessages_SenderId",
+                table: "OrganizationsMessages",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PositionsRecordLists_UserId",
                 table: "PositionsRecordLists",
                 column: "UserId");
@@ -341,6 +408,12 @@ namespace Profitable.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "FuturesPositions");
+
+            migrationBuilder.DropTable(
+                name: "Journals");
+
+            migrationBuilder.DropTable(
+                name: "OrganizationsMessages");
 
             migrationBuilder.DropTable(
                 name: "StocksPositions");

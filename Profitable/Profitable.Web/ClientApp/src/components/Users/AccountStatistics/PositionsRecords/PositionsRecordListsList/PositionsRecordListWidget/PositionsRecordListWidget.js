@@ -39,7 +39,7 @@ export const PositionsRecordListWidget = ({ list, showOwnerActionButtons }) => {
 
     return (
         <div className={styles.widgetContainer}>
-            <div>
+            <div className={styles.recordInfo}>
                 <h2 className={styles.recordNameHeader}>{list.name}</h2>
                 <h5>Recorded Positions: {list.positionsCount}</h5>
                 <h5>Financial Instruments: {list.instrumentGroup}</h5>
@@ -55,7 +55,7 @@ export const PositionsRecordListWidget = ({ list, showOwnerActionButtons }) => {
                             className={styles.changeNamePositionsRecordButton}
                             onClick={() => handleChange()}
                         >
-                            Change Name
+                            Update
                         </button>
                         <button
                             className={styles.deletePositionsRecordButton}
