@@ -277,6 +277,39 @@ namespace Profitable.Data.Migrations
                     b.ToTable("FuturesPositions");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.Journal", b =>
+                {
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PostedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Guid");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Journals");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.MarketType", b =>
                 {
                     b.Property<Guid>("Guid")
@@ -513,6 +546,17 @@ namespace Profitable.Data.Migrations
                     b.Navigation("TradePosition");
                 });
 
+            modelBuilder.Entity("Profitable.Models.EntityModels.Journal", b =>
+                {
+                    b.HasOne("Profitable.Models.EntityModels.ApplicationUser", "User")
+                        .WithMany("Journals")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Profitable.Models.EntityModels.OrganizationMessage", b =>
                 {
                     b.HasOne("Profitable.Models.EntityModels.Organization", "Organization")
@@ -567,6 +611,8 @@ namespace Profitable.Data.Migrations
 
             modelBuilder.Entity("Profitable.Models.EntityModels.ApplicationUser", b =>
                 {
+                    b.Navigation("Journals");
+
                     b.Navigation("Messages");
                 });
 

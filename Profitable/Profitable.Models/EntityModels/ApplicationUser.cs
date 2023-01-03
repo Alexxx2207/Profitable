@@ -39,5 +39,7 @@
 		public UserOrganizationsRoles OrganizationRole { get; set; }
 
 		public ICollection<OrganizationMessage> Messages { get; set; }
+
+		public ICollection<Journal> Journals { get; set; }
 	}
 }

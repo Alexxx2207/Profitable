@@ -7,9 +7,9 @@ export const ShowMoreButton = ({showShowMore, entity, handler}) => {
         <div>
             {showShowMore ? (
                     <div className={styles.loadMoreContainer}>
-                        <h4 className={styles.loadMoreButton} onClick={handler}>
+                        <h5 className={styles.loadMoreButton} onClick={handler}>
                             Show More {entity}
-                        </h4>
+                        </h5>
                     </div>
                 ) : (
                     <></>

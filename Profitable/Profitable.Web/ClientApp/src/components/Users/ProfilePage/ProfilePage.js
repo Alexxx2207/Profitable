@@ -108,6 +108,16 @@ export const ProfilePage = () => {
                 >
                     Statistics
                 </NavLink>
+                {loggedInUserEmail.localeCompare(searchedProfileEmail) === 0 ?
+                    <NavLink
+                        to={"account-journal"}
+                        className={url.includes("account-journal") ? styles.active : ""}
+                    >
+                        Journal
+                    </NavLink>
+                :
+                    <></>
+                }
             </nav>
             <Outlet />
             <GoToTop />

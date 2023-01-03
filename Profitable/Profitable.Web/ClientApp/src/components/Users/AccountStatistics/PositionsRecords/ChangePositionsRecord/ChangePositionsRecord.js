@@ -105,7 +105,7 @@ export const ChangePositionsRecord = ({ record }) => {
                     </div>
 
                     <div className={styles.submitButtonContainer}>
-                        <input className={styles.submitButton} type="submit" value="Create" />
+                        <input className={styles.submitButton} type="submit" value="Update" />
                     </div>
                 </form>
             </div>

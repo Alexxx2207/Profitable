@@ -12,6 +12,8 @@ import { ShowMoreButton } from "../../Common/ShowMoreButton/ShowMoreButton";
 import { MessageBoxContext } from "../../../contexts/MessageBoxContext";
 
 import styles from "./OrganizationPage.module.css";
+import { TimeContext } from "../../../contexts/TimeContext";
+import { convertFullDateTime } from "../../../utils/Formatters/timeFormatter";
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -74,6 +76,8 @@ const reducer = (state, action) => {
 
 export const OrganizationPage = () => {
 
+    const { timeOffset } = useContext(TimeContext);
+
     const navigate = useNavigate();
 
     const { JWT } = useContext(AuthContext);
@@ -109,10 +113,18 @@ export const OrganizationPage = () => {
                 .then(result => {
     
                     connection.on('ReceiveMessage', message => {
+                        message.sentOn =  convertFullDateTime(
+                            new Date(
+                                new Date(message.sentOn).getTime() - timeOffset * 60000
+                            )
+                        );
                         setState({
                             type: "receiveMessages",
                             payload: message
                         });
+                        setTimeout(() => {
+                            window.scrollTo(0, document.body.scrollHeight);
+                        }, 100)
                     });
                 })
                 .catch(e => console.log('Connection failed: ', e));
@@ -128,6 +140,17 @@ export const OrganizationPage = () => {
                 var organization = await getOrganization(organizationId);
                 var messages = await getOrganizationMessages(JWT, organizationId, state.page, MESSAGES_IN_PAGE_COUNT);
                 
+                var messagesWithOffsetedTime = [
+                    ...messages.map((message) => ({
+                        ...message,
+                        sentOn: convertFullDateTime(
+                            new Date(
+                                new Date(message.sentOn).getTime() - timeOffset * 60000
+                            )
+                        ),
+                    })),
+                ];
+
                 setState({
                     type: "loadOrganizationName",
                     payload: organization.name
@@ -140,7 +163,7 @@ export const OrganizationPage = () => {
                 
                 setState({
                     type: "loadOrganizationMessages",
-                    payload: [...messages]
+                    payload: [...messagesWithOffsetedTime]
                 });
             }
             
@@ -152,10 +175,6 @@ export const OrganizationPage = () => {
         
         fetchData();
     }, [JWT, MESSAGES_IN_PAGE_COUNT]);
-
-    useEffect(() => {
-        window.scrollTo(0, document.body.scrollHeight);
-    }, [state.messages]);
 
     const addMessageOnChangeHandler = (e) => {
         setState({
