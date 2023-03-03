@@ -21,5 +21,10 @@
 		public static string EntityDoesNotExist(string entity) => $"{entity} was not found!";
 
 		public static readonly int WeeksOfCOTReportsForFirstSeed = 10;
+
+		public static List<string> DisallowedInvestingComSenders { get; set; } = new List<string>()
+		{
+            "By Investing.com Studios"
+        };
 	}
 }

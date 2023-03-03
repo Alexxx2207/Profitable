@@ -2,6 +2,7 @@
 {
 	using AngleSharp;
 	using AutoMapper;
+	using Profitable.Common.GlobalConstants;
 	using Profitable.Models.RequestModels.News;
 	using Profitable.Models.ResponseModels.News;
 
@@ -77,17 +78,21 @@
 									.GetAttribute("href"))
 									.ToList();
 
-			for (int i = 0; i < titles.Count(); i++)
+			for (int i = 0; i < titles.Count; i++)
 			{
-				news.Add(new NewsOverviewResponseModel
+                if (!GlobalServicesConstants.DisallowedInvestingComSenders.Any(sender => 
+						sender == senders[i]?.Trim()))
 				{
-					Image = images[i]?.Trim(),
-					Title = titles[i]?.Trim(),
-					Sender = senders[i]?.Trim(),
-					PostedAgo = timesPosted[i]?.Split("-")[1].Trim(),
-					ArticleOverview = textOverviews[i]?.Trim(),
-					Link = "https://www.investing.com" + links[i]?.Trim(),
-				});
+                    news.Add(new NewsOverviewResponseModel
+                    {
+                        Image = images[i]?.Trim(),
+                        Title = titles[i]?.Trim(),
+                        Sender = senders[i]?.Trim(),
+                        PostedAgo = timesPosted[i]?.Split("-")[1].Trim(),
+                        ArticleOverview = textOverviews[i]?.Trim(),
+                        Link = "https://www.investing.com" + links[i]?.Trim(),
+                    });
+                }
 			}
 
 			return news;

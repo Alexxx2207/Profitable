@@ -215,7 +215,7 @@ export const EditUser = ({ searchedProfileEmail, changeProfileInfo }) => {
             <div className={styles.editContainer}>
                 <form className={styles.editForm} onSubmit={onSubmit}>
                     <div className={styles.editLabelContainer}>
-                        <h1 className={styles.editLabel}>Edit</h1>
+                        <h1 className={styles.editLabel}>Edit Biography</h1>
                     </div>
                     <div className={styles.formGroup}>
                         <div className={styles.formHeading}>
