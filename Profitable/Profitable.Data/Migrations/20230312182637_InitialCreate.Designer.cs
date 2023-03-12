@@ -12,7 +12,7 @@ using Profitable.Data;
 namespace Profitable.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230102170344_InitialCreate")]
+    [Migration("20230312182637_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
