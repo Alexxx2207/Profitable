@@ -23,11 +23,12 @@
 
 		public void PrintSeedChoicesMenu(List<SeederChoice> seedChoices)
 		{
+			Console.WriteLine("Choose what to seed in the database:\n");
 			foreach (var choice in seedChoices)
 			{
 				Console.WriteLine($"{choice.ChoiceNumber}. {choice.ChoiceMessage}");
 			}
-			Console.WriteLine($"{seedChoices.Count + 1}. Exit");
+			Console.WriteLine($"{seedChoices.Count + 1}. Exit\n");
 			Console.Write("Choice: ");
 		}
 	}
